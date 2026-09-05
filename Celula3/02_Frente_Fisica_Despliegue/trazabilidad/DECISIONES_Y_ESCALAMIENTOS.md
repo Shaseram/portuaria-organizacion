@@ -19,6 +19,8 @@
 | `F2-ESC-008` | 2026-09-05 | C1/C2 | EXTERNO | ingresos físicos de comunicaciones del edificio administrativo | `RT-06.32` exige rutas físicas distintas con ingreso al edificio por puntos separados; el caso no dice si el edificio lo admite | levantar antes de cerrar `ADR-005`; puede descartar por norma la alternativa de endurecer la sala actual | C1, C2, C3, `ADR-005` | BLOQUEADO EXTERNO |
 | `F2-ESC-009` | 2026-09-05 | C2 | DECISIÓN SIN ADR | proveedor y región de nube | `RT-03.01` exige declarar proveedor y regiones primaria y secundaria; `RT-15.04`/`.05` exigen intensidad de carbono y análisis comparativo. La lista `ADR-001` a `ADR-010` no cubre esta decisión | abrir `ADR-011`; afecta a los tres frentes, no se resuelve en el Frente 2 | todos | PARA REVISIÓN DEL INTEGRADOR |
 | `F2-ESC-010` | 2026-09-05 | C3 | INTERPRETACIÓN CON EFECTO DE PLAZO | el ambiente de DR debe estar operativo en el **mes 6** | `RT-04.01` condiciona el hito H3 a los **cinco** ambientes; el E-25 describe H3 nombrando cuatro. Art. 5.2 y 5.4 de las BA obligan a la lectura más exigente | planificar región secundaria, replicación y conmutación para el mes 6, no para el paso a producción. Afecta el cronograma del Subdocumento 7 | C2, C3, C4, Frente 1, planificación | PARA REVISIÓN DEL INTEGRADOR |
+| `F2-ESC-011` | 2026-09-05 | C4 | EXTERNO | tamaño real de imagen de los lectores de patente y contenedor | el supuesto propio de 500 KB gobierna el **91 % del buffer de 72 h**, el ancho de banda de reposición y el 100 % del almacenamiento documental. A 1 MB el buffer sube a 40 GB y la reposición a 58 Mbps | solicitar el tamaño real que producen los lectores actuales; entretanto el margen del 30 % absorbe hasta ≈650 KB | C2, C3, C4, T-11 | BLOQUEADO EXTERNO |
+| `F2-ESC-012` | 2026-09-05 | C3/C4 | EXTERNO | capacidad real de la fibra y del radioenlace de respaldo | la sincronización en ≤90 min exige **32,5 Mbps sostenidos** a peak estacional; el caso describe el respaldo como «de menor capacidad» | solicitar la capacidad contratada de ambos enlaces; si el respaldo no la sostiene, el compromiso de `RNF-DIS-04` se cumple sobre el principal restablecido o sobre el segundo camino de `RT-03.17` | C3, C4, `RNF-DIS-04` | BLOQUEADO EXTERNO |
 | `F2-DEC-002` | 2026-09-05 | C2 | TENSIÓN A DECLARAR | `RT-06.20` exige biometría facial para el recinto técnico | la restricción no negociable 8 registra la objeción a la biometría obligatoria | declarar que son poblaciones distintas; no silenciar | C2, D1 | PENDIENTE |
 | `F2-DEC-003` | 2026-09-05 | C2 | TENSIÓN A DECLARAR | `RT-06.24` exige videovigilancia propia del recinto, 30 días en línea | la regla negativa 6 prohíbe crear un portal de video y conserva el VMS | declarar que el CCTV del recinto no es el VMS del terminal | C2, C3, D1 | PENDIENTE |
 | `F2-COR-001` | 2026-09-05 | C1 | CORRECCIÓN PROPIA | cumplimientos decían `RT-03.01..15` | el capítulo llega a `RT-03.24` | corregido en C1 | C1, C3, C4 | APLICADO |
@@ -137,6 +139,24 @@
 **Qué significa en la práctica.** La región secundaria, la replicación continua y el procedimiento de conmutación de `RT-07.05` deben existir y funcionar en el **mes 6**, es decir **diez meses antes** de que la Etapa 1 entre en producción en el mes 16. Una planificación que deje el DR para el final del desarrollo no cumple H3, que es un hito de pago con criterio de aceptación.
 
 **Por qué se escala.** Excede al Frente 2: cambia el cronograma y la Carta Gantt del Subdocumento 7, la curva de consumo de infraestructura y la secuencia de pruebas. Este frente lo asume en su calendario y en C2 §6, pero la decisión de planificación no es suya.
+
+### `F2-ESC-011` — El tamaño de imagen es el supuesto más sensible de todo el dimensionamiento
+
+**De dónde viene.** La plantilla de volumetría de Célula 2 declara, como supuesto propio y marcado, **500 KB por imagen** de reconocimiento de patente y de contenedor, junto con una cobertura óptica del 20 % de los movimientos de patio.
+
+**Qué gobierna.** Al recalcular el buffer de 72 horas a peak estacional, las imágenes resultan ser **19,9 de los 21,9 GB**, es decir el 91 %. Y como el ancho de banda de reposición se deriva de ese volumen, gobierna también los 32,5 Mbps de la sincronización, además del 100 % del almacenamiento documental en nube.
+
+**Sensibilidad.** Si el tamaño real fuera 1 MB, el buffer sube a ≈40 GB, la sincronización en 90 minutos exige ≈58 Mbps y el almacenamiento documental pasa de 1,43 a 2,9 TB anuales. Es el único supuesto del modelo cuyo error cambia el diseño y no solo la cifra.
+
+**Cómo se trata mientras tanto.** El margen del 30 % declarado en `RT-08.05` absorbe hasta unos 650 KB por imagen sin rehacer nada. Por sobre eso hay que revisar el enlace y el buffer. Se solicita al CLIENTE el tamaño que producen sus lectores actuales, que es un dato que tiene.
+
+### `F2-ESC-012` — No sabemos si el enlace de respaldo sostiene la sincronización
+
+**El compromiso.** `RNF-DIS-04` y el `CP, Cap. 15, RT-03.13` obligan a sincronizar en **≤90 minutos** tras 72 horas de desconexión. A peak estacional eso exige **32,5 Mbps sostenidos**, además del tráfico de la operación en curso, porque el terminal no se detiene mientras sincroniza.
+
+**El problema.** El `CP, Cap. 6` describe el respaldo como *«radioenlace de menor capacidad»* y advierte que *«no se ha probado en conmutación real desde 2022»*. Si el corte de 72 horas fue causado por la caída de la fibra y la reconexión ocurre estando aún sobre el radioenlace, el compromiso de 90 minutos **puede no ser alcanzable**.
+
+**Cómo se trata.** El compromiso se declara sobre el enlace principal restablecido o sobre el segundo camino que `RT-03.17` obliga a proveer, dimensionado a esta cifra. No se promete sobre un respaldo cuya capacidad no conocemos. Se solicita al CLIENTE la capacidad contratada de ambos enlaces.
 
 ## 3. Tensiones declaradas, no resueltas
 
