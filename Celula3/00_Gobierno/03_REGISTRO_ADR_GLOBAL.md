@@ -17,9 +17,9 @@
 | `ADR-005` | sala actual vs. nueva vs. edge mínimo+nube | C1/C2 | Decisión 20, Art. 16 | CANDIDATO | físico/T-11 |
 | `ADR-006` | red de patio y conectividad redundante | C3 | Decisión 9/19, site survey | CANDIDATO | despliegue/T-11 |
 | `ADR-007` | almacenamiento/RAID/HA/DR | C2/C3/C4 | RNF-DIS-13/14/15; RNF-DES-09..12; volumetría estacional | CANDIDATO | físico/T-11 |
-| `ADR-008` | identidad y acceso Zero Trust | D1 | eventuales/PAM; RF-POR-02/09; operación 72 h | CANDIDATO | seguridad |
-| `ADR-009` | llaves, secretos y cifrado | D1 | nube/on-prem/edge | CANDIDATO | seguridad/T-11 |
-| `ADR-010` | observabilidad/SIEM y evidencia inmutable | D1/D2 | retenciones/incidentes; FEP02 Cap. 11 RT-11.17 (SOC 24x7) | CANDIDATO | seguridad/T-11 |
+| `ADR-008` | identidad y acceso Zero Trust; gobierno común con capacidad local delegada en evaluación | D1 | eventuales/PAM; RF-POR-02/09; operación 72 h; F3-ESC-001/002 | EN ANÁLISIS | seguridad |
+| `ADR-009` | llaves, secretos y cifrado: gobierno común con capacidades criptográficas separadas por ámbito y servicio local protegido | D1 | nube/on-prem/edge; alternativas y consecuencias en D1 B4.8 | PROPUESTO | seguridad/T-11 |
+| `ADR-010` | detección híbrida federada, evidencia inmutable y SOC gestionado 24x7 | D1/D2 | autonomía 72 h, retenciones/incidentes y FEP02 RT-11.14..21; alternativas en D1 B5.8 | PROPUESTO | seguridad/T-11 |
 
 ## 3. Plantilla obligatoria de ADR
 
@@ -45,4 +45,3 @@
 ## 4. Regla de aprobación
 
 Un ADR no se aprueba si no presenta al menos dos alternativas reales, criterios vinculados al caso, consecuencias negativas, trazabilidad y efecto en las demás vistas. Nombrar un producto sin comparar el problema que resuelve no es una decisión arquitectónica suficiente.
-
