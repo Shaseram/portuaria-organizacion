@@ -107,132 +107,9 @@ La distinción importa por el CP, Cap. 11: no se construye infraestructura civil
 
 ### 3. Diagramas físicos
 
-#### 3.1 Topología híbrida
+> **Pendiente por decisión de equipo.** Los diagramas del Subdocumento 4 se producen al final, en un solo pase y con notación común a los tres frentes, para que las cinco vistas de `RT-02.03` sean coherentes entre sí. Este entregable deja el material que el diagrama debe representar: los 21 nodos `PHY-*` de §4, la matriz lógico→físico de §5, las zonas y fronteras del §2 y los puntos únicos de falla de §8.
 
-Se lee de arriba abajo: los canales entran por un único punto expuesto en nube, la plataforma vive en subredes privadas, y el terminal cuelga de un enlace redundante cuyo corte —esto es lo que el diagrama tiene que hacer evidente— **no detiene el muelle ni el gate**. Los colores separan nube, sitio del terminal, borde operacional y sistemas conservados.
-
-```mermaid
-flowchart TB
-  CAN["<b>Canales y contrapartes</b><br/>CH-PORTAL · CH-APP · CH-CAB<br/>14 navieras · 210 agencias · 380 transportistas · 3 autoridades · concedente"]
-
-  subgraph NUBE["☁ NUBE PUBLICA · region primaria en Chile o Sudamerica · 2+ zonas de disponibilidad"]
-    direction TB
-    P1["<b>PHY-CLD-01 · Borde publico</b> — unica superficie expuesta<br/>CDN · WAF · anti-DDoS L3/L4/L7 · TLS 1.3 &nbsp;·&nbsp; <i>GW-EDGE</i>"]
-    P2["<b>PHY-CLD-02 · Gateway de servicios</b><br/>identidad · cuotas · versionado · trazabilidad &nbsp;·&nbsp; <i>GW-API</i>"]
-    P3["<b>PHY-CLD-03 · Servicios de negocio</b> — subred privada de aplicacion<br/><i>CTX-PLAN · CTX-VESSEL · CTX-INSP · CTX-EMIS · SRV-IAM · SRV-NOTIF · SRV-EVID</i>"]
-    P4["<b>PHY-CLD-04 · Bus de integracion y eventos</b><br/>colas durables · DLQ · reintento · deduplicacion &nbsp;·&nbsp; <i>INT-HUB</i>"]
-    P5["<b>PHY-CLD-05 a 08 · Datos</b> — subred privada, sin alcance desde Internet<br/><i>DATA-CORE</i> ≈24 GB/año · <i>DATA-TS</i> ≈82 GB/año · <i>DATA-DOC</i> ≈1,6 TB/año · <i>DATA-AN</i>"]
-    P9["<b>PHY-CLD-09 · Observabilidad y SIEM</b> — nube y on-premise en la misma plataforma, sin puntos ciegos · RT-03.16"]
-  end
-
-  P10["<b>PHY-CLD-10 · Region secundaria</b> — replicacion continua · RTO ≤4 h · RPO ≤15 min · BTT Cap. 7<br/><i>no hay segundo recinto del CLIENTE: el terminal es un emplazamiento unico</i>"]
-
-  ENL{{"<b>Enlace redundante</b> · RT-03.17<br/>dos caminos fisicos · proveedores distintos · conmutacion automatica con tiempo declarado<br/><i>hoy: un solo proveedor de fibra + radioenlace sin prueba desde 2022</i>"}}
-
-  subgraph TERM["⚓ TERMINAL PORTUARIO ACONCAGUA · emplazamiento unico · ambiente salino a menos de 300 m de la costa"]
-    direction TB
-    S4["<b>PHY-OPS-04 · Nucleo de red operacional</b> — switches, firewalls y balanceadores en HA<br/>segregacion operacional / administrativa / proteccion · IEC 62443"]
-    S1["<b>PHY-OPS-01 · Nucleo operacional local</b> — cluster redundante<br/><i>EDGE-RUN · CTX-OPS · CTX-GATE · CTX-YARD · CTX-REEFER · CTX-BILL</i><br/><b>sostiene 72 h sin enlace y es la autoridad del dato durante el corte</b>"]
-    S23["<b>PHY-OPS-02</b> almacenamiento RAID, buffer de 72 h &nbsp;·&nbsp; <b>PHY-OPS-03</b> capa anticorrupcion <i>INT-TOS</i>"]
-    S56["<b>PHY-OPS-05</b> custodia de medios, RT-06.26 a .28 &nbsp;·&nbsp; <b>PHY-OPS-06</b> espacio de operacion separado de la sala, RT-06.29 a .31"]
-    BOR["<b>PHY-EDG-01 a 05 · Borde operacional por zona</b><br/>gate · patio · patio refrigerado · muelle · inspeccion<br/><i>ver diagrama de detalle</i>"]
-  end
-
-  CONS["<b>Sistemas conservados</b> — fuera del limite de la oferta<br/>EXT-TOS12 · EXT-ERP · EXT-GRU · EXT-ACC · EXT-VGM · EXT-VMS"]
-
-  CAN -->|"HTTPS · TLS 1.3"| P1
-  P1 --> P2 --> P3
-  P3 <--> P4
-  P3 --> P5
-  P5 -.-> P9
-  P5 -.->|"replicacion continua"| P10
-  P2 ===|"enlace privado o VPN cifrada<br/>RT-03.21"| ENL
-  ENL ===|"su corte NO detiene<br/>muelle ni gate"| S4
-  S4 --- S1 --- S23
-  S1 --- BOR
-  S4 --- S56
-  S1 <-.->|"hecho facturable ·<br/>coexistencia TOS"| CONS
-  BOR <-.->|"solo lectura · eventos<br/>sin video por la red operacional"| CONS
-
-  classDef nube fill:#e8f0fe,stroke:#1967d2,color:#111
-  classDef dr fill:#e8f0fe,stroke:#1967d2,color:#111,stroke-dasharray: 5 4
-  classDef local fill:#fef7e0,stroke:#e37400,color:#111
-  classDef borde fill:#e6f4ea,stroke:#137333,color:#111
-  classDef ext fill:#f1f3f4,stroke:#80868b,color:#333,stroke-dasharray: 4 3
-  classDef enlace fill:#fce8e6,stroke:#c5221f,color:#111
-  classDef canal fill:#f3e8fd,stroke:#8430ce,color:#111
-  class P1,P2,P3,P4,P5,P9 nube
-  class P10 dr
-  class S1,S4,S23,S56 local
-  class BOR borde
-  class CONS ext
-  class ENL enlace
-  class CAN canal
-```
-
-#### 3.2 Detalle del borde operacional por zona
-
-Cada zona del recinto tiene condiciones distintas y por eso equipamiento distinto: el gate mide en segundos, el patio pierde cobertura por diseño del apilamiento, el frío alarma en minutos y la cabina no admite captura. Las cajas grises son sistemas que se conservan: se integran, no se reemplazan.
-
-```mermaid
-flowchart LR
-  S4["<b>PHY-OPS-04</b><br/>Nucleo de red operacional<br/><i>zona operacional segregada</i>"]
-  S1["<b>PHY-OPS-01</b><br/>Nucleo operacional local<br/><i>procesa y persiste durante el corte</i>"]
-
-  subgraph GATE["PHY-EDG-01 · GATE — 8 entradas + 6 salidas, a la intemperie, 24x7"]
-    direction TB
-    G1["Camara y lector OCR de patente y contenedor<br/><b>OCR ≤3 s · exactitud ≥98 %</b>"]
-    G2["Caseta: puesto de operador<br/>uso con guantes, luminosidad exterior"]
-    G3["Gabinete de borde con proteccion marina<br/><i>procesa la validacion aunque caiga el enlace</i>"]
-  end
-
-  subgraph PAT["PHY-EDG-02 · PATIO — 18 ha, pilas de hasta 5 alturas que cambian cada hora"]
-    direction TB
-    Y1["Red operacional del patio<br/><i>cantidad y ubicacion de estaciones base: site survey</i>"]
-    Y2["Terminal a bordo del equipo<br/><b>autonomo hasta 8 h fuera de cobertura</b>"]
-    Y3["Posicionamiento DGPS/RTLS + lectura optica<br/><i>≈37 a 44 eventos/s</i>"]
-  end
-
-  subgraph FRI["PHY-EDG-03 · PATIO REFRIGERADO — 2.400 tomas, 26 tableros"]
-    direction TB
-    R1["Concentrador por tablero<br/><b>alarma de tablero como evento propio</b>"]
-    R2["Instrumentacion de toma: consigna y temperatura<br/><i>muestreo local 1 a 5 min · ≈36 a 43 eventos/s</i>"]
-    R3["Alarma local con canal redundante<br/><b>≤5 min desde el evento fisico</b>"]
-  end
-
-  subgraph MUE["PHY-EDG-04 · MUELLE — 3 sitios, 6 gruas de hasta 40 m"]
-    direction TB
-    M1["Pantalla de cabina<br/><b>despliegue visual, no captura</b><br/><i>el operador no manipula un dispositivo mientras opera</i>"]
-    M2["Lectura autorizada del control de gruas<br/><b>solo lectura, sujeta al fabricante</b>"]
-  end
-
-  subgraph INS["PHY-EDG-05 · ZONA DE INSPECCION"]
-    direction TB
-    I1["Captura de acta y firma en terreno<br/><i>evidencia facturable</i>"]
-  end
-
-  S4 === GATE
-  S4 === PAT
-  S4 === FRI
-  S4 === MUE
-  S4 === INS
-  S1 -.- S4
-
-  G1 -.->|"eventos e imagenes"| EXTOCR["EXT-OCR<br/>lectores existentes"]
-  G3 -.->|"habilitacion y evento"| EXTACC["EXT-ACC<br/>accesos y barreras"]
-  G3 -.->|"captura de VGM<br/>no se opera ni certifica"| EXTVGM["EXT-VGM<br/>basculas"]
-  M2 -.->|"prohibido intervenir<br/>restriccion 3"| EXTGRU["EXT-GRU<br/>control de gruas"]
-  S4 -.->|"segregada · sin video<br/>por la red operacional"| EXTVMS["EXT-VMS<br/>142 a 190 camaras"]
-
-  classDef local fill:#fef7e0,stroke:#e37400,color:#111
-  classDef borde fill:#e6f4ea,stroke:#137333,color:#111
-  classDef ext fill:#f1f3f4,stroke:#80868b,color:#333,stroke-dasharray: 4 3
-  class S1,S4 local
-  class G1,G2,G3,Y1,Y2,Y3,R1,R2,R3,M1,M2,I1 borde
-  class EXTOCR,EXTACC,EXTVGM,EXTGRU,EXTVMS ext
-```
-
-> Los diagramas distinguen zona pública, subred privada de aplicación, subred privada de datos, zona operacional del terminal, borde por zona del recinto y sistemas conservados. Las líneas punteadas son integraciones con sistemas que no ofertamos. Las fuentes están en [`diagramas/`](diagramas/).
+Cuando se dibuje, la vista física de C1 debe mostrar, conforme a las reglas de este contrato: el límite de la oferta; zona pública, subred privada de aplicación, subred privada de datos, zona operacional, zona administrativa y zona de protección; región primaria y secundaria; sala técnica, borde por zona del recinto y sistemas conservados; el enlace redundante y su comportamiento ante corte; y la correspondencia con el catálogo lógico por ID.
 
 ### 4. Tabla de emplazamiento conforme al Artículo 16
 
@@ -358,12 +235,13 @@ El Maestro, regla negativa 14, prohíbe ocultarlos. Los cinco primeros son condi
 
 - [x] Todos los componentes desplegables tienen ubicación y justificación por los seis criterios.
 - [x] La solución es híbrida y multi-AZ, con región primaria y secundaria declaradas.
-- [x] Se ven sala, borde, nube, DR, enlaces y sistemas conservados.
+- [~] Se describen sala, borde, nube, DR, enlaces y sistemas conservados; **la vista gráfica queda pendiente** por la decisión de equipo de dibujar al final.
 - [x] Las 72 h no dependen de nube: la autoridad del dato pasa al núcleo local.
 - [x] No se presume que el ambiente marino desaparece.
 - [x] Físico, catálogo lógico y T-11 usan los mismos IDs.
 - [ ] `TRZ_C1.md` completo — en curso.
 - [ ] Revisión cruzada con A1 `v0.1` y D1 `SEC-PHYS-v0.1` — Puerta 1.
+- [ ] Diagrama de la vista física — se produce en el pase final de diagramas del Subdocumento 4.
 
 
 ## Trazabilidad
