@@ -10,7 +10,10 @@ Especificar las tecnologías y los implementos que materializan la arquitectura,
 
 - T21 4.2 b), c), d), e) y Formulario T-11.
 - `SD4-02`, `SD4-05`, `SD4-06`, `SD4-08`.
-- BTT RT-03, RT-06 y RT-08; `MC-09/10/11/12`.
+- BTT Cap. 6 completo: `RT-06.01` a `RT-06.34`. BTT Cap. 7 completo: `RT-07.01` a `RT-07.14`. BTT Cap. 3 y Cap. 8; `MC-09/10/11/12`.
+- Checklist del BTT, Cap. C, entregables N° 8 (site principal y secundario, **con planos**) y N° 10 (hardware y dispositivos de terreno).
+
+> *Corrección `F2-COR-002` (2026-09-05): el contrato declaraba `RT-06.01..24` y no mencionaba el Capítulo 7. El numeral 3.2 del BTT dice «se aplican íntegramente los requisitos **RT-06.01 a RT-06.34**»; los diez omitidos son tres subcapítulos de este frente —6.7 custodia de medios, 6.8 espacio de operación del personal y 6.9 rutas de comunicaciones—. El Capítulo 7, site secundario y recuperación ante desastres, no estaba citado en ninguna parte de Célula 3 pese a que `T21-4.2-E` es elemento evaluado. Ver `trazabilidad/DECISIONES_Y_ESCALAMIENTOS.md`, `F2-ESC-003` y `F2-ESC-004`.*
 
 ### Entradas obligatorias
 
@@ -28,6 +31,12 @@ Especificar las tecnologías y los implementos que materializan la arquitectura,
 - [ ] Especificar switches, firewalls, balanceadores y energía en HA.
 - [ ] Detallar data center/sala primario y secundario/DR.
 - [ ] Detallar racks, UPS, generación, climatización, incendio, acceso y monitoreo.
+- [ ] Especificar custodia de medios de respaldo: recinto, condiciones ambientales, inventario y rotación (`RT-06.26..28`).
+- [ ] Especificar el espacio de operación del personal, separado de la sala de equipos, y declarar qué instalaciones existentes se reutilizan (`RT-06.29..31`).
+- [ ] Especificar rutas de comunicaciones físicamente distintas con ingreso al edificio por puntos separados, y las canalizaciones requeridas (`RT-06.32/33`).
+- [ ] Especificar el site secundario: modalidad activo-activo o activo-pasivo justificada, distancia al principal y análisis de amenazas comunes (`RT-07.01/02`).
+- [ ] Declarar la disponibilidad mensual por componente del recinto —energía, climatización, red, cómputo, motor de base de datos y portal— conforme al numeral 7.2 del BTT.
+- [ ] Declarar las dos tensiones registradas: biometría del recinto (`F2-DEC-002`) y CCTV propio del recinto frente al VMS conservado (`F2-DEC-003`).
 - [ ] Especificar gabinetes/dispositivos por clase marina y ubicación.
 - [ ] Incluir puestos de trabajo/monitores duales solo donde el dimensionamiento lo justifique.
 - [ ] Entregar candidatos T-11 sin precios.

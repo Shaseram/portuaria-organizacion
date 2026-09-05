@@ -10,7 +10,10 @@ Transformar la volumetría en capacidades y cantidades justificadas, y consolida
 
 - `SD4-02`, `SD4-06`, `SD4-08`.
 - T7-4.6; T21 4.2; Formulario T-11.
-- BTT RT-08.01/03/04/05/10/11 y RT-09.02; pruebas a 1,5× peak.
+- BTT Cap. 8 completo (`RT-08.01` a `RT-08.19`) y `RT-09.01`/`RT-09.02`; pruebas a 1,5× peak.
+- Checklist del BTT, Cap. C, entregable N° 11: cálculo de capacidad y dimensionamiento, exigido en `RT-09.01`.
+
+> *Corrección `F2-COR-004` (2026-09-05): el contrato citaba `RT-09.02` pero no `RT-09.01`, que es el requisito que exige presentar el propio cálculo de capacidad con sus supuestos de usuarios concurrentes, TPS, volumen y crecimiento. Del Capítulo 8 se citaban seis de diecinueve; quedaban sin anclar `.02` tolerancia declarada a falla de discos, `.06` equipamiento nuevo con garantía desde la recepción conforme, `.07`–`.09` estaciones de trabajo con NCh 2527 y gestión centralizada, `.12` grado de protección declarado, `.13` ciclo de vida, repuestos y **plan de reposición durante los 56 meses del Contrato**, `.16`–`.18` ciclo de vida, borrado seguro con certificado de sanitización y disposición final con gestor autorizado. Ojo: `RT-09.01` colisiona con el Cap. 15 del caso, que usa el mismo código para el umbral de la transacción crítica; ver `F2-ESC-006`.*
 
 ### Entradas obligatorias
 
@@ -29,6 +32,9 @@ Transformar la volumetría en capacidades y cantidades justificadas, y consolida
 - [ ] Declarar margen de crecimiento y procedimiento de ampliación.
 - [ ] Identificar primer cuello de botella y sensibilidad.
 - [ ] Convertir resultados a cantidades físicas verificables.
+- [ ] Dimensionar el ancho de banda por sitio en régimen normal y peak, con el cálculo que lo justifica (`RT-03.20`).
+- [ ] Declarar el margen de crecimiento como porcentaje sobre la carga proyectada y el procedimiento de ampliación (`RT-08.05`).
+- [ ] Incorporar al T-11 la reposición del equipamiento de terreno durante los 56 meses del Contrato (`RT-08.13`).
 - [ ] Consolidar candidatos T-11 de los tres frentes.
 - [ ] Revisar 1:1 físico→cálculo→T-11 y ausencia de precios.
 
