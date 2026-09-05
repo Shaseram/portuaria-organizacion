@@ -27,9 +27,33 @@
 | **Ancho de banda y latencia requeridos en la red inalámbrica del patio, bajo condición de patio cargado** | ≈ 375–500 kbps agregado sostenido; latencia objetivo ≤ 200 ms | Escalar proporcionalmente (+15–20%) | Ancho de banda = tráfico de posicionamiento (fila 5, ≈100 bytes/evento) + tráfico de imágenes de reconocimiento (fila 10, prorrateado por segundo). Latencia derivada del umbral RNF-DES-03 (≤1 s), con margen para procesamiento de aplicación. **Fila con más incertidumbre acumulada de toda la tabla**, porque hereda los supuestos de las filas 5 y 10. No incluye videovigilancia: las 142 cámaras actuales y 190 proyectadas permanecen en la red de protección segregada; cualquier intercambio con el VMS cruza un conducto controlado y se dimensiona aparte. |
 | **Cantidad y ubicación de puntos de acceso inalámbrico necesarios para cobertura con pilas de cinco alturas** | Cantidad: ≈ 6–8 estaciones base. **Ubicación: PENDIENTE** | Igual, a revisar con crecimiento de patio | **Cantidad:** 18 hectáreas (180.000 m²) ÷ área de cobertura efectiva por estación (radio ≈120 m, reducido por obstrucción de pilas metálicas) ≈ 45.239 m² por estación → 4 estaciones × 2 (factor de redundancia, Decisión N° 9) = 8. **Por qué la ubicación queda pendiente:** requiere un plano físico real del patio (bloques, sitios, distribución) no disponible en los documentos entregados — necesita un estudio de sitio (site survey) propio de la etapa de diseño detallado, no de esta propuesta. |
 | **Volumen de datos generado por el terminal durante 72 horas sin enlace hacia el exterior** | ≈ 13 GB en 72 horas | Escalar proporcionalmente (+15–20%) | Suma en 259.200 s de: transacciones de negocio (≈0,06 GB) + telemetría local de alta resolución, muestreo 1 min (≈1,0 GB) + posicionamiento (≈1,0 GB) + imágenes de gate/patio prorrateadas a 3 días (≈11,2 GB, componente dominante). **Supuesto:** actividad continua a tasa promedio durante toda la ventana; varía si la desconexión coincide con temporada peak. |
-| **Tiempo de sincronización tras 72 horas de operación desconectada** | ≤ 90 minutos | ≤ 90 minutos | Ya declarado como RNF, no requiere cálculo nuevo: umbral de RNF-DIS-04, verificado mediante la prueba de reconexión ligada a RNF-DIS-02. |
+| **Tiempo de sincronización tras 72 horas de operación desconectada** | ≤ 90 minutos | ≤ 90 minutos | Derivación: los ≈13 GB de la fila 15 transferidos en ≤90 min exigen **≈19,3 Mbps sostenidos** (13 GB × 8 = 104.000 Mb ÷ 5.400 s). El umbral de 90 min proviene de CP, Cap. 15, RT-03.13 y está comprometido en `RNF-DIS-04`; esta fila aporta el ancho de banda de reposición que ese umbral supone y que debe verificarse contra el enlace real. |
 | **Contactos mensuales a la mesa de ayuda, en español e inglés, distinguiendo internos de externos** | ≈ 458 contactos/mes (≈159 internos-ES, ≈239 externos-ES, ≈60 externos-EN) | ≈ 527 contactos/mes *(corregida desde 536)* | Tasa de contacto del 15% (referencia de industria de service desk). **Universo interno, ahora declarado explícito:** personal propio (640→700) + 20% de los eventuales distintos habilitados al año (2.100→2.400, es decir 420→480), asumiendo que ese 20% son quienes tienen turnos más frecuentes. **Universo externo:** agencias + exp/imp + transportistas (1.990→2.335), con 80% de los contactos en español y 20% en inglés (Restricción N° 13). |
 | **Dotación de la mesa de ayuda y del equipo de operación, considerando cobertura 24x7x365** | ≈ 2 personas en turno diurno (8:00–20:00, al menos 1 con inglés) + 1 de guardia nocturna/fin de semana para incidentes críticos *(estimación, ver nota)* | Igual, a revalidar con volumen real | **Estimación con Erlang C y un supuesto de AHT (tiempo promedio de atención) de 8 minutos — referencia genérica de soporte técnico nivel 1, no verificada con este caso.** Con 458 contactos/mes concentrados en ~22 días hábiles y una ventana de 12 horas, la tasa de llegada es de ≈1,7 contactos/hora, lo que da una intensidad de tráfico de ≈0,23 Erlangs — muy baja, cubierta cómodamente con 1–2 agentes bajo el nivel de servicio ya comprometido en RNF-OPE-06 (80% de llamadas en ≤20 s). **Registrada además en el Registro de vacíos y consultas: se solicitará el AHT real o una referencia validada por el cliente antes de comprometer esta dotación en la oferta final.** |
+
+---
+
+## Factor estacional — la tercera particularidad del perfil de carga
+
+El CP, Cap. 14.2 declara tres particularidades del perfil de carga. Las dos primeras están aplicadas en la tabla: la telemetría domina sobre las transacciones (filas 3 y 5 frente a la fila 1) y el peak es **de coincidencia**, no horario (fila 2, dos naves en operación con gate saturado). **La tercera no estaba recogida** y se incorpora aquí:
+
+> *«El peak estacional se extiende del 15 de diciembre al 30 de abril, precisamente cuando está prohibido intervenir.»* — CP, Cap. 14.2
+
+### Factores derivados del propio caso
+
+| Dimensión afectada | Régimen | Peak estacional | Factor | Derivación |
+|---|---|---|---|---|
+| Camiones atendidos por día | 1.450 | hasta 2.600 | **×1,79** | CP, Cap. 2.2 y 14.1 |
+| Volumen refrigerado mensual | 1/12 del año | 62 % del año en enero–marzo | **×2,48** | 62 % ÷ 3 meses, contra 25 % que correspondería a un trimestre uniforme (CP, Cap. 2.2) |
+| Ocupación de patio | — | 90 % (≈11.200 de 12.400 TEU) | — | CP, Cap. 7.2 y 14.1 |
+| Reefers conectados simultáneos | — | ≈2.150 de 2.400 tomas | — | CP, Cap. 14.1 |
+| Trabajadores eventuales por turno | — | hasta 380 | — | CP, Cap. 2.4 |
+
+### Consecuencia para el dimensionamiento
+
+El factor estacional aplica sobre las filas 1, 2, 3, 5, 8, 9, 10, 13 y 15, que dependen del volumen operacional. **La consecuencia no es solo de capacidad, sino de calendario:** la restricción no negociable N° 9 prohíbe intervenir entre el 15 de diciembre y el 30 de abril, de modo que **toda holgura de capacidad debe estar instalada y verificada antes del 15 de diciembre** de cada año. Una ampliación detectada como necesaria en enero no puede ejecutarse hasta mayo.
+
+Los dos peaks son distintos y ambos deben dimensionarse: el **peak de coincidencia** de la fila 2 —dos naves y gate saturado, que puede ocurrir cualquier día— fija el techo instantáneo; el **peak estacional** fija la carga sostenida durante cuatro meses y medio, y es el que determina el almacenamiento y la retención en línea.
 
 ---
 
@@ -55,3 +79,5 @@ Para cada contrato detallado se deberán completar versión, disponibilidad, tim
 - **[fecha]** — Corrección de la fila 17 (mesa de ayuda): se declara explícitamente la composición del universo interno (personal propio + 20% de eventuales distintos habilitados al año), lo que ajusta la proyección a 3 años de 536 a ≈527 contactos/mes. El valor actual (458) no cambia.
 - **[fecha]** — Se completan las filas 11 (volumen histórico a migrar) y 18 (dotación de mesa de ayuda), antes marcadas "PENDIENTE", con una estimación propia fuertemente señalizada como tal, para cumplir la exigencia del Cap. 14.2 de no dejar celdas sin completar. Ambas quedan registradas también en el Registro de vacíos y consultas para solicitar el dato real al cliente.
 - **2026-09-04** — Corrección contra el Plan Maestro: se reemplaza el conteo incompleto de integraciones, se separan contrapartes de familias de instrumentación, se corrige COARRI/CODECO y se agrega una matriz de contrato/volumen/fallback/aceptación. Se explicita que CCTV permanece en la red de protección segregada.
+
+> *Corrección aplicada 2026-09-05: se incorpora el factor estacional (tercera particularidad del CP, Cap. 14.2), que no estaba recogido en ninguna fila, y se aporta la derivación numérica del tiempo de sincronización de la fila 16, que se declaraba «ya declarado como RNF» sin método.*

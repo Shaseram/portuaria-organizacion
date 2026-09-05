@@ -345,7 +345,9 @@ Cada requerimiento de terreno de este bloque se redactó contra esa frase. Es el
 **Actor:** solución. **Precondición:** contenedor previamente conectado.
 **Resultado esperado:** desconexión alarmada antes de que la carga se degrade.
 **Origen:** CP, Cap. 15, RT-05.29 (alarma «de desconexión o de desviación») · CP, Cap. 4.5 (la inercia térmica retrasa la manifestación de la desconexión).
-**Criterio de aceptación:** se desconectan **10 tomas** en condiciones controladas y la alarma se genera para las 10 **sin esperar la desviación de temperatura**, dentro de los 5 minutos.
+**Criterio de aceptación:** se desconectan **10 tomas** en condiciones controladas y la alarma se genera para las 10 **sin esperar la desviación de temperatura**, dentro de los 5 minutos. Adicionalmente, sobre una muestra de tomas conectadas se fuerza una excursión por sobre la banda de tolerancia declarada en **RN-11** y la alarma de desviación se genera dentro del mismo umbral.
+
+> *Corrección aplicada: el requerimiento se titula «detección de desviación de temperatura», pero su criterio verificaba únicamente el caso de desconexión, y ninguna regla de negocio definía qué constituye una desviación. Se incorpora la verificación de la excursión y se enlaza con `RN-11`, que fija la banda de tolerancia por familia de carga.*
 
 ---
 
@@ -369,7 +371,9 @@ Cada requerimiento de terreno de este bloque se redactó contra esa frase. Es el
 **Actor:** solución. **Precondición:** toma instrumentada con serie previa.
 **Resultado esperado:** la ausencia de lectura no se interpreta como normalidad.
 **Origen:** Decisión N° 8, que descarta la transmisión de solo desviaciones precisamente porque «no distingue un sensor caído de una temperatura estable».
-**Criterio de aceptación:** se interrumpe la señal de un sensor y la solución genera alarma de ausencia de dato **tras 3 intervalos de muestreo consecutivos sin lectura**, es decir entre 3 y 15 minutos según el muestreo vigente de `RF-REF-01`.
+**Criterio de aceptación:** se interrumpe la señal de un sensor y la solución genera alarma de ausencia de dato **tras 3 intervalos de muestreo consecutivos sin lectura y, en todo caso, dentro de los 5 minutos** desde la última lectura válida.
+
+> *Corrección aplicada: el criterio derivaba la alarma solo del muestreo vigente de `RF-REF-01`, que admite hasta 5 minutos; con ese valor la ausencia de dato podía tardar 15 minutos en alarmar. Un sensor caído es operacionalmente indistinguible de una desconexión no detectada —es el modo de falla del 18 de febrero—, y CP, Cap. 15, RT-05.29 exige alarma en no más de 5 minutos desde el evento físico. Se añade el techo de 5 minutos sin reabrir la Decisión N° 8, que mantiene el muestreo local de 1 a 5 minutos.*
 
 > *Corrección aplicada: el criterio invocaba un «intervalo declarado» que no estaba declarado en ninguna parte. Ahora se deriva del muestreo.*
 
@@ -680,9 +684,9 @@ Cada requerimiento de terreno de este bloque se redactó contra esa frase. Es el
 | Criterio de aceptación (CP, Cap. 18) | Requerimientos |
 |---|---|
 | 6 — Productividad alcanzada y explicada *(causa)* | `RF-TRA-01` a `05` · `RF-PAT-13` |
-| 8 — Remociones bajan de forma medible | `RF-PAT-06`, `07`, `08`, `11` |
+| 8 — Remociones bajan de forma medible | `RF-PAT-06`, `07`, `08`, **`10`**, `11` |
 | 9 — Posición coincidente, sin búsquedas físicas | `RF-PAT-01` a `05`, `12`, `13` |
-| 10 — Inspección disponible a la hora *(parcial)* | `RF-PAT-11` |
+| 10 — Inspección disponible a la hora *(parcial)* | `RF-PAT-10`, `11` |
 | 11 — Desviación detectada en minutos | `RF-REF-01` a `10` |
 | 12 — Registro continuo de temperatura | `RF-REF-11`, `12` |
 | 14 — Hechos facturables con evidencia *(parcial)* | `RF-REF-13` |
@@ -692,7 +696,7 @@ Cada requerimiento de terreno de este bloque se redactó contra esa frase. Es el
 
 | Indicador de línea base | Meta | Requerimientos |
 |---|---|---|
-| Remociones 18 % | ≤ 14 % | `RF-PAT-06`, `07`, `08`, `11` |
+| Remociones 18 % | ≤ 14 % | `RF-PAT-06`, `07`, `08`, **`10`**, `11` |
 | Contenedores mal ubicados 3,1 % | ≤ 0,5 % | `RF-PAT-01` a `04`, `13` |
 | Búsqueda física 40 min | cero como proceso normal | `RF-PAT-03`, `12` |
 | Equipos con terminal 12 de 18 | **74 de 74** | `RF-PAT-13` · `RF-TRA-01` |
@@ -702,6 +706,8 @@ Cada requerimiento de terreno de este bloque se redactó contra esa frase. Es el
 | Registro continuo de temperatura: inexistente | 100 % | `RF-REF-11`, `12` |
 | Productividad de grúa 24,8 mov/h | 30 | `RF-TRA-01` a `05` |
 | Explicar sobretiempo: inexistente | trazable | `RF-TRA-04` |
+
+> *Corrección aplicada 2026-09-05: `RF-PAT-10` («Programación anticipada de remociones») no figuraba en ninguna fila de esta trazabilidad pese a ser el único requerimiento que ataca el 18 % de remociones de forma anticipada, y a sostener la parte proactiva del criterio 10. Se incorpora a los criterios 8 y 10 y al indicador de remociones.*
 
 **Total de la parte 2: 49 requerimientos** — 13 `RF-PAT`, 6 `RF-TRA`, 13 `RF-REF`, 11 `RF-ACC`, 6 `RF-OPD`.
 **Acumulado original de las partes 1 y 2 antes de MC-07 a MC-14: 77 requerimientos.** El acumulado vigente se consolida en la Parte 3, sección 11.3.

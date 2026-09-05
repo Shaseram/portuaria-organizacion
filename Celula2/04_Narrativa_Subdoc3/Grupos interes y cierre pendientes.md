@@ -13,7 +13,7 @@
 |---|---|
 | **1** | El principio de la estrategia — por qué no es un plan de comunicaciones |
 | **2** | **Mapa de actores** — influencia, interés y postura declarada |
-| **3** | **Estrategia por actor** — las nueve tensiones del caso y cómo las aborda la propuesta |
+| **3** | **Estrategia por actor** — las seis tensiones del caso y cómo las aborda la propuesta |
 | **4** | Texto candidato para la sección 3.9 |
 | **5** | **Cierre de pendientes** — qué se decide ahora, qué queda para Isidora y por qué |
 | **6** | Estado del trabajo de Célula 2 |
@@ -39,23 +39,25 @@ Cuatro de las veintiuna decisiones son estrategia hacia un grupo de interés ant
  
 ## 2. Mapa de actores
  
-| Actor | Influencia | Interés | Postura registrada en el caso |
-|---|---|---|---|
-| **Concedente estatal** | Alta | Alto | No participa del proyecto, pero recibe los indicadores. Tres semestres sobre el umbral de estadía |
-| **Directorio y gerencia general** | Alta | Alto | Mandante. Espera resultados de negocio, no tecnologías |
-| **Jefatura de operaciones** | Alta | Alto | **Objeción registrada:** «arreglar el gate sin resolver el patio sólo traslada la cola hacia adentro» |
-| **Gerencia comercial** | Alta | Alto | **Objeción registrada:** las condiciones de la alianza naviera quedaron al final y no llegan a 2029 |
-| **Planificador de estiba y patio** | Media | Alto | Desconfía de la automatización, pero **acepta** el esquema de proponer-corregir-registrar |
-| **Operadores de grúa y de equipos** | Media | Alto | Necesitan información mínima y automática; no pueden confirmar con botones |
-| **Sindicatos portuarios** | **Alta** | Alto | **Objetan expresamente** la biometría obligatoria para eventuales |
-| **Trabajadores eventuales** | Baja individual, alta agregada | Medio | Hasta 380 por turno, rotación diaria, ~2.100 personas distintas al año |
-| **Área de TI del CLIENTE** | Media | Alto | Cinco personas. Absorberán la operación |
-| **Protección portuaria y prevención de riesgos** | **Alta** (poder de veto) | Alto | Protección preferiría biometría; prevención vela por la restricción N° 1 |
-| **Empresas de transporte** | Media | Alto | 380 empresas. **Rechazarían penalizaciones injustas** |
-| **Navieras** | Alta | Alto | 14 líneas, una alianza con 34 % del volumen. Exigen mensajería estándar, ventana con 72 h y emisiones verificadas a 2029 |
-| **Agencias de aduana, exportadores e importadores** | Media | Alto | 210 agencias y ~1.400 clientes. Hoy dependen de teléfono y mostrador |
-| **Autoridades — Aduana, SAG, sanitaria, marítima** | **Alta** (potestad) | Medio | 18.400 inspecciones al año, 28 % con atraso |
-| **Operador ferroviario** | Media | Alto | Coordina el flujo terrestre ferroviario, estimado en 15 %; sus interfaces y eventos no están descritos en detalle por las bases |
+| Actor | Influencia | Interés | Persona en el caso | Postura registrada en el caso |
+|---|---|---|---|---|
+| **Concedente estatal** | Alta | Alto | — | No participa del proyecto, pero recibe los indicadores. Tres semestres sobre el umbral de estadía |
+| **Directorio y gerencia general** | Alta | Alto | Álvaro Mackenna Ruiz-Tagle, gerente general | Mandante. Espera resultados de negocio, no tecnologías |
+| **Jefatura de operaciones** | Alta | Alto | Cmdte. (r) Jorge Villaseca Ampuero | **Objeción registrada:** «arreglar el gate sin resolver el patio sólo traslada la cola hacia adentro» |
+| **Gerencia comercial** | Alta | Alto | Ana Belén Ossa Cruchaga | **Objeción registrada:** las condiciones de la alianza naviera quedaron al final y no llegan a 2029 |
+| **Planificador de estiba y patio** | Media | Alto | Nibaldo Guerrero Fuentes | Desconfía de la automatización, pero **acepta** el esquema de proponer-corregir-registrar |
+| **Operadores de grúa y de equipos** | Media | Alto | Segundo Cheuquepán Loncón, grúa de muelle | Necesitan información mínima y automática; no pueden confirmar con botones |
+| **Sindicatos portuarios** | **Alta** | Alto | — | **Objetan expresamente** la biometría obligatoria para eventuales |
+| **Trabajadores eventuales** | Baja individual, alta agregada | Medio | — | Hasta 380 por turno, rotación diaria, ~2.100 personas distintas al año |
+| **Área de TI del CLIENTE** | Media | Alto | Rodrigo Salgado Mena | Cinco personas. Absorberán la operación |
+| **Protección portuaria y prevención de riesgos** | **Alta** (poder de veto) | Alto | Patricia Zamorano Bize | Protección preferiría biometría; prevención vela por la restricción N° 1 |
+| **Empresas de transporte** | Media | Alto | Hernán Cifuentes Palma, transportista externo | 380 empresas. **Rechazarían penalizaciones injustas** |
+| **Navieras** | Alta | Alto | — | 14 líneas, una alianza con 34 % del volumen. Exigen mensajería estándar, ventana con 72 h y emisiones verificadas a 2029 |
+| **Agencias de aduana, exportadores e importadores** | Media | Alto | — | 210 agencias y ~1.400 clientes. Hoy dependen de teléfono y mostrador |
+| **Autoridades — Aduana, SAG, sanitaria, marítima** | **Alta** (potestad) | Medio | — | 18.400 inspecciones al año, 28 % con atraso |
+| **Operador ferroviario** | Media | Alto | — | Coordina el flujo terrestre ferroviario, estimado en 15 %; sus interfaces y eventos no están descritos en detalle por las bases |
+| **Jefatura de gate** | Media | Alto | Rosa Millavil Antileo | Pide sistema de citas y **advierte a la vez** que el exportador de fruta no podrá cumplirlas: «no sabe a qué hora va a estar la carga lista en el packing» |
+| **Jefatura de energía y patio refrigerado** | Media | Alto | Ing. Marcelo Kramm Osorio | Cuatro años pidiendo instrumentación. Advierte que la señal inalámbrica «que funciona hoy en la mañana no funciona en la tarde» con cinco alturas de acero al lado |
  
 ---
  
@@ -131,13 +133,30 @@ El frente de captura arranca en el **mes 1**, antes de que exista el módulo, po
  
 ---
  
+### 3.11 Correspondencia con las seis tensiones del CP, Cap. 8
+
+El caso cierra el Capítulo 8 con una síntesis que **nomina seis tensiones** y advierte que resolverlas —o proponer una arquitectura que permita convivir con ellas dejando constancia de la decisión y de su costo— «es parte de lo que se está licitando». Esta tabla las cruza una a una con el lugar donde la propuesta las aborda.
+
+| # | Tensión declarada en el CP, Cap. 8 | Dónde se aborda | Estado |
+|---:|---|---|---|
+| 1 | **Comercial vs. Operaciones** — comercial necesita traer más naves; operaciones responde que con tres sitios y 71 % de cumplimiento no puede | §3.1 y §3.2 tratan cada objeción por separado | **Abierta como conflicto.** Falta declarar si la propuesta habilita más recaladas o si fija el techo de capacidad, y con qué evidencia |
+| 2 | **Gate vs. Transportistas** — el gate pide citas; el transportista explica por qué no podrá cumplirlas | §3.7 · Decisión N° 6 · `RN-07` | Resuelta |
+| 3 | **Protección vs. Sindicatos** — protección querría biometría; los eventuales no la aceptan | §3.3 y §3.4 · Decisión N° 12 · `RF-ACC-04` | Resuelta |
+| 4 | **Patio refrigerado vs. entorno físico** — 2.400 puntos de medición en un patio cuya radiopropagación cambia cada hora | **Decisión N° 9** (red celular privada con redundancia dimensionada al peor caso de bloqueo por apilamiento y estudio de sitio periódico) · `RNF-DIS-11` | Resuelta en decisión; **no estaba mapeada aquí como tensión** |
+| 5 | **Planificación tradicional vs. automatización** — el planificador desconfía y a la vez su forma de trabajar termina en 2028 | §3.5 · Decisiones N° 4 y 5 | Resuelta |
+| 6 | **Operación de muelle vs. registro sistémico** — el operador rechaza apretar botones; el sistema necesita saber que el movimiento ocurrió | §3.6 · Decisión N° 15 · `RF-PAT-05` | Resuelta |
+
+> *Corrección aplicada 2026-09-05: el índice y el texto de esta sección hablaban de «nueve tensiones». El CP, Cap. 8 declara **seis** y las nomina. Se corrige el número y se agrega esta correspondencia para que cada una sea verificable por separado. La tensión 4 estaba resuelta en la Decisión N° 9 pero no aparecía mapeada; la tensión 1 sigue abierta **como conflicto** y requiere una definición del equipo.*
+
+---
+
 ## 4. Texto candidato para la sección 3.9
  
 > **3.9 Estrategia para obtener el apoyo de los grupos de interés**
 >
 > El apoyo de un actor no se obtiene comunicándole la solución, sino diseñando la solución de modo que él pueda aceptarla. Por esa razón, la estrategia de Terabyte frente a los grupos de interés no es un plan de comunicaciones posterior al diseño: está incorporada en las decisiones que dan forma a la propuesta.
 >
-> El levantamiento registra nueve tensiones entre actores, y cuatro de ellas están resueltas dentro de decisiones técnicas ya adoptadas. La solución no exige biometría obligatoria a los trabajadores eventuales, porque los acuerdos sindicales vigentes la objetan, y compensa esa restricción con credenciales de vigencia acotada al turno, acceso zonificado por área y rol, y auditoría de cada acceso y no solo del enrolamiento. El sistema de citas para camiones opera con prioridad de atención en lugar de penalización económica, porque el transportista no controla el momento en que su carga estará lista y una sanción por un incumplimiento ajeno haría que el sistema no se utilizara. La planificación de estiba y de patio opera en el modo que el propio planificador declaró aceptar —el sistema propone, él decide, y el motivo de cada corrección queda registrado—, de modo que su conocimiento permanezca en la empresa. Y ninguna interfaz destinada a un puesto de terreno exige que una persona atienda un dispositivo mientras hay equipos en movimiento.
+> El caso registra **seis** tensiones entre actores en la síntesis del CP, Cap. 8, y cinco de ellas están resueltas dentro de decisiones técnicas ya adoptadas. La solución no exige biometría obligatoria a los trabajadores eventuales, porque los acuerdos sindicales vigentes la objetan, y compensa esa restricción con credenciales de vigencia acotada al turno, acceso zonificado por área y rol, y auditoría de cada acceso y no solo del enrolamiento. El sistema de citas para camiones opera con prioridad de atención en lugar de penalización económica, porque el transportista no controla el momento en que su carga estará lista y una sanción por un incumplimiento ajeno haría que el sistema no se utilizara. La planificación de estiba y de patio opera en el modo que el propio planificador declaró aceptar —el sistema propone, él decide, y el motivo de cada corrección queda registrado—, de modo que su conocimiento permanezca en la empresa. Y ninguna interfaz destinada a un puesto de terreno exige que una persona atienda un dispositivo mientras hay equipos en movimiento.
 >
 > Las dos objeciones formales registradas durante el levantamiento se abordan en el alcance y no en la argumentación. La objeción de la jefatura de operaciones queda resuelta porque el acceso, el patio y los equipos de transferencia interna se sustituyen como un único contexto en la primera etapa. La objeción de la gerencia comercial se incorpora como un programa indivisible: captura de emisiones desde el mes 1; mensajería exclusiva y cero redigitación para la alianza; ventana ≥72 h con productividad ≥30 movimientos/h por grúa; y reporte de emisiones efectivamente verificado antes de la fecha exigible de 2029.
 >
@@ -193,8 +212,8 @@ Hay además un antecedente que conviene recordar antes de dimensionar el esfuerz
 |---|---|
 | Registro de supuestos — 21 decisiones + 17 metas + **25 supuestos** (S1–S5, A–L, M–T) | **Completo** |
 | Catálogo de RNF — 84 | **Completo**, corregido contra el Plan Maestro |
-| Catálogo de RF — 138 en 15 dominios | **Completo**, corregido contra el Plan Maestro |
-| Registro de reglas de negocio — RN-01 a RN-10 | **Completo** con este documento |
+| Catálogo de RF — 139 en 15 dominios | **Completo**, corregido contra el Plan Maestro y ampliado con `RF-POR-09` |
+| Registro de reglas de negocio — RN-01 a RN-11 | **Completo** con este documento |
 | Registro de consultas y vacíos | Las consultas se enviaron; falta consolidar el registro formal |
 | Subdocumento 3, secciones 3.4 a 3.9 | **Insumos completos con texto candidato** |
 | Subdocumento 3, secciones 3.1, 3.2, 3.3, 3.10 | Pendientes de redacción, **sin decisiones abiertas** |

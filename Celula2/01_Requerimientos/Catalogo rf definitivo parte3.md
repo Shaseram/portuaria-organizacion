@@ -1,6 +1,6 @@
 # Catálogo de Requerimientos Funcionales — DEFINITIVO · Parte 3 de 3
 
-## Dominios `RF-NAV`, `RF-INT`, `RF-FAC`, `RF-POR`, `RF-INS`, `RF-EMI`, `RF-APP` y `RF-FIR` — 59 requerimientos
+## Dominios `RF-NAV`, `RF-INT`, `RF-FAC`, `RF-POR`, `RF-INS`, `RF-EMI`, `RF-APP` y `RF-FIR` — 60 requerimientos
 
 > **Célula 2 · Solución, alcance y requisitos** · Caso 06 Portuaria · Terabyte
 > **Subdocumento 3 · Anexo B** · **Versión 2.1 — correcciones de la Fase 4 y decisiones de duplicados RF/RNF ya aplicadas.**
@@ -74,7 +74,9 @@ De la primera se sigue una consecuencia de diseño que atraviesa todo `RF-NAV`: 
 **Actor:** solución y naviera. **Precondición:** programación de sitios definida para la recalada.
 **Resultado esperado:** ventana confirmada con la anticipación comprometida y con evidencia del acto.
 **Origen:** CP, Cap. 18, criterio 5 · CP, Cap. 9.2 · CP, Cap. 1 (condición de la alianza naviera para 2029) · CP, 7.1 (cumplimiento actual 71 %, referencia 90 %).
-**Criterio de aceptación:** para las líneas de la alianza, el **100 %** de las ventanas del universo acordado se confirma con al menos 72 horas. Para la operación general, el cumplimiento efectivo de la ventana debe quedar **sobre 90 %**, con fórmula, universo y exclusiones acordados y auditables.
+**Criterio de aceptación:** para las líneas de la alianza, el **100 %** de las ventanas del universo acordado se confirma con al menos 72 horas de anticipación, con evidencia del acto de confirmación y de cada cambio posterior.
+
+> *Corrección aplicada: el criterio incorporaba además el cumplimiento efectivo de la ventana «sobre 90 %». Ese es un resultado de negocio que depende de la operación y no de la solución; se sigue en la tabla de indicadores del numeral 11.2, con fórmula, universo y exclusiones acordados y auditables.*
 
 ---
 
@@ -183,7 +185,9 @@ De la primera se sigue una consecuencia de diseño que atraviesa todo `RF-NAV`: 
 **Actor:** solución y jefatura de operaciones. **Precondición:** movimientos registrados conforme a `RF-PAT-05` y `RF-PAT-13`.
 **Resultado esperado:** productividad consultable en línea, descomponible hasta el movimiento individual.
 **Origen:** CP, Cap. 18, criterio 6 · CP, Cap. 10, restricción no negociable N° 3 · CP, 7.1 (registro por hora y por grúa: inexistente) · **CP, Cap. 15, RT-05.29** aporta el umbral de disponibilidad del indicador.
-**Criterio de aceptación:** además de consultar y descomponer el indicador hasta los movimientos de origen, se demuestra una productividad efectiva de **al menos 30 movimientos por hora por grúa** durante un período operacional representativo acordado, con detenciones y exclusiones trazables; ningún dato proviene del sistema de control del fabricante.
+**Criterio de aceptación:** se consulta la productividad de un período determinado y se descompone hasta los movimientos individuales que la componen, con detenciones y exclusiones trazables; ningún dato proviene del sistema de control del fabricante.
+
+> *Corrección aplicada: el criterio exigía además «demostrar al menos 30 movimientos por hora por grúa». Esa es una meta de negocio que el software no garantiza por sí solo —el sistema puede medir correctamente y arrojar 24,8— y ya vive en la tabla de indicadores del numeral 11.2. Conforme al CP, Cap. 17.1, el criterio de aceptación debe verificar la conducta del sistema, no el resultado esperado.*
 
 ---
 
@@ -248,9 +252,11 @@ Esta matriz es un contrato funcional transversal para los RF que emiten avisos; 
 **Descripción.** La solución **deberá** recibir la orden de embarque mediante el mensaje **COPRAR** de UN/EDIFACT, y **no deberá** requerir su digitación desde correo electrónico.
 
 **Actor:** naviera y solución. **Precondición:** naviera integrada por mensajería.
-**Resultado esperado:** instrucción de embarque incorporada sin redigitación.
-**Origen:** Decisión N° 18 · CP, num. 16.2 (COPRAR: orden de embarque) · CP, Cap. 15, RT-05.23 · CP, 7.1 (41 % de instrucciones recibidas por correo y digitadas a mano, referencia cero).
-**Criterio de aceptación:** desde la fecha efectiva del acuerdo de 2029, las líneas de la alianza registran **0 % de instrucciones redigitadas** y 100 % por mensajería estándar. Para las demás navieras, el porcentaje de instrucciones digitadas a mano es **≤ 5 %**, atribuible exclusivamente al canal puente transitorio.
+**Resultado esperado:** orden de embarque incorporada sin redigitación.
+**Origen:** Decisión N° 18 · CP, num. 16.2 (COPRAR: orden de embarque) · CP, Cap. 15, RT-05.23 · CP, 7.1 (41 % de instrucciones recibidas por correo y digitadas a mano, referencia cero) — **de esa línea base, este requerimiento cubre la pata naviera → terminal; la pata embarcador o agencia → terminal se cubre en `RF-POR-09`**.
+**Criterio de aceptación:** desde la fecha efectiva del acuerdo de 2029, las líneas de la alianza registran **0 % de órdenes de embarque redigitadas** y 100 % por mensajería estándar. Para las demás navieras, el porcentaje de órdenes digitadas a mano es **≤ 5 %**, atribuible exclusivamente al canal puente transitorio.
+
+> *Corrección aplicada: el criterio comprometía una meta sobre «instrucciones» tomando como línea base el 41 % del CP, 7.1. El Anexo A del CP atribuye ese 41 % al flujo «Embarcador o agencia → Documentación», no a la naviera, y COPRAR es un mensaje naviera → terminal. La meta se acota aquí a la orden de embarque y la fracción originada en embarcadores y agencias se mide en `RF-POR-09`.*
 
 > *Corrección aplicada: el criterio no comprometía meta alguna sobre el 41 % de línea base.*
 
@@ -511,7 +517,7 @@ Esta matriz es un contrato funcional transversal para los RF que emiten avisos; 
 
 ## 5. Dominio `RF-POR` — Portal y autoservicio de clientes
 
-**Etapa 2 · 8 requerimientos propios**, más cuatro trámites realizados en otros dominios (sección 8).
+**Etapa 2 · 9 requerimientos propios**, más cuatro trámites realizados en otros dominios (sección 8).
 
 ---
 
@@ -613,6 +619,23 @@ Esta matriz es un contrato funcional transversal para los RF que emiten avisos; 
 
 ---
 
+### `RF-POR-09` — Presentación estructurada de la instrucción de embarque · Prioridad: **Crítica**
+
+**Descripción.** La solución **deberá** permitir al embarcador y a la agencia de aduana presentar la **instrucción de embarque** en formato estructurado, con validación previa, informe de error por cada registro inválido e incorporación de los registros válidos, y **no deberá** requerir que el área de Documentación del terminal la digite desde un correo electrónico.
+
+**Actor:** embarcador o agencia de aduana. **Precondición:** persona usuaria externa registrada conforme a `RF-POR-02`.
+**Resultado esperado:** instrucción de embarque incorporada al terminal sin redigitación.
+**Origen:** CP, Anexo A (**«Embarcador o agencia | Documentación | Instrucción de embarque | 41 % por correo con adjunto que alguien digita»**) · CP, 7.1 (41 % de instrucciones recibidas por correo y digitadas a mano, referencia cero) · CP, Cap. 18, criterio 13 · **BTT, RT-05.22** (carga masiva con validación previa, informe de errores por registro y procesamiento parcial) · BTT, RT-16.32.
+**Criterio de aceptación:** un embarcador o una agencia presenta una instrucción de embarque por el canal estructurado con registros válidos e inválidos; se emite informe de error por cada inválido, se incorporan todos los válidos y ninguno requiere digitación por parte del terminal. El porcentaje de instrucciones digitadas a mano provenientes de embarcadores y agencias se mide por separado del de las órdenes de embarque de `RF-INT-02`.
+
+> **Por qué existe.** El 41 % de línea base del CP, 7.1 tiene dos patas con remitentes distintos. `RF-INT-02` adopta COPRAR, que es un mensaje **naviera → terminal**, y por sí solo no toca el flujo que el Anexo A atribuye a **embarcador o agencia → Documentación**: 210 agencias de aduana y unos 1.400 exportadores e importadores. Sin este requerimiento, integrar las 14 navieras puede dejar el indicador del 41 % prácticamente intacto.
+>
+> El mecanismo no es nuevo: es el mismo canal asistido con validación previa que `RF-INT-07` ya define para las navieras aún no integradas, aplicado al remitente que genera la línea base.
+>
+> **Etapa.** Se asigna a la Etapa 2 por coherencia con el resto del dominio `RF-POR`, del que depende (`RF-POR-02`). Si el equipo decide adelantarlo a la Etapa 1 por su efecto sobre el criterio 13, el reparto de la sección 11.3 debe actualizarse.
+
+---
+
 ## 6. Dominio `RF-INS` — Inspecciones y coordinación con autoridades
 
 **Etapa 2 · 7 requerimientos**, apoyados en la programación anticipada de remociones que ya existe desde la Etapa 1 (`RF-PAT-11`). Materializa la **Decisión N° 21**.
@@ -700,7 +723,9 @@ Esta matriz es un contrato funcional transversal para los RF que emiten avisos; 
 **Actor:** solución y jefatura de operaciones. **Precondición:** citas registradas y atenciones registradas.
 **Resultado esperado:** indicador comparable contra la línea base del 28 % y contra la meta comprometida.
 **Origen:** CP, Cap. 18, criterio 10 · CP, 7.2 (28 % de inspecciones atrasadas) · **meta comprometida: ≤ 12 %, condicionada** a que el plazo de aviso de cada autoridad resulte compatible con el tiempo de ejecución de la remoción anticipada.
-**Criterio de aceptación:** sobre las inspecciones de un período se calcula el porcentaje atendido a la hora acordada, contrastándolo con la meta de **≤ 12 %** de atraso, y se descompone el incumplimiento por causa.
+**Criterio de aceptación:** sobre las inspecciones de un período se calcula el porcentaje atendido a la hora acordada y se descompone el incumplimiento por causa.
+
+> *Corrección aplicada: el criterio contrastaba contra la meta de ≤ 12 % de atraso. Esa meta —condicionada, según el Origen— es un resultado de negocio y se sigue en la tabla de indicadores del numeral 11.2.*
 
 > *Corrección aplicada: la meta baja de ≤ 8 % a ≤ 12 %. No existe literatura arbitrada que mida este indicador, y Klar et al. (2024) documentan que cumplir la agenda de inspecciones consume capacidad de grúa que compite con la meta de remociones. Comprometer ≤ 8 % sin evidencia y con ese trade-off era comprometer lo indemostrable.*
 
@@ -790,7 +815,7 @@ Esta matriz es un contrato funcional transversal para los RF que emiten avisos; 
 
 **Actor:** CLIENTE y verificador externo. **Precondición:** serie histórica disponible.
 **Resultado esperado:** paquete autosuficiente y dictamen de verificación emitido, no solo información potencialmente verificable.
-**Origen:** Decisión N° 16 · **CP, Cap. 15, RT-05.06** (exportación en formatos abiertos, sin intervención del ADJUDICATARIO) · CP, Cap. 18, criterio 16.
+**Origen:** Decisión N° 16 · **BTT, RT-05.06** (exportación en formatos abiertos, sin intervención del ADJUDICATARIO) · CP, Cap. 18, criterio 16.
 **Criterio de aceptación:** el paquete exportado contiene la serie, consumos, movimientos, factores y fuentes, se genera sin intervención de Terabyte y un tercero independiente emite el informe de verificación antes del hito 2029.
 
 > *Corrección MC-25: la exportación sigue siendo verificable como función del sistema, pero no sustituye el resultado contractual de obtener la verificación efectiva.*
@@ -885,7 +910,8 @@ En los tres escenarios internos se verifica cifrado local, expiración o borrado
 |---|---|---|---|
 | Cumplimiento de ventana | 71 % | **> 90 % general; 100 % ≥72 h para alianza** | `RF-NAV-01` a `05` |
 | Productividad de grúa | 24,8 mov/h | **≥ 30 mov/h por grúa demostrados** | `RF-NAV-12`, `13` |
-| Instrucciones digitadas a mano | 41 % | **0 % alianza; ≤ 5 % resto** | `RF-INT-02`, `07` |
+| Órdenes de embarque digitadas a mano (naviera → terminal) | fracción del 41 % | **0 % alianza; ≤ 5 % resto** | `RF-INT-02`, `07` |
+| Instrucciones de embarque digitadas a mano (embarcador o agencia → terminal) | fracción del 41 % | **cero** | `RF-POR-09` |
 | Formatos de plano de estiba | 6 | estándar único | `RF-INT-01`, `06` |
 | Personas capaces de planificar | 1 | — | `RF-NAV-06` a `09` |
 | Explicar sobretiempo a la naviera | inexistente | trazable | `RF-NAV-13` |
@@ -900,10 +926,10 @@ En los tres escenarios internos se verifica cifrado local, expiración o borrado
 |---|---|---:|:---:|
 | 1 | `RF-CON`, `RF-GAT` | 30 | 1 |
 | 2 | `RF-PAT`, `RF-TRA`, `RF-REF`, `RF-ACC`, `RF-OPD` | 49 | 1 |
-| 3 | `RF-NAV`, `RF-INT`, `RF-FAC`, `RF-POR`, `RF-INS`, `RF-EMI`, `RF-APP`, `RF-FIR` | 59 | 1 y 2 |
-| | **Total** | **138** | |
+| 3 | `RF-NAV`, `RF-INT`, `RF-FAC`, `RF-POR`, `RF-INS`, `RF-EMI`, `RF-APP`, `RF-FIR` | 60 | 1 y 2 |
+| | **Total** | **139** | |
 
-**Reparto por primera entrega: 82 en Etapa 1 y 56 en Etapa 2.** La Parte 3 contiene tres capacidades cuya primera entrega pertenece a Etapa 1: `RF-NAV-09`, `RF-APP-01` y `RF-FIR-01`; las dos últimas amplían escenarios en Etapa 2 sin duplicar el requerimiento padre.
+**Reparto por primera entrega: 82 en Etapa 1 y 57 en Etapa 2.** La Parte 3 contiene tres capacidades cuya primera entrega pertenece a Etapa 1: `RF-NAV-09`, `RF-APP-01` y `RF-FIR-01`; las dos últimas amplían escenarios en Etapa 2 sin duplicar el requerimiento padre.
 **La eliminación de los antiguos `RF-OPD-03` y `RF-OPD-04` ya está aplicada:** sus compromisos —8 horas fuera de cobertura y sincronización en 90 minutos— quedan acreditados por **RNF-DIS-03** y **RNF-DIS-04** respectivamente, y sus códigos no se reutilizan.
 
 **Cobertura:** 21 de los 22 criterios de aceptación; 26 de los 28 indicadores, con 2 declarados sin meta.

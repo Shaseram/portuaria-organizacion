@@ -1,7 +1,7 @@
 # Registro de Reglas de Negocio — versión consolidada
  
 > **Célula 2 · Solución, alcance y requisitos** · Caso 06 Portuaria · Terabyte
-> **Subdocumento 3 · Anexo E** · **Versión 2.0 — reemplaza a `registro_reglas_de_negocio.md` y a la parte de reglas de `complemento_reglas_negocio_y_rf_pat_10.md`.**
+> **Subdocumento 3 · Anexo E** · **Versión 2.2 — reemplaza a `registro_reglas_de_negocio.md` y a la parte de reglas de `complemento_reglas_negocio_y_rf_pat_10.md`.**
 > **Autoría:** RN-01 a RN-08, Isidora Cisternas. RN-09 y RN-10, y la corrección del fundamento de RN-03, Rodolfo Fernández.
 > **Exigencia:** CP, Cap. 17.1 — *«Las reglas propias de la industria que la solución debe respetar y que este documento no explicita: criterio de asignación de posición en patio, reglas de segregación de carga peligrosa, prioridad entre nave y camión ante recursos escasos, cálculo de días de almacenaje, tolerancia de verificación de masa bruta, y criterios de liberación de un contenedor, entre otras.»*
 > **Convenciones:** BA = Bases Administrativas (FEP01.26) · BTT = Bases Técnicas Transversales (FEP02.26) · CP = Caso 06 Portuaria (FEP03.06.26).
@@ -22,6 +22,7 @@
 | **RN-08** | Escalamiento y confirmación de alarmas | Vigente | Parcialmente |
 | **RN-09** | **Precedencia entre restricciones del plan de estiba** | **Nueva** | **Sí, prioridad alta** |
 | **RN-10** | **Tiempo desconectado en la facturación de conexión refrigerada** | **Nueva** | Sí |
+| **RN-11** | **Tolerancia de desviación de temperatura en carga refrigerada** | **Nueva** | **Sí, prioridad alta** |
  
 **Nota sobre el formato.** Ninguna base define un formato de columnas obligatorio para este registro, a diferencia del catálogo de RF, del catálogo de RNF y del registro de supuestos. El formato —Regla / Origen y fundamento / Vinculación / Pendiente de validar— es una decisión de presentación propia, pensada para que cada regla quede trazable a su fuente y a lo ya declarado en el resto del catálogo.
  
@@ -207,6 +208,24 @@ Es un caso en que mejorar la evidencia crea una obligación que antes no existí
  
 ---
  
+## RN-11 — Tolerancia de desviación de temperatura en carga refrigerada
+
+> **Regla nueva.** Apareció al verificar `RF-REF-04`: el requerimiento se titula «detección de desviación de temperatura», pero ninguna regla definía qué constituye una desviación, de modo que su criterio solo era verificable en la rama de desconexión.
+
+**Regla.** Una lectura constituye **desviación** cuando la temperatura registrada se aparta de la **temperatura de consigna** del contenedor más allá de la **banda de tolerancia** declarada para su familia de carga, y esa condición se sostiene durante la **duración mínima** declarada para esa misma familia.
+
+Banda y duración mínima son **parametrizables por familia de carga** y forman parte de la configuración administrable por el CLIENTE conforme a BTT, RT-16.02. La consigna de cada contenedor proviene de la instrucción del embarcador o de la naviera: **no la fija el terminal**.
+
+Mientras el CLIENTE no declare los valores por familia, la solución **deberá** exigir consigna y banda al momento de la conexión y **deberá** registrar como excepción toda conexión sin consigna declarada.
+
+**Por qué esta regla no fija valores numéricos.** El caso declara que un reefer «debe mantener una temperatura de consigna que depende de la carga: la cereza no es el salmón, y el salmón no es la carne» (CP, Cap. 4.5), pero **no entrega bandas por producto**. Las exigencias de trazabilidad de temperatura provienen de los mercados de destino y de los programas de exportación de fruta (CP, Cap. 12). Fijar aquí un número sin fuente sería inventar una cifra del CLIENTE.
+
+**Vinculación.** `RF-REF-04` (detección de desviación) · `RF-REF-01` (muestreo local) · `RF-REF-07` (ausencia de dato) · `RF-REF-11` y `RF-REF-12` (registro continuo como evidencia de cadena de frío) · CP, Cap. 15, **RT-05.29** (alarma en no más de 5 minutos desde el evento físico) · CP, Cap. 18, criterios 11 y 12.
+
+**¿Pendiente de validar?** **Sí, prioridad alta.** Las bandas y duraciones por familia de carga debe entregarlas el CLIENTE junto con sus exportadores. Sin ellas, el criterio de `RF-REF-04` solo es verificable en su rama de desconexión, que es precisamente la limitación que esta regla corrige.
+
+---
+
 ## Cobertura de los temas exigidos
  
 | Tema exigido (CP, Cap. 17.1 y checklist interno) | Regla |
@@ -221,8 +240,9 @@ Es un caso en que mejorar la evidencia crea una obligación que antes no existí
 | Escalamiento y confirmación de alarmas | RN-08 |
 | *(adición propia)* Precedencia en el plan de estiba | **RN-09** |
 | *(adición propia)* Tiempo desconectado en facturación reefer | **RN-10** |
+| *(adición propia)* Tolerancia de desviación de temperatura | **RN-11** |
  
-Los ocho temas obligatorios quedan cubiertos. RN-09 y RN-10 son adiciones detectadas al cruzar el registro con el catálogo de requerimientos funcionales.
+Los ocho temas obligatorios quedan cubiertos. RN-09, RN-10 y RN-11 son adiciones detectadas al cruzar el registro con el catálogo de requerimientos funcionales.
  
 ---
  
@@ -233,6 +253,7 @@ Los ocho temas obligatorios quedan cubiertos. RN-09 y RN-10 son adiciones detect
 | 1.0 | Creación con RN-01 a RN-08, cubriendo los ocho temas del Cap. 17.1 y del checklist interno. Autoría de Isidora Cisternas |
 | **2.0** | Se incorporan **RN-09** (precedencia en plan de estiba) y **RN-10** (tiempo desconectado en facturación reefer). Se corrige el **fundamento de RN-03**, manteniendo la regla. Se añaden ejemplos numéricos a RN-04 y RN-05. Se actualiza la vinculación de las diez reglas con el catálogo de RF definitivo |
 | **2.1** | Corrección contra el Plan Maestro: RN-03 conserva una única excepción operacional; RN-01 usa el siguiente hito comprometido para cubrir exportación e importación; RN-10 explicita que la medición de conexión refrigerada aplica en ambos sentidos del flujo |
+| **2.2** | Se incorpora **RN-11** (tolerancia de desviación de temperatura), detectada al verificar que `RF-REF-04` se titulaba «detección de desviación» pero solo era verificable por desconexión. Se corrige el encabezado del documento, que declaraba versión 2.0 cuando el historial ya registraba la 2.1. |
  
 ---
  

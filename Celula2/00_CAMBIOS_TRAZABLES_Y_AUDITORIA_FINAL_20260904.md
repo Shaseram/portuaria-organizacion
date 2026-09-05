@@ -230,3 +230,58 @@ La carpeta queda apta para compartir como **línea base corregida de Célula 2**
 - cualquier cambio posterior debe mantener la cadena fuente → MC/C2 → RF/RNF → prueba → archivo.
 
 **Conclusión:** no se detectó ningún punto del Maestro omitido en la responsabilidad documental de Célula 2. Los residuos encontrados fueron de referencia y quedaron corregidos; las dependencias externas permanecen visibles, justificadas y asignadas.
+
+---
+
+# Anexo — Segunda ronda de corrección · 2026-09-05
+
+> Este anexo **no modifica** las cifras del cuerpo del documento, que son el estado auditado al 04-09-2026. Registra la ronda posterior, ejecutada tras contrastar el material contra el CP, el BTT y las BA hallazgo por hallazgo. Cada punto se verificó abriendo el archivo citado antes de aplicarlo; los que no resistieron la verificación se descartaron y quedan listados al final.
+
+## Cambios aplicados
+
+| ID | Cambio | Archivo | Fundamento |
+|---|---|---|---|
+| **B1** | Se agregan **7 RNF**: `RNF-DES-09` a `12` (umbrales del numeral 9.1 del BTT y prueba de carga a 1,5× del peak) y `RNF-DIS-13` a `15` (RTO/RPO, respaldo 3-2-1-1-0, prueba de conmutación real semestral). Catálogo de **84 → 91 RNF** | `01_Requerimientos/RNF.md` | CP, Cap. 17.1 exige incorporar «los parámetros del Capítulo 15 **y los requisitos del documento transversal**». Los primeros estaban cubiertos; estos siete no existían en ninguna parte del material |
+| **B2** | Se crea **`RF-POR-09`** (presentación estructurada de la instrucción de embarque por embarcador o agencia) y se acota `RF-INT-02` a la orden de embarque. Catálogo de **138 → 139 RF** | `01_Requerimientos/…parte3.md` | El CP, Anexo A atribuye el 41 % de línea base a «Embarcador o agencia → Documentación». COPRAR es naviera → terminal: integrar las 14 navieras podía dejar el indicador intacto |
+| **B3** | `RF-REF-07` acota la alarma de ausencia de dato a **5 minutos**, además de los 3 intervalos de muestreo | `01_Requerimientos/…parte2.md` | Con muestreo de 5 min la ventana ciega llegaba a 15. Un sensor caído es indistinguible de una desconexión —el modo de falla del 18 de febrero— y CP, Cap. 15, RT-05.29 exige ≤5 min. No se reabre la Decisión N° 8 |
+| **B4** | Se crea **`RN-11`** (tolerancia de desviación de temperatura) y se enlaza a `RF-REF-04`. Registro de **10 → 11 reglas** | `02_…/Registro reglas de negocio v2.md` · `…parte2.md` | `RF-REF-04` se titulaba «detección de desviación» pero su criterio solo verificaba desconexión, y ninguna regla definía la banda. La regla **no fija valores numéricos**: el caso no los entrega |
+| **B5** | Se incorpora el **factor estacional** con sus derivaciones y se aporta la derivación del tiempo de sincronización de la fila 16 | `plantilla_volumetria_caso_portuaria.md` | Tercera particularidad del CP, Cap. 14.2, ausente del archivo. El CP sanciona «valores sin derivación» igual que las celdas vacías |
+| **B6** | Se corrige «nueve tensiones» por **seis** y se agrega §3.11 con la correspondencia una a una | `04_Narrativa_Subdoc3/…` | El CP, Cap. 8 nomina seis. La tensión 4 estaba resuelta en la Decisión N° 9 pero sin mapear; la **tensión 1 sigue abierta como conflicto** |
+| **B7** | Columna **«Persona en el caso»** en el mapa de actores y dos filas nuevas: jefatura de gate y jefatura de energía | `04_Narrativa_Subdoc3/…` | De los diez entrevistados solo aparecía el planificador. El Subdocumento 2 exige identificar a los actores afectados |
+| **B8** | Se completan **Fundamento** en C.1 e **Impacto** y **Fundamento** en C.2 — 17 filas | `02_…/Registro_supuestos_v3.md` | CP, Cap. 17.1: el registro debe traer «su fundamento, su impacto si resulta equivocada y la instancia en que se validará». El de C.1 se **recupera** de la Decisión N° 1 §11 |
+| **B9** | `RF-EMI-06` cita `RT-05.06` al **BTT** y no al Cap. 15 del CP | `01_Requerimientos/…parte3.md` | Incumplía la regla §1.5 del propio catálogo |
+| **B10** | `RF-PAT-10` entra a los criterios 8 y 10 y al indicador de remociones | `01_Requerimientos/…parte2.md` | Era el único RF que ataca el 18 % de remociones de forma anticipada y no figuraba en ninguna fila de trazabilidad |
+| **B11** | Se retira la meta de negocio del criterio de aceptación de `RF-NAV-12`, `RF-NAV-03` y `RF-INS-07` | `01_Requerimientos/…parte3.md` | CP, Cap. 17.1: «un requerimiento no es una frase copiada… es un resultado esperado». Las metas ya viven en la tabla de indicadores del numeral 11.2 |
+| **B12** | Encabezado del registro de reglas: **2.0 → 2.2** | `02_…/Registro reglas de negocio v2.md` | El historial ya declaraba una 2.1 que el encabezado no reflejaba; la 2.2 corresponde a `RN-11` |
+| **B13** | `matriz_cobertura_rf_fase2(DESFASADA).md` movida a `Historial/` con `git mv` | — | Estaba en la carpeta de línea base con conteos ya superados |
+
+## Conteos vigentes tras esta ronda
+
+| Artefacto | Antes | Ahora |
+|---|---:|---:|
+| Requerimientos funcionales | 138 | **139** |
+| Requerimientos no funcionales | 84 | **91** |
+| Reglas de negocio | 10 | **11** |
+| Decisiones | 21 | 21 |
+| Supuestos declarados | 25 | 25 |
+
+Reparto por primera entrega: **82 en Etapa 1 y 57 en Etapa 2**.
+
+## Hallazgos descartados tras verificación — no reabrir
+
+| Hallazgo | Por qué no aplica |
+|---|---|
+| «Faltan 7 RNF de los parámetros del Cap. 15» | Ninguna base exige que un parámetro del Cap. 15 sea RNF: el numeral 1.5 del BTT exige responderlos en el T-12 y el CP, Cap. 17.2 deja la clasificación al proponente. Seis de los siete estaban cubiertos fuera de `RNF.md` |
+| «Ningún RF captura el movimiento de grúa de muelle» | La cadena `RF-PAT-05` → `RF-PAT-13` → `RF-NAV-12` existe y excluye explícitamente el sistema del fabricante |
+| «No hay criterio RF/RNF declarado» | Está en §1.2 del catálogo, parte 1 |
+| «Los tres cruces de trazabilidad no tienen reemplazo» | Existen en §11.1 y §11.2 de cada parte del catálogo |
+| «La colisión de códigos RT es un hallazgo nuevo» | Ya estaba documentada en §1.5 del catálogo y en el **Supuesto M**, que identifica además `RT-21.06` |
+| «§10.3 contradice el umbral de gate con un 0,3 % obsoleto» | §10.3 es el razonamiento que llevó a fijarlo en cero, no una contradicción |
+| «`RF-ACC-01` atribuye los ~2.100 eventuales al Cap. 2.4» | Las citas al Cap. 2.4 invocan la **rotación diaria**, que es lo que ese capítulo describe. La cita es correcta |
+
+## Queda abierto y no se resolvió aquí
+
+- **Decisión N° 20** (destino de la sala de servidores): sigue enunciada como «se resolverá mediante un ADR comparando tres alternativas». Célula 2 la clasifica correctamente como arquitectura física; corresponde confirmarla con **Célula 3** en el Subdocumento 4.
+- **Tensión 1** del CP, Cap. 8 (Comercial vs. Operaciones) como conflicto, no como dos objeciones separadas.
+- **Etapa de `RF-POR-09`**: asignado a Etapa 2 por coherencia con su dominio. Si se adelanta a Etapa 1 por su efecto sobre el criterio 13, el reparto de la sección 11.3 debe actualizarse.
+- **Universo de instrumentación**: el CP, Cap. 14.1 define 74 equipos (18 grúas de patio, 42 tractocamiones, 14 pesados) y **no incluye las 6 grúas de muelle**. Conviene declarar en el catálogo qué evento produce el movimiento de muelle.
