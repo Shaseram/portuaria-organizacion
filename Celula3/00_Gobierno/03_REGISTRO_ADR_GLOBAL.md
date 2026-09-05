@@ -16,10 +16,10 @@
 | `ADR-004` | convivencia/autoridad del TOS | A3 | Decisión 1, RF-CON-13/14 | CANDIDATO | procesos |
 | `ADR-005` | sala actual vs. nueva vs. edge mínimo+nube | C1/C2 | Decisión 20, Art. 16 | CANDIDATO | físico/T-11 |
 | `ADR-006` | red de patio y conectividad redundante | C3 | Decisión 9/19, site survey | CANDIDATO | despliegue/T-11 |
-| `ADR-007` | almacenamiento/RAID/HA/DR | C2/C3/C4 | RPO/RTO/capacidad | CANDIDATO | físico/T-11 |
-| `ADR-008` | identidad y acceso Zero Trust | D1 | eventuales/externos/PAM | CANDIDATO | seguridad |
+| `ADR-007` | almacenamiento/RAID/HA/DR | C2/C3/C4 | RNF-DIS-13/14/15; RNF-DES-09..12; volumetría estacional | CANDIDATO | físico/T-11 |
+| `ADR-008` | identidad y acceso Zero Trust | D1 | eventuales/PAM; RF-POR-02/09; operación 72 h | CANDIDATO | seguridad |
 | `ADR-009` | llaves, secretos y cifrado | D1 | nube/on-prem/edge | CANDIDATO | seguridad/T-11 |
-| `ADR-010` | observabilidad/SIEM y evidencia inmutable | D1/D2 | retenciones/incidentes | CANDIDATO | seguridad/T-11 |
+| `ADR-010` | observabilidad/SIEM y evidencia inmutable | D1/D2 | retenciones/incidentes; FEP02 Cap. 11 RT-11.17 (SOC 24x7) | CANDIDATO | seguridad/T-11 |
 
 ## 3. Plantilla obligatoria de ADR
 

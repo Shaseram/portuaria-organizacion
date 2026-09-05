@@ -7,4 +7,4 @@
 | `TRZ-D3-003` | diagramas no genéricos | T7-4.8 | todos | actores/zonas/caso | POR HACER | PENDIENTE |
 | `TRZ-D3-004` | ausencia de precios | Art. 50.2 | C2/C4/T-11 | búsqueda/revisión | POR HACER | PENDIENTE |
 | `TRZ-D3-005` | pendientes visibles | Maestro §18 | todos | registro ESC | POR HACER | PENDIENTE |
-
+| `TRZ-D3-006` | referencias del corte c4756df | C2 B1..B13/C1..C7; Maestro §2.3 | entradas de todos los paquetes | anexos de corrección C2 y GTR-007..016 | alineación documental registrada; auditoría técnica pendiente | PENDIENTE |

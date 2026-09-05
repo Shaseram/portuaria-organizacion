@@ -10,7 +10,8 @@ Definir Zero Trust, exposición, identidad, cifrado, detección y DevSecOps, y e
 
 - `SD4-04`, apoyo a `SD4-02`, `SD4-05` y `SD4-08`.
 - T7-4.4; BTT Cap. 11/12; Art. 21/22.
-- RNF-SEG, RNF-CUM, RNF-OPE y `MC-04`.
+- RNF-SEG, RNF-CUM, RNF-OPE, RNF-DIS-14, RF-POR-02/09 y `MC-04`; obligación directa SOC 24x7 de FEP02 Cap. 11 RT-11.17.
+- Corte y consecuencias: Maestro §2.3 y matriz global §3; controles y decisiones siguen pendientes.
 
 ### Entradas obligatorias
 
@@ -26,7 +27,7 @@ Definir Zero Trust, exposición, identidad, cifrado, detección y DevSecOps, y e
 - [ ] Diseñar SSO, MFA, RBAC/ABAC, SoD y PAM.
 - [ ] Resolver eventuales por nombrada y terminal compartida.
 - [ ] Definir cifrado, KMS/HSM, rotación y secretos.
-- [ ] Definir logs inalterables, SIEM, EDR y alertas portuarias.
+- [ ] Definir logs inalterables, SIEM, EDR y alertas portuarias, con SOC 24x7 (ubicación, dotación y procedimientos).
 - [ ] Definir respuesta, plazos de vulnerabilidad e incidentes.
 - [ ] Definir SAST/SCA/DAST, imágenes, SBOM, firma/SLSA y datos no productivos.
 - [ ] Mapear control→capa→tipo de componente→evidencia.

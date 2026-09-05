@@ -1,5 +1,7 @@
 # C4 — Dimensionamiento y T-11
 
+**Actualización de entrada:** Célula 2 `c4756df`; Maestro §15.1 y TRZ-C4-003/005/006 incorporan estacionalidad, derivación de sincronización y RNF-DES-09..12. Revalidar supuestos por dimensión antes de dimensionar; no son cálculos aprobados de Célula 3.
+
 ## Contrato del entregable
 
 ### Objetivo y destino

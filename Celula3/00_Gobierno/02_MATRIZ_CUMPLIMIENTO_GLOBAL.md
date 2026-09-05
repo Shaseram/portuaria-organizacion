@@ -1,7 +1,7 @@
 # Matriz de cumplimiento global — Subdocumento 4
 
 **Propietario de consolidación:** Frente 3 / integrador designado.  
-**Regla:** cada frente actualiza su traza; esta matriz se actualiza únicamente en las puertas de integración.
+**Regla:** cada frente actualiza su traza; esta matriz se actualiza en las puertas de integración y al registrar un cambio de línea base de Célula 2, como la presente alineación previa al desarrollo.
 
 ## 1. Cobertura del Subdocumento 4
 
@@ -33,14 +33,26 @@
 
 Agregar una fila por afirmación verificable o agrupación homogénea. No usar una sola fila para todo un entregable.
 
+**Corte de entrada:** Célula 2 `c4756df`. Las filas nuevas reflejan obligaciones recibidas, no cumplimiento de arquitectura. Los identificadores B/C remiten a los anexos de segunda/tercera ronda del [cierre de Célula 2](../../Celula2/00_CAMBIOS_TRAZABLES_Y_AUDITORIA_FINAL_20260904.md); los RF/RNF/RN se consultan en los catálogos vigentes enlazados en el Maestro §21.
+
 | TRZ global | Fuente oficial | MC/Decisión | RF/RNF/RN | Obligación SD4 | Paquete/sección | Comp. lógico | Nodo físico | Control | Diagrama | T-11 | Evidencia/estado |
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | `GTR-001` | Caso 06 Cap. 10/15 | MC-09 | RNF-DIS-02/04 | SD4-02/05 | A3, C1, C3, C4 | EDGE-RUN | POR DEFINIR | continuidad | POR DEFINIR | POR DEFINIR | PENDIENTE |
-| `GTR-002` | BTT 2.1 | — | RNF-ARQ aplicables | SD4-01 | A1 | todas las capas | n/a | transversal | POR DEFINIR | n/a | PENDIENTE |
+| `GTR-002` | FEP02 Cap. 2 §2.1 — capas obligatorias | — | obligación directa BTT; no existe categoría RNF-ARQ en C2 | SD4-01 | A1 | todas las capas | n/a | transversal | POR DEFINIR | n/a | PENDIENTE |
 | `GTR-003` | Caso 06 Cap. 5/16 | MC-07/08 | RF-CON-13/14 | SD4-01/03/07 | A2/A3 | INT-TOS | POR DEFINIR | idempotencia | POR DEFINIR | POR DEFINIR | PENDIENTE |
 | `GTR-004` | BTT Cap. 11/12 | MC-04 | RNF-SEG-10/USA-04 | SD4-04 | D1 | SRV-IAM | POR DEFINIR | IAM | POR DEFINIR | POR DEFINIR | PENDIENTE |
 | `GTR-005` | Caso 06 Cap. 6/15 | MC-10/11 | RNF-DIS-11 | SD4-02/05/06 | C1/C2/C3/C4 | EDGE-RUN | patio/gate | red/marino | POR DEFINIR | POR DEFINIR | PENDIENTE |
-| `GTR-006` | Caso 06 Cap. 13/18 | MC-23/24/25 | RF-INT/NAV/EMI | SD4-03/06/08 | A2/A3/C4 | CTX-VESSEL/EMIS | POR DEFINIR | integración | POR DEFINIR | POR DEFINIR | PENDIENTE |
+| `GTR-006` | Caso 06 Cap. 13/18; FEP02 Cap. 5 RT-05.06 (exportación) | MC-23/24/25; C2 B9 | RF-INT/NAV/EMI; RF-EMI-06 | SD4-03/06/08 | A2/A3/C4 | CTX-VESSEL/EMIS | POR DEFINIR | integración | POR DEFINIR | POR DEFINIR | PENDIENTE |
+| `GTR-007` | FEP02 §9.1; Cap. 9 RT-09.06/07 | C2 B1 | RNF-DES-09..12 | SD4-01/04/06 | A1/A2/C4/D1 | POR DEFINIR | POR DEFINIR | presupuesto de latencia y carga con seguridad | POR DEFINIR | POR DEFINIR | PENDIENTE |
+| `GTR-008` | FEP02 Cap. 7 RT-07.04/06/07; FEP01 Art. 20 | C2 B1 | RNF-DIS-13/15 | SD4-05 | C3/D2 | POR DEFINIR | POR DEFINIR | RTO/RPO y DR real; preserva exigencia específica sin pérdida | POR DEFINIR | POR DEFINIR | PENDIENTE |
+| `GTR-009` | FEP02 Cap. 7 RT-07.09..12; FEP01 Art. 20 | C2 B1 | RNF-DIS-14 | SD4-04/05 | C2/C3/D1 | POR DEFINIR | POR DEFINIR | respaldo cifrado/inmutable y restauración mensual | POR DEFINIR | POR DEFINIR | PENDIENTE |
+| `GTR-010` | Caso 06 Anexo A, §7.1 y Cap. 18 criterio 13; FEP02 Cap. 5 RT-05.22 | C2 B2/C3 | RF-POR-09; RF-POR-02; RF-INT-02 | SD4-01/03/04 | A1/A2/D1; Subdoc. 5 | CH-PORTAL/SRV-IAM | POR DEFINIR | flujos y actores separados; 41 % solo instrucción embarcador/agencia | POR DEFINIR | POR DEFINIR | PENDIENTE |
+| `GTR-011` | Caso 06 Cap. 15 RT-05.29 | C2 B3/B4/C1/C2/C6; Decisión 8 | RF-REF-04; RF-REF-07; RN-11 | SD4-04/05/08 | A3/C3/D1/D2; Subdoc. 5 | CTX-REEFER | POR DEFINIR | desviación y silencio; regla no hace imposible alarma ≤5 min | POR DEFINIR | POR DEFINIR | PENDIENTE |
+| `GTR-012` | Caso 06 §14.2; volumetría C2 filas 15/16 y factor estacional | C2 B5 | RNF-DIS-02/04; RNF-DES-12 | SD4-05/06 | C3/C4 | EDGE-RUN | POR DEFINIR | estacionalidad y sincronización con holgura | POR DEFINIR | POR DEFINIR | PENDIENTE |
+| `GTR-013` | Caso 06 §17.1/17.2 y Cap. 18; catálogo C2 parte 3 §11.2 | C2 B11/C4/C7 | RF-NAV-03; RF-NAV-12; RF-INS-07 | SD4-08 | A3/C4/D3 | POR DEFINIR | POR DEFINIR | prueba funcional separada de logro operacional; hito 2029 vigente | POR DEFINIR | n/a | PENDIENTE |
+| `GTR-014` | FEP02 Cap. 11 RT-11.17; Caso 06 Cap. 10 restricción 11 | obligación directa de Bases | sin RNF equivalente declarado | SD4-04/05 | D1/C3/C4 | POR DEFINIR | POR DEFINIR | SOC 24x7; ubicación, dotación, procedimientos y TI=5 | POR DEFINIR | POR DEFINIR | PENDIENTE |
+| `GTR-015` | Caso 06 Cap. 8 y §17.1; registro C2 §C.1/C.2 y narrativa §3.11 | C2 B6/B7/B8 | supuestos S1..S5 y A..L; sin RF nuevo | SD4-07/08 | A1/A3/C3/D1/D3 | ACT-GATE/ACT-MANT/ACT-AGE | n/a | actores, seis tensiones y supuestos con fundamento; tensión 1 abierta | POR DEFINIR | n/a | PENDIENTE |
+| `GTR-016` | Caso 06 Cap. 18 criterios 8/10; trazabilidad C2 parte 2 | C2 B10 | RF-PAT-10 | SD4-08 | A3/C4/D3 | CTX-YARD | POR DEFINIR | remociones anticipadas y relación con inspecciones | POR DEFINIR | POR DEFINIR | PENDIENTE |
 
 ## 4. Estándares, marcos y certificaciones exigidos
 

@@ -1,8 +1,9 @@
 # Maestro de contexto de arquitectura — Caso 06 Portuaria
 
-**Versión:** 1.0  
-**Fecha de corte:** 2026-09-04  
-**Propósito:** base única y trazable para los tres frentes del Subdocumento 4  
+**Versión:** 1.1\
+**Fecha de corte:** 2026-09-05\
+**Línea base Célula 2:** `c4756dfc9755e36e2d3efe82d2a58636fc2ab245` (`c4756df`, tercera ronda)\
+**Propósito:** base única y trazable para los tres frentes del Subdocumento 4\
 **Estado:** vigente para iniciar; los asuntos marcados `POR VALIDAR` no pueden convertirse en hechos confirmados
 
 ## 0. Cómo usar este maestro
@@ -15,17 +16,15 @@ Reglas de lectura:
 2. Los números de línea son auxiliares; no sustituyen al identificador estable ni al título de la sección.
 3. `DECISIÓN TERABYTE`, `SUPUESTO`, `PENDIENTE CLIENTE` y `HECHO DE BASES` no son equivalentes y deben conservar su etiqueta.
 4. Un dato pendiente se diseña mediante interfaz, rango, mecanismo de levantamiento o fallback; nunca se completa inventándolo.
-5. Si el proyecto pasa a un repositorio Git, se debe registrar en este encabezado el commit que congela Célula 2. Mientras eso no ocurra, el corte documental es la versión auditada del 2026-09-04.
+5. El commit del encabezado fija la versión de Célula 2 utilizada. Ante nuevos commits se revisa su impacto antes de actualizar este maestro, la matriz global y las trazas afectadas. La presente alineación abarca `3ee71a2..c4756df`; las consecuencias están en §2.3 y no acreditan entregables de arquitectura terminados.
 
 ## 1. Jerarquía de fuentes
 
-Ante contradicción se aplica el siguiente orden:
+La precedencia contractual es la del **FEP01, Art. 5.1–5.4**. Las Bases Administrativas y sus anexos ocupan el primer lugar, seguidas de las Bases Técnicas del caso y sus anexos y de las aclaraciones/respuestas/modificaciones formales en el orden allí indicado. Este maestro no crea una jerarquía contractual alternativa.
 
-1. PDF oficial del Caso 06 Portuaria (`FEP03`).
-2. PDF de Bases Técnicas Transversales (`FEP02`).
-3. PDF de Bases Administrativas (`FEP01`).
-4. [`Celula2/00_CAMBIOS_TRAZABLES_Y_AUDITORIA_FINAL_20260904.md`](../../Celula2/00_CAMBIOS_TRAZABLES_Y_AUDITORIA_FINAL_20260904.md) y archivos vigentes de Célula 2, como implementación corregida y registro del tratamiento `MC-01..30`.
-5. Material docente de arquitectura, como guía de representación; nunca prevalece sobre las Bases ni el caso.
+Para aplicar los documentos técnicos conjuntamente, **FEP02, §1.3** establece que las Bases Transversales desarrollan las Administrativas sin contradecirlas ni rebajarlas; el Caso 06 puede endurecer los requisitos transversales y aporta los valores «Según caso», pero no rebajar su piso. Las obligaciones se complementan aunque no se repitan. Dentro de un mismo documento rige la disposición más exigente (FEP01, Art. 5.3); las contradicciones o ambigüedades requieren consulta formal (Art. 5.4).
+
+Los catálogos vigentes de Célula 2 y su [registro de correcciones](../../Celula2/00_CAMBIOS_TRAZABLES_Y_AUDITORIA_FINAL_20260904.md) son la traducción de trabajo de esas fuentes, incluidos `MC-01..30`, `B1..B13` y `C1..C7`. No sustituyen los PDF ni prueban por sí solos cobertura total. El material docente guía la representación y nunca prevalece sobre las Bases.
 
 El Maestro de Correcciones y los resúmenes de análisis utilizados durante la preparación se consideran antecedentes ya absorbidos por este documento y por el cierre auditado de Célula 2. No son necesarios en el repositorio compartido. Si surge una contradicción nueva, se contrasta contra los PDF oficiales disponibles por el canal común del equipo.
 
@@ -67,16 +66,27 @@ El corte corregido y auditado que recibe arquitectura contiene:
 
 | Artefacto | Cantidad/estado |
 |---|---:|
-| RF vigentes | 138 IDs únicos: 82 Etapa 1 + 56 Etapa 2 |
-| RNF vigentes | 84 IDs únicos en 9 categorías |
+| RF vigentes | 139 IDs únicos: 82 Etapa 1 + 57 Etapa 2 |
+| RNF vigentes | 91 IDs únicos en 9 categorías |
 | Decisiones | 21: las 20 solicitadas por el caso + coordinación de inspecciones |
 | Metas | 17: 15 con valor y 2 expresamente sin meta |
 | Supuestos | 25 |
-| Reglas de negocio | 10 |
-| Correcciones del Maestro | MC-01..MC-30 tratadas |
-| Observaciones de disposición | 31 aceptadas; 0 rechazadas |
+| Reglas de negocio | 11 |
+| Correcciones heredadas | MC-01..MC-30 + segunda ronda B1..B13 + tercera ronda C1..C7 |
+| Observaciones de disposición del corte 2026-09-04 | 31 aceptadas; 0 rechazadas (registro histórico) |
 
-La arquitectura no reproduce las 222 fichas RF/RNF. Debe extraer todas sus consecuencias y citar los IDs que respalden componentes, controles, interfaces, capacidad y criterios de aceptación.
+La arquitectura no reproduce las 230 fichas RF/RNF. Debe extraer todas sus consecuencias y citar los IDs que respalden componentes, controles, interfaces, capacidad y criterios de aceptación.
+
+### 2.3 Consecuencias del corte 2026-09-05
+
+- **Desempeño:** `RNF-DES-09` a `RNF-DES-12` incorporan los umbrales de FEP02 §9.1 y carga/estrés; A1/A2/C4/D1 deben contemplar el recorrido completo, incluidos controles de seguridad.
+- **Continuidad:** `RNF-DIS-13` a `RNF-DIS-15` dan referencia directa a recuperación, respaldo y pruebas ya exigidos en §9.2 de este maestro. No reducen las obligaciones específicas de operación desconectada.
+- **Documentación:** `RF-POR-09` cubre embarcador/agencia → terminal; `RF-INT-02` cubre orden COPRAR de naviera → terminal. El 41 % de redigitación corresponde íntegro al primer flujo. A1/A2/D1 deben separar actores, contratos, autorización y evidencia. Su primera entrega es Etapa 2 (57 RF), según la justificación de `RF-POR-09`.
+- **Reefer:** `RF-REF-04` aplica `RN-11` a desviación de temperatura. No se aplica esa regla a `RF-REF-05` (desconexión de toma). `RF-REF-07` detecta ausencia de datos a tres intervalos o cinco minutos, lo que ocurra primero; no se altera la Decisión 8. A3/C3/D1/D2 deben considerar detección, continuidad, parametrización autorizada y evidencia.
+- **Capacidad:** la volumetría incorpora factor estacional y derivación de transferencia de sincronización; ver §15.1.
+- **Criterios y supuestos:** las metas retiradas de las pruebas de `RF-NAV-03`, `RF-NAV-12` y `RF-INS-07` permanecen en el catálogo RF parte 3, §11.2. El reparto entre RF/RNF sigue el criterio declarado en parte 1, §1.2, y debe cerrar cobertura código por código en T-12. Prioridad del equipo y carácter obligatorio/deseable/según caso son dimensiones distintas (supuesto E).
+
+Los cambios B1..B13 y C1..C7 se consultan directamente en los anexos del [cierre de Célula 2](../../Celula2/00_CAMBIOS_TRAZABLES_Y_AUDITORIA_FINAL_20260904.md); sus destinos están en la [matriz global, §3](02_MATRIZ_CUMPLIMIENTO_GLOBAL.md). Los registros históricos de Célula 2 conservan sus conteos originales; se leen junto con los anexos posteriores.
 
 ### 2.1 Formulario T-11
 
@@ -245,6 +255,8 @@ Estas condiciones impiden dibujar una arquitectura física genérica.
 
 Las metas sin control directo —ocupación del patio y pérdida histórica del incidente reefer— no se convierten en promesas falsas; se usan como parámetro o antecedente.
 
+Las metas de negocio anteriores se auditan como resultados operacionales; una prueba funcional de cálculo no demuestra por sí sola su logro. En particular, ≥30 movimientos/h por grúa sigue siendo exigencia del programa 2029 aunque se haya retirado del criterio de prueba de `RF-NAV-12`.
+
 ## 5. Actores y sistemas que no se pueden omitir
 
 ### 5.1 Actores humanos/organizacionales
@@ -253,15 +265,15 @@ Las metas sin control directo —ocupación del patio y pérdida histórica del 
 |---|---|---|
 | `ACT-OPS` | Operación y supervisores de turno | decisiones operacionales, retorno, alarmas y excepciones |
 | `ACT-PLAN` | Planificador de patio/estiba | aprobación/corrección, reglas tácitas, catálogo dinámico |
-| `ACT-GATE` | Operadores de gate | validación, entrada/salida, excepciones |
+| `ACT-GATE` | Operadores y jefatura de gate | validación, entrada/salida, excepciones |
 | `ACT-REEFER` | Operadores y supervisores reefer | alarmas, rondas, intervención y confirmación |
-| `ACT-MANT` | Mantenimiento/energía | equipos, tableros, continuidad y evidencia |
+| `ACT-MANT` | Mantenimiento/energía, incluida jefatura de energía | equipos, tableros, continuidad y evidencia |
 | `ACT-TI` | Área TI del CLIENTE | administración y operación posterior; 5 personas |
 | `ACT-EVT` | Eventuales por nombrada | credencial temporal, terminal compartida, guantes/intemperie |
 | `ACT-GRU` | Operadores de equipos/grúa | indicaciones de cabina; sin confirmación rutinaria manual |
 | `ACT-COM` | Comercial/facturación | hechos facturables, objeciones y portal |
 | `ACT-NAV` | Navieras y alianza | BAPLIE, COPRAR, COARRI, CODECO |
-| `ACT-AGE` | Agencias, importadores/exportadores y clientes | portal, documentos, trazabilidad y objeciones |
+| `ACT-AGE` | Agencias de aduana, embarcadores, importadores/exportadores y clientes | portal, instrucciones estructuradas RF-POR-09, documentos, trazabilidad y objeciones |
 | `ACT-TRA` | Transportistas | citas, validación previa, cola virtual y gate |
 | `ACT-AUT` | Aduana, SAG y autoridad marítima/sanitaria | inspecciones, resultados, actas e interfaces/fallback |
 | `ACT-FER` | Operador ferroviario | coordinación, arribo, entrega/recepción y excepciones |
@@ -386,6 +398,8 @@ El diseño debe declarar expresamente qué funciones no estarán disponibles y e
 
 ### 9.2 Umbrales transversales
 
+Referencia directa: [RNF vigentes](../../Celula2/01_Requerimientos/RNF.md), `RNF-DIS-13` (RTO/RPO), `RNF-DIS-14` (respaldos) y `RNF-DIS-15` (pruebas DR); fuente FEP02 Cap. 7 y FEP01 Art. 20. RTO ≤4 h/RPO ≤15 min son límites generales ante interrupción mayor, sujetos a exigencias superiores del caso (FEP02 RT-07.04). No autorizan detener gate/muelle ni perder registros ante pérdida del enlace: ese escenario conserva §9.1 y `RNF-DIS-02/03/04`.
+
 | Control | Umbral |
 |---|---:|
 | Disponibilidad mensual de servicios críticos | 99,9 % extremo a extremo |
@@ -467,6 +481,7 @@ Ninguna alternativa puede eliminar la autonomía local de 72 h ni presumir una i
 
 - log central inalterable: 12 meses en línea + 24 meses en archivo;
 - SIEM con casos de uso portuarios, EDR nube/on-premise y trazabilidad correlacionada;
+- SOC con cobertura 24x7, propio o subcontratado, con ubicación, dotación y procedimientos declarados (FEP02 Cap. 11, RT-11.17). Es obligación directa de las Bases; no se inventa un RNF equivalente. Debe ser operable con TI=5 y reflejarse como servicio cuando requiera especialistas no disponibles;
 - incidente crítico comunicado al CLIENTE ≤2 h; brecha notificada ≤24 h; causa raíz ≤5 días hábiles;
 - vulnerabilidades: críticas ≤7 días, altas ≤15, medias ≤30;
 - pentest anual y antes de cada paso a producción;
@@ -491,6 +506,8 @@ Se requieren cinco ambientes aislados: Desarrollo, QA, Preproducción equivalent
 Cada intervención debe registrar ocho campos: objetivo/alcance; ejecutor y responsable de retorno; disparador; pasos/dependencias; tiempo máximo; prueba/evidencia; ventana y contraste con congelamiento/nave; conciliación/cierre.
 
 ## 13. Calendario y restricciones operacionales
+
+Las fechas absolutas de la estrategia heredada dependen de **S1 (inicio febrero de 2027)** y de los supuestos S3/S5 del [registro Célula 2, §C.1](../../Celula2/02_Decisiones_Reglas_Supuestos/Registro_supuestos_v3.md). No son fechas de inicio confirmadas por el CLIENTE. Si cambia S1 se recalcula la viabilidad sin flexibilizar congelamiento, naves ni hitos 2028/2029. Los fundamentos añadidos a los supuestos no equivalen a su validación.
 
 - Congelamiento total entre **15 de diciembre y 30 de abril**.
 - De enero a marzo ocurre 62 % del volumen refrigerado; ninguna intervención al patio reefer.
@@ -533,6 +550,19 @@ El cumplimiento general de ventanas se mantiene separado: >90 %. No se inventa u
 | Sincronización posterior | ≤90 min | ≤90 min | objetivo RNF |
 
 Estas cifras son insumos, no dimensionamiento final. El Frente 2 debe declarar método, supuestos, holgura y sensibilidad; no puede transformar aproximaciones en hechos del CLIENTE.
+
+### 15.1 Adiciones de volumetría y desempeño
+
+Fuente directa: [volumetría Célula 2](../../Celula2/plantilla_volumetria_caso_portuaria.md), filas 15–16 y «Factor estacional»; [RNF](../../Celula2/01_Requerimientos/RNF.md), `RNF-DES-09..12`.
+
+- Camiones: 2.600/1.450 ≈ **1,79×**; volumen refrigerado mensual enero–marzo frente al promedio anual: **2,48×**. Son factores por dimensión: C4 debe justificar su aplicación, evitar duplicar un peak ya incluido y distinguir volumen de carga de frecuencia de muestreo.
+- ≈13 GB / 90 min implican **≈19,3 Mbps de transferencia útil sostenida** (unidades decimales). Es una derivación bajo el volumen estimado, no capacidad de enlace contratada ni demostración E2E: deben añadirse tráfico concurrente, protocolo/cifrado, conciliación y holgura, y revalidarse las 72 h en temporada peak.
+- `RNF-DES-09`: portal ≤2 s, navegación ≤1 s, búsqueda ≤3 s e informe ≤30 s, p95 bajo peak.
+- `RNF-DES-10`: API de consulta simple ≤500 ms y escritura ≤800 ms, p95 bajo peak.
+- `RNF-DES-11`: lotes ≥10.000 registros/min, archivo de 100 MB ≤60 s y arranque en frío ≤60 s.
+- `RNF-DES-12`: carga de 1,5× peak y estrés hasta saturación; no reemplaza las pruebas de los umbrales específicos del caso.
+
+La holgura debe estar instalada y verificada antes del congelamiento; el peak de coincidencia y el estacional se evalúan por separado y en combinación justificada.
 
 ## 16. Datos, retención y migración que afectan arquitectura
 
@@ -602,7 +632,14 @@ Las decisiones 9, 19 y 20 son insumos directos de ADR físicos; no requieren inv
 | `ESC-13` | tolerancia VGM chilena | no fijar sin autoridad | levantamiento |
 | `ESC-14` | plazo/interfaz de cada autoridad | canal asistido trazable como fallback | levantamiento meses 1–4 |
 
-### 18.1 Mapa compacto MC-01..30 hacia arquitectura
+### 18.1 Pendientes precisados por las rondas de Célula 2
+
+- **Tensión 1 (Comercial/Operaciones):** sigue abierta como conflicto; A3/C3/D3 deben contrastar secuencia, dependencias y calendario con los hitos. La narrativa vigente §3.11 reconoce seis tensiones, no nueve.
+- **Universo instrumentable:** 74 equipos actuales y 88 proyectados excluyen las seis grúas de muelle; A2/A3 deben declarar el origen del evento de movimiento de muelle sin presumir interfaz ni intervenir su control.
+- **RN-11:** banda y duración de desviación de temperatura quedan sujetas a parametrización/validación; se rechaza un parámetro que haga imposible alarmar en ≤5 min. No inventar tolerancias de carga.
+- **Decisión 20:** conserva las tres alternativas de sala; el agregado de fundamentos a los supuestos no cierra `ADR-005`.
+
+### 18.2 Mapa compacto MC-01..30 hacia arquitectura
 
 | MC | Consecuencia que no debe perderse | Paquete primario |
 |---|---|---|
@@ -624,7 +661,7 @@ Las decisiones 9, 19 y 20 son insumos directos de ADR físicos; no requieren inv
 | 16 | prioridad operativa sin confundir congelamiento | A3 |
 | 17 | soporte crítico diferenciado nave/gate/frío | C3/D1 |
 | 18 | tres turnos/eventuales/capacitación sin invadir congelamiento | C3/D1 |
-| 19 | 138 RF normalizados; no usar IDs históricos | todos |
+| 19 | normalización histórica de 138 RF; corte vigente 139 con RF-POR-09; no usar IDs históricos | todos |
 | 20 | COARRI carga/descarga y CODECO gate/custodia | A2 |
 | 21 | concedente, autoridades y ferrocarril con fallback | A1/A2 |
 | 22 | acreditaciones no son cajas de arquitectura | D3/escalamiento |

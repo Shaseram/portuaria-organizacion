@@ -10,6 +10,8 @@ Este directorio es el espacio de trabajo trazable para construir el Subdocumento
 4. Archivo del entregable: contrato concreto, productos y definición de terminado.
 5. Archivo `TRZ_*` asociado: demostración de origen y destino de cada afirmación.
 
+**Base alineada:** Célula 2 `c4756df` · 139 RF / 91 RNF / 11 reglas. Las consecuencias están en el Maestro §2.3 y sus destinos en la matriz global §3; los entregables conservan su estado pendiente.
+
 ## Regla de autoridad
 
 El Maestro de Célula 3 deriva del Caso 06, las Bases Técnicas Transversales, las Bases Administrativas y la versión corregida de Célula 2. Si se detecta una contradicción, **no se resuelve silenciosamente**: se aplica la jerarquía indicada en el Maestro y se registra el conflicto en `DECISIONES_Y_ESCALAMIENTOS.md`.

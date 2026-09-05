@@ -4,6 +4,8 @@
 **Autoridad contextual:** [`00_MAESTRO_CONTEXTO_ARQUITECTURA.md`](00_MAESTRO_CONTEXTO_ARQUITECTURA.md).  
 **Regla:** este archivo define el trabajo; los nombres personales se asignan únicamente en la tabla siguiente.
 
+**Corte de entrada:** Célula 2 `c4756df` (2026-09-05), conforme al Maestro v1.1. Antes del desarrollo, cada frente lee las consecuencias del Maestro §2.3 y sus destinos en la matriz global §3 y conserva sus entregables en `PENDIENTE` hasta iniciar el trabajo técnico.
+
 ## 1. Asignación y control
 
 | Frente | Responsable | Revisor cruzado | Estado | Carpeta |
