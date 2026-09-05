@@ -1,9 +1,57 @@
 # TRZ-C3 — Despliegue, red y continuidad
 
+**Regla.** Una fila por afirmación verificable o agrupación homogénea. Cita con documento + capítulo/numeral + código + materia (Maestro §1.1). `CP` = FEP03; `BTT` = FEP02; `BA` = FEP01.
+
+## 1. Trazas del entregable
+
 | ID | Fuente | MC/RNF | Control | Diseño | Prueba/evidencia | Diagrama | T-11 | Estado |
 |---|---|---|---|---|---|---|---|---|
-| `TRZ-C3-001` | BTT RT-04.01 | ambientes | DEV/QA/PREPROD/PROD/DR | POR DEFINIR | aislamiento/equivalencia | POR CREAR | POR DEFINIR | PENDIENTE |
-| `TRZ-C3-002` | FEP02 Cap. 7, RT-07.04/06/07/09..12; FEP01 Art. 20 | RNF-DIS-13/14/15 | RTO/RPO/DR/3-2-1-1-0; no rebaja autonomía sin pérdida | POR DEFINIR | DR/restauración | POR CREAR | POR DEFINIR | PENDIENTE |
-| `TRZ-C3-003` | Caso 06 Cap. 15 | MC-10/RNF-DIS-11 | patio/radio | POR DEFINIR | patio cargado/corte real | POR CREAR | POR DEFINIR | PENDIENTE |
-| `TRZ-C3-004` | Caso 06 Cap. 10/13 | MC-30/RNF-DIS-09 | congelamiento | sin invasivas dic–abr | calendario/retorno | POR CREAR | n/a | PENDIENTE |
+| `TRZ-C3-001` | `CP, Cap. 10`, restricciones 2, 9 y 10 — sin ventana de detención, congelamiento y prohibición durante nave · `CP, Cap. 2.2` — 620 naves/año | MC-30 · `RNF-DIS-05`, `09`, `10` | partición software/física | el despliegue de software **no consume ventana**; la intervención física sí | auditoría del calendario de cambios | vista de despliegue | n/a | PARA REVISIÓN |
+| `TRZ-C3-002` | BTT, Cap. 4, `RT-04.07` · `BA, Art. 24` — liberar sin interrupción, demostrado en Preproducción antes de cada paso · `CP, Cap. 13.3`, condición 4 — despliegue por proceso o por zona | `RNF-DIS-05` | estrategia de despliegue | **progresivo por zona con canario**; azul-verde descartado porque conmuta todo el tráfico a la vez | demostración en PREPROD por cada paso | vista de despliegue | plataforma CI/CD | PARA REVISIÓN |
+| `TRZ-C3-003` | BTT, Cap. 4, numeral 4.1 y `RT-04.01` — **los cinco ambientes** como condición del hito H3 · `BA, Formulario E-25` — H3 en el **mes 6** nombra cuatro · `BA, Art. 5.2` y `5.4` | — | ambientes | **DR habilitado y operativo en el mes 6**, no al pasar a producción | acta de H3 | — | servicios de región secundaria | **PARA REVISIÓN DEL INTEGRADOR** `F2-ESC-010` |
+| `TRZ-C3-004` | BTT, Cap. 4, `RT-04.02` — Preproducción equivalente, con diferencias declaradas y justificadas | — | ambientes | se declara la diferencia irreducible: PREPROD no tiene 26 tableros, 2.400 tomas ni 18 ha de patio; se valida con simuladores y pruebas de terreno | comparación de topología y versiones | — | capacidad PREPROD | PARA REVISIÓN |
+| `TRZ-C3-005` | BTT, Cap. 4, `RT-04.03` a `RT-04.06`, `RT-04.08` a `RT-04.11` — ramas protegidas, trazabilidad, CI con bloqueo, reversión automatizada, configuración externalizada, secretos con rotación, migraciones reversibles y cobertura ≥70 % | `RNF-DES-12` | entrega continua | pipeline con bloqueo automático; artefacto único promovido sin recompilación | ejecución del flujo con evidencia | — | plataforma CI/CD y gestor de secretos | PARA REVISIÓN |
+| `TRZ-C3-006` | BTT, Cap. 4, `RT-04.12` · `BA, Art. 78.3` — tasa de cambios fallidos ≤5 % mensual · BTT `RT-10.09` — presupuesto de error | — | métricas de entrega | el presupuesto de error detiene el ritmo de despliegue antes que el nivel de servicio | medición mensual | — | n/a | PARA REVISIÓN |
+| `TRZ-C3-007` | BTT, Cap. 3, `RT-03.03` — infraestructura como código versionada **en el repositorio del CLIENTE** | — | IaC | sin infraestructura creada por consola, salvo la cuenta raíz inicial | revisión del repositorio | — | n/a | PARA REVISIÓN |
+| `TRZ-C3-008` | `CP, Cap. 6` — operación, administración y CCTV comparten conmutación, con degradación observada · restricción 6 y Declaración Mandatoria, punto 2 · Decisión N° 19 | MC-10 · `RNF-SEG-06` | segregación | tres zonas más el recinto técnico, con conductos declarados; **IEC 62443** | prueba de penetración interna: cero rutas cruzadas | vista de red | equipamiento de red | PARA REVISIÓN |
+| `TRZ-C3-009` | `CP, Cap. 10`, restricción 7 — ISPS y operador de importancia vital; nada compromete el plan de protección | MC-02 | continuidad del VMS | conmutación nueva en paralelo; el VMS migra último, verificado | prueba de continuidad durante la migración | vista de red | fuera de oferta | **BLOQUEADO EXTERNO** `F2-ESC-002` |
+| `TRZ-C3-010` | BTT, Cap. 3, `RT-03.23` — red inalámbrica con segmentación, autenticación por certificado y **cobertura verificada por estudio de sitio** · `CP, Cap. 15, RT-03.24` — rediseño con radiopropagación en patio cargado *(colisión de código, ver `F2-ESC-006`)* · `CP, Cap. 13.3`, condición 6 | MC-10 · `RNF-DIS-11` | red de patio | no se promete cobertura perfecta: se promete autonomía de 8 h y handover sin cortar transacción | prueba con patio cargado y geometría cambiante | vista de red | red operacional de patio | **BLOQUEADO EXTERNO** `F2-ESC-001` |
+| `TRZ-C3-011` | BTT, Cap. 3, `RT-03.17` — caminos y proveedores distintos con tiempo de conmutación declarado · `RT-03.21` — enlace privado o VPN cifrada · `RT-06.32` — ingreso por puntos separados · `CP, Cap. 6` — un proveedor, radioenlace sin prueba desde 2022 | `RNF-DIS-11` | enlaces | segundo camino obligatorio, no mejora | **corte real** de fibra y de radioenlace sin pérdida transaccional | vista de red | segundo camino y enlace privado | **BLOQUEADO EXTERNO** `F2-ESC-008` |
+| `TRZ-C3-012` | BTT, Cap. 3, `RT-03.24` — calidad de servicio y priorización del tráfico operacional frente al administrativo | — | QoS | confirmación de movimiento y alarma de frío en clase superior; sincronización diferida en clase inferior | medición bajo carga | vista de red | n/a | PARA REVISIÓN |
+| `TRZ-C3-013` | BTT, Cap. 10, `RT-10.01`/`RT-10.02` · `BA, Art. 78°` — clasificación por impacto y nivel asociado | `RNF-DIS-01` | clasificación | doce servicios clasificados; las cinco críticas coinciden con las cinco funciones del Maestro §9.1 | revisión de la clasificación | — | n/a | PARA REVISIÓN |
+| `TRZ-C3-014` | BTT, Cap. 10, `RT-10.03`/`RT-10.04` — ISO 22301 e ISO/IEC 27031 · Checklist Cap. C, N° 12 | `RNF-DIS-07` | continuidad | plan con BIA, escenarios, procedimientos manuales y criterios de activación | revisión documental y simulacro | — | n/a | PARA REVISIÓN |
+| `TRZ-C3-015` | BTT, Cap. 7, `RT-07.08` — criterio de disparo declarado y protección contra conmutación innecesaria | `RNF-DIS-13` | activación del DR | **un corte del enlace no activa el DR**: para eso está la operación local de 72 h | prueba de no activación ante corte de enlace | — | n/a | PARA REVISIÓN |
+| `TRZ-C3-016` | BTT, Cap. 7, `RT-07.05`/`RT-07.06` — conmutación ejecutable por el CLIENTE y retorno con reconciliación · restricción 11 — TI de 5 personas | `RNF-DIS-15` | procedimiento DR | escrito para ejecutarse en turno de madrugada por personal del CLIENTE; el retorno se prueba en la misma ejecución | conmutación real con operador del CLIENTE | — | n/a | PARA REVISIÓN |
+| `TRZ-C3-017` | BTT, Cap. 7, `RT-07.07` · `BA, Art. 20` — DR real semestral · restricciones 9 y 10 · `RT-10.05` y `BA, Art. 20` — aviso de diez días hábiles | `RNF-DIS-15` | calendario DR | dos pruebas en los siete meses no congelados; propuesta mayo y octubre | informe con RTO y RPO **alcanzados** | — | n/a | PENDIENTE dato de atraque |
+| `TRZ-C3-018` | BTT, Cap. 7, `RT-07.09` a `RT-07.13` — 3-2-1-1-0, cifrado con clave independiente, inmutabilidad frente a credenciales comprometidas, restauración mensual y declaración por dominio · Maestro §16.1 — siete retenciones · Checklist Cap. C, N° 9 | `RNF-DIS-14` | respaldos | tabla por dominio con frecuencia, retención y tiempo de restauración | restauración mensual con tiempo medido | — | servicio de verificación | PENDIENTE C4 |
+| `TRZ-C3-019` | `CP, Cap. 15, RT-03.10` — 72 h de operación completa sin enlace · `RNF-DIS-02` | MC-09 | operación desconectada | las cinco funciones críticas completas; se declara qué **no** estará disponible, con A3 | prueba de desconexión de 72 h | vista de despliegue | buffer local | PARA REVISIÓN |
+| `TRZ-C3-020` | `CP, Cap. 15, RT-03.13` — sincronización ≤90 min *(colisión de código, ver `F2-ESC-006`)* · BTT `RT-03.12` — reconciliación determinista con bitácora auditable · `RNF-DIS-04` | MC-09 | reconexión | automática, determinista, auditable | prueba de reconexión tras 72 h | vista de despliegue | n/a | PENDIENTE C4 |
+| `TRZ-C3-021` | BTT, Cap. 3, `RT-03.11` — registro local íntegro durante el corte · `RNF-DIS-03` — terminal ≥8 h fuera de cobertura | MC-15 | borde | autonomía del terminal de equipo | prueba de campo con desconexión deliberada | vista de red | terminales | PARA REVISIÓN |
+| `TRZ-C3-022` | BTT, Cap. 10, `RT-10.07` · `BA, Art. 24` — inyección de fallas antes de cada paso y semestral · `RNF-DIS-06` | — | resiliencia | caída de instancia, de zona, de dependencia, latencia y saturación de disco | informe por ejecución | — | n/a | PARA REVISIÓN |
+| `TRZ-C3-023` | `BA, Art. 24` · `RNF-DES-12` — carga y estrés a **1,5× el peak** con punto de quiebre | — | capacidad | umbral bloqueante antes de cada paso a producción | informe de carga y plan de capacidad | — | n/a | PENDIENTE C4 |
+| `TRZ-C3-024` | BTT, Cap. 10, `RT-10.08` — comportamiento por dependencia externa que no responde, responde con error o con lentitud · `RT-02.09` — degradación elegante sin fallo silencioso | MC-07 | resiliencia | tabla por dependencia; carril de excepción **≥50 % más lento** que el validado | prueba por contraparte con stub | — | n/a | PARA REVISIÓN |
+| `TRZ-C3-025` | Maestro §12 — ocho campos de retorno · `RNF-DIS-12` — plan de retorno **antes** de ejecutar · `MC-27` | MC-27 | retorno | formulario obligatorio por intervención | evidencia por intervención | — | n/a | PARA REVISIÓN |
+| `TRZ-C3-026` | Maestro §13 — todo lo invasivo listo el **14-dic-2027** · `CP, Cap. 13.2` — mayo a noviembre única ventana razonable · enero a marzo, 62 % del volumen refrigerado | MC-30 · `RNF-DIS-09` | calendario | obra física acotada a la ventana; patio refrigerado fuera de enero a marzo | calendario contrastado con congelamiento y naves | — | n/a | PARA REVISIÓN |
+| `TRZ-C3-027` | `CP, Cap. 13.3`, condición 8 — estabilización con presencia en los tres turnos, incluida la madrugada, con habilitación ISPS | MC-18 | estabilización | dotación y duración declaradas; condiciona `PHY-OPS-06` | plan de estabilización | — | puestos | PENDIENTE C4 |
+| `TRZ-C3-028` | `CP, Cap. 6` — respaldo eléctrico del patio refrigerado nunca verificado a carga total de temporada | — | SPOF | `SPOF-05`; fuera del límite de oferta | se especifica la prueba y se escala al CLIENTE | — | fuera de oferta | **BLOQUEADO EXTERNO** |
 
+## 2. Cobertura declarada
+
+| Obligación | Cómo la cubre C3 | Sección |
+|---|---|---|
+| `SD4-04` parte de despliegue y red de la seguridad | segregación en zonas y conductos, continuidad del VMS e ISPS | §5 |
+| `SD4-05` ambientes, redes, HA, DR y respaldos | matriz de ambientes, matriz de continuidad, plan DR y política de respaldo | §3, §7, §9 |
+| `SD4-07` decisiones registradas | aportes a `ADR-006` y `ADR-007` | §13 |
+| `SD4-08` arquitectura propia del caso | 620 naves, congelamiento estacional, sombras móviles, radioenlace sin probar desde 2022, TI de 5 personas | §1, §5, §9 |
+| `T21-4.2` ambientes, redes, continuidad y DR | secciones 4.2.7 a 4.2.10 del consolidado | todo |
+| Checklist BTT, Cap. C, N° 4 | declaración de funciones no disponibles en modo desconectado, con A3 | §7, §8 |
+| Checklist BTT, Cap. C, N° 9 | plan de recuperación ante desastres y política de respaldo | §9 |
+| Checklist BTT, Cap. C, N° 12 | plan de continuidad conforme a ISO 22301 | §10 |
+
+## 3. Pendientes de esta traza
+
+- Cerrar `TRZ-C3-018`, `020`, `023` y `027` con el dimensionamiento de C4.
+- Cruzar `TRZ-C3-008`, `009` y `012` con `SEC-PHYS-v0.1` del Frente 3.
+- Completar con A3 la declaración de funciones no disponibles en modo desconectado (checklist N° 4).
+- `TRZ-C3-009`, `010`, `011`, `017` y `028` dependen de dato o autorización externa.
+- `TRZ-C3-003` requiere decisión del integrador sobre `F2-ESC-010`.

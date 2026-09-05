@@ -16,10 +16,10 @@ El Maestro sintetiza el contexto, pero Célula 2 permanece disponible como evide
 
 | Orden | Paquete | Resultado | Trazabilidad | Estado |
 |---:|---|---|---|---|
-| 1 | [`C1_ARQUITECTURA_FISICA_Y_EMPLAZAMIENTO.md`](C1_ARQUITECTURA_FISICA_Y_EMPLAZAMIENTO.md) | topología híbrida y Art. 16 | `trazabilidad/TRZ_C1.md` | PENDIENTE |
-| 2 | [`C2_TECNOLOGIAS_HARDWARE_Y_DATA_CENTERS.md`](C2_TECNOLOGIAS_HARDWARE_Y_DATA_CENTERS.md) | plataformas, equipos y recintos | `trazabilidad/TRZ_C2.md` | PENDIENTE |
-| 3 | [`C3_DESPLIEGUE_RED_Y_CONTINUIDAD.md`](C3_DESPLIEGUE_RED_Y_CONTINUIDAD.md) | ambientes, redes, HA, DR y 72 h | `trazabilidad/TRZ_C3.md` | PENDIENTE |
-| 4 | [`C4_DIMENSIONAMIENTO_Y_T11.md`](C4_DIMENSIONAMIENTO_Y_T11.md) | cálculos, cantidades y T-11 | `trazabilidad/TRZ_C4.md` | PENDIENTE |
+| 1 | [`C1_ARQUITECTURA_FISICA_Y_EMPLAZAMIENTO.md`](C1_ARQUITECTURA_FISICA_Y_EMPLAZAMIENTO.md) | topología híbrida y Art. 16 | `trazabilidad/TRZ_C1.md` | **PARA REVISIÓN** `v0.5` |
+| 2 | [`C2_TECNOLOGIAS_HARDWARE_Y_DATA_CENTERS.md`](C2_TECNOLOGIAS_HARDWARE_Y_DATA_CENTERS.md) | plataformas, equipos y recintos | `trazabilidad/TRZ_C2.md` | **PARA REVISIÓN** `v0.5` |
+| 3 | [`C3_DESPLIEGUE_RED_Y_CONTINUIDAD.md`](C3_DESPLIEGUE_RED_Y_CONTINUIDAD.md) | ambientes, redes, HA, DR y 72 h | `trazabilidad/TRZ_C3.md` | **PARA REVISIÓN** `v0.5` |
+| 4 | [`C4_DIMENSIONAMIENTO_Y_T11.md`](C4_DIMENSIONAMIENTO_Y_T11.md) | cálculos, cantidades y T-11 | `trazabilidad/TRZ_C4.md` | **PARA REVISIÓN** `v0.5` |
 
 ## Primera entrega a los demás frentes (`v0.1`)
 
