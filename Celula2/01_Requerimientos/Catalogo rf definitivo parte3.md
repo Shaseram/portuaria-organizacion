@@ -632,7 +632,11 @@ Esta matriz es un contrato funcional transversal para los RF que emiten avisos; 
 >
 > El mecanismo no es nuevo: es el mismo canal asistido con validación previa que `RF-INT-07` ya define para las navieras aún no integradas, aplicado al remitente que genera la línea base.
 >
-> **Etapa.** Se asigna a la Etapa 2 por coherencia con el resto del dominio `RF-POR`, del que depende (`RF-POR-02`). Si el equipo decide adelantarlo a la Etapa 1 por su efecto sobre el criterio 13, el reparto de la sección 11.3 debe actualizarse.
+> **Etapa 2, por dos razones.** La primera es de indicador: `RF-INT-02` también pertenece a la Etapa 2, de modo que **las dos patas del 41 % de línea base entran en producción en el mismo mes 21** y el indicador del criterio 13 se mueve como una sola cosa. Con el supuesto S1 —mes 1 en febrero de 2027— eso ocurre en octubre de 2028, antes del hito externo de 2029.
+>
+> La segunda es de dependencia: su precondición es una persona usuaria externa registrada conforme a `RF-POR-02`, que es de Etapa 2. Adelantarlo obligaría a arrastrar consigo el registro y la verificación de identidad de usuarios externos.
+>
+> No se invoca aquí «coherencia con el dominio»: este catálogo admite excepciones por requerimiento cuando hay motivo, como muestran `RF-NAV-09` en Etapa 1 dentro de un dominio de Etapa 2, y `RF-APP-01` y `RF-FIR-01` con primera entrega en Etapa 1.
 
 ---
 

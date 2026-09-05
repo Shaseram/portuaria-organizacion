@@ -279,9 +279,12 @@ Reparto por primera entrega: **82 en Etapa 1 y 57 en Etapa 2**.
 | «§10.3 contradice el umbral de gate con un 0,3 % obsoleto» | §10.3 es el razonamiento que llevó a fijarlo en cero, no una contradicción |
 | «`RF-ACC-01` atribuye los ~2.100 eventuales al Cap. 2.4» | Las citas al Cap. 2.4 invocan la **rotación diaria**, que es lo que ese capítulo describe. La cita es correcta |
 
+## Cerrado tras verificación posterior
+
+- **Etapa de `RF-POR-09`**: se confirma **Etapa 2**, con el argumento corregido. `RF-INT-02` también es de Etapa 2, de modo que las dos patas del 41 % entran en producción en el mes 21 y el indicador del criterio 13 se mueve como una sola cosa; además la precondición de `RF-POR-09` es `RF-POR-02`, que es de Etapa 2. El argumento original —«coherencia con el dominio»— era inválido: el catálogo admite excepciones por requerimiento, como `RF-NAV-09`, `RF-APP-01` y `RF-FIR-01`. El reparto 82 / 57 ya lo refleja.
+
 ## Queda abierto y no se resolvió aquí
 
 - **Decisión N° 20** (destino de la sala de servidores): sigue enunciada como «se resolverá mediante un ADR comparando tres alternativas». Célula 2 la clasifica correctamente como arquitectura física; corresponde confirmarla con **Célula 3** en el Subdocumento 4.
 - **Tensión 1** del CP, Cap. 8 (Comercial vs. Operaciones) como conflicto, no como dos objeciones separadas.
-- **Etapa de `RF-POR-09`**: asignado a Etapa 2 por coherencia con su dominio. Si se adelanta a Etapa 1 por su efecto sobre el criterio 13, el reparto de la sección 11.3 debe actualizarse.
 - **Universo de instrumentación**: el CP, Cap. 14.1 define 74 equipos (18 grúas de patio, 42 tractocamiones, 14 pesados) y **no incluye las 6 grúas de muelle**. Conviene declarar en el catálogo qué evento produce el movimiento de muelle.
