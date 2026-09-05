@@ -17,6 +17,7 @@
 | `F2-ESC-006` | 2026-09-05 | C1/C3/C4 | COLISIÓN DE CÓDIGOS | 4 códigos `RT` de los capítulos del Frente 2 designan materias distintas en BTT y caso | el Supuesto M de Célula 2 solo documenta 5 colisiones, ninguna de estas | ampliar el listado del Maestro §1.1 con estos códigos | C1, C3, C4, T-12 | PARA REVISIÓN DEL INTEGRADOR |
 | `F2-ESC-007` | 2026-09-05 | todos | LÍNEA BASE DESFASADA | Maestro §2.2 y `MC-19` citan 138 RF / 84 RNF / 10 reglas | hoy son 139 / 91 / 11 y el reparto es 82 / 57 | actualizar §2.2 y registrar el commit `c4756df` según la regla de lectura 5 | los tres frentes | PARA REVISIÓN DEL INTEGRADOR |
 | `F2-ESC-008` | 2026-09-05 | C1/C2 | EXTERNO | ingresos físicos de comunicaciones del edificio administrativo | `RT-06.32` exige rutas físicas distintas con ingreso al edificio por puntos separados; el caso no dice si el edificio lo admite | levantar antes de cerrar `ADR-005`; puede descartar por norma la alternativa de endurecer la sala actual | C1, C2, C3, `ADR-005` | BLOQUEADO EXTERNO |
+| `F2-ESC-009` | 2026-09-05 | C2 | DECISIÓN SIN ADR | proveedor y región de nube | `RT-03.01` exige declarar proveedor y regiones primaria y secundaria; `RT-15.04`/`.05` exigen intensidad de carbono y análisis comparativo. La lista `ADR-001` a `ADR-010` no cubre esta decisión | abrir `ADR-011`; afecta a los tres frentes, no se resuelve en el Frente 2 | todos | PARA REVISIÓN DEL INTEGRADOR |
 | `F2-DEC-002` | 2026-09-05 | C2 | TENSIÓN A DECLARAR | `RT-06.20` exige biometría facial para el recinto técnico | la restricción no negociable 8 registra la objeción a la biometría obligatoria | declarar que son poblaciones distintas; no silenciar | C2, D1 | PENDIENTE |
 | `F2-DEC-003` | 2026-09-05 | C2 | TENSIÓN A DECLARAR | `RT-06.24` exige videovigilancia propia del recinto, 30 días en línea | la regla negativa 6 prohíbe crear un portal de video y conserva el VMS | declarar que el CCTV del recinto no es el VMS del terminal | C2, C3, D1 | PENDIENTE |
 | `F2-COR-001` | 2026-09-05 | C1 | CORRECCIÓN PROPIA | cumplimientos decían `RT-03.01..15` | el capítulo llega a `RT-03.24` | corregido en C1 | C1, C3, C4 | APLICADO |
@@ -115,6 +116,16 @@
 **Por qué bloquea.** Es un posible criterio de descarte **por norma** para la alternativa A de `ADR-005` —endurecer la sala actual—, anterior a cualquier comparación de costo u operabilidad. Sin el dato, el ADR debe cerrarse por criterios secundarios, que es una decisión más débil y más objetable.
 
 **Cómo se levanta.** Inspección del edificio administrativo o consulta al CLIENTE sobre canalizaciones existentes y puntos de acometida disponibles. Mientras tanto, C1 lo declara abierto y no presume la respuesta en ninguna dirección.
+
+### `F2-ESC-009` — La elección de proveedor y región de nube no tiene ADR asignado
+
+**Qué exigen las bases.** `RT-03.01` del BTT obliga a declarar el proveedor de nube pública y las regiones primaria y secundaria, con presencia de región o zona en Chile o Sudamérica. `RT-15.04` obliga a declarar la **intensidad de carbono de la región escogida**, y `RT-15.05` valora escoger la de menor intensidad cuando latencia y regulación lo permitan, *«con el análisis comparativo correspondiente»*.
+
+**Por qué es un ADR.** Tiene alternativas reales, criterios vinculados al caso, consecuencias sobre las otras vistas y riesgo residual: es exactamente la definición del Registro ADR Global. El índice `ADR-001` a `ADR-010` no la contempla, de modo que hoy la decisión se tomaría de hecho, sin registro, al escribir el primer nombre de proveedor en un documento.
+
+**Criterios propuestos para `ADR-011`.** Presencia de región en Chile o Sudamérica y número de zonas de disponibilidad; latencia medida al terminal; intensidad de carbono declarada de la región; cobertura del catálogo de servicios gestionados frente a la pila de C2 §3; certificaciones y residencia de datos frente a la condición de operador de importancia vital del `CP, Cap. 10`, restricción 7; y esfuerzo de reversibilidad conforme a `RT-03.07`.
+
+**Por qué no la resuelve este frente.** Afecta a la arquitectura lógica del Frente 1, a los controles y la residencia de datos del Frente 3, y a la estructura de costos que el Art. 16 exige que sea coherente con la arquitectura. Se propone, no se decide.
 
 ## 3. Tensiones declaradas, no resueltas
 

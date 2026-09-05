@@ -49,3 +49,9 @@
 - Cruzar `TRZ-C1-008`, `TRZ-C1-009` y `TRZ-C1-020` con `SEC-PHYS-v0.1` del Frente 3.
 - Cerrar `TRZ-C1-012` y `TRZ-C1-016` cuando se levante el dato externo.
 - Asignar fila T-11 definitiva a cada nodo tras el dimensionamiento de C4.
+
+## 4. Correcciones posteriores
+
+| Fecha | Traza | Corrección |
+|---|---|---|
+| 2026-09-05 | `TRZ-C1-007` y tabla §4 | `PHY-EDG-05` deja de tener gabinete propio. `CP, Cap. 15, RT-06.01` nombra gabinetes de borde en **muelle, patio, patio refrigerado y gate**, cuatro zonas, no cinco. La zona de inspección se sirve con dispositivo móvil sobre la red operacional del patio. Detectado al declarar la tipología por sitio en C2 §1 |
