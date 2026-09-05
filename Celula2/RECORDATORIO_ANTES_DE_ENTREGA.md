@@ -1,7 +1,7 @@
 # Recordatorio antes de la entrega — Célula 2
 
 **Fecha:** 2026-09-05. **Estado del material:** verificado y sin errores de contenido.
-**Naturaleza de esta lista:** cuatro puntos abiertos. Los tres primeros son de forma —cifras y enumeraciones— y su corrección está resuelta aquí, lista para aplicar. El cuarto es de alcance: faltan productos que el `CP, Cap. 17.1` exige.
+**Naturaleza de esta lista:** cinco puntos abiertos. Los tres primeros son de forma —cifras y enumeraciones— y su corrección está resuelta aquí, lista para aplicar. El cuarto es de alcance: faltan productos que el `CP, Cap. 17.1` exige. El quinto es de proceso: falta la vía por la que los supuestos nacidos en Célula 3 llegan a este registro.
 
 > Este archivo se escribió tras un audit completo de Célula 2 contra el texto de las tres bases. **No se aplicó ninguna corrección**: se dejan documentadas para decidirlas antes de la entrega. Lo que el audit verificó y quedó limpio está al final, para no repetir el trabajo.
 
@@ -112,6 +112,72 @@ Y no está esperando a nadie:
 ### 4.3 Formulario T-12
 
 La narrativa lo registra como *«pendiente — regla de construcción resuelta»*. El punto 3 de este recordatorio contiene la parte de esa regla que faltaba escribir: el mapeo de los seis «Según caso» respondidos bajo otro código. Con el inventario de 374 códigos ya clasificado y ese mapeo, el T-12 es trabajo de transcripción, no de análisis.
+
+---
+
+## 5. No hay vía definida para que los supuestos de Célula 3 lleguen a este registro
+
+**El vacío.** Se revisó todo el gobierno de Célula 3 buscando una instrucción de escribir de vuelta en `Registro_supuestos_v3.md`. No existe. El Maestro lo cita dos veces —numerales 17 y 21— y las dos como **fuente heredada que hay que leer**. Ningún archivo dice que Célula 3 aporte supuestos nuevos.
+
+Al mismo tiempo, cada frente de Célula 3 lleva su propio `trazabilidad/DECISIONES_Y_ESCALAMIENTOS.md`, y ninguno tiene columna de destino: registran el hallazgo y a quién afecta, pero no dicen «esto termina como supuesto». Son tres archivos que nadie está obligado a vaciar aquí.
+
+Es el tipo de vacío por el que se pierde material sin que nadie se equivoque: cada frente hizo lo suyo y el traspaso no era responsabilidad de nadie.
+
+### 5.1 Por qué esto importa más que antes
+
+El `CP, Cap. 17.1` define el registro por la **naturaleza** de la decisión, no por el subdocumento:
+
+> «Registro de supuestos: **toda decisión que el PROPONENTE tomó por el CLIENTE**, con su fundamento, su impacto si resulta equivocada y la instancia en que se validará.»
+
+No dice «las del Subdocumento 3». Una decisión tomada por el cliente en el Subdocumento 4 cae en esa definición igual.
+
+Y el registro **es un documento de la propuesta, no de una célula**. Si un supuesto nace en el Subdocumento 4 y no se escribe aquí, no queda escrito en ninguna parte: el artefacto propio del Subdocumento 4 es el ADR, y el ADR **no tiene las dos columnas que el Cap. 17.1 exige** —«impacto si resulta equivocada» y «la instancia en que se validará»—. Un ADR explica por qué se eligió; no dice qué pasa si la elección fue errada.
+
+A esto se suma que el período de consultas **cerró el 01-09-2026**. El `BA, Art. 5.4` establece que *«presentada la oferta, se entenderá que el PROPONENTE aceptó la interpretación más exigente»*. El registro ya no es una antesala de las consultas: **es el único instrumento que queda** para dejar visible qué se decidió por el CLIENTE y bajo qué lectura. No evita la regla del 5.4 —nada la evita—, pero es la diferencia entre «el proponente interpretó y lo declaró» y «el proponente asumió en silencio».
+
+### 5.2 Criterio de clasificación propuesto
+
+Tres destinos, con la pregunta que los separa. Coincide con la regla de lectura 3 del Maestro de Célula 3, que ya distingue `DECISIÓN TERABYTE`, `SUPUESTO`, `PENDIENTE CLIENTE` y `HECHO DE BASES`.
+
+| Destino | Pregunta que lo define | Fuente |
+|---|---|---|
+| **ADR** de Célula 3 | ¿se compararon alternativas reales y se eligió una por criterios técnicos? | `BTT, RT-02.04` |
+| **Registro de supuestos** *(este documento)* | ¿se decidió algo que le correspondía decidir al CLIENTE, o se interpretó una ambigüedad de las bases? | `CP, Cap. 17.1` |
+| **Escalamiento / `PENDIENTE CLIENTE`** | ¿no está decidido porque falta un dato o una autorización externa? | Maestro §18, `ESC-*` |
+
+Una decisión puede cumplir una, otra, o ninguna. Lo que **no** corresponde es copiar aquí todo lo que Célula 3 decida: la mayoría de sus decisiones son ADR y no pertenecen a este registro.
+
+### 5.3 Clasificación de lo que Célula 3 ha producido al 2026-09-05
+
+Al cierre de los cuatro paquetes del Frente 2 —Física y despliegue—, aplicando el criterio anterior:
+
+**Aporta un supuesto nuevo a este registro: uno.**
+
+| Origen | Qué es | Por qué es supuesto y no ADR |
+|---|---|---|
+| `F2-ESC-010` | **El ambiente de recuperación ante desastres debe estar operativo en el mes 6.** `RT-04.01` del BTT condiciona el hito H3 a los **cinco** ambientes del numeral 4.1, incluido DR; el Formulario E-25 de las BA describe H3 nombrando cuatro, en el mes 6, con el 10 % de la estructura de pagos | Es una **interpretación de una ambigüedad entre documentos**, resuelta por los Art. 5.2 y 5.4 de las BA hacia la lectura más exigente. Nadie comparó alternativas: se leyó. Y el impacto si está equivocada es contractual —afecta un hito de pago y el cronograma del Subdocumento 7—, que es exactamente lo que el Cap. 17.1 pide declarar. Familia: `C.3 Supuestos de interpretación normativa`, la misma del Supuesto M |
+
+**Amplía un supuesto existente: uno.**
+
+| Origen | Qué es |
+|---|---|
+| `F2-ESC-006` | Las cinco colisiones de códigos `RT` del punto 2 de este recordatorio **amplían el Supuesto M**, no crean uno nuevo |
+
+**No aporta supuestos, van al ADR de Célula 3:** modalidad activo-pasivo del sitio secundario (`ADR-007`); despliegue progresivo por zona con canario, descartando azul-verde; habilitar frente a reemplazar la sala técnica (`ADR-005`); tecnología de la red del patio (`ADR-006`); proveedor y región de nube (`ADR-011`, propuesto y aún sin abrir).
+
+**No aporta supuestos, son declaraciones que las bases obligan a hacer:** margen de crecimiento del 30 % (`RT-08.05`), tipología de recinto por sitio (BTT, numeral 6.1), criterio de activación del DR (`RT-07.08`), factor de utilización (`RT-15.01`).
+
+**No aporta supuestos, son cálculos:** buffer de 72 h a peak estacional, ancho de banda de reposición y ancho de banda de la red del patio. Corrigen cifras de la volumetría; no deciden nada por el CLIENTE.
+
+**Refuerzan supuestos que ya están aquí:** el tamaño de imagen de 500 KB y la frecuencia de posicionamiento de 2 s ya figuran como supuestos propios en `plantilla_volumetria_caso_portuaria.md`. Célula 3 **no los cambió**: cuantificó su sensibilidad. El de 500 KB resultó gobernar el 91 % del buffer de 72 horas y el ancho de banda de reposición, lo que conviene incorporar como impacto declarado del supuesto existente.
+
+**Van a escalamiento, no a supuestos:** `F2-ESC-001` site survey; `F2-ESC-002` autorización de la autoridad para segregar la red; `F2-ESC-008` ingresos físicos de comunicaciones del edificio; `F2-ESC-011` tamaño real de imagen; `F2-ESC-012` capacidad real de la fibra y del radioenlace.
+
+### 5.4 Qué conviene acordar
+
+Falta la revisión de los otros dos frentes de Célula 3 —lógica e integración, y seguridad y consolidación—, que probablemente aporten sus propios supuestos por el mismo criterio.
+
+Lo que hay que definir antes de la entrega es **quién y cuándo**: que en una de las puertas de integración de Célula 3 alguien recorra los tres archivos de escalamientos aplicando el criterio de 5.2, y traiga a este registro lo que clasifique como supuesto. Sin ese paso asignado, el material queda en tres archivos de trabajo que el evaluador no lee, y el Subdocumento 3 entrega un registro de supuestos que dice menos de lo que el equipo efectivamente asumió.
 
 ---
 
