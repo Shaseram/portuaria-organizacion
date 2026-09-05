@@ -18,7 +18,7 @@ El Maestro sintetiza el contexto, pero Célula 2 permanece disponible como evide
 |---:|---|---|---|---|
 | 1 | [`A1_CONTEXTO_Y_ARQUITECTURA_LOGICA.md`](A1_CONTEXTO_Y_ARQUITECTURA_LOGICA.md) | contexto, ocho capas, componentes y dominio | `trazabilidad/TRZ_A1.md` | PARA REVISIÓN |
 | 2 | [`A2_ARQUITECTURA_DE_INTEGRACION.md`](A2_ARQUITECTURA_DE_INTEGRACION.md) | contratos, eventos, gobierno y fallos | `trazabilidad/TRZ_A2.md` | PARA REVISIÓN |
-| 3 | [`A3_PROCESOS_CRITICOS_Y_TOS.md`](A3_PROCESOS_CRITICOS_Y_TOS.md) | secuencias, TOS, desconexión y retorno | `trazabilidad/TRZ_A3.md` | PENDIENTE |
+| 3 | [`A3_PROCESOS_CRITICOS_Y_TOS.md`](A3_PROCESOS_CRITICOS_Y_TOS.md) | secuencias, TOS, desconexión y retorno | `trazabilidad/TRZ_A3.md` | PARA REVISIÓN |
 
 ## Primera entrega a los demás frentes (`v0.1`)
 

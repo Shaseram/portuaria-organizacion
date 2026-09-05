@@ -20,6 +20,7 @@
 | `TRZ-A2-016` | BTT RT-05.09 | — | — | Datos maestros sin duplicación con sistemas externos | Columna "Dueño del dato" de §2.1/§2.2 es la estrategia MDM exigida; un solo código ISO 6346 en OCR/EDIFACT/CTX-OPS | §1.2 | — | Definido |
 | `TRZ-A2-014` | Maestro §19 regla 17 | — | — | Cuatro capas: evento/documento/mensaje/sobre de red | Distinción explícita para no confundir cambio de transporte con cambio de versión EDIFACT | §1.3 | — | Definido |
 | `TRZ-A2-015` | BTT RT-05.23, RT-13.12; Caso 06 Cap. 15 (parámetro "Estándares sectoriales") | — | — | ISO 6346 (codificación de contenedor) + bilingüe ES/EN obligatorio hacia navieras/mensajería marítima | Mismo código ISO 6346 en EDIFACT, `EXT-OCR` y A1 §5.1; ES/EN endurecido de Deseable a Obligatorio por el caso | §3 | — | Definido |
+| `TRZ-A2-017` | Célula 2, catálogo RF parte 3 §5 y §11.2 — corte 2026-09-05 (nuevo `RF-POR-09`, 138→139 RF); Caso 06 Anexo A, Cap. 7.1, Cap. 18 criterio 13 | — | RF-POR-09 (nuevo); RF-INT-02; RF-POR-02 | No confundir COPRAR (`RF-INT-02`, naviera→terminal, `CP-NAV-*`) con la instrucción de embarque estructurada (`RF-POR-09`, embarcador/agencia→terminal, **no** es una 22ª contraparte — es funcionalidad nueva de `CH-PORTAL`/`ACT-AGE`, ya existente en A1) | El 41 % de digitación manual del Anexo A es íntegro del segundo flujo; ambos entran en producción el mismo mes 21 (Etapa 2) | §3 | — | PARA REVISIÓN |
 
 ## Trazabilidad de exclusiones y restricciones heredadas de A1/Maestro
 

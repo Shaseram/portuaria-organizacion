@@ -171,11 +171,20 @@ Los cuatro mensajes EDIFACT que la Decisión 18 de Célula 2 fija como estándar
 | Mensaje EDIFACT | Qué transporta | Dirección | Evento de dominio A1 relacionado (§4.3) | Etapa del Caso 06 |
 |---|---|---|---|---|
 | **BAPLIE** | Plano de estiba de la nave (bay plan): posición de cada contenedor a bordo | Naviera → `CTX-VESSEL`/`CTX-PLAN` | `NaveAnunciada` (BAPLIE recibido) | Cap. 4.1-4.2: anuncio de recalada y plan de estiba, hoy en 6 formatos por correo |
-| **COPRAR** | Orden de embarque/descarga (container discharge/load list) | Naviera ↔ `CTX-VESSEL` | Insumo de `PlanEstibaAprobado` | Cap. 4.2: instrucción de qué se descarga/embarca |
+| **COPRAR** | **Orden de embarque** naviera → terminal (container discharge/load list) — no confundir con la **instrucción de embarque** embarcador/agencia → terminal | Naviera ↔ `CTX-VESSEL` | Insumo de `PlanEstibaAprobado` | Cap. 4.2: instrucción de qué se descarga/embarca |
 | **COARRI** | Confirmación de carga y descarga efectivamente ejecutada | `CTX-VESSEL` → Naviera | `ContenedorDescargado`/`ContenedorEmbarcado` | Cap. 4.3: atención de la nave, movimientos ejecutados |
 | **CODECO** | Notificación de movimiento de contenedor / custodia en gate | `CTX-GATE` ↔ Naviera/agencia | `CamionIngresado`/`CamionEgresado` | Cap. 4.6: gate, documentación y pesaje |
 
 **Regla de no confusión (Maestro §19, regla 17):** COARRI es carga/descarga en el muelle; CODECO es gate/custodia terrestre. No se intercambian entre sí, y ninguno de los dos es "el mensaje EDIFACT" genérico — cada evento de negocio usa el mensaje que le corresponde.
+
+**Segunda regla de no confusión, añadida por Célula 2 (`RF-POR-09`, nuevo requerimiento — el catálogo RF pasó de 138 a 139 exactamente por este código):** el 41 % de "instrucciones digitadas a mano" que reporta el Caso 06 (Anexo A, Cap. 7.1) es el flujo **embarcador o agencia → Documentación** (210 agencias de aduana + ~1.400 exportadores/importadores) — **no** es el flujo naviera → terminal que cubre COPRAR/`RF-INT-02`. Son dos contrapartes, dos contratos y dos mediciones distintas:
+
+| Flujo | Remitente | Mensaje/canal | Requerimiento | Meta | Contraparte en §2 |
+|---|---|---|---|---|---|
+| Orden de embarque | Naviera | COPRAR (EDIFACT) | `RF-INT-02` | 0 % alianza; ≤5 % resto (sin cifra base propia) | `CP-NAV-*` |
+| Instrucción de embarque | Embarcador o agencia de aduana | Portal, canal estructurado con validación por registro (BTT RT-05.22) | `RF-POR-09` (Etapa 2, Crítica) | Cero digitación manual (línea base 41 %) | `EXT-AGE` (nueva, ver abajo) |
+
+**No es una 22ª contraparte de §2.1.** El embarcador/agencia (`ACT-AGE`) ya es un actor servido por `CH-PORTAL` en A1 (no un sistema externo con su propio contrato de integración, a diferencia de las 21 contrapartes de §2.1). `RF-POR-09` es **funcionalidad nueva de ese canal ya existente**, no una contraparte adicional: presentación estructurada con validación previa e informe de error por registro (BTT RT-05.22), precondición de identidad `RF-POR-02` (Etapa 2), dirección entrante (`ACT-AGE` → `CH-PORTAL` → `CTX-VESSEL`), sensibilidad Comercial, sin fallback alterno declarado (el objetivo es eliminar la digitación manual existente, no ofrecer un canal paralelo a ella), evidencia = informe de error por registro + cero instrucciones redigitadas por el terminal. Estado: `EN CURSO` — ya reflejado en A1 `CH-PORTAL`/`ACT-AGE`; el contrato de validación se detalla con A1/D1.
 
 **Convivencia con quien no adopta el estándar (Caso 06 Cap. 13.1, objeción de la gerenta comercial):** hasta que cada naviera adopte EDIFACT, `INT-HUB` acepta un puente asistido (digitación validada desde el correo/formato propio) por naviera individual — **nunca** para la naviera de la alianza, que exige cero redigitación desde la vigencia efectiva de 2029 (`ESC-01`). El puente es una degradación declarada (BTT RT-02.09), no una arquitectura paralela.
 
