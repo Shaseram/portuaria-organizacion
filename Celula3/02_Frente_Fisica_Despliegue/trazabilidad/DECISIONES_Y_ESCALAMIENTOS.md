@@ -16,6 +16,7 @@
 | `F2-ESC-005` | 2026-09-05 | todos | OMISIÓN DE ALCANCE | checklist del Capítulo C del BTT no incorporado | 28 entregables exigibles con su artículo y su Sobre; 6 son del Frente 2 | agregarlo como control en la matriz global §2 | los tres frentes | PARA REVISIÓN DEL INTEGRADOR |
 | `F2-ESC-006` | 2026-09-05 | C1/C3/C4 | COLISIÓN DE CÓDIGOS | 4 códigos `RT` de los capítulos del Frente 2 designan materias distintas en BTT y caso | el Supuesto M de Célula 2 solo documenta 5 colisiones, ninguna de estas | ampliar el listado del Maestro §1.1 con estos códigos | C1, C3, C4, T-12 | PARA REVISIÓN DEL INTEGRADOR |
 | `F2-ESC-007` | 2026-09-05 | todos | LÍNEA BASE DESFASADA | Maestro §2.2 y `MC-19` citan 138 RF / 84 RNF / 10 reglas | hoy son 139 / 91 / 11 y el reparto es 82 / 57 | actualizar §2.2 y registrar el commit `c4756df` según la regla de lectura 5 | los tres frentes | PARA REVISIÓN DEL INTEGRADOR |
+| `F2-ESC-008` | 2026-09-05 | C1/C2 | EXTERNO | ingresos físicos de comunicaciones del edificio administrativo | `RT-06.32` exige rutas físicas distintas con ingreso al edificio por puntos separados; el caso no dice si el edificio lo admite | levantar antes de cerrar `ADR-005`; puede descartar por norma la alternativa de endurecer la sala actual | C1, C2, C3, `ADR-005` | BLOQUEADO EXTERNO |
 | `F2-DEC-002` | 2026-09-05 | C2 | TENSIÓN A DECLARAR | `RT-06.20` exige biometría facial para el recinto técnico | la restricción no negociable 8 registra la objeción a la biometría obligatoria | declarar que son poblaciones distintas; no silenciar | C2, D1 | PENDIENTE |
 | `F2-DEC-003` | 2026-09-05 | C2 | TENSIÓN A DECLARAR | `RT-06.24` exige videovigilancia propia del recinto, 30 días en línea | la regla negativa 6 prohíbe crear un portal de video y conserva el VMS | declarar que el CCTV del recinto no es el VMS del terminal | C2, C3, D1 | PENDIENTE |
 | `F2-COR-001` | 2026-09-05 | C1 | CORRECCIÓN PROPIA | cumplimientos decían `RT-03.01..15` | el capítulo llega a `RT-03.24` | corregido en C1 | C1, C3, C4 | APLICADO |
@@ -106,6 +107,14 @@
 **Además.** La regla de lectura 5 del propio Maestro dice: *«Si el proyecto pasa a un repositorio Git, se debe registrar en este encabezado el commit que congela Célula 2.»* El repositorio ya existe y ese commit es **`c4756df`**. Mientras no se registre, el Maestro sigue declarando como corte «la versión auditada del 2026-09-04», que ya no es la vigente.
 
 **Nota para el Frente 2.** Ninguna de las cifras de dimensionamiento cambia: los siete RNF nuevos son de desempeño y disponibilidad, y `RF-POR-09` es un canal de presentación documental sin volumen propio declarado. El impacto es de cita y de conteo, no de capacidad.
+
+### `F2-ESC-008` — Ingresos físicos de comunicaciones del edificio administrativo
+
+**Qué falta.** `RT-06.32` del BTT exige que *«el acceso a las redes de comunicaciones estará provisto a través de rutas físicas distintas, con ingreso al edificio por puntos separados»*. El CP, Cap. 6 declara que hoy existe fibra de un solo proveedor con respaldo por radioenlace, pero no dice si el edificio administrativo admite dos ingresos físicos separados de canalización.
+
+**Por qué bloquea.** Es un posible criterio de descarte **por norma** para la alternativa A de `ADR-005` —endurecer la sala actual—, anterior a cualquier comparación de costo u operabilidad. Sin el dato, el ADR debe cerrarse por criterios secundarios, que es una decisión más débil y más objetable.
+
+**Cómo se levanta.** Inspección del edificio administrativo o consulta al CLIENTE sobre canalizaciones existentes y puntos de acometida disponibles. Mientras tanto, C1 lo declara abierto y no presume la respuesta en ninguna dirección.
 
 ## 3. Tensiones declaradas, no resueltas
 
