@@ -220,7 +220,9 @@ sequenceDiagram
 
 **Qué NO está disponible offline (declaración obligatoria, BTT RT-03.13 — omitirla es "observación grave"):** ver tabla §7.
 
-*Fuente: BTT RT-03.10/13; RF-OPD-01,02,05,06,07,08; RNF-DIS-03/04 (Célula 2 — cubren específicamente las 8 h de terminales de patio y los ≤90 min de sincronización, sustituyendo a los antiguos `RF-OPD-03/04`, eliminados y no reutilizados).*
+**El umbral ≤90 min no es solo `RNF-DIS-04`:** `CP, Cap. 15, RT-03.13` fija el mismo valor como parámetro del caso — mismo código que `BTT RT-03.13` (que exige, en cambio, declarar qué funciones no están disponibles offline, ya citado en el párrafo anterior). Colisión confirmada por Frente 2 (`F2-ESC-006`) y tratada como Supuesto M — ambos exigibles y acumulativos, no alternativos (ver A1 §2.2 `EDGE-RUN` y `DECISIONES_Y_ESCALAMIENTOS.md`, `F1-CONFLICTO-001`). A peak estacional ese umbral exige del orden de 32,5 Mbps sostenidos durante la reposición (dimensionamiento físico de C3/C4, `F2-ESC-012`; el enlace de respaldo real —radioenlace, sin prueba de conmutación desde 2022 según el caso— puede no sostenerlo, riesgo que ese frente declara y este documento no resuelve).
+
+*Fuente: BTT RT-03.10/13 + CP, Cap. 15, RT-03.13 (parámetro del caso, acumulativo); RF-OPD-01,02,05,06,07,08; RNF-DIS-03/04 (Célula 2 — cubren específicamente las 8 h de terminales de patio y los ≤90 min de sincronización, sustituyendo a los antiguos `RF-OPD-03/04`, eliminados y no reutilizados).*
 
 ---
 

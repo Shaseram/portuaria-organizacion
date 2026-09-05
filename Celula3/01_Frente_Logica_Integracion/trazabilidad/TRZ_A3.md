@@ -4,7 +4,7 @@
 
 | ID | Fuente primaria | MC/decisión | RF/RNF/RN | Escenario | Umbral/regla | Sección/diagrama | Estado |
 |---|---|---|---|---|---|---|---|
-| `TRZ-A3-001` | BTT RT-03.10/13; Célula 2, Decisión 1 §7.2 | MC-09 | RF-OPD-01,02,05-08; RNF-DIS-03/04 | Operación desconectada 72 h → reconexión | 72 h sin pérdida; terminales de patio 8 h; sync ≤90 min sin intervención manual | §2.5 | PARA REVISIÓN |
+| `TRZ-A3-001` | BTT RT-03.10/13 + `CP, Cap. 15, RT-03.13` (parámetro del caso, mismo código, colisión confirmada por Frente 2 `F2-ESC-006`, Supuesto M — acumulativo, no alternativo); Célula 2, Decisión 1 §7.2 | MC-09 | RF-OPD-01,02,05-08; RNF-DIS-03/04 | Operación desconectada 72 h → reconexión | 72 h sin pérdida; terminales de patio 8 h; sync ≤90 min sin intervención manual; ≈32,5 Mbps sostenidos exigidos a peak (dimensionamiento C3/C4, `F2-ESC-012`) | §2.5 | PARA REVISIÓN |
 | `TRZ-A3-002` | Célula 2, Decisión 1 §7.2, §15.1, §15.4 | MC-14 | RF-CON-14 | Retorno / reversión de dominio TOS | ≤30 min (dos relojes ≤15+≤15); doble control + break-glass; asimetría "ante la duda se revierte" | §5 | PARA REVISIÓN |
 | `TRZ-A3-003` | Célula 2, Decisión 1 §5.2, §7.1, §15.2, §15.3 | MC-07/08 | RF-CON-13/14 | Autoridad dominio×zona×fase y conciliación | Posición/movimientos 0,2 %/0,5 %/48 h; gate/hechos cero/24 h; regla direccional de clasificación | §3, §4 | PARA REVISIÓN |
 | `TRZ-A3-004` | Caso 06 Cap. 13.2; Célula 2 Decisión 1 §5.5, §9.1; Decisiones 18, 23 | MC-23/24/25 | RF-NAV-01..05, 12, 13 (conducta) — meta en catálogo RF parte 3 §11.2 | Programa 2029 (alianza, 34 %) | Cero redigitación; ventana ≥72 h; ≥30 mov/h; emisiones verificadas desde mes 1 | §8 | PARA REVISIÓN |
