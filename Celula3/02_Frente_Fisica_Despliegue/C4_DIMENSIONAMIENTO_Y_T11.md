@@ -289,6 +289,49 @@ El posible cuarto sitio de 2030–2032 queda fuera del horizonte de tres años, 
 | Puestos de operación | dotación de `DIM-18` | tres turnos | — | — | — | estación con monitores duales | **por confirmar con el modelo de operación**; `DIM-18` estima 2 diurnos + 1 de guardia | no se fija sin el AHT real | `T11-C2-13` |
 | Nube | 2,5 TB en línea · 73 ev/s ingesta | ×1,79 | multi-AZ + región secundaria | por conjunto | 30 % | servicio gestionado | elástica, con umbrales y límites declarados | `RT-02.10` | `T11-C2-17`, `18` |
 
+### 9.bis Candidatos T-11 de seguridad, consolidados desde `SEC-PHYS-v0.1`
+
+D1 entregó 31 controles agrupados en 17 entradas y clasificó cada una. Su regla `F3-DEC-005` es explícita: *«C4 debe asignar ID T-11 solo cuando exista un producto, plataforma, licencia, servicio o hardware efectivamente ofertado. Capacidades nativas o incluidas se referencian desde la fila principal; no se duplican por cada control lógico.»* Se aplica literalmente. **De los 17 grupos, siete generan fila propia; el resto se referencia desde filas que ya existen.**
+
+| Candidato | Grupo `SEC-PHYS` | Componente | Ubicación | Unidad de cantidad | Fuente del cálculo |
+|---|---|---|---|---|---|
+| `T11-SEC-01` | `SEC-EDGE-01/02` + `SEC-API-01` | servicio de borde y gateway gestionados | nube primaria | por volumen de tráfico y de peticiones | C4 §5.1: 369 kbps en régimen, 625 en peak estacional |
+| `T11-SEC-02` | `SEC-IAM-01 / SEC-ADM-01` | plataforma de identidad y PAM | nube, con capacidad local en `PHY-OPS-01` | por identidades administradas y sesiones privilegiadas | `DIM-06` 160→175 internas; `DIM-07` 159→187 externas; **más 2.100→2.400 eventuales distintos al año**, que no son concurrentes pero sí identidades a administrar |
+| `T11-SEC-03` | `SEC-KEY-01 / SEC-SECRET-01` | KMS o HSM y gestor de secretos, con material local protegido | nube y sala técnica | por ámbito de clave y capacidad local | requisito excluyente de `ADR-009`; no depende del volumen |
+| `T11-SEC-04` | `SEC-LOG-01 / SEC-SIEM-01` | plataforma SIEM y de registro, con colector y buffer local | nube, con colector en `PHY-OPS-01` | **por ingesta diaria y retención** | ver §9.ter |
+| `T11-SEC-05` | `SEC-END-01` | EDR: agentes y consola | nube, sala y puestos | por carga y por puesto administrado | 3 nodos locales + cargas en nube + puestos de `PHY-OPS-06`. **Excluye los dispositivos de terreno**, ver C2 §8.bis |
+| `T11-SEC-06` | `SEC-SOC-01 / SEC-IR-01` | SOC gestionado 24×7 y gestión de incidentes | servicio | por cobertura y volumen de eventos | restricción no negociable 11: se oferta como servicio, no se asigna a TI=5 |
+| `T11-SEC-07` | `SEC-VULN-01` + `SEC-PENTEST-01` | escaneo continuo y pentest independiente | servicio | por activos analizados y por ejercicio anual | `RT-11`: pentest anual y antes de cada paso a producción |
+
+**Los diez grupos restantes no generan fila, y se declara desde dónde se cubren:**
+
+| Grupo | Se cubre desde | Razón |
+|---|---|---|
+| `SEC-NET-01 / SEC-EXP-01` | `T11-C2-03` conmutación y `T11-C2-04` cortafuegos | la segmentación es una capacidad del equipo ya ofertado |
+| `SEC-SYNC-01` | `T11-C3-01` enlace y el broker de `T11-C2-17` | es un conducto sobre infraestructura ya contada |
+| `SEC-DATA-01 / SEC-ENC-01 / SEC-FIELD-01` | `T11-C2-17` servicios de datos en nube y `T11-C2-02` almacenamiento local | cifrado nativo del almacén |
+| `SEC-BKP-01` | `T11-C2-12` custodia de medios y `T11-C2-18` región secundaria | es condición de esas filas, no una segunda compra |
+| `SEC-SDLC-01 / SEC-PIPE-01` y `SEC-SUPPLY-01 / SEC-ART-01` | plataforma CI/CD de C3 §13 | una plataforma, no una fila por regla de control |
+| `SEC-NPDATA-01` | proceso, no producto | fila solo si se oferta herramienta separada |
+| `SEC-GOV-01 / SEC-CLOUD-01 / SEC-HARD-01 / SEC-SAMM-01` | implementación y servicios | `SEC-HARD-01` aterriza como línea base CIS por producto en C2 §8.bis |
+
+### 9.ter Dimensionamiento del registro de seguridad
+
+Es la única entrada de `SEC-PHYS-v0.1` cuya cantidad depende de un cálculo propio, y D1 la remite expresamente a C4. El volumen lo domina la telemetría, igual que todo lo demás en este caso.
+
+| Fuente de eventos | Volumen | Origen |
+|---|---|---|
+| Telemetría local de reefer y posicionamiento | 73 ev/s | `DIM-03` + `DIM-05`; **no todos se registran como evento de seguridad**, solo los de acceso y error |
+| Accesos de personas | 640→700 propios y hasta 380 eventuales por turno | `CP, Cap. 14.1`; retención de accesos **5 años**, Maestro §16.1 |
+| Transacciones de negocio | 0,11 TPS en régimen | `DIM-01` |
+| Registros de plataforma, red y borde | proporcional a nodos y a peticiones | C1 §4 |
+
+**Retención exigida:** `RT-11` fija **12 meses en línea más 24 en archivo** para los registros de seguridad. Es la retención más larga en línea de todo el sistema después de los movimientos, y es la que dimensiona la plataforma.
+
+**Buffer local:** el colector de `PHY-OPS-01` debe sostener los eventos de las **72 horas** de corte más margen, y reenviarlos al reconectar sin perderlos ni duplicarlos. Ese volumen se suma a los ≈183 GB útiles del §6.1: se incorpora dentro de los ≈50 GB declarados como «registros locales, sistema operativo y trabajo», y el margen del 30 % lo absorbe. **No hay que reabrir el dimensionamiento de almacenamiento local por esto.**
+
+> **Lo que no se puede cerrar todavía.** La ingesta diaria en GB depende de la política de qué se registra, que es de D1, y de la clasificación campo→sensibilidad que D1 mantiene abierta como `F3-DEP-004`, dependiente del Subdocumento 5 y del CLIENTE. La **unidad** de cantidad queda declarada aquí —ingesta diaria y retención—; el **valor** se cierra cuando exista esa política. Ponerle una cifra ahora sería inventarla.
+
 ### 10. Matriz T-11 y control 1:1
 
 Los candidatos de este frente están en C2 §9 y en la tabla de conversión de §9 de este entregable. **No se han escrito todavía en [`../../90_Consolidado/01_T11_TRABAJO_TRAZABLE.md`](../../90_Consolidado/01_T11_TRABAJO_TRAZABLE.md)**, y es deliberado: el README de Célula 3 establece que los archivos de `90_Consolidado/` *«reciben únicamente contenido aprobado para entrega»* y que los archivos globales los actualiza el integrador en las puertas de integración. Este material está en `v0.5`, no aprobado, y además el T-11 debe recibir también los candidatos de A1, A2, A3, D1 y D2. La consolidación se hace en la Puerta 2, con las doce columnas de trabajo, y de ahí pasan al formulario final solo las cinco oficiales. Al Formulario T-11 final pasan solo las cinco oficiales —Componente, Producto o servicio ofertado, Ubicación o lugar, Cantidad, Justificación— y solo las filas aprobadas.
@@ -300,7 +343,7 @@ Los candidatos de este frente están en C2 §9 y en la tabla de conversión de �
 | toda fila de C2 y C3 tiene nodo `PHY-*` en C1 | **cumple** | §9 y tabla de emplazamiento de C1 §4 |
 | toda cantidad tiene cálculo o criterio declarado | **cumple**, con seis cantidades en rango o pendientes de dato externo | §9 |
 | cada nodo desplegable de C1 aparece en T-11 o tiene exclusión justificada | **cumple** | C2 §9 lista lo excluido y por qué |
-| controles y licencias de seguridad considerados | **pendiente** | requiere `SEC-PHYS-v0.1` de D1 |
+| controles y licencias de seguridad considerados | **cumple** | §9.bis: los 17 grupos de `SEC-PHYS-v0.1` clasificados, 7 con fila propia y 10 con su origen declarado, conforme a `F3-DEC-005` |
 | no existen precios | **cumple** | revisión de los cuatro paquetes |
 | el formulario final conserva exactamente cinco columnas | **cumple** | plantilla de `90_Consolidado` |
 
@@ -325,7 +368,8 @@ Quedan **fuera del T-11 con justificación**: la obra civil de la sala, de cargo
 - [x] Margen del 30 % y procedimiento de ampliación, con su restricción de calendario.
 - [x] No hay precios.
 - [ ] `TRZ_C4.md` completo — en curso.
-- [ ] Consolidación final de T-11 con los candidatos de A1, A2, A3, D1 y D2 — Puerta 2.
+- [x] Candidatos de D1 incorporados desde `SEC-PHYS-v0.1` — §9.bis y §9.ter.
+- [ ] Consolidación final de T-11 con los candidatos de A1, A2, A3 y D2 — Puerta 2.
 - [ ] Cinco cantidades dependen de dato externo; ninguna se inventa.
 
 ## Trazabilidad

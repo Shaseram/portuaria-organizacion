@@ -176,6 +176,50 @@ El diseño no promete cobertura perfecta, porque las sombras se mueven cada hora
 `RT-03.24` del BTT —calidad de servicio— pide declarar la priorización del tráfico operacional crítico frente al administrativo. Se aplica QoS con la confirmación de movimiento y la alarma de frío en la clase de mayor prioridad, y la sincronización diferida y la telemetría histórica en clases inferiores, de modo que la recuperación tras un corte no compita con la operación en curso.
 
 
+### 5.bis Reconciliación con las zonas y los flujos de D1
+
+`SEC-PHYS-v0.1` propone **nueve zonas** y **once flujos autorizados**. El §5 de este entregable había definido **cuatro zonas**. No se contradicen: están a distinta granularidad y responden a preguntas distintas. Las cuatro de C3 son **dominios de conmutación físicamente segregados**, que es lo que exige la restricción no negociable 6 y lo que se prueba con «cero rutas cruzadas no autorizadas» de `RNF-SEG-06`. Las nueve de D1 son **ámbitos de política**, y su propio texto lo advierte: *«una zona no implica comprar un servidor o firewall por fila»*.
+
+La correspondencia, que a partir de aquí es la vigente para ambos frentes:
+
+| Dominio físico de C3 | Zonas de D1 que aloja | Frontera que se prueba |
+|---|---|---|
+| **Operacional** | `Z-LOCAL`, `Z-FIELD`, y la parte local de `Z-DATA` | segregación física verificada por prueba de penetración interna |
+| **Administrativa** | `Z-ADM` | sin ruta hacia patio, protección ni datos |
+| **Protección** | `Z-PROT` | conducto mínimo aprobado por la autoridad; sin video por la red operacional |
+| **Recinto técnico** | plano de aplicación de `Z-MGMT` en el sitio | acceso por PAM; CCTV y control de acceso propios del recinto |
+| *(en nube, fuera de la conmutación del terminal)* | `Z-EDGE`, `Z-SVC`, y la parte en nube de `Z-DATA` | segmentación de subredes del proveedor (`RT-03.04`) |
+
+`Z-EXT` no tiene dominio físico nuestro: es el origen del tráfico.
+
+**Dos precisiones que el cruce obliga a hacer.**
+
+`Z-MGMT` **atraviesa los cuatro dominios y no es uno más**. Administrar el núcleo local, los conmutadores, la nube y los puestos son accesos a zonas distintas, unificados por un mismo plano de identidad y elevación. Tratarla como un quinto segmento físico crearía una red de administración que cruza la segregación que acabamos de construir. Se materializa como acceso mediado con PAM desde `Z-ADM` hacia cada zona, nunca como ruta directa.
+
+`Z-DATA` **queda repartida** entre nube y sala, y eso es correcto: durante el corte de 72 horas la autoridad del dato pasa al núcleo local (§6 de C1). La política de acceso es la misma en ambos emplazamientos; lo que cambia es quién es la fuente de verdad.
+
+**Los once flujos contra la matriz de conductos.** `FL-01` a `FL-11` de D1 son el detalle lógico de lo que aquí son conductos autorizados. Tres tienen consecuencia física directa sobre este entregable:
+
+| Flujo D1 | Consecuencia para C3 | Dónde queda |
+|---|---|---|
+| `FL-03` sincronización `Z-LOCAL` ↔ `Z-SVC` | es el conducto que carga los **32,5 Mbps de reposición** tras un corte de 72 h en peak estacional; D1 lo declara con «persistencia local y conciliación ≤90 min» y C4 le pone la cifra | §5 enlaces, C4 §5.1 |
+| `FL-07` integración ↔ `Z-PROT` | el conducto hacia VMS y control de acceso **existe y es mínimo**; confirma que la segregación no aísla el plan de protección, que es la condición de la restricción 7 | §5, `F2-ESC-002` |
+| `FL-10` servicios → colectores, tiempo y nombres | D1 advierte que *«tiempo, nombres y registros locales no pueden depender solo de nube»*. **Esto no estaba en C3.** Durante las 72 h sin enlace, la resolución de nombres, la sincronización horaria y la validación de certificados tienen que resolverse localmente, o las cinco funciones críticas fallan por una causa que nada tiene que ver con su lógica | §5.ter, nuevo |
+
+### 5.ter Servicios de infraestructura que deben sobrevivir el corte
+
+Es la consecuencia de `FL-10` y del `B3.4` de D1, y es un hueco real que este entregable tenía: se había dimensionado el cómputo, el almacenamiento y el enlace para las 72 horas, pero no los servicios que todo lo demás da por sentados.
+
+| Servicio | Por qué falla si depende de nube | Tratamiento local |
+|---|---|---|
+| **Resolución de nombres** | los servicios se llaman entre sí por nombre; sin resolución, el núcleo local no se encuentra a sí mismo | resolvedor local autoritativo para la zona operacional, con la vista externa como reenvío opcional |
+| **Sincronización horaria** | sin hora común no hay orden de eventos, y la reconciliación determinista tras el corte depende del orden | fuente de tiempo local con al menos dos referencias; el sello de evidencia y la bitácora dependen de esto |
+| **Validación de certificados** | si la comprobación de revocación solo se hace en línea, el TLS interno falla al caer el enlace | validación con material local vigente; **prohibido desactivar la validación o aceptar certificados vencidos** durante el corte, como advierte D1, `B3.4` |
+| **Identidad y sesión** | una autenticación que consulte a nube convierte el corte de enlace en corte de operación | caché local de `SRV-IAM` con credenciales vigentes; ver C1 §5 |
+| **Registro y buffer de seguridad** | los eventos del corte no pueden perderse ni esperar al enlace | colector local con buffer de 72 h más margen; se reenvía al reconectar |
+
+Los cinco se incorporan a la matriz de continuidad del §7 como dependencias de las funciones críticas, y su capacidad —especialmente el buffer del colector— se dimensiona en C4. Ninguno genera fila propia de T-11: son capacidades del núcleo local y de la plataforma de observabilidad ya ofertadas.
+
 ### 6. Clasificación de servicios
 
 `RT-10.02` obliga a clasificar cada servicio en crítico, alto, medio o bajo, **justificando con el impacto operacional de su indisponibilidad**, y a aplicarle el nivel del Art. 78° de las BA. La clasificación no es cosmética: fija disponibilidad, tiempo de respuesta, tiempo de resolución y cobertura de atención.
@@ -310,7 +354,8 @@ Un dato del caso que el plan debe incorporar y que no es nuestro: el respaldo el
 - [x] Clasificación de servicios con impacto justificado y nivel del Art. 78°.
 - [ ] `TRZ_C3.md` completo — en curso.
 - [ ] Buffer de 72 h, sincronización y capacidad de los ambientes — dependen de C4.
-- [ ] Conductos, reglas de segmentación y evidencia — se cierran con `SEC-PHYS-v0.1` de D1 en la Puerta 1.
+- [x] Conductos y reglas de segmentación — §5.bis: cuatro dominios físicos reconciliados con las nueve zonas de D1 y los once flujos.
+- [x] Servicios de infraestructura que sobreviven el corte — §5.ter, hueco detectado al cruzar `FL-10`.
 - [ ] Calendario de conmutaciones DR — depende de la programación de atraque, dato del CLIENTE.
 - [ ] Vista de despliegue y red — en el pase final de diagramas.
 

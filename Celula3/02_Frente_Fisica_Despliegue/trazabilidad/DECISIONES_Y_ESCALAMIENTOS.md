@@ -21,6 +21,7 @@
 | `F2-ESC-010` | 2026-09-05 | C3 | INTERPRETACIÓN CON EFECTO DE PLAZO | el ambiente de DR debe estar operativo en el **mes 6** | `RT-04.01` condiciona el hito H3 a los **cinco** ambientes; el E-25 describe H3 nombrando cuatro. Art. 5.2 y 5.4 de las BA obligan a la lectura más exigente | planificar región secundaria, replicación y conmutación para el mes 6, no para el paso a producción. Afecta el cronograma del Subdocumento 7 | C2, C3, C4, Frente 1, planificación | PARA REVISIÓN DEL INTEGRADOR |
 | `F2-ESC-011` | 2026-09-05 | C4 | EXTERNO | tamaño real de imagen de los lectores de patente y contenedor | el supuesto propio de 500 KB gobierna el **91 % del buffer de 72 h**, el ancho de banda de reposición y el 100 % del almacenamiento documental. A 1 MB el buffer sube a 40 GB y la reposición a 58 Mbps | solicitar el tamaño real que producen los lectores actuales; entretanto el margen del 30 % absorbe hasta ≈650 KB | C2, C3, C4, T-11 | BLOQUEADO EXTERNO |
 | `F2-ESC-012` | 2026-09-05 | C3/C4 | EXTERNO | capacidad real de la fibra y del radioenlace de respaldo | la sincronización en ≤90 min exige **32,5 Mbps sostenidos** a peak estacional; el caso describe el respaldo como «de menor capacidad» | solicitar la capacidad contratada de ambos enlaces; si el respaldo no la sostiene, el compromiso de `RNF-DIS-04` se cumple sobre el principal restablecido o sobre el segundo camino de `RT-03.17` | C3, C4, `RNF-DIS-04` | BLOQUEADO EXTERNO |
+| `F2-INT-001` | 2026-09-05 | C1..C4 | INTERCAMBIO CUMPLIDO | cruce con `SEC-PHYS-v0.1` del Frente 3 | 17 grupos emplazados en C1 §6.bis, con producto en C2 §8.bis, zonas y flujos en C3 §5.bis y clasificación T-11 en C4 §9.bis | cerrar `F3-DEP-003` contra este material; `B7-F05` quedó superado | D1, D2, D3 | **APLICADO** |
 | `F2-DEC-002` | 2026-09-05 | C2 | TENSIÓN A DECLARAR | `RT-06.20` exige biometría facial para el recinto técnico | la restricción no negociable 8 registra la objeción a la biometría obligatoria | declarar que son poblaciones distintas; no silenciar | C2, D1 | PENDIENTE |
 | `F2-DEC-003` | 2026-09-05 | C2 | TENSIÓN A DECLARAR | `RT-06.24` exige videovigilancia propia del recinto, 30 días en línea | la regla negativa 6 prohíbe crear un portal de video y conserva el VMS | declarar que el CCTV del recinto no es el VMS del terminal | C2, C3, D1 | PENDIENTE |
 | `F2-COR-001` | 2026-09-05 | C1 | CORRECCIÓN PROPIA | cumplimientos decían `RT-03.01..15` | el capítulo llega a `RT-03.24` | corregido en C1 | C1, C3, C4 | APLICADO |
@@ -157,6 +158,22 @@
 **El problema.** El `CP, Cap. 6` describe el respaldo como *«radioenlace de menor capacidad»* y advierte que *«no se ha probado en conmutación real desde 2022»*. Si el corte de 72 horas fue causado por la caída de la fibra y la reconexión ocurre estando aún sobre el radioenlace, el compromiso de 90 minutos **puede no ser alcanzable**.
 
 **Cómo se trata.** El compromiso se declara sobre el enlace principal restablecido o sobre el segundo camino que `RT-03.17` obliga a proveer, dimensionado a esta cifra. No se promete sobre un respaldo cuya capacidad no conocemos. Se solicita al CLIENTE la capacidad contratada de ambos enlaces.
+
+### `F2-INT-001` — Cruce con `SEC-PHYS-v0.1` y respuesta a `B7-F05`
+
+**Qué se hizo.** Los 17 grupos del paquete temprano del Frente 3 quedaron emplazados, con producto de referencia, zona, conducto y clasificación T-11, en los cuatro paquetes de este frente.
+
+**Lo que este frente le devuelve al Frente 3.** La auditoría B7 de D1 registró en `B7-F05` que *«A1–A3 y C1–C4 visibles siguen en estructura/plantilla, sin catálogos, contratos, nodos, productos ni cantidades utilizables para validar D1»*, y mantuvo `F3-DEP-003` abierta. Ese diagnóstico era correcto **para el estado de `main` al 2026-09-05**: los cuatro paquetes del Frente 2 estaban en la rama `frente_2`, sin integrar. Con la consolidación existen los nodos `PHY-*`, los productos por clase, las zonas y redes, y el dimensionamiento. **`F3-DEP-003` puede cerrarse contra este material.**
+
+**Tres cosas que el cruce cambió en este frente, y que no venían de nosotros.**
+
+`SEC-KEY-01` obliga a **material de clave protegido en el sitio**. Es la consecuencia física de `ADR-009` de D1 y de la regla negativa 8 del Maestro: un cifrado cuya clave viva solo en nube impide que las cinco funciones críticas lean y escriban durante las 72 h de corte. C2 §8.bis lo incorpora como requisito excluyente.
+
+`FL-10` de D1 destapó un hueco real: *«tiempo, nombres y registros locales no pueden depender solo de nube»*. C3 había dimensionado cómputo, almacenamiento y enlace para el corte, pero no la resolución de nombres, la hora, la validación de certificados ni la caché de identidad. Sin esos cinco, las funciones críticas fallan por una causa ajena a su lógica. Es la nueva §5.ter de C3.
+
+`SEC-END-01` obligó a declarar que **el EDR no cubre los dispositivos de terreno**. Los equipos de las cinco clases marinas son de fabricantes industriales cuyo soporte de agente no está confirmado, y el `CP, Cap. 11` prohíbe imponer software al fabricante. Se cubren por segmentación y por la gestión de flota de `RT-03.18`. Contar una licencia por dispositivo habría inflado el T-11 con algo no instalable.
+
+**Lo que sigue abierto.** `T11-SEC-04`, el dimensionamiento de la ingesta del registro de seguridad, depende de la política de qué se registra y de la clasificación campo→sensibilidad que D1 mantiene como `F3-DEP-004`. La **unidad** está declarada; el **valor** no se inventa.
 
 ## 3. Tensiones declaradas, no resueltas
 

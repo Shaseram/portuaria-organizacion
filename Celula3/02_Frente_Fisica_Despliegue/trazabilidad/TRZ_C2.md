@@ -41,6 +41,10 @@
 | `TRZ-C2-033` | `BA, Art. 14.2` — la especificación del hardware de terreno es del PROPONENTE aunque la compra sea del CLIENTE · `CP, Cap. 11` — no se compra hardware, sí se especifica | límite | equipamiento de terreno | especificación completa sin adquisición | — | — | `T11-C2-15` | PARA REVISIÓN |
 | `TRZ-C2-034` | BTT, Cap. C, entregables N° 8 y N° 10 — site principal y secundario **con planos**; hardware y dispositivos de terreno | checklist | entregables | los planos quedan para el pase final de diagramas | — | plano | — | PENDIENTE |
 
+| `TRZ-C2-035` | D1, `SEC-PHYS-v0.1`, `SEC-KEY-01` y `ADR-009` — operación local sin clave que viva solo en nube · Maestro, regla negativa 8 | claves | KMS/HSM con **material de clave protegido en el sitio y raíz no exportable** | requisito excluyente: sin él las cinco funciones críticas no descifran durante el corte | — | — | `T11-SEC-03` | PARA REVISIÓN |
+| `TRZ-C2-036` | D1, `SEC-END-01` · `CP, Cap. 11` — no imponer software al fabricante · `RT-03.18` gestión centralizada de flota | EDR | los dispositivos de terreno **no se presumen compatibles con agente**; se cubren por segmentación y gestión de flota | evita inflar el T-11 con licencias no instalables | cantidad | vista de borde | `T11-SEC-05` | PARA REVISIÓN |
+| `TRZ-C2-037` | D1, `SEC-SOC-01` · `CP, Cap. 10`, restricción 11 — «toda función que requiera un especialista dedicado que la compañía no tiene debe ofrecerse como servicio y estar costeada» | SOC | monitoreo 24×7 como **servicio ofertado**, no como tarea del área TI de cinco personas | — | cobertura | — | `T11-SEC-06` | PARA REVISIÓN |
+
 ## 2. Cobertura declarada
 
 | Obligación | Cómo la cubre C2 | Sección |
@@ -61,6 +65,6 @@
 
 - Cerrar `TRZ-C2-008`, `021`, `022`, `023`, `024` y `028` con el dimensionamiento de C4.
 - Cerrar `TRZ-C2-019` y `020` con el procedimiento y el calendario de C3.
-- Cruzar `TRZ-C2-011`, `012` y `031` con `SEC-PHYS-v0.1` del Frente 3.
+- ~~Cruzar `TRZ-C2-011`, `012` y `031` con `SEC-PHYS-v0.1`~~ — **hecho** en §8.bis; ver `TRZ-C2-035` a `037`.
 - `TRZ-C2-015` y `027` dependen de dato externo del CLIENTE.
 - `TRZ-C2-030` requiere que se abra `ADR-011`.

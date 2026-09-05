@@ -29,6 +29,7 @@
 | `TRZ-C1-021` | BTT, Cap. 3, `RT-03.14` — redundancia y tolerancia a la falla de al menos un disco con nivel RAID justificado · `RT-08.03`/`RT-08.04` | — | RNF-DIS aplicables | `PHY-OPS-01`, `PHY-OPS-02`, `PHY-OPS-04` | equipos críticos redundantes, sin punto único | continuidad | §4, §8 | C2/C4 | PARA REVISIÓN |
 | `TRZ-C1-022` | BTT, Cap. 3, `RT-03.07` — estrategia de reversibilidad y mitigación de bloqueo por proveedor | — | — | `SPOF-09` | portabilidad declarada por componente | TCO, regulación | §8 | C2 | PARA REVISIÓN |
 | `TRZ-C1-023` | CP, Cap. 10, restricción 9 — congelamiento 15-dic a 30-abr · Maestro §13 — todo lo invasivo listo el 14-dic-2027 | MC-30 | RNF-DES-09 | `ADR-005` | el plazo es criterio de comparación de las alternativas de sala | continuidad, TCO | §7 | C3 | PARA REVISIÓN |
+| `TRZ-C1-025` | D1, `SEC-PHYS-v0.1`, B3.1 — nueve zonas de política · B7.6 y `F3-DEC-005` — regla de no duplicar filas T-11 | — | — | las nueve zonas sobre `PHY-CLD-*` y `PHY-OPS-*` | `Z-MGMT` sin nodo propio; `Z-DATA` repartida entre nube y sala; `Z-PROT` fuera del límite | regulación/seguridad | §6.bis | ver C4 §9.bis | PARA REVISIÓN |
 | `TRZ-C1-024` | CP, Cap. 11 — no se construye infraestructura civil, sí se especifica para que el CLIENTE la ejecute | — | — | límite de oferta | obra civil como especificación, no como partida | — | §2 | fuera de oferta | PARA REVISIÓN |
 
 ## 2. Cobertura declarada
@@ -46,7 +47,7 @@
 ## 3. Pendientes de esta traza
 
 - Refinar `TRZ-C1-001` y `TRZ-C1-010` con los IDs definitivos del catálogo lógico `v0.1` del Frente 1.
-- Cruzar `TRZ-C1-008`, `TRZ-C1-009` y `TRZ-C1-020` con `SEC-PHYS-v0.1` del Frente 3.
+- ~~Cruzar `TRZ-C1-008`, `TRZ-C1-009` y `TRZ-C1-020` con `SEC-PHYS-v0.1`~~ — **hecho** en §6.bis; ver `TRZ-C1-025`.
 - Cerrar `TRZ-C1-012` y `TRZ-C1-016` cuando se levante el dato externo.
 - Asignar fila T-11 definitiva a cada nodo tras el dimensionamiento de C4.
 

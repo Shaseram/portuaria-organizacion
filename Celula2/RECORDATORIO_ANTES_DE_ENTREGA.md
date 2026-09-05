@@ -1,7 +1,7 @@
 # Recordatorio antes de la entrega — Célula 2
 
 **Fecha:** 2026-09-05. **Estado del material:** verificado y sin errores de contenido.
-**Naturaleza de esta lista:** cinco puntos abiertos. Los tres primeros son de forma —cifras y enumeraciones— y su corrección está resuelta aquí, lista para aplicar. El cuarto es de alcance: faltan productos que el `CP, Cap. 17.1` exige. El quinto es de proceso: falta la vía por la que los supuestos nacidos en Célula 3 llegan a este registro.
+**Naturaleza de esta lista:** seis puntos abiertos. Los tres primeros son de forma —cifras y enumeraciones— y su corrección está resuelta aquí, lista para aplicar. El cuarto es de alcance: faltan productos que el `CP, Cap. 17.1` exige. El quinto es de proceso: falta la vía por la que los supuestos nacidos en Célula 3 llegan a este registro.
 
 > Este archivo se escribió tras un audit completo de Célula 2 contra el texto de las tres bases. **No se aplicó ninguna corrección**: se dejan documentadas para decidirlas antes de la entrega. Lo que el audit verificó y quedó limpio está al final, para no repetir el trabajo.
 
@@ -178,6 +178,25 @@ Al cierre de los cuatro paquetes del Frente 2 —Física y despliegue—, aplica
 Falta la revisión de los otros dos frentes de Célula 3 —lógica e integración, y seguridad y consolidación—, que probablemente aporten sus propios supuestos por el mismo criterio.
 
 Lo que hay que definir antes de la entrega es **quién y cuándo**: que en una de las puertas de integración de Célula 3 alguien recorra los tres archivos de escalamientos aplicando el criterio de 5.2, y traiga a este registro lo que clasifique como supuesto. Sin ese paso asignado, el material queda en tres archivos de trabajo que el evaluador no lee, y el Subdocumento 3 entrega un registro de supuestos que dice menos de lo que el equipo efectivamente asumió.
+
+---
+
+## 6. `RNF-SEG-07` y `RNF-SEG-11` citan los códigos intercambiados
+
+**Origen del hallazgo.** Lo detectó el Frente 3 de Célula 3 en su auditoría B7 de `D1_ARQUITECTURA_DE_SEGURIDAD.md`, como `B7-F11`, y decidió correctamente no editar Célula 2 desde otro frente. Se verificó de forma independiente contra el texto del BTT y se confirma.
+
+| RNF | Materia y umbral | Cita hoy | Debería citar |
+|---|---|---|---|
+| `RNF-SEG-07` | notificación de **brecha** de seguridad o de datos personales, **≤24 horas** | `RT-11.18` | **`RT-11.19`** |
+| `RNF-SEG-11` | escalamiento y comunicación de **incidente crítico**, **≤2 horas** | `RT-11.19` | **`RT-11.18`** |
+
+El BTT, Cap. 11 dice: `RT-11.18` es el **plan de respuesta a incidentes**, con comunicación al CLIENTE dentro de las **dos horas** de detectado un incidente de severidad crítica; `RT-11.19` es la **notificación de brecha** dentro de las **24 horas**, con informe preliminar y causa raíz a los cinco días hábiles.
+
+**Qué está bien y qué no.** Los umbrales son correctos —24 h para la brecha y 2 h para el incidente crítico— y coinciden con el Art. 21 de las BA. Lo único intercambiado es la **atribución del código**.
+
+**Por qué conviene corregirlo.** El Formulario T-12 responde código por código: con la cita actual, `RT-11.18` quedaría respondido con el RNF de brecha y `RT-11.19` con el de incidente crítico, ambos cruzados. Además el entregable N° 15 del checklist del Cap. C —«Plan de respuesta a incidentes de seguridad»— se exige en `RT-11.18`, de modo que la trazabilidad hacia ese producto también queda apuntando al RNF equivocado.
+
+**Corrección propuesta.** Intercambiar la columna «Origen exacto» de ambas filas en `01_Requerimientos/RNF.md`. No cambia ningún umbral, ninguna descripción ni ningún método de verificación.
 
 ---
 

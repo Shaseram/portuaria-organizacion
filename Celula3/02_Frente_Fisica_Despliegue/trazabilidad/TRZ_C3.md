@@ -35,6 +35,9 @@
 | `TRZ-C3-027` | `CP, Cap. 13.3`, condición 8 — estabilización con presencia en los tres turnos, incluida la madrugada, con habilitación ISPS | MC-18 | estabilización | dotación y duración declaradas; condiciona `PHY-OPS-06` | plan de estabilización | — | puestos | PENDIENTE C4 |
 | `TRZ-C3-028` | `CP, Cap. 6` — respaldo eléctrico del patio refrigerado nunca verificado a carga total de temporada | — | SPOF | `SPOF-05`; fuera del límite de oferta | se especifica la prueba y se escala al CLIENTE | — | fuera de oferta | **BLOQUEADO EXTERNO** |
 
+| `TRZ-C3-029` | D1, `SEC-PHYS-v0.1`, B3.1 y B3.2 — nueve zonas y once flujos · `CP, Cap. 10`, restricción 6 · `RNF-SEG-06` | — | zonas y conductos | los cuatro dominios de conmutación de §5 alojan las nueve zonas de política; `Z-MGMT` atraviesa los cuatro y **no es un quinto segmento** | prueba de penetración interna: cero rutas cruzadas | vista de red | equipamiento de red | PARA REVISIÓN |
+| `TRZ-C3-030` | D1, B3.4 y `FL-10` — «tiempo, nombres y registros locales no pueden depender solo de nube» | — | servicios de infraestructura | resolución de nombres, hora, validación de certificados, caché de identidad y buffer de registro **resueltos localmente** durante las 72 h | prueba de desconexión con los cinco servicios verificados | vista de red | sin fila: capacidad del núcleo local | PARA REVISIÓN |
+
 ## 2. Cobertura declarada
 
 | Obligación | Cómo la cubre C3 | Sección |
@@ -51,7 +54,7 @@
 ## 3. Pendientes de esta traza
 
 - Cerrar `TRZ-C3-018`, `020`, `023` y `027` con el dimensionamiento de C4.
-- Cruzar `TRZ-C3-008`, `009` y `012` con `SEC-PHYS-v0.1` del Frente 3.
+- ~~Cruzar `TRZ-C3-008`, `009` y `012` con `SEC-PHYS-v0.1`~~ — **hecho** en §5.bis; ver `TRZ-C3-029` y `030`.
 - Completar con A3 la declaración de funciones no disponibles en modo desconectado (checklist N° 4).
 - `TRZ-C3-009`, `010`, `011`, `017` y `028` dependen de dato o autorización externa.
 - `TRZ-C3-003` requiere decisión del integrador sobre `F2-ESC-010`.

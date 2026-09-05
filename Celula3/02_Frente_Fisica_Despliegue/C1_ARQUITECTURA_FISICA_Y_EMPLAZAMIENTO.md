@@ -185,6 +185,51 @@ Es la consecuencia física de la regla negativa 8 del Maestro y hay que decirla 
 
 El traspaso debe ser explícito y auditado. La sincronización objetivo es ≤90 min tras 72 h de corte (CP, Cap. 15, `RT-03.13`, materia «sincronización tras la reconexión» — ver la colisión de código registrada en `F2-ESC-006`). El diseño del mecanismo pertenece a A3; aquí se declara únicamente su consecuencia física: el buffer y la capacidad de cómputo local se dimensionan para el peak coincidente durante 72 h, no para el promedio. Dimensionamiento en C4.
 
+### 6.bis Correspondencia con las zonas de seguridad de D1
+
+`SEC-PHYS-v0.1` del Frente 3 llegó el 2026-09-05 con nueve zonas lógicas y once flujos autorizados. Una zona de D1 **no es un nodo**: es un ámbito de política. Varias zonas pueden materializarse sobre el mismo nodo mediante controles de plataforma o de red, y una zona puede repartirse entre varios nodos. Esta tabla fija esa correspondencia para que ambos frentes usen los mismos identificadores.
+
+| Zona D1 | Nodo o nodos físicos que la materializan | Cómo se realiza el aislamiento |
+|---|---|---|
+| `Z-EXT` redes externas | ninguno: está fuera del límite de la oferta | es el origen del tráfico, no un emplazamiento nuestro |
+| `Z-EDGE` borde expuesto | `PHY-CLD-01` | única superficie pública; el origen no se publica (`RT-03.04`) |
+| `Z-SVC` servicios privados en nube | `PHY-CLD-02`, `PHY-CLD-03`, `PHY-CLD-04` | subred privada de aplicación, sin alcance desde Internet |
+| `Z-DATA` almacenes protegidos | `PHY-CLD-05` a `PHY-CLD-08` en nube; `PHY-OPS-02` en el terminal | subred privada de datos; acceso solo por identidad de servicio. **Es un ámbito de política repartido entre nube y sala**, no una base única |
+| `Z-LOCAL` servicios operacionales locales | `PHY-OPS-01` y `PHY-OPS-03` | sostiene las 72 h sin enlace; no depende del borde en nube |
+| `Z-FIELD` equipos de terreno | `PHY-EDG-01` a `PHY-EDG-04` y los terminales de equipo | segmentación por tipo de dispositivo (`RT-03.23`); C3 la subdivide por criticidad y por fabricante |
+| `Z-ADM` red administrativa | `PHY-OPS-06`, espacio de operación del personal | sin ruta general hacia patio, protección ni datos |
+| `Z-PROT` protección | `EXT-VMS` y `EXT-ACC` del terminal, **fuera del límite de la oferta** | conducto mínimo aprobado; sin portal de video ni tránsito general |
+| `Z-MGMT` administración técnica | atraviesa `PHY-CLD-*` y `PHY-OPS-*`; sin nodo propio | acceso por PAM, separado del uso de negocio |
+
+**Tres consecuencias que conviene dejar escritas.**
+
+`Z-MGMT` **no tiene nodo propio y no debe tenerlo**. Es un plano de acceso que cruza nube y sala; darle un servidor de administración propio en el terminal agregaría una superficie más que endurecer y una más que operar con un área TI de cinco personas.
+
+`Z-DATA` **no coincide con un solo nodo**. La ubicación de cada almacén ya está decidida en la tabla de emplazamiento del §4 según los seis criterios del Art. 16; la zona aporta la política de acceso, no el lugar. Que `DATA-CORE` tenga réplica local durante el corte no crea una segunda `Z-DATA`: es la misma política aplicada en dos emplazamientos.
+
+`Z-PROT` **queda fuera del límite de la oferta**. El VMS y el control de acceso del recinto portuario se conservan (`SPOF` y §2). Lo que sí ofertamos es el **conducto** hacia ellos y el CCTV propio de la sala técnica, que es cosa distinta y está declarada en `F2-DEC-003`.
+
+**Dónde vive cada capacidad de `SEC-PHYS-v0.1`.** Emplazamiento, que es lo que D1 pide de C1; el producto lo resuelve C2 y la cantidad C4.
+
+| Grupo `SEC-PHYS` | Nodo físico que lo aloja | Nota de emplazamiento |
+|---|---|---|
+| `SEC-EDGE-01/02` borde, WAF, DDoS, TLS | `PHY-CLD-01` | único borde público; no se replica en el terminal |
+| `SEC-API-01` gateway | `PHY-CLD-02` | detrás del borde |
+| `SEC-NET-01 / SEC-EXP-01` segmentación e inventario de exposición | `PHY-OPS-04` en el terminal y controles de plataforma en nube | el núcleo de red operacional es el punto de aplicación local |
+| `SEC-IAM-01 / SEC-ADM-01 / SEC-PROD-01` identidad, PAM, terreno | `PHY-CLD-03` con **capacidad local en `PHY-OPS-01`** | la caché local es la que impide que un corte de enlace se vuelva un corte de operación (§5) |
+| `SEC-SYNC-01` conducto nube–local | enlace `PHY-OPS-04` ↔ nube | su dimensionamiento es el de C4 §5.1: lo fija la reposición, no el régimen |
+| `SEC-DATA-01 / SEC-ENC-01 / SEC-FIELD-01` cifrado | todos los almacenes: `PHY-CLD-05`..`08` y `PHY-OPS-02` | capacidad nativa del almacén; no genera nodo |
+| `SEC-KEY-01 / SEC-SECRET-01` claves y secretos | gestionado en nube **con capacidad local protegida en `PHY-OPS-01`** | si la clave vive solo en nube, la operación local de 72 h no puede descifrar. Es el punto que D1 marca como excluyente en `ADR-009` |
+| `SEC-BKP-01` respaldo | `PHY-CLD-10` y **`PHY-OPS-05` custodia de medios** | la copia «fuera de sitio» del 3-2-1-1-0 tiene recinto físico: `RT-06.26`..`28` |
+| `SEC-LOG-01 / SEC-SIEM-01` registro y SIEM | `PHY-CLD-09` con **colector y buffer local en `PHY-OPS-01`** | `RT-03.16` exige una sola plataforma sin puntos ciegos; el buffer local cubre las 72 h |
+| `SEC-END-01` EDR | agentes en `PHY-OPS-01`, `PHY-CLD-03` y puestos de `PHY-OPS-06` | los dispositivos de terreno **no** se presumen compatibles con agente: C2 lo declara por clase |
+| `SEC-SOC-01 / SEC-IR-01` SOC y respuesta | servicio externo; sin nodo | no se asigna silenciosamente al área TI de cinco personas |
+| `SEC-VULN-01`, `SEC-PENTEST-01` | servicio; sin nodo | — |
+| `SEC-SDLC-01 / SEC-PIPE-01`, `SEC-SUPPLY-01 / SEC-ART-01`, `SEC-NPDATA-01` | ambientes DEV, QA y PREPROD; fuera de la zona operacional | ingeniería separada de producción; el detalle es de C3 §4 |
+| `SEC-GOV-01 / SEC-CLOUD-01 / SEC-HARD-01 / SEC-SAMM-01` | transversal; sin nodo | `SEC-HARD-01` aterriza como línea base CIS por producto en C2 |
+
+**Lo que este cruce le devuelve al Frente 3.** La auditoría B7 de D1 registró en `B7-F05` que «A1–A3 y C1–C4 visibles siguen en estructura/plantilla, sin catálogos, contratos, nodos, productos ni cantidades utilizables para validar D1», y mantuvo abierta `F3-DEP-003`. Ese diagnóstico correspondía al estado de `main` al 2026-09-05, cuando los paquetes del Frente 2 todavía vivían en la rama `frente_2` sin integrar. **Con esta consolidación, C1 aporta los nodos y las zonas, C2 los productos y las clases, C3 las redes y la continuidad, y C4 el dimensionamiento y las cantidades.** `F3-DEP-003` puede cerrarse contra este material.
+
 ### 7. Alternativas de sala técnica — insumo para `ADR-005`
 
 La Decisión N° 20 de Célula 2 dejó el destino de la sala como ADR con tres alternativas. Se evalúan contra los requisitos que el BTT hace obligatorios cuando existe cómputo sustantivo en el sitio del CLIENTE, que es el caso.
@@ -240,7 +285,8 @@ El Maestro, regla negativa 14, prohíbe ocultarlos. Los cinco primeros son condi
 - [x] No se presume que el ambiente marino desaparece.
 - [x] Físico, catálogo lógico y T-11 usan los mismos IDs.
 - [ ] `TRZ_C1.md` completo — en curso.
-- [ ] Revisión cruzada con A1 `v0.1` y D1 `SEC-PHYS-v0.1` — Puerta 1.
+- [x] Cruce con D1 `SEC-PHYS-v0.1` — §6.bis: nueve zonas mapeadas a nodos y las 17 capacidades emplazadas.
+- [ ] Revisión cruzada con A1 `v0.1` — Puerta 1.
 - [ ] Diagrama de la vista física — se produce en el pase final de diagramas del Subdocumento 4.
 
 

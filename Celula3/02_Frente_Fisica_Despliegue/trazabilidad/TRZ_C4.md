@@ -36,6 +36,9 @@
 | `TRZ-C4-027` | `DIM-18` — dotación con AHT `[supuesto]` de 8 min · `RT-08.07` — estaciones con monitores duales | puestos | no se fija sin el AHT real; `DIM-18` estima 2 diurnos + 1 de guardia | Erlang C | `PHY-OPS-06` | por confirmar | `T11-C2-13` | PENDIENTE dato externo |
 | `TRZ-C4-028` | `DIM-11` — histórico del TOS estimado en ≈480 GB con proxy de la tasa actual | migración | se mantiene la sobreestimación deliberada; el dato real está solicitado | — | repositorio histórico | — | `T11-C2-17` | **BLOQUEADO EXTERNO** |
 
+| `TRZ-C4-030` | D1, `SEC-PHYS-v0.1` y `F3-DEC-005` — asignar ID T-11 solo con producto ofertado; capacidades incluidas se referencian, no se duplican | T-11 de seguridad | 17 grupos: **7 con fila propia, 10 referenciados** desde filas existentes | clasificación de D1 aplicada literalmente | todos | 7 filas | `T11-SEC-01`..`07` | PARA REVISIÓN |
+| `TRZ-C4-031` | D1, `SEC-LOG-01` · `RT-11` — 12 meses en línea + 24 en archivo · Maestro §16.1 — accesos 5 años | ingesta de registro | unidad declarada: **ingesta diaria y retención**; el buffer local de 72 h cabe en los ≈50 GB ya previstos | el **valor** depende de la política de qué se registra, que es de D1 y de `F3-DEP-004` | `PHY-OPS-01`, `PHY-CLD-09` | por definir | `T11-SEC-04` | **BLOQUEADO** por `F3-DEP-004` |
+
 ## 2. Cobertura declarada
 
 | Obligación | Cómo la cubre C4 | Sección |
@@ -52,6 +55,6 @@
 ## 3. Pendientes de esta traza
 
 - `TRZ-C4-012`, `014`, `016`, `027` y `028` dependen de dato externo: capacidad de enlaces, site survey, tamaño de imagen, AHT y tamaño de la base del TOS.
-- Consolidar el T-11 con los candidatos de A1, A2, A3, D1 y D2 en la Puerta 2; el control 1:1 de seguridad requiere `SEC-PHYS-v0.1`.
+- ~~El control 1:1 de seguridad requiere `SEC-PHYS-v0.1`~~ — **hecho** en §9.bis y §9.ter; ver `TRZ-C4-030`. Queda consolidar con A1, A2, A3 y D2 en la Puerta 2.
 - Cerrar `TRZ-C4-024` y `TRZ-C4-029` con el informe de la prueba de carga a 1,5×, que debe traer curva, punto de saturación, consumo de recursos y comportamiento posterior al peak.
 - Llevar el perfil de escritura de telemetría a `ADR-007` para justificar el nivel de arreglo frente a las alternativas.

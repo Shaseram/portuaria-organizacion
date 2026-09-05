@@ -320,6 +320,38 @@ Cinco clases, definidas por dónde va el equipo y a qué está expuesto. Los gra
 
 Dos advertencias honestas. Primera: `CP, Cap. 6` dice que hoy *«los gabinetes del patio y del gate se reemplazan antes de lo previsto»*, de modo que la vida útil real en este emplazamiento es **menor que la de catálogo del fabricante**; el plan de reposición se construye sobre la experiencia del CLIENTE, no sobre la ficha técnica, y ese dato hay que pedírselo. Segunda: la regla negativa 11 del Maestro advierte que mover la sala no elimina el ambiente marino, y lo mismo vale aquí — ningún grado IP evita la corrosión, solo la retrasa.
 
+### 8.bis Componentes de seguridad: producto y clasificación T-11
+
+`SEC-PHYS-v0.1` de D1 consolida **31 controles en 17 grupos**, y clasifica cada grupo como fila propia candidata, agrupada, incluida o condicional. Esa clasificación es de D1 y se respeta; lo que aporta C2 es el **producto de referencia y la compatibilidad**, y lo que aporta C4 es la **cantidad**. La regla que impide el doble conteo es de D1, `F3-DEC-005`: una capacidad nativa o incluida se referencia desde la fila principal y no se compra dos veces.
+
+| Grupo `SEC-PHYS` | Producto o servicio de referencia | Compatibilidad y vigencia | Clasificación T-11 |
+|---|---|---|---|
+| `SEC-EDGE-01/02` | servicio de borde gestionado del proveedor de nube: CDN, WAF, anti-DDoS L3/L4/L7, TLS 1.3, HSTS y protección de bots | servicio, sin versión propia; depende de `ADR-011` | **fila propia** |
+| `SEC-API-01` | gateway gestionado del proveedor; alternativa autogestionada Kong o APISIX | ídem | **agrupada** con el borde si el producto es el mismo; separada si no |
+| `SEC-NET-01 / SEC-EXP-01` | cortafuegos y conmutación de núcleo ya especificados en §7 —familias Palo Alto PA, Fortinet FortiGate, Cisco Catalyst, Aruba CX, Juniper EX— más verificación externa de exposición | debe soportar segmentación por zona y conductos declarados; IEC 62443 | **incluida** en `T11-C2-03` y `T11-C2-04`; **no genera fila nueva** |
+| `SEC-IAM-01 / SEC-ADM-01 / SEC-PROD-01` | plataforma de identidad gestionada con OIDC/OAuth 2.1 o SAML 2.0, MFA y PAM con grabación de sesión | **requisito excluyente:** capacidad local de autenticación durante 72 h. `ADR-008` sigue `EN ANÁLISIS` en D1 | **fila propia** IAM y PAM; lectores o credenciales solo con cantidad justificada por C4 |
+| `SEC-SYNC-01` | canal del broker de integración ya ofertado | cifrado, identidad de servicio, protección contra repetición | **incluida** en integración y red; sin fila |
+| `SEC-DATA-01 / SEC-ENC-01 / SEC-FIELD-01` | capacidades nativas de cifrado del motor transaccional, del almacén de objetos y del de series | cifrado de campo sobre los datos que `RT-11.10` y el `CP, Cap. 15` identifican como sensibles | **incluida**; fila separada solo si se oferta un servicio de cifrado de campo aparte |
+| `SEC-KEY-01 / SEC-SECRET-01` | KMS o HSM gestionado más gestor de secretos con rotación | **requisito excluyente que C2 confirma:** si la clave vive solo en nube, el núcleo local no puede descifrar durante el corte. Exige material de clave protegido en el sitio, con raíz no exportable | **fila propia**; se consolidan KMS, HSM y bóveda sin duplicar funciones incluidas |
+| `SEC-BKP-01` | plataforma de respaldo de C2 §6.1, con inmutabilidad y clave gestionada aparte | 3-2-1-1-0; la copia fuera de sitio se materializa en `PHY-OPS-05` | **condición** de la fila de respaldo y de la custodia de medios; **no es una segunda compra** |
+| `SEC-LOG-01 / SEC-SIEM-01` | plataforma SIEM y de registro compatible **OpenTelemetry**, con colector y buffer local | `RT-03.16`: una sola plataforma para nube y on-premise, sin puntos ciegos. Retención 12 meses en línea + 24 en archivo | **fila propia**; C4 dimensiona ingesta, retención y licencias |
+| `SEC-END-01` | EDR con agentes y consola | **advertencia de compatibilidad:** los dispositivos de terreno de la tabla marina **no se presumen compatibles con agente**. Se cubren con controles compensatorios de red y de gestión de flota (`RT-03.18`), no forzando un agente que el fabricante no soporta | **fila propia** por cargas y puestos; los dispositivos de terreno **no** entran en el conteo de agentes |
+| `SEC-SOC-01 / SEC-IR-01` | SOC gestionado 24×7 con gestión de casos | **no se asigna al área TI de cinco personas**; es servicio ofertado y costeado | **fila propia de servicio** |
+| `SEC-VULN-01` | plataforma de escaneo continuo con gestión 7/15/30 | cubre nube, on-premise, aplicación y superficie externa | **fila propia o incluida** en el servicio de seguridad; C4 evita el doble conteo |
+| `SEC-PENTEST-01` | servicio de tercero independiente, anual y antes de cada paso a producción | independencia acreditada | **fila propia de servicio** |
+| `SEC-SDLC-01 / SEC-PIPE-01` | plataforma CI/CD con SAST, SCA, DAST, escaneo de secretos y de imágenes | ya ofertada en C3 §4; ingeniería separada de producción | **agrupada** por plataforma; **no una fila por regla de control** |
+| `SEC-SUPPLY-01 / SEC-ART-01` | registro de artefactos con SBOM CycloneDX o SPDX, firma y procedencia SLSA | producción consume solo artefactos aprobados | **incluida** en CI/CD, con la inclusión declarada explícitamente |
+| `SEC-NPDATA-01` | proceso de anonimización o generador de datos sintéticos | sostiene la prohibición de dato productivo en no producción de C3 §3 | **condicional**: fila solo si se oferta herramienta separada |
+| `SEC-GOV-01 / SEC-CLOUD-01 / SEC-HARD-01 / SEC-SAMM-01` | matrices y procedimientos; línea base **CIS** por producto y versión | `SEC-HARD-01` aterriza aquí: cada producto del catálogo del §3 y del §7 lleva su línea base CIS correspondiente, o guía equivalente justificada cuando no exista *benchmark*; toda desviación registra necesidad, riesgo, compensación, aprobador, vencimiento y reprueba | **normalmente incluido**; fila solo si se oferta capacidad separada |
+
+**Tres cosas que este cruce cambia en C2, y conviene que se vean.**
+
+**El material de clave tiene que existir en el terminal.** Es la consecuencia física de `ADR-009` de D1 y de la regla negativa 8 del Maestro: una solución cuyo cifrado dependa exclusivamente de un KMS en nube no puede descifrar durante las 72 horas de corte, y las cinco funciones críticas leen y escriben datos cifrados. La especificación de `SEC-KEY-01` incorpora capacidad local protegida con raíz no exportable.
+
+**El EDR no cubre los dispositivos de terreno, y decirlo es mejor que suponerlo.** Los equipos de las cinco clases marinas del §8.1 son de fabricantes industriales cuyo soporte de agentes no está confirmado, y la restricción del `CP, Cap. 11` prohíbe imponer software al fabricante en el caso de las grúas. Se cubren por segmentación de red y por la gestión centralizada de flota de `RT-03.18`, que sí es exigible. Contar una licencia de EDR por dispositivo de terreno habría inflado el T-11 con algo que no se puede instalar.
+
+**El SOC es un servicio ofertado, no una tarea del CLIENTE.** La restricción no negociable 11 dice que *«toda función que requiera un especialista dedicado que la compañía no tiene debe ofrecerse como servicio y estar costeada»*. Monitoreo 24×7 con cinco personas de TI no es una opción; D1 lo marcó y C2 lo recoge como fila de servicio.
+
 ### 9. Candidatos de filas T-11
 
 Sin precios, conforme al Art. 16 y a la regla del Maestro. Un componente lógico no genera fila; la genera un componente físico, plataforma, licencia o servicio efectivamente ofertado. Las cantidades las cierra C4.
@@ -371,7 +403,7 @@ Quedan **fuera del T-11 y se declara por qué**: la obra civil de la sala, que e
 - [x] Tipología declarada por sitio, conforme al numeral 6.1.
 - [ ] `TRZ_C2.md` completo — en curso.
 - [ ] Cantidades, capacidades, kW, factor de potencia, PUE y nivel RAID — dependen de C4.
-- [ ] Componentes y licencias de seguridad — se cierran con `SEC-PHYS-v0.1` de D1 en la Puerta 1.
+- [x] Componentes y licencias de seguridad — §8.bis: los 17 grupos con producto, compatibilidad y clasificación T-11.
 - [ ] `ADR-011` proveedor y región de nube — propuesto, no abierto (`F2-ESC-009`).
 - [ ] Plano de distribución interna del recinto (`RT-06.03`) y plano de racks — en el pase final de diagramas.
 
