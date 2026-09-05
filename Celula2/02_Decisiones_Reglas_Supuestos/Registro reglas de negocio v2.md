@@ -210,11 +210,11 @@ Es un caso en que mejorar la evidencia crea una obligación que antes no existí
  
 ## RN-11 — Tolerancia de desviación de temperatura en carga refrigerada
 
-> **Regla nueva.** Apareció al verificar `RF-REF-04`: el requerimiento se titula «detección de desviación de temperatura», pero ninguna regla definía qué constituye una desviación, de modo que su criterio solo era verificable en la rama de desconexión.
+> **Regla nueva.** Apareció al verificar `RF-REF-04`: su criterio manda simular «una desviación» y alarmar en no más de 5 minutos, pero ninguna regla del registro decía **cuánto** debe apartarse una lectura de su consigna, ni **por cuánto tiempo**, para que exista desviación. `RT-05.29` fija el plazo de la alarma, no la banda que la dispara: sin esa banda la prueba no es reproducible.
 
 **Regla.** Una lectura constituye **desviación** cuando la temperatura registrada se aparta de la **temperatura de consigna** del contenedor más allá de la **banda de tolerancia** declarada para su familia de carga, y esa condición se sostiene durante la **duración mínima** declarada para esa misma familia.
 
-Banda y duración mínima son **parametrizables por familia de carga** y forman parte de la configuración administrable por el CLIENTE conforme a BTT, RT-16.02. La consigna de cada contenedor proviene de la instrucción del embarcador o de la naviera: **no la fija el terminal**.
+Banda y duración mínima son **parametrizables por familia de carga** y forman parte de la configuración administrable por el CLIENTE conforme a BTT, RT-16.02. La **duración mínima admisible queda acotada** de modo que la detección y su alarma sigan cabiendo dentro de los 5 minutos desde el evento físico que exige CP, Cap. 15, RT-05.29: la solución **deberá** rechazar toda parametrización que haga inalcanzable ese plazo. La consigna de cada contenedor proviene de la instrucción del embarcador o de la naviera: **no la fija el terminal**.
 
 Mientras el CLIENTE no declare los valores por familia, la solución **deberá** exigir consigna y banda al momento de la conexión y **deberá** registrar como excepción toda conexión sin consigna declarada.
 
@@ -222,7 +222,7 @@ Mientras el CLIENTE no declare los valores por familia, la solución **deberá**
 
 **Vinculación.** `RF-REF-04` (detección de desviación) · `RF-REF-01` (muestreo local) · `RF-REF-07` (ausencia de dato) · `RF-REF-11` y `RF-REF-12` (registro continuo como evidencia de cadena de frío) · CP, Cap. 15, **RT-05.29** (alarma en no más de 5 minutos desde el evento físico) · CP, Cap. 18, criterios 11 y 12.
 
-**¿Pendiente de validar?** **Sí, prioridad alta.** Las bandas y duraciones por familia de carga debe entregarlas el CLIENTE junto con sus exportadores. Sin ellas, el criterio de `RF-REF-04` solo es verificable en su rama de desconexión, que es precisamente la limitación que esta regla corrige.
+**¿Pendiente de validar?** **Sí, prioridad alta.** Las bandas y duraciones por familia de carga debe entregarlas el CLIENTE junto con sus exportadores. Sin ellas, el criterio de `RF-REF-04` no es reproducible: queda a criterio de quien ejecuta la prueba qué cuenta como desviación. Ese es el vacío que esta regla acota y deja explícito para el período de consultas.
 
 ---
 

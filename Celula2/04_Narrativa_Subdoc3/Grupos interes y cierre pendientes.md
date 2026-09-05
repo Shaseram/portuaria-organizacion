@@ -211,7 +211,7 @@ Hay además un antecedente que conviene recordar antes de dimensionar el esfuerz
 | Producto | Estado |
 |---|---|
 | Registro de supuestos — 21 decisiones + 17 metas + **25 supuestos** (S1–S5, A–L, M–T) | **Completo** |
-| Catálogo de RNF — 84 | **Completo**, corregido contra el Plan Maestro |
+| Catálogo de RNF — 91 | **Completo**, corregido contra el Plan Maestro |
 | Catálogo de RF — 139 en 15 dominios | **Completo**, corregido contra el Plan Maestro y ampliado con `RF-POR-09` |
 | Registro de reglas de negocio — RN-01 a RN-11 | **Completo** con este documento |
 | Registro de consultas y vacíos | Las consultas se enviaron; falta consolidar el registro formal |

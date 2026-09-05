@@ -36,6 +36,12 @@ El CP, Cap. 17.2 deja casos limítrofes sin resolver y evalúa la **consistencia
 > **No funcional** = califica *cómo* debe comportarse algo ya descrito en otra parte.
  
 Ningún umbral que viva en el catálogo de RNF se repite aquí: se referencia.
+
+**Dónde queda un parámetro del Capítulo 15.** El CP, Cap. 17.1 exige que el catálogo de RNF «incorpore los parámetros del Capítulo 15», y el Cap. 17.2 deja a la vez sin resolver los casos limítrofes, ofreciendo como ejemplo la propia alarma reefer de cinco minutos. El criterio declarado de este equipo es el siguiente:
+
+> Un parámetro del Cap. 15 que **califica** una conducta ya descrita en otra parte entra al catálogo de RNF con su umbral y su método de verificación. Un parámetro del que **depende que la conducta exista** —el umbral es lo que hace que la detección ocurra o no— se incorpora como **umbral del criterio de aceptación** del RF que la describe, y se cita al CP, Cap. 15 con su código. En ambos casos el parámetro queda incorporado y verificable; lo que cambia es quién lo prueba. Ningún parámetro se duplica en los dos catálogos.
+
+La correspondencia parámetro → artefacto se cierra en el Formulario T-12, que el numeral 1.5 del BTT exige responder código por código.
  
 ### 1.3 Granularidad
  

@@ -332,9 +332,11 @@ Cada requerimiento de terreno de este bloque se redactó contra esa frase. Es el
 **Actor:** solución. **Precondición:** contenedor conectado con consigna registrada.
 **Resultado esperado:** desviación detectada y alarmada.
 **Origen:** CP, Cap. 4.5 (la consigna depende de la carga: «la cereza no es el salmón») · CP, Cap. 18, criterio 11 · **CP, Cap. 15, RT-05.29** aporta el umbral.
-**Criterio de aceptación:** se simula una desviación sobre una muestra de **30 tomas** y la alarma se genera para las 30 **en no más de 5 minutos desde el evento físico**.
+**Criterio de aceptación:** se simula una desviación **por sobre la banda de tolerancia declarada en `RN-11` para la familia de carga del contenedor**, sobre una muestra de **30 tomas**, y la alarma se genera para las 30 **en no más de 5 minutos desde el evento físico**.
 
 > *Corrección aplicada: el criterio decía «dentro del umbral» sin nombrarlo.*
+
+> *Corrección aplicada 2026-09-05: el criterio ya verificaba la rama de desviación, pero «desviación» no estaba definida en ninguna parte: ninguna regla decía cuánto debe apartarse una lectura de su consigna, ni por cuánto tiempo, para constituirla. `RT-05.29` aporta el plazo de la alarma, no la banda. Se crea `RN-11` y el criterio pasa a invocarla, de modo que la prueba sea reproducible.*
 
 ---
 
@@ -345,9 +347,7 @@ Cada requerimiento de terreno de este bloque se redactó contra esa frase. Es el
 **Actor:** solución. **Precondición:** contenedor previamente conectado.
 **Resultado esperado:** desconexión alarmada antes de que la carga se degrade.
 **Origen:** CP, Cap. 15, RT-05.29 (alarma «de desconexión o de desviación») · CP, Cap. 4.5 (la inercia térmica retrasa la manifestación de la desconexión).
-**Criterio de aceptación:** se desconectan **10 tomas** en condiciones controladas y la alarma se genera para las 10 **sin esperar la desviación de temperatura**, dentro de los 5 minutos. Adicionalmente, sobre una muestra de tomas conectadas se fuerza una excursión por sobre la banda de tolerancia declarada en **RN-11** y la alarma de desviación se genera dentro del mismo umbral.
-
-> *Corrección aplicada: el requerimiento se titula «detección de desviación de temperatura», pero su criterio verificaba únicamente el caso de desconexión, y ninguna regla de negocio definía qué constituye una desviación. Se incorpora la verificación de la excursión y se enlaza con `RN-11`, que fija la banda de tolerancia por familia de carga.*
+**Criterio de aceptación:** se desconectan **10 tomas** en condiciones controladas y la alarma se genera para las 10 **sin esperar la desviación de temperatura**, dentro de los 5 minutos.
 
 ---
 
@@ -371,9 +371,9 @@ Cada requerimiento de terreno de este bloque se redactó contra esa frase. Es el
 **Actor:** solución. **Precondición:** toma instrumentada con serie previa.
 **Resultado esperado:** la ausencia de lectura no se interpreta como normalidad.
 **Origen:** Decisión N° 8, que descarta la transmisión de solo desviaciones precisamente porque «no distingue un sensor caído de una temperatura estable».
-**Criterio de aceptación:** se interrumpe la señal de un sensor y la solución genera alarma de ausencia de dato **tras 3 intervalos de muestreo consecutivos sin lectura y, en todo caso, dentro de los 5 minutos** desde la última lectura válida.
+**Criterio de aceptación:** se interrumpe la señal de un sensor y la solución genera alarma de ausencia de dato **tras 3 intervalos de muestreo consecutivos sin lectura o a los 5 minutos desde la última lectura válida, lo que ocurra primero**.
 
-> *Corrección aplicada: el criterio derivaba la alarma solo del muestreo vigente de `RF-REF-01`, que admite hasta 5 minutos; con ese valor la ausencia de dato podía tardar 15 minutos en alarmar. Un sensor caído es operacionalmente indistinguible de una desconexión no detectada —es el modo de falla del 18 de febrero—, y CP, Cap. 15, RT-05.29 exige alarma en no más de 5 minutos desde el evento físico. Se añade el techo de 5 minutos sin reabrir la Decisión N° 8, que mantiene el muestreo local de 1 a 5 minutos.*
+> *Corrección aplicada: el criterio derivaba la alarma solo del muestreo vigente de `RF-REF-01`, que admite hasta 5 minutos; con ese valor la ausencia de dato podía tardar 15 minutos en alarmar. Un sensor caído es operacionalmente indistinguible de una desconexión no detectada —es el modo de falla del 18 de febrero—, y CP, Cap. 15, RT-05.29 exige alarma en no más de 5 minutos desde el evento físico. Se añade el techo de 5 minutos sin reabrir la Decisión N° 8, que mantiene el muestreo local de 1 a 5 minutos. Las dos condiciones operan como **lo que ocurra primero**: con muestreo sobre 1 min 40 s los 3 intervalos no caben en 5 minutos, y en ese caso manda el techo.*
 
 > *Corrección aplicada: el criterio invocaba un «intervalo declarado» que no estaba declarado en ninguna parte. Ahora se deriva del muestreo.*
 

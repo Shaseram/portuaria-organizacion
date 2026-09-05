@@ -253,10 +253,10 @@ Esta matriz es un contrato funcional transversal para los RF que emiten avisos; 
 
 **Actor:** naviera y solución. **Precondición:** naviera integrada por mensajería.
 **Resultado esperado:** orden de embarque incorporada sin redigitación.
-**Origen:** Decisión N° 18 · CP, num. 16.2 (COPRAR: orden de embarque) · CP, Cap. 15, RT-05.23 · CP, 7.1 (41 % de instrucciones recibidas por correo y digitadas a mano, referencia cero) — **de esa línea base, este requerimiento cubre la pata naviera → terminal; la pata embarcador o agencia → terminal se cubre en `RF-POR-09`**.
+**Origen:** Decisión N° 18 · CP, num. 16.2 (COPRAR: orden de embarque) · CP, Cap. 15, RT-05.23 · CP, 7.1 y CP, Anexo A (41 % de instrucciones de embarque recibidas por correo y digitadas a mano, referencia cero) — **esa línea base es del flujo embarcador o agencia → terminal y se mide en `RF-POR-09`; este requerimiento cubre la orden de embarque naviera → terminal, para la cual el caso no declara una cifra propia**.
 **Criterio de aceptación:** desde la fecha efectiva del acuerdo de 2029, las líneas de la alianza registran **0 % de órdenes de embarque redigitadas** y 100 % por mensajería estándar. Para las demás navieras, el porcentaje de órdenes digitadas a mano es **≤ 5 %**, atribuible exclusivamente al canal puente transitorio.
 
-> *Corrección aplicada: el criterio comprometía una meta sobre «instrucciones» tomando como línea base el 41 % del CP, 7.1. El Anexo A del CP atribuye ese 41 % al flujo «Embarcador o agencia → Documentación», no a la naviera, y COPRAR es un mensaje naviera → terminal. La meta se acota aquí a la orden de embarque y la fracción originada en embarcadores y agencias se mide en `RF-POR-09`.*
+> *Corrección aplicada: el criterio comprometía una meta sobre «instrucciones» tomando como línea base el 41 % del CP, 7.1. El Anexo A del CP atribuye ese 41 % al flujo «Embarcador o agencia → Documentación», no a la naviera, y COPRAR es un mensaje naviera → terminal. La meta se acota aquí a la orden de embarque; la línea base del 41 % se mide **completa** en `RF-POR-09`.*
 
 > *Corrección aplicada: el criterio no comprometía meta alguna sobre el 41 % de línea base.*
 
@@ -628,11 +628,11 @@ Esta matriz es un contrato funcional transversal para los RF que emiten avisos; 
 **Origen:** CP, Anexo A (**«Embarcador o agencia | Documentación | Instrucción de embarque | 41 % por correo con adjunto que alguien digita»**) · CP, 7.1 (41 % de instrucciones recibidas por correo y digitadas a mano, referencia cero) · CP, Cap. 18, criterio 13 · **BTT, RT-05.22** (carga masiva con validación previa, informe de errores por registro y procesamiento parcial) · BTT, RT-16.32.
 **Criterio de aceptación:** un embarcador o una agencia presenta una instrucción de embarque por el canal estructurado con registros válidos e inválidos; se emite informe de error por cada inválido, se incorporan todos los válidos y ninguno requiere digitación por parte del terminal. El porcentaje de instrucciones digitadas a mano provenientes de embarcadores y agencias se mide por separado del de las órdenes de embarque de `RF-INT-02`.
 
-> **Por qué existe.** El 41 % de línea base del CP, 7.1 tiene dos patas con remitentes distintos. `RF-INT-02` adopta COPRAR, que es un mensaje **naviera → terminal**, y por sí solo no toca el flujo que el Anexo A atribuye a **embarcador o agencia → Documentación**: 210 agencias de aduana y unos 1.400 exportadores e importadores. Sin este requerimiento, integrar las 14 navieras puede dejar el indicador del 41 % prácticamente intacto.
+> **Por qué existe.** El criterio 13 del CP, Cap. 18 cubre dos flujos con remitentes distintos, y la cifra de línea base pertenece a uno solo de ellos. `RF-INT-02` adopta COPRAR, que es un mensaje **naviera → terminal**; el 41 % del CP, 7.1 es, según el Anexo A, el flujo **embarcador o agencia → Documentación**: 210 agencias de aduana y unos 1.400 exportadores e importadores. Sin este requerimiento, integrar las 14 navieras puede dejar ese 41 % **íntegro**, cumpliendo el estándar de mensajería sin mover el indicador que el caso declara.
 >
 > El mecanismo no es nuevo: es el mismo canal asistido con validación previa que `RF-INT-07` ya define para las navieras aún no integradas, aplicado al remitente que genera la línea base.
 >
-> **Etapa 2, por dos razones.** La primera es de indicador: `RF-INT-02` también pertenece a la Etapa 2, de modo que **las dos patas del 41 % de línea base entran en producción en el mismo mes 21** y el indicador del criterio 13 se mueve como una sola cosa. Con el supuesto S1 —mes 1 en febrero de 2027— eso ocurre en octubre de 2028, antes del hito externo de 2029.
+> **Etapa 2, por dos razones.** La primera es de indicador: `RF-INT-02` también pertenece a la Etapa 2, de modo que **los dos flujos del criterio 13 entran en producción en el mismo mes 21** y el indicador del criterio 13 se mueve como una sola cosa. Con el supuesto S1 —mes 1 en febrero de 2027— eso ocurre en octubre de 2028, antes del hito externo de 2029.
 >
 > La segunda es de dependencia: su precondición es una persona usuaria externa registrada conforme a `RF-POR-02`, que es de Etapa 2. Adelantarlo obligaría a arrastrar consigo el registro y la verificación de identidad de usuarios externos.
 >
@@ -914,8 +914,8 @@ En los tres escenarios internos se verifica cifrado local, expiración o borrado
 |---|---|---|---|
 | Cumplimiento de ventana | 71 % | **> 90 % general; 100 % ≥72 h para alianza** | `RF-NAV-01` a `05` |
 | Productividad de grúa | 24,8 mov/h | **≥ 30 mov/h por grúa demostrados** | `RF-NAV-12`, `13` |
-| Órdenes de embarque digitadas a mano (naviera → terminal) | fracción del 41 % | **0 % alianza; ≤ 5 % resto** | `RF-INT-02`, `07` |
-| Instrucciones de embarque digitadas a mano (embarcador o agencia → terminal) | fracción del 41 % | **cero** | `RF-POR-09` |
+| Instrucciones de embarque digitadas a mano (embarcador o agencia → terminal) | **41 %** *(CP, 7.1 y Anexo A)* | **cero** | `RF-POR-09` |
+| Órdenes de embarque digitadas a mano (naviera → terminal) | *sin cifra declarada en el caso* | **0 % alianza; ≤ 5 % resto** | `RF-INT-02`, `07` |
 | Formatos de plano de estiba | 6 | estándar único | `RF-INT-01`, `06` |
 | Personas capaces de planificar | 1 | — | `RF-NAV-06` a `09` |
 | Explicar sobretiempo a la naviera | inexistente | trazable | `RF-NAV-13` |
