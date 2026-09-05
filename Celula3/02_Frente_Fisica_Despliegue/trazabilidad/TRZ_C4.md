@@ -37,7 +37,7 @@
 | `TRZ-C4-028` | `DIM-11` — histórico del TOS estimado en ≈480 GB con proxy de la tasa actual | migración | se mantiene la sobreestimación deliberada; el dato real está solicitado | — | repositorio histórico | — | `T11-C2-17` | **BLOQUEADO EXTERNO** |
 
 | `TRZ-C4-030` | D1, `SEC-PHYS-v0.1` y `F3-DEC-005` — asignar ID T-11 solo con producto ofertado; capacidades incluidas se referencian, no se duplican | T-11 de seguridad | 17 grupos: **7 con fila propia, 10 referenciados** desde filas existentes | clasificación de D1 aplicada literalmente | todos | 7 filas | `T11-SEC-01`..`07` | PARA REVISIÓN |
-| `TRZ-C4-031` | D1, `SEC-LOG-01` · `RT-11` — 12 meses en línea + 24 en archivo · Maestro §16.1 — accesos 5 años | ingesta de registro | unidad declarada: **ingesta diaria y retención**; el buffer local de 72 h cabe en los ≈50 GB ya previstos | el **valor** depende de la política de qué se registra, que es de D1 y de `F3-DEP-004` | `PHY-OPS-01`, `PHY-CLD-09` | por definir | `T11-SEC-04` | **BLOQUEADO** por `F3-DEP-004` |
+| `TRZ-C4-031` | D1, `SEC-LOG-01` · `RT-11` — 12 meses en línea + 24 en archivo · Maestro §16.1 — accesos 5 años · `RT-09.01` — cálculo con supuestos | ingesta de registro | **piso derivable ≈21.700 ev/día ⇒ ≈8 GB/año en línea** a 1 KB por registro, con sensibilidad de 4 a 16 GB `[supuesto]`; buffer local de 72 h ≈0,07 GB | derivación en §9.ter desde el `CP, Cap. 14.1`; **no incluye registros de plataforma, red y borde**, que suelen dominar | `PHY-OPS-01`, `PHY-CLD-09` | unidad: ingesta diaria y retención | `T11-SEC-04` | **PARA REVISIÓN**; el total depende de `F3-DEP-004` (`F2-ESC-013`) |
 
 ## 2. Cobertura declarada
 

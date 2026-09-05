@@ -330,7 +330,30 @@ Es la única entrada de `SEC-PHYS-v0.1` cuya cantidad depende de un cálculo pro
 
 **Buffer local:** el colector de `PHY-OPS-01` debe sostener los eventos de las **72 horas** de corte más margen, y reenviarlos al reconectar sin perderlos ni duplicarlos. Ese volumen se suma a los ≈183 GB útiles del §6.1: se incorpora dentro de los ≈50 GB declarados como «registros locales, sistema operativo y trabajo», y el margen del 30 % lo absorbe. **No hay que reabrir el dimensionamiento de almacenamiento local por esto.**
 
-> **Lo que no se puede cerrar todavía.** La ingesta diaria en GB depende de la política de qué se registra, que es de D1, y de la clasificación campo→sensibilidad que D1 mantiene abierta como `F3-DEP-004`, dependiente del Subdocumento 5 y del CLIENTE. La **unidad** de cantidad queda declarada aquí —ingesta diaria y retención—; el **valor** se cierra cuando exista esa política. Ponerle una cifra ahora sería inventarla.
+#### Estimación de la ingesta, con su método
+
+`RT-09.01` obliga a presentar el cálculo de capacidad **con sus supuestos**, y la regla 4 del Maestro admite rango y mecanismo de levantamiento: lo que prohíbe es completar inventando. Se estima la parte derivable de la volumetría del `CP, Cap. 14.1` y se declara explícitamente qué queda fuera.
+
+| Fuente de evento de seguridad | Eventos/día | Derivación |
+|---|---:|---|
+| Accesos de personas al recinto | ≈3.560 | (640 propios + 380 eventuales × 3 turnos) × 2 eventos de entrada y salida `[derivado]` |
+| Autenticaciones internas | ≈1.920 | 640 con acceso a sistemas × 3 turnos `[supuesto]`: una autenticación por turno-persona |
+| Autenticaciones externas | ≈500 | 25 % de los 1.990 usuarios externos en un día `[supuesto]` |
+| Transacciones de negocio registradas | ≈9.410 | `DIM-01`: 3.435.700 al año ÷ 365 |
+| Telemetría anómala | ≈6.310 | 0,1 % de los 73 ev/s `[supuesto]`: solo el error y la anomalía son evento de seguridad, no la lectura normal |
+| **Subtotal derivable** | **≈21.700/día** | |
+
+| Tamaño de registro `[supuesto]` | Ingesta | En un año | 12 meses en línea |
+|---|---:|---:|---:|
+| 0,5 KB | 11 MB/día | 4,0 GB | ≈4 GB |
+| **1 KB, valor de trabajo** | **22 MB/día** | **7,9 GB** | **≈8 GB** |
+| 2 KB | 43 MB/día | 15,8 GB | ≈16 GB |
+
+**Buffer local durante el corte:** ≈0,07 GB en 72 horas a 1 KB por registro. Confirma lo dicho arriba: cabe holgadamente dentro de los ≈50 GB ya previstos en §6.1, y **no obliga a reabrir el almacenamiento local**.
+
+**Qué queda fuera de esta estimación, y es lo que impide cerrar el valor total.** No están los registros de plataforma, de red y de borde —flujos del cortafuegos, peticiones del gateway, trazas de infraestructura—, que en un SIEM suelen ser el término dominante y pueden superar en uno o dos órdenes de magnitud a los eventos de aplicación. Su volumen depende de dos cosas que no son nuestras: la **política de qué se registra**, que es de D1, y la **clasificación campo→sensibilidad** que D1 mantiene abierta como `F3-DEP-004`, dependiente del Subdocumento 5 y del CLIENTE.
+
+**Cómo se trata mientras tanto.** La cifra de ≈8 GB al año se declara como **piso derivable, no como total**, y la unidad de la fila `T11-SEC-04` es ingesta diaria y retención. Una vez exista la política de registro, el total es aritmética sobre esta misma tabla. Se registra como `F2-ESC-013`.
 
 ### 10. Matriz T-11 y control 1:1
 
