@@ -18,6 +18,7 @@
 | `F2-ESC-007` | 2026-09-05 | todos | LÍNEA BASE DESFASADA | Maestro §2.2 y `MC-19` citan 138 RF / 84 RNF / 10 reglas | hoy son 139 / 91 / 11 y el reparto es 82 / 57 | actualizar §2.2 y registrar el commit `c4756df` según la regla de lectura 5 | los tres frentes | PARA REVISIÓN DEL INTEGRADOR |
 | `F2-ESC-008` | 2026-09-05 | C1/C2 | EXTERNO | ingresos físicos de comunicaciones del edificio administrativo | `RT-06.32` exige rutas físicas distintas con ingreso al edificio por puntos separados; el caso no dice si el edificio lo admite | levantar antes de cerrar `ADR-005`; puede descartar por norma la alternativa de endurecer la sala actual | C1, C2, C3, `ADR-005` | BLOQUEADO EXTERNO |
 | `F2-ESC-009` | 2026-09-05 | C2 | DECISIÓN SIN ADR | proveedor y región de nube | `RT-03.01` exige declarar proveedor y regiones primaria y secundaria; `RT-15.04`/`.05` exigen intensidad de carbono y análisis comparativo. La lista `ADR-001` a `ADR-010` no cubre esta decisión | abrir `ADR-011`; afecta a los tres frentes, no se resuelve en el Frente 2 | todos | PARA REVISIÓN DEL INTEGRADOR |
+| `F2-ESC-010` | 2026-09-05 | C3 | INTERPRETACIÓN CON EFECTO DE PLAZO | el ambiente de DR debe estar operativo en el **mes 6** | `RT-04.01` condiciona el hito H3 a los **cinco** ambientes; el E-25 describe H3 nombrando cuatro. Art. 5.2 y 5.4 de las BA obligan a la lectura más exigente | planificar región secundaria, replicación y conmutación para el mes 6, no para el paso a producción. Afecta el cronograma del Subdocumento 7 | C2, C3, C4, Frente 1, planificación | PARA REVISIÓN DEL INTEGRADOR |
 | `F2-DEC-002` | 2026-09-05 | C2 | TENSIÓN A DECLARAR | `RT-06.20` exige biometría facial para el recinto técnico | la restricción no negociable 8 registra la objeción a la biometría obligatoria | declarar que son poblaciones distintas; no silenciar | C2, D1 | PENDIENTE |
 | `F2-DEC-003` | 2026-09-05 | C2 | TENSIÓN A DECLARAR | `RT-06.24` exige videovigilancia propia del recinto, 30 días en línea | la regla negativa 6 prohíbe crear un portal de video y conserva el VMS | declarar que el CCTV del recinto no es el VMS del terminal | C2, C3, D1 | PENDIENTE |
 | `F2-COR-001` | 2026-09-05 | C1 | CORRECCIÓN PROPIA | cumplimientos decían `RT-03.01..15` | el capítulo llega a `RT-03.24` | corregido en C1 | C1, C3, C4 | APLICADO |
@@ -126,6 +127,16 @@
 **Criterios propuestos para `ADR-011`.** Presencia de región en Chile o Sudamérica y número de zonas de disponibilidad; latencia medida al terminal; intensidad de carbono declarada de la región; cobertura del catálogo de servicios gestionados frente a la pila de C2 §3; certificaciones y residencia de datos frente a la condición de operador de importancia vital del `CP, Cap. 10`, restricción 7; y esfuerzo de reversibilidad conforme a `RT-03.07`.
 
 **Por qué no la resuelve este frente.** Afecta a la arquitectura lógica del Frente 1, a los controles y la residencia de datos del Frente 3, y a la estructura de costos que el Art. 16 exige que sea coherente con la arquitectura. Se propone, no se decide.
+
+### `F2-ESC-010` — El ambiente de recuperación ante desastres vence en el mes 6, no al pasar a producción
+
+**Las tres piezas.** El BTT, numeral 4.1, define **cinco** ambientes, incluido Recuperación ante desastres. `RT-04.01` dice: *«Los cinco ambientes del numeral 4.1 estarán habilitados y operativos **como condición del hito H3** del Formulario E-25.»* El Formulario E-25 de las BA describe H3 como *«Entrega de la infraestructura híbrida y habilitación de los ambientes de Desarrollo, QA, Preproducción y Producción, con observabilidad operativa»*, en el **mes 6**, con el 10 % de la estructura de pagos. El Art. 24 de las BA, por su parte, habla de *«cuatro ambientes obligatorios»*.
+
+**Por qué no es una contradicción.** El Art. 5.2 de las BA establece que los documentos *«conforman un todo integrado y se complementan recíprocamente. Toda obligación que aparezca en cualquiera de ellos se entenderá parte del Contrato, aunque no se repita en los demás»*. El DR no falta en las BA: tiene artículo propio, el 20°. Y el Art. 5.4 da por aceptada la interpretación más exigente una vez presentada la oferta, sin posibilidad de invocar la contradicción después.
+
+**Qué significa en la práctica.** La región secundaria, la replicación continua y el procedimiento de conmutación de `RT-07.05` deben existir y funcionar en el **mes 6**, es decir **diez meses antes** de que la Etapa 1 entre en producción en el mes 16. Una planificación que deje el DR para el final del desarrollo no cumple H3, que es un hito de pago con criterio de aceptación.
+
+**Por qué se escala.** Excede al Frente 2: cambia el cronograma y la Carta Gantt del Subdocumento 7, la curva de consumo de infraestructura y la secuencia de pruebas. Este frente lo asume en su calendario y en C2 §6, pero la decisión de planificación no es suya.
 
 ## 3. Tensiones declaradas, no resueltas
 
