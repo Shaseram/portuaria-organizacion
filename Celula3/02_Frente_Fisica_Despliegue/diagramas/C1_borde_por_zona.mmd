@@ -1,0 +1,55 @@
+flowchart LR
+  S4["<b>PHY-OPS-04</b><br/>Nucleo de red operacional<br/><i>zona operacional segregada</i>"]
+  S1["<b>PHY-OPS-01</b><br/>Nucleo operacional local<br/><i>procesa y persiste durante el corte</i>"]
+
+  subgraph GATE["PHY-EDG-01 · GATE — 8 entradas + 6 salidas, a la intemperie, 24x7"]
+    direction TB
+    G1["Camara y lector OCR de patente y contenedor<br/><b>OCR ≤3 s · exactitud ≥98 %</b>"]
+    G2["Caseta: puesto de operador<br/>uso con guantes, luminosidad exterior"]
+    G3["Gabinete de borde con proteccion marina<br/><i>procesa la validacion aunque caiga el enlace</i>"]
+  end
+
+  subgraph PAT["PHY-EDG-02 · PATIO — 18 ha, pilas de hasta 5 alturas que cambian cada hora"]
+    direction TB
+    Y1["Red operacional del patio<br/><i>cantidad y ubicacion de estaciones base: site survey</i>"]
+    Y2["Terminal a bordo del equipo<br/><b>autonomo hasta 8 h fuera de cobertura</b>"]
+    Y3["Posicionamiento DGPS/RTLS + lectura optica<br/><i>≈37 a 44 eventos/s</i>"]
+  end
+
+  subgraph FRI["PHY-EDG-03 · PATIO REFRIGERADO — 2.400 tomas, 26 tableros"]
+    direction TB
+    R1["Concentrador por tablero<br/><b>alarma de tablero como evento propio</b>"]
+    R2["Instrumentacion de toma: consigna y temperatura<br/><i>muestreo local 1 a 5 min · ≈36 a 43 eventos/s</i>"]
+    R3["Alarma local con canal redundante<br/><b>≤5 min desde el evento fisico</b>"]
+  end
+
+  subgraph MUE["PHY-EDG-04 · MUELLE — 3 sitios, 6 gruas de hasta 40 m"]
+    direction TB
+    M1["Pantalla de cabina<br/><b>despliegue visual, no captura</b><br/><i>el operador no manipula un dispositivo mientras opera</i>"]
+    M2["Lectura autorizada del control de gruas<br/><b>solo lectura, sujeta al fabricante</b>"]
+  end
+
+  subgraph INS["PHY-EDG-05 · ZONA DE INSPECCION"]
+    direction TB
+    I1["Captura de acta y firma en terreno<br/><i>evidencia facturable</i>"]
+  end
+
+  S4 === GATE
+  S4 === PAT
+  S4 === FRI
+  S4 === MUE
+  S4 === INS
+  S1 -.- S4
+
+  G1 -.->|"eventos e imagenes"| EXTOCR["EXT-OCR<br/>lectores existentes"]
+  G3 -.->|"habilitacion y evento"| EXTACC["EXT-ACC<br/>accesos y barreras"]
+  G3 -.->|"captura de VGM<br/>no se opera ni certifica"| EXTVGM["EXT-VGM<br/>basculas"]
+  M2 -.->|"prohibido intervenir<br/>restriccion 3"| EXTGRU["EXT-GRU<br/>control de gruas"]
+  S4 -.->|"segregada · sin video<br/>por la red operacional"| EXTVMS["EXT-VMS<br/>142 a 190 camaras"]
+
+  classDef local fill:#fef7e0,stroke:#e37400,color:#111
+  classDef borde fill:#e6f4ea,stroke:#137333,color:#111
+  classDef ext fill:#f1f3f4,stroke:#80868b,color:#333,stroke-dasharray: 4 3
+  class S1,S4 local
+  class G1,G2,G3,Y1,Y2,Y3,R1,R2,R3,M1,M2,I1 borde
+  class EXTOCR,EXTACC,EXTVGM,EXTGRU,EXTVMS ext
