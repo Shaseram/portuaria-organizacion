@@ -38,6 +38,9 @@
 | `TRZ-C3-029` | D1, `SEC-PHYS-v0.1`, B3.1 y B3.2 — nueve zonas y once flujos · `CP, Cap. 10`, restricción 6 · `RNF-SEG-06` | — | zonas y conductos | los cuatro dominios de conmutación de §5 alojan las nueve zonas de política; `Z-MGMT` atraviesa los cuatro y **no es un quinto segmento** | prueba de penetración interna: cero rutas cruzadas | vista de red | equipamiento de red | PARA REVISIÓN |
 | `TRZ-C3-030` | D1, B3.4 y `FL-10` — «tiempo, nombres y registros locales no pueden depender solo de nube» | — | servicios de infraestructura | resolución de nombres, hora, validación de certificados, caché de identidad y buffer de registro **resueltos localmente** durante las 72 h | prueba de desconexión con los cinco servicios verificados | vista de red | sin fila: capacidad del núcleo local | PARA REVISIÓN |
 
+| `TRZ-C3-031` | A3 §7 — cinco funciones críticas y su respaldo manual · BTT `RT-03.13` — declarar qué funciones **no** estarán disponibles; su ausencia es «observación grave» | — | continuidad | **corrección:** las cinco críticas **no requieren fallback manual**; lo que se degrada es la contraparte externa, no la función. Se retira «planilla de turno» y «acta en papel» de la matriz | prueba de desconexión de 72 h | vista de despliegue | n/a | PARA REVISIÓN |
+| `TRZ-C3-032` | A3 §3 — matriz de autoridad `dominio × zona × fase`, sustitución por bloque de patio · Decisión N° 1 §5.4 | MC-08 | autoridad | `PHY-OPS-03` sostiene autoridad diferenciada **por bloque simultáneamente**; escritura dual hacia el TOS post-cutover; retorno por redirección en la fachada | prueba de cruce de zona con fallo parcial | vista de despliegue | dentro de `T11-C2-01` | PARA REVISIÓN |
+
 ## 2. Cobertura declarada
 
 | Obligación | Cómo la cubre C3 | Sección |
@@ -55,6 +58,6 @@
 
 - Cerrar `TRZ-C3-018`, `020`, `023` y `027` con el dimensionamiento de C4.
 - ~~Cruzar `TRZ-C3-008`, `009` y `012` con `SEC-PHYS-v0.1`~~ — **hecho** en §5.bis; ver `TRZ-C3-029` y `030`.
-- Completar con A3 la declaración de funciones no disponibles en modo desconectado (checklist N° 4).
+- ~~Completar con A3 la declaración de funciones no disponibles (checklist N° 4)~~ — **hecho** en C3 §7.1; ver `TRZ-C3-031` y `032`.
 - `TRZ-C3-009`, `010`, `011`, `017` y `028` dependen de dato o autorización externa.
 - `TRZ-C3-003` requiere decisión del integrador sobre `F2-ESC-010`.

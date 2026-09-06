@@ -249,6 +249,7 @@ Este bloque cubre el Capítulo 7 completo del BTT, ausente de Célula 3 hasta la
 | Esquema | **3-2-1-1-0**: tres copias, dos medios distintos, una fuera de sitio, una inmutable o fuera de línea, cero errores de verificación de restauración | `RT-07.09`, `RNF-DIS-14` |
 | Cifrado | respaldos cifrados en reposo y en tránsito, **con clave gestionada de forma independiente de la infraestructura respaldada** | `RT-07.10` |
 | Inmutabilidad | copias inmutables protegidas contra borrado y modificación durante su retención, **incluso frente a credenciales administrativas comprometidas** | `RT-07.11` |
+| *(respuesta a `ADR-007`)* | D2 §B5 fija como consecuencia negativa que `ADR-007` no puede omitir: *«respaldo alcanzable por la misma autoridad que puede borrarlo; restauración no probada»*. Las dos quedan cubiertas: `RT-07.11` separa la autoridad de borrado, `RT-07.10` gestiona la clave **de forma independiente de la infraestructura respaldada**, y `RT-07.12` exige prueba de restauración mensual con tiempo medido. Anclajes de D2: `SPOF-13` y `SPOF-12`; amenazas `THR-046` y `THR-049` | `RT-07.10`, `.11`, `.12` |
 | Restauración | prueba **mensual** documentada sobre muestra representativa, con medición del tiempo efectivo | `RT-07.12` |
 | Declaración por dominio | por **cada dominio de dato**: frecuencia de respaldo, período de retención y tiempo estimado de restauración completa | `RT-07.13` |
 | Granularidad | restauración de un registro, una tabla, un módulo o el sistema completo *(deseable, se ofrece)* | `RT-07.14` |

@@ -39,6 +39,8 @@
 | `TRZ-C4-030` | D1, `SEC-PHYS-v0.1` y `F3-DEC-005` — asignar ID T-11 solo con producto ofertado; capacidades incluidas se referencian, no se duplican | T-11 de seguridad | 17 grupos: **7 con fila propia, 10 referenciados** desde filas existentes | clasificación de D1 aplicada literalmente | todos | 7 filas | `T11-SEC-01`..`07` | PARA REVISIÓN |
 | `TRZ-C4-031` | D1, `SEC-LOG-01` · `RT-11` — 12 meses en línea + 24 en archivo · Maestro §16.1 — accesos 5 años · `RT-09.01` — cálculo con supuestos | ingesta de registro | **piso derivable ≈21.700 ev/día ⇒ ≈8 GB/año en línea** a 1 KB por registro, con sensibilidad de 4 a 16 GB `[supuesto]`; buffer local de 72 h ≈0,07 GB | derivación en §9.ter desde el `CP, Cap. 14.1`; **no incluye registros de plataforma, red y borde**, que suelen dominar | `PHY-OPS-01`, `PHY-CLD-09` | unidad: ingesta diaria y retención | `T11-SEC-04` | **PARA REVISIÓN**; el total depende de `F3-DEP-004` (`F2-ESC-013`) |
 
+| `TRZ-C4-032` | A2 §2.1 — matriz de contrapartes con frecuencia y peak · BTT `RT-03.20` — ancho de banda por sitio en régimen y peak | — | ancho de banda | ninguna contraparte de A2 altera el cálculo: el TOS es flujo **local**, el resto son cargas de mensajería. El término dominante sigue siendo el de las imágenes | contraste documental | — | `T11-C3-01` | PARA REVISIÓN |
+
 ## 2. Cobertura declarada
 
 | Obligación | Cómo la cubre C4 | Sección |

@@ -32,6 +32,8 @@
 | `TRZ-C1-025` | D1, `SEC-PHYS-v0.1`, B3.1 — nueve zonas de política · B7.6 y `F3-DEC-005` — regla de no duplicar filas T-11 | — | — | las nueve zonas sobre `PHY-CLD-*` y `PHY-OPS-*` | `Z-MGMT` sin nodo propio; `Z-DATA` repartida entre nube y sala; `Z-PROT` fuera del límite | regulación/seguridad | §6.bis | ver C4 §9.bis | PARA REVISIÓN |
 | `TRZ-C1-024` | CP, Cap. 11 — no se construye infraestructura civil, sí se especifica para que el CLIENTE la ejecute | — | — | límite de oferta | obra civil como especificación, no como partida | — | §2 | fuera de oferta | PARA REVISIÓN |
 
+| `TRZ-C1-026` | D2 §B5 — revisión de `ADR-005`: consecuencia negativa ineludible, anclajes `SPOF-06` y `SPOF-01`, amenazas `THR-052`/`THR-054`, disparador `ESC-09` | — | — | sala técnica | el residual queda atado a `SPOF-06` en estado `ESCALADO`; el estado recomendado del ADR sigue siendo `CANDIDATO` | continuidad, regulación | §7 | C2 | PARA REVISIÓN |
+
 ## 2. Cobertura declarada
 
 | Obligación | Cómo la cubre C1 | Sección |

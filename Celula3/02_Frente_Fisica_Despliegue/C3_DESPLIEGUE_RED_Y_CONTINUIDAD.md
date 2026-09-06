@@ -245,17 +245,49 @@ Las cinco críticas son exactamente las cinco funciones que el Maestro §9.1 exi
 
 | Servicio o proceso | Clase | HA | Dependencia | RTO | RPO | 72 h local | Fallback manual | Prueba | SPOF residual |
 |---|---|---|---|---|---|---|---|---|---|
-| Nave y movimientos | crítica | clúster local ≥3 nodos + multi-AZ en nube | núcleo local, borde de muelle | ≤4 h | ≤15 min | **sí, completo** | registro en planilla de turno con conciliación posterior | E2E y DR semestral | sala técnica única, aceptado |
-| Gate: entrada y salida | crítica | ídem + gabinete por puesto con proceso local | núcleo local, OCR, báscula, barrera | ≤4 h | ≤15 min | **sí, completo** | carril de excepción con validación documental asistida | corte real de enlace | barrera y báscula del CLIENTE |
-| Posición e inventario | crítica | ídem | núcleo local, red de patio, terminales | ≤4 h | ≤15 min | **sí**, con la red de patio operativa | terminal autónomo hasta 8 h; luego planilla | prueba de campo con desconexión deliberada | red de patio, mitigado |
-| Alarma de patio refrigerado | crítica | ídem + concentrador por tablero | núcleo local, 26 concentradores | ≤4 h | ≤15 min | **sí**, alarma local con canal redundante | ronda física cada 4 h, que es el estado actual | inyección de falla de sensor y de tablero | respaldo eléctrico del patio reefer no verificado |
-| Hecho y evidencia facturable | crítica | ídem | núcleo local | ≤4 h | ≤15 min | **sí**, captura y sello diferido | acta en papel con firma, digitalizada al reconectar | conciliación por turno | — |
+| Nave y movimientos | crítica | clúster local ≥3 nodos + multi-AZ en nube | núcleo local, borde de muelle | ≤4 h | ≤15 min | **sí, completo** | **ninguno**: la operación continúa localmente sin degradar. Lo que espera es la mensajería EDIFACT, que queda en cola *(A3 §7)* | E2E y DR semestral | sala técnica única, aceptado |
+| Gate: entrada y salida | crítica | ídem + gabinete por puesto con proceso local | núcleo local, OCR, báscula, barrera | ≤4 h | ≤15 min | **sí, completo** | carril de excepción de `RN-07`, que **ya existe hoy**; lo que se degrada es solo la verificación contra autoridades externas *(A3 §7)* | corte real de enlace | barrera y báscula del CLIENTE |
+| Posición e inventario | crítica | ídem | núcleo local, red de patio, terminales | ≤4 h | ≤15 min | **sí**, con la red de patio operativa | **ninguno**: la posición sigue con DGPS/RTLS y lectura óptica local. Lo que se posterga es la conciliación fina con el TOS *(A3 §7)*. El terminal de equipo aguanta 8 h fuera de cobertura | prueba de campo con desconexión deliberada | red de patio, mitigado |
+| Alarma de patio refrigerado | crítica | ídem + concentrador por tablero | núcleo local, 26 concentradores | ≤4 h | ≤15 min | **sí**, alarma local con canal redundante | **ninguno**: alarma y registro continúan localmente. Solo se difiere el reporte agregado a `DATA-AN` *(A3 §7)*. La ronda física cada 4 h queda como reversibilidad de último recurso, no como respaldo del corte | inyección de falla de sensor y de tablero | respaldo eléctrico del patio reefer no verificado |
+| Hecho y evidencia facturable | crítica | ídem | núcleo local | ≤4 h | ≤15 min | **sí**, captura y sello diferido | **ninguno**: la evidencia se sella localmente. Se posterga la entrega al ERP y su conciliación 1:1 *(A3 §7)* | conciliación por turno | — |
 | Planificación | alta | multi-AZ en nube; plan vigente replicado local | nube | ≤4 h | ≤15 min | plan vigente **sí**; replanificación **no** | planificación manual, que es el estado actual | DR semestral | dependencia de una persona hasta 2028 |
 | Mensajería con navieras | alta | multi-AZ; cola durable con acumulación local | nube, contraparte | ≤4 h | ≤15 min | **no**: acumula y entrega al reconectar | canal puente transitorio, prohibido para la alianza desde 2029 | prueba por contraparte | disponibilidad de la contraparte |
 | Inspecciones | alta | multi-AZ | nube, autoridad | ≤4 h | ≤15 min | agenda vigente y acta **sí** | coordinación telefónica y acta en papel | DR semestral | interfaz de la autoridad inexistente |
 | Portal de autoservicio | media | multi-AZ | nube, borde público | ≤4 h | ≤15 min | **no** | atención asistida | DR semestral | proveedor de nube |
 | Emisiones | media | multi-AZ | nube; captura en borde | ≤4 h | ≤15 min | captura **sí**; cálculo **no** | — | DR semestral | — |
 | Analítica y concedente | media | multi-AZ | nube | ≤4 h | ≤15 min | **no**; el dato se acumula | — | DR semestral | — |
+
+
+#### 7.1 Lo que A3 corrigió de esta matriz
+
+Al integrar el `§7` de A3 —«Cinco funciones críticas: qué no está disponible offline y su respaldo manual»— apareció un error de este entregable que conviene dejar escrito, porque va al fondo del diseño.
+
+La columna «fallback manual» de la matriz anterior proponía procedimientos de papel para las cinco funciones críticas: planilla de turno para movimientos, acta en papel para la evidencia. **Eso contradice el propio diseño.** Si el núcleo local sostiene esas cinco funciones durante 72 horas, no hay nada que reemplazar a mano: lo que se degrada no es la función, es su **contraparte externa**.
+
+| Función | Lo que **no** se detiene | Lo que sí espera al enlace |
+|---|---|---|
+| Nave y movimientos | la operación completa, local | la mensajería EDIFACT con navieras, que queda en cola |
+| Posición y cruce de zonas | posición con DGPS/RTLS y lectura óptica | la conciliación fina con el TOS |
+| Gate | validación y paso del camión | la verificación contra autoridades externas, que usa el carril de excepción de `RN-07`, **ya existente hoy** |
+| Alarma de patio refrigerado | detección, alarma y registro | el reporte agregado a `DATA-AN` |
+| Hecho y evidencia facturable | captura y sellado local | la entrega al ERP y su conciliación 1:1 |
+
+Escribir «planilla de turno» como respaldo daba a entender que la función cae, y es exactamente lo contrario de lo que se está ofertando. Corregido en la matriz del §7.
+
+**Lo que sí se degrada por diseño**, declarado por A3 y que este entregable debe reflejar en el calendario y en la capacidad: planificación, inspecciones, emisiones, analítica, alta de identidad nueva y el catálogo central del gateway. Para la planificación el respaldo es el plan impreso y la radio, que es el modo degradado explícito de la Decisión N° 1. Esa declaración es el **entregable N° 4 del checklist del BTT** (`RT-03.13`), cuya ausencia el propio requisito califica de «observación grave», y ahora existe: la produce A3 y este entregable la respalda con la infraestructura que la hace posible.
+
+#### 7.2 Autoridad por bloque de patio, no por sistema completo
+
+La matriz `dominio × zona × fase` de A3 §3 introduce algo con consecuencia física directa: el núcleo de registro —gate, posición, movimientos y salida— **se sustituye como un solo contexto acotado pero se despliega bloque por bloque del patio**, nunca de una vez.
+
+Tres consecuencias para este frente:
+
+`PHY-OPS-03`, la capa anticorrupción, **debe sostener autoridad diferenciada por bloque simultáneamente**: bloques pre-cutover donde manda el TOS, bloques en validación donde el sistema nuevo solo lee, y bloques post-cutover donde manda el nuevo. No es un interruptor, es un estado por zona.
+
+**Post-cutover hay escritura dual hacia el TOS**, para conservar la posibilidad de retorno. Es decir, el TOS sigue recibiendo tráfico después de perder la autoridad, y ese tráfico se suma al dimensionamiento de `PHY-OPS-03`. A2 confirma que el TOS cursa *«todo el tráfico transaccional, ~0,27 TPS peak»*, coherente con `DIM-02` de C4.
+
+**El retorno se ejecuta por redirección de enrutamiento en la fachada**, con doble control y break-glass. Eso lo hace una operación de configuración, no de restauración de datos — y por lo tanto compatible con la restricción de no detener la operación.
+
 
 ### 8. Comportamiento ante dependencia externa degradada
 
@@ -352,6 +384,8 @@ Un dato del caso que el plan debe incorporar y que no es nuestro: el respaldo el
 - [x] 72 h y 90 min están trazados a `RNF-DIS-02` y `RNF-DIS-04`; el dimensionamiento es de C4.
 - [x] No se programa intervención prohibida; la partición software/física lo hace verificable.
 - [x] Clasificación de servicios con impacto justificado y nivel del Art. 78°.
+- [x] Declaración de funciones no disponibles en modo desconectado, checklist N° 4 del BTT — la produce A3 §7; §7.1 corrige la matriz contra ella y aporta la infraestructura que la sostiene.
+- [x] Autoridad por bloque de patio integrada desde A3 §3 — §7.2.
 - [ ] `TRZ_C3.md` completo — en curso.
 - [ ] Buffer de 72 h, sincronización y capacidad de los ambientes — dependen de C4.
 - [x] Conductos y reglas de segmentación — §5.bis: cuatro dominios físicos reconciliados con las nueve zonas de D1 y los once flujos.
