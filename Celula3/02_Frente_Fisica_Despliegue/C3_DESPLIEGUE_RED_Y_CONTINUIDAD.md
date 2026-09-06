@@ -77,7 +77,9 @@ Entrega a C4 componentes de red, HA, respaldo, DR, monitoreo y sitio que requier
 - Frente 3: zonas, conductos, accesos administrativos y failover.
 - Frente 1: restricciones de disponibilidad que requieran degradación lógica.
 
-### Definición de terminado
+### Definición de terminado *(lista normativa del contrato — no es estado)*
+
+> **Cómo leer estas casillas.** Son la **lista de exigencias** que el contrato de este entregable fija al empezar, y se conservan sin marcar a propósito: son el enunciado, no el avance. **El estado vigente y fechado está en la última sección de este documento**, «§14 Definición de terminado — estado». Si las dos se leen como estado, un mismo control aparece pendiente y cumplido a la vez, que es lo que observó `AGC3-019`.
 
 - [ ] Cinco ambientes explícitos y aislados.
 - [ ] Red de patio se valida en condición real; ubicación queda sujeta a site survey.

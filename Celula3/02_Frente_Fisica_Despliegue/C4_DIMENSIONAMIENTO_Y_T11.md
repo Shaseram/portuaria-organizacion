@@ -74,7 +74,9 @@ Transformar la volumetría en capacidades y cantidades justificadas, y consolida
 - Frente 2: retroalimentación si un producto no soporta la demanda.
 - Frente 3: datos para auditoría y control de seguridad/licencias.
 
-### Definición de terminado
+### Definición de terminado *(lista normativa del contrato — no es estado)*
+
+> **Cómo leer estas casillas.** Son la **lista de exigencias** que el contrato de este entregable fija al empezar, y se conservan sin marcar a propósito: son el enunciado, no el avance. **El estado vigente y fechado está en la última sección de este documento**, «§12 Definición de terminado — estado». Si las dos se leen como estado, un mismo control aparece pendiente y cumplido a la vez, que es lo que observó `AGC3-019`.
 
 - [ ] Cálculos reproducibles y unidades coherentes.
 - [ ] Supuestos propios diferenciados de hechos del CLIENTE.
@@ -241,7 +243,7 @@ Sobre el arreglo se declara, conforme a `RT-03.14` y `RT-08.02`: paridad doble o
 | Migración histórica del TOS 2012 | repositorio consultable | ≈480 GB, sobreestimado | — |
 | **Total en línea, orden de magnitud** | | **≈2,5 TB** | **≈2,8 TB** |
 
-La retención de 12 meses de las imágenes es la que impide que el conjunto crezca sin techo: sin ella, 1,43 TB anuales acumulados a diez años serían más de 14 TB. Es una decisión de las bases (`RT-05.10`), no nuestra, y conviene decirlo porque es lo que hace que el dimensionamiento sea estable.
+La retención de 12 meses de las imágenes es la que impide que el conjunto crezca sin techo: sin ella, 1,43 TB anuales acumulados a diez años serían más de 14 TB. Es una decisión de las bases —`CP, Cap. 15, RT-05.10` — retención de datos históricos y de auditoría; **no** el `RT-05.10` del BTT, que trata del catálogo de datos con linaje—, no nuestra, y conviene decirlo porque es lo que hace que el dimensionamiento sea estable.
 
 ### 7. Margen de crecimiento y procedimiento de ampliación
 
@@ -339,7 +341,7 @@ Es la única entrada de `SEC-PHYS-v0.1` cuya cantidad depende de un cálculo pro
 
 #### Estimación de la ingesta, con su método
 
-`RT-09.01` obliga a presentar el cálculo de capacidad **con sus supuestos**, y la regla 4 del Maestro admite rango y mecanismo de levantamiento: lo que prohíbe es completar inventando. Se estima la parte derivable de la volumetría del `CP, Cap. 14.1` y se declara explícitamente qué queda fuera.
+El `BTT, Cap. 9, RT-09.01` — cálculo de capacidad — obliga a presentarlo **con sus supuestos** *(el `RT-09.01` del `CP, Cap. 15` es otra materia: el umbral de ≤1 s de la transacción operacional crítica)*, y la regla 4 del Maestro admite rango y mecanismo de levantamiento: lo que prohíbe es completar inventando. Se estima la parte derivable de la volumetría del `CP, Cap. 14.1` y se declara explícitamente qué queda fuera.
 
 | Fuente de evento de seguridad | Eventos/día | Derivación |
 |---|---:|---|
@@ -366,7 +368,7 @@ Es la única entrada de `SEC-PHYS-v0.1` cuya cantidad depende de un cálculo pro
 
 ### 10. Matriz T-11 y control 1:1
 
-Los candidatos de este frente están en C2 §9 y en la tabla de conversión de §9 de este entregable. **No se han escrito todavía en [`../../90_Consolidado/01_T11_TRABAJO_TRAZABLE.md`](../../90_Consolidado/01_T11_TRABAJO_TRAZABLE.md)**, y es deliberado: el README de Célula 3 establece que los archivos de `90_Consolidado/` *«reciben únicamente contenido aprobado para entrega»* y que los archivos globales los actualiza el integrador en las puertas de integración. Este material está en `v0.5`, no aprobado, y además el T-11 debe recibir también los candidatos de A1, A2, A3, D1 y D2. La consolidación se hace en la Puerta 2, con las doce columnas de trabajo, y de ahí pasan al formulario final solo las cinco oficiales. Al Formulario T-11 final pasan solo las cinco oficiales —Componente, Producto o servicio ofertado, Ubicación o lugar, Cantidad, Justificación— y solo las filas aprobadas.
+Los candidatos de este frente están en C2 §9 y en la tabla de conversión de §9 de este entregable. **No se han escrito todavía en [`90_Consolidado/01_T11_TRABAJO_TRAZABLE.md`](../90_Consolidado/01_T11_TRABAJO_TRAZABLE.md)**, y es deliberado: el README de Célula 3 establece que los archivos de `90_Consolidado/` *«reciben únicamente contenido aprobado para entrega»* y que los archivos globales los actualiza el integrador en las puertas de integración. Este material está en `v0.5`, no aprobado, y además el T-11 debe recibir también los candidatos de A1, A2, A3, D1 y D2. La consolidación se hace en la Puerta 2, con las doce columnas de trabajo, y de ahí pasan al formulario final solo las cinco oficiales. Al Formulario T-11 final pasan solo las cinco oficiales —Componente, Producto o servicio ofertado, Ubicación o lugar, Cantidad, Justificación— y solo las filas aprobadas.
 
 **Control 1:1 exigido por la Puerta 2.** Cada fila de T-11 debe volver a un nodo del diagrama físico de C1, a un cálculo de este entregable y a una fuente. Y a la inversa: cada caja física ofertada debe tener fila, o una justificación explícita de por qué no la tiene.
 

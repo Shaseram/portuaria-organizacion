@@ -6,7 +6,7 @@
 
 | ID | Fuente | MC/decisión | RF/RNF | Componente/nodo | Decisión de ubicación | Criterios Art. 16 | Diagrama | T-11 | Estado |
 |---|---|---|---|---|---|---|---|---|---|
-| `TRZ-C1-001` | BA, Art. 16.1 — modelo híbrido obligatorio · BTT, Cap. 3, numeral 3.1 | — | RNF-ARQ aplicables | plataforma completa | híbrida: nube principal + núcleo local + borde | los seis | §3 | n/a | PARA REVISIÓN |
+| `TRZ-C1-001` | BA, Art. 16.1 — modelo híbrido obligatorio · BTT, Cap. 3, numeral 3.1 · BTT, Cap. 2, `RT-02.01` — capas obligatorias | — | *(se retira «RNF-ARQ»: esa familia no existe en Célula 2, según la propia Matriz Global `GTR-002`)* | plataforma completa | híbrida: nube principal + núcleo local + borde | los seis | §3 | n/a | PARA REVISIÓN |
 | `TRZ-C1-002` | CP, Cap. 3 — «toda la operación ocurre en un solo emplazamiento» | — | — | `PHY-CLD-10` | secundario en región secundaria de nube, no en el terminal | continuidad, regulación | §3, §4 | C2 | PARA REVISIÓN |
 | `TRZ-C1-003` | BTT, Cap. 7, `RT-07.02` — distancia al principal y análisis de amenazas comunes · CP, Cap. 6 — sala a <300 m de la costa | `F2-ESC-003` | RNF-DIS aplicables | `PHY-CLD-10` | amenaza común descarta un secundario dentro del recinto | continuidad, regulación | §1, §8 | C2 | PARA REVISIÓN |
 | `TRZ-C1-004` | CP, Cap. 15, `RT-03.10` — operación desconectada 72 h · BTT, Cap. 3, `RT-03.10` — mínimo 24 h «o el mayor que fije el caso» | MC-09 | RNF-DIS-02/04 | `PHY-OPS-01` | cinco funciones críticas con cómputo y datos en el terminal | latencia, continuidad, acoplamiento | §3, §5, §6 | C4 | PARA REVISIÓN |

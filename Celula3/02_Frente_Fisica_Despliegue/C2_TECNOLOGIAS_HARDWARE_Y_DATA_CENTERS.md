@@ -55,7 +55,7 @@ Especificar las tecnologías y los implementos que materializan la arquitectura,
 
 ### Reglas importantes
 
-- Si se propone sala principal sustantiva, aplicar RT-06.01..24 íntegros.
+- Si se propone sala principal sustantiva, aplicar `BTT, Cap. 6, RT-06.01` a `RT-06.34` íntegros *(rango corregido; ver la nota `F2-COR-002` arriba y `F2-COR-009`)*.
 - UPS ≥30 min a plena carga y generación ≥24 h donde aplique.
 - Separar racks de cómputo y comunicaciones; declarar kW, factor de potencia y PUE.
 - Equipamiento nuevo y con garantía.
@@ -76,7 +76,9 @@ Especificar las tecnologías y los implementos que materializan la arquitectura,
 - Frente 3: productos, superficies de administración, logs, identidades y actualizaciones.
 - C4: SKU/referencia, unidad de cantidad y variables de cálculo.
 
-### Definición de terminado
+### Definición de terminado *(lista normativa del contrato — no es estado)*
+
+> **Cómo leer estas casillas.** Son la **lista de exigencias** que el contrato de este entregable fija al empezar, y se conservan sin marcar a propósito: son el enunciado, no el avance. **El estado vigente y fechado está en la última sección de este documento**, «§12 Definición de terminado — estado». Si las dos se leen como estado, un mismo control aparece pendiente y cumplido a la vez, que es lo que observó `AGC3-019`.
 
 - [ ] Todo producto materializa una caja física o control obligatorio.
 - [ ] Versiones y soporte están declarados o existe criterio de vigencia.

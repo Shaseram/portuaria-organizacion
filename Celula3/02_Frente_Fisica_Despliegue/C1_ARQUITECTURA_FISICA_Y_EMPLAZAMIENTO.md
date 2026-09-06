@@ -70,7 +70,9 @@ Entrega a C4 el inventario de cajas físicas y su ubicación. Cada una se clasif
 - Frente 1: restricciones físicas que cambien dependencia o flujo.
 - Frente 3: nodos, zonas, exposición, administración y fronteras de confianza.
 
-### Definición de terminado
+### Definición de terminado *(lista normativa del contrato — no es estado)*
+
+> **Cómo leer estas casillas.** Son la **lista de exigencias** que el contrato de este entregable fija al empezar, y se conservan sin marcar a propósito: son el enunciado, no el avance. **El estado vigente y fechado está en la última sección de este documento**, «§10 Definición de terminado — estado». Si las dos se leen como estado, un mismo control aparece pendiente y cumplido a la vez, que es lo que observó `AGC3-019`.
 
 - [ ] Todos los componentes desplegables tienen ubicación y justificación.
 - [ ] La solución es realmente híbrida y multi-AZ.
@@ -273,7 +275,7 @@ La Decisión N° 20 de Célula 2 dejó el destino de la sala como ADR con tres a
 
 | Criterio | A. Endurecer la sala actual | B. Sala nueva dentro del terminal | C. Borde mínimo + nube |
 |---|---|---|---|
-| `RT-06.01` uso exclusivo, aislado, acceso independiente | dudoso: está dentro del edificio administrativo | cumple por diseño | no aplica en la misma escala |
+| `BTT, Cap. 6, RT-06.01` uso exclusivo, aislado, acceso independiente *(no el `RT-06.01` del caso, que fija la tipología)* | dudoso: está dentro del edificio administrativo | cumple por diseño | no aplica en la misma escala |
 | `RT-06.29`/`.30` espacio de operación **separado** de la sala de equipos | difícil en 34 m² | cumple por diseño | cumple: la operación es remota |
 | `RT-06.32` rutas físicas distintas, **ingreso al edificio por puntos separados** | **posible criterio de descarte**; depende del edificio, hoy con un solo proveedor de fibra | cumple si se especifica en la obra | sigue exigiendo dos caminos hacia la nube |
 | UPS ≥30 min y generación ≥24 h | hoy 25 min; exige reemplazo del respaldo | cumple por diseño | menor carga, pero el borde igual requiere respaldo |
