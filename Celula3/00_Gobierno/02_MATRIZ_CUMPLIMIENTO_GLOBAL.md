@@ -88,11 +88,83 @@ La normativa chilena y sectorial se controla por aplicabilidad en los entregable
 
 ## 5. Control 1:1 físico–T-11
 
-| ID físico | Componente/nodo | Justificación Art. 16 | Cálculo/cantidad | Seguridad | Fila T-11 | Estado |
-|---|---|---|---|---|---|---|
-| `POR DEFINIR` | — | — | — | — | — | PENDIENTE |
+Regla de la Puerta 2: **cada fila de T-11 vuelve a un nodo físico, a un cálculo y a una fuente; y cada caja física ofertada tiene fila o exclusión justificada.** Se completa el 2026-09-06 con las 28 filas candidatas vigentes: 20 de C2, 4 de C3 y 6 de seguridad (`T11-SEC-04` no genera fila, resuelve sobre `T11-C2-19`).
 
-## 6. Control de pendientes externos
+| Fila T-11 | Nodo físico | Justificación Art. 16 | Cálculo/cantidad | Seguridad | Estado |
+|---|---|---|---|---|---|
+| `T11-C2-01` servidores del núcleo local | `PHY-OPS-01` | latencia ≤1 s y 72 h sin enlace: no se resuelven con un enlace de por medio | C4 §6: clúster ≥3 nodos, ≈183 GB útiles | `SEC-NET-01`, `SEC-END-01` | v0.5 |
+| `T11-C2-02` almacenamiento local | `PHY-OPS-02` | buffer del corte; `RT-03.14` exige tolerar falla de disco | C4 §4: buffer 21,9 GB al peak estacional | `SEC-DATA-01`, `SEC-ENC-01` | v0.5 |
+| `T11-C2-03` conmutación de núcleo | `PHY-OPS-04` | `RT-08.03` HA sin punto único | C4 §9: par en HA | `SEC-NET-01` | v0.5 |
+| `T11-C2-04` cortafuegos y segmentación | `PHY-OPS-04` | Declaración Mandatoria: segregar operación, administración y protección | par en HA | `SEC-NET-01`, `SEC-EXP-01`; IEC 62443 | v0.5 |
+| `T11-C2-05` UPS | sala técnica | `RT-06.07` ≥30 min a plena carga | C4; hoy la sala tiene 25 min | — | v0.5 |
+| `T11-C2-06` generación autónoma | recinto del CLIENTE | `RT-06.08` ≥24 h con estanque | C4 | — | v0.5; ejecuta el CLIENTE |
+| `T11-C2-07` climatización de precisión | sala técnica | `RT-06.13` N+1 | C4 | — | v0.5 |
+| `T11-C2-08` detección temprana de incendio | sala técnica | `RT-06.16` | 1 sistema | — | v0.5 |
+| `T11-C2-09` extinción por agente limpio | sala técnica | `RT-06.17` | 1 sistema | — | v0.5 |
+| `T11-C2-10` control de acceso y esclusa | acceso a sala | `RT-06.20`/`.23`; tensión declarada en `F2-DEC-002` | 1 conjunto | `SEC-PHYS` | v0.5 |
+| `T11-C2-11` videovigilancia del recinto | sala técnica | `RT-06.24` ≥30 días; **no es el VMS del terminal**, `F2-DEC-003` | C4 | `SEC-PHYS` | v0.5 |
+| `T11-C2-12` custodia de medios | `PHY-OPS-05` | `RT-06.26`–`.28`; sostiene el «fuera de sitio» del 3-2-1-1-0 | 1 servicio | `SEC-BKP-01`; verificación mensual `RT-07.12` | v0.5 |
+| `T11-C2-13` estaciones de operación | `PHY-OPS-06` | `RT-06.30` prohíbe operar dentro del recinto técnico; `RT-08.07` | C4; TI del CLIENTE = 5 personas | `SEC-ADM-01` | v0.5 |
+| `T11-C2-14` gabinetes de borde | `PHY-EDG-01/02/03/04` | `RT-08.12` y `CP, Cap. 15, RT-06.01`: cuatro zonas, **no la de inspección** | C4 | `SEC-PHYS` | v0.5 |
+| `T11-C2-15` dispositivos móviles de terreno | borde, todas las zonas | `RT-08.11`; uso con guantes e intemperie | 74 → 88 equipos, más repuestos | `SEC-END-01` **no** aplica: sin agente | v0.5 |
+| `T11-C2-16` concentradores de patio refrigerado | `PHY-EDG-03` | alarma ≤5 min sin depender del enlace | 26 → 32, uno por tablero | `SEC-NET-01` | v0.5 |
+| `T11-C2-17` servicios de nube, región primaria | `PHY-CLD-01..09` | Art. 16: elasticidad estacional y servicios gestionados | C4: 2,5 TB en línea, 73 ev/s | `SEC-DATA-01`, `SEC-EDGE-01` | v0.5; depende de `ADR-011` |
+| `T11-C2-18` servicios de nube, región secundaria y DR | `PHY-CLD-10` | `RT-07.02`: no hay segundo recinto del CLIENTE | réplica, capacidad reducida en reposo | `SEC-BKP-01` | v0.5; depende de `ADR-011` |
+| `T11-C2-19` observabilidad y SIEM | `PHY-CLD-09` + colector en `PHY-OPS-01` | `RT-03.16`: **una sola** plataforma para nube y on-premise | C4 §9.ter: piso ≈8 GB/año en línea; falta medición | `SEC-LOG-01`, `SEC-SIEM-01` | v0.5; absorbe `T11-SEC-04` |
+| `T11-C2-20` licenciamiento de sistema operativo | sala técnica y borde | `RT-03.15` | C4 | `SEC-HARD-01` línea base CIS | v0.5 |
+| `T11-C3-01` segundo camino hacia la nube | terminal ↔ nube | `RT-03.17`: proveedor distinto y conmutación con tiempo declarado | ≥35 Mbps, dos caminos | `SEC-SYNC-01` | v0.5; capacidad real en `F2-ESC-012` |
+| `T11-C3-02` canal privado hacia la nube | terminal ↔ región primaria | `RT-03.04`: no exponer la red del terminal a Internet | 1 conjunto redundado | `SEC-SYNC-01` | v0.5 |
+| `T11-C3-03` red operacional del patio | `PHY-EDG-02` | `CP, Cap. 15, RT-03.24`: rediseño con radiopropagación verificada | **6–8, rango**; la cobertura manda, no el tráfico | `SEC-NET-01` | v0.5; site survey `F2-ESC-001` |
+| `T11-C3-04` plataforma CI/CD | nube, ingeniería separada de producción | `RT-04.07`: desplegar sin ventana; el terminal no la tiene | por proyectos y ejecuciones | `SEC-SDLC-01`, `SEC-PIPE-01`, `SEC-SUPPLY-01` | v0.5 |
+| `T11-SEC-01` borde y gateway gestionados | `PHY-CLD-01/02` | única superficie expuesta, concentrada y administrada | 369 kbps régimen, 625 peak | `SEC-EDGE-01/02`, `SEC-API-01` | v0.5 |
+| `T11-SEC-02` identidad y PAM | `PHY-CLD-03` + capacidad local en `PHY-OPS-01` | sin autenticación local el corte de enlace es corte de operación | 175 internas, 187 externas, 2.400 eventuales/año | `SEC-IAM-01`, `SEC-ADM-01` | v0.5; `ADR-008` en análisis |
+| `T11-SEC-03` KMS/HSM y gestor de secretos | nube + sala técnica | regla negativa 8: la clave no puede vivir solo en nube | por ámbito de clave; no depende del volumen | `SEC-KEY-01`, `SEC-SECRET-01` | v0.5; **requisito excluyente** |
+| `T11-SEC-05` EDR | nodos locales, cargas en nube y puestos | `RT-11`; **excluye dispositivos de terreno**, sin agente confirmado | 3 nodos + cargas + puestos de `PHY-OPS-06` | `SEC-END-01` | v0.5 |
+| `T11-SEC-06` SOC gestionado 24×7 | servicio | restricción no negociable 11: no se asigna a TI = 5 | por cobertura y volumen de eventos | `SEC-SOC-01`, `SEC-IR-01` | v0.5 |
+| `T11-SEC-07` escaneo continuo y pentest | servicio | pentest anual y antes de cada paso a producción | por activos y por ejercicio | `SEC-VULN-01`, `SEC-PENTEST-01` | v0.5 |
+
+**Fuera del T-11, con la razón declarada**, porque aparecen en el diagrama físico y su ausencia parecería una omisión: la obra civil de la sala, de cargo del CLIENTE con especificación nuestra (`RT-06.06`); los sistemas conservados —ERP, control de grúas, VMS, control de acceso del recinto, básculas y TOS 2012—; las canalizaciones exteriores; y el hardware de terreno cuya **adquisición** es del CLIENTE aunque su especificación sea nuestra (`BA, Art. 14.2`).
+
+**Pendiente de este control:** `BA, Art. 84` exige **escrow semestral del código**. Es una obligación con costo y hoy no tiene fila ni exclusión justificada. Se registra como brecha del integrador, detectada por `AGC3-012`.
+
+## 6. Checklist del Capítulo C del BTT — 28 entregables de la oferta técnica
+
+Incorporado el 2026-09-06, cerrando `F2-ESC-005`. Es la lista de verificación del propio BTT y **no estaba controlada en ninguna parte**. Se marca cuáles toca Célula 3 y cuáles no, para que nadie asuma que un entregable ajeno está cubierto.
+
+| N° | Entregable | Se exige en | Sobre / instancia | Dueño en Célula 3 | Estado |
+|---|---|---|---|---|---|
+| 1 | Documento de arquitectura ISO/IEC/IEEE 42010 con **las cinco vistas** | `RT-02.03` | Sobre N° 2 | **Subdocumento 4 completo** | **EN CURSO — faltan los diagramas de las cinco vistas** |
+| 2 | Registro de decisiones de arquitectura (ADR) | `RT-02.04` | Sobre N° 2 | `03_REGISTRO_ADR_GLOBAL` y §4.3 | EN CURSO: 11 registrados, 0 aprobados |
+| 3 | Tabla de emplazamiento nube/on-premise justificada | Cap. 3 | Sobre N° 2 | C1 §4 | **CUBIERTO** v0.5: 21 nodos × 6 criterios del Art. 16.2 |
+| 4 | Declaración de funciones **no** disponibles en modo desconectado | `RT-03.13` | Sobre N° 2 | A3 §7 y C3 §7.1 | **CUBIERTO** v0.5; su ausencia es «observación grave» |
+| 5 | Modelo de datos y diccionario de datos | `RT-05.01` | Sobre N° 2 | Subdocumento 5 (Célula 4) | fuera de Célula 3 |
+| 6 | Plan de migración de datos | `RT-05.11` | Sobre N° 2 | A3 + Subdocumento 5 | parcial en A3 |
+| 7 | Interfaces en OpenAPI y AsyncAPI | `RT-05.16` | Sobre N° 2 | A2 | no exigible en Informe 1 |
+| 8 | Especificación del site principal y secundario, **con planos** | Caps. 6 y 7 | Sobre N° 2 | C2 §5 y §6 | EN CURSO: especificación v0.5; **planos pendientes** |
+| 9 | Plan de recuperación ante desastres y política de respaldo | Cap. 7 | Sobre N° 2 | C3 §9 | **CUBIERTO** v0.5 |
+| 10 | Especificación del hardware y de los dispositivos de terreno | Cap. 8 | Sobre N° 2 | C2 §7 | **CUBIERTO** v0.5 |
+| 11 | Cálculo de capacidad y dimensionamiento | `RT-09.01` | Sobre N° 2 | C4 | **CUBIERTO** v0.5, con supuestos declarados |
+| 12 | Plan de continuidad del negocio conforme a ISO 22301 | `RT-10.03` | Sobre N° 2 | C3 §10 | **CUBIERTO** v0.5 |
+| 13 | Modelado de amenazas y matriz de controles de seguridad | `RT-11.02` y `RT-11.05` | Sobre N° 2 | D2 y D1 | **CUBIERTO** v0.5: 73 amenazas, 31 controles |
+| 14 | Declaración de la superficie de exposición | `RT-11.13` | Sobre N° 2 | D1 | EN CURSO |
+| 15 | Plan de respuesta a incidentes de seguridad | `RT-11.18` | Sobre N° 2 | D1 | EN CURSO; ojo con el cruce `RT-11.18`/`.19` de Célula 2 |
+| 16 | Modelo de identidad, matriz de roles y segregación de funciones | Cap. 12 | Sobre N° 2 | D1 | EN CURSO |
+| 17 | Sistema de diseño e informe de conformidad de accesibilidad | Cap. 13 | Sobre N° 2 | fuera de Célula 3; nace en A1 `RT-13.01` | no iniciado |
+| 18 | Estrategia de observabilidad y catálogo de alertas | Cap. 14 | Sobre N° 2 | C2/C4 + D1 | parcial: la plataforma sí (`T11-C2-19`), el catálogo de alertas no |
+| 19 | Certificados institucionales y del personal | Cap. 15 | Sobres N° 1 y 2 | fuera de Célula 3 (T-6) | no iniciado |
+| 20 | Estrategia y plan de pruebas (T-13) | Cap. 20 | Sobre N° 2 | fuera; C3 §11 aporta las de continuidad | parcial |
+| 21 | Plan de implantación y marcha blanca (T-18) | `RT-20.01` | Sobre N° 2 | fuera; C3 §12 aporta el calendario | parcial |
+| 22 | Modelo de operación, soporte y centro de atención | Cap. 21 | Sobre N° 2 | fuera de Célula 3 | no iniciado |
+| 23 | Plan de capacitación y transferencia de conocimiento | Cap. 22 | Sobre N° 2 | fuera de Célula 3 | no iniciado |
+| 24 | Matriz de cumplimiento técnico (T-12) sobre **todos** los códigos RT | numeral 1.5 | Sobre N° 2 | Célula 2 + integrador | **no iniciado**; es el punto 4 del recordatorio de Célula 2 |
+| 25 | Sitio web corporativo y declaración jurada | Cap. 23 | Sobre N° 1 | fuera | no iniciado |
+| 26 | Video de presentación | Cap. 24 | propuesta final | fuera | no iniciado |
+| 27 | Prototipo interactivo y arquitectura de información | Cap. 25 | con el Informe 3 | fuera | no iniciado |
+| 28 | Fichas de las cinco innovaciones (T-19) | Cap. 26 | Sobre N° 2 | fuera de Célula 3 | Informe 1 exige idea, tecnología y resultado esperado |
+
+**Lectura del checklist.** Seis entregables son del Frente 2 —N° 3, 8, 9, 10, 11 y 12— y **cinco de los seis están cubiertos en `v0.5`**; el N° 8 espera los planos. El N° 1 es el Subdocumento 4 entero y su única brecha son los diagramas. El N° 24, el Formulario T-12, es la brecha más seria fuera de Célula 3: es una matriz sobre los 374 códigos `RT` y nadie la ha empezado.
+
+## 7. Control de pendientes externos
 
 | ESC | Afecta | Diseño conservador/fallback | ¿Impide entregar? | Evidencia |
 |---|---|---|---|---|

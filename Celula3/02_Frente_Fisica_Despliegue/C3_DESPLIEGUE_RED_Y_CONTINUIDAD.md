@@ -375,7 +375,23 @@ Un dato del caso que el plan debe incorporar y que no es nuestro: el respaldo el
 
 **`ADR-007` — almacenamiento, RAID, HA y DR.** Aporta desde aquí la modalidad activo-pasivo justificada en C2 §6, el criterio de activación que separa corte de enlace de desastre, y los objetivos RTO 4 h y RPO 15 min. El nivel RAID se justifica en C4 frente a alternativas, como exige `RT-03.14`.
 
-**Candidatos de T-11 propios de C3**, sin precios y con cantidad en C4: segundo camino de comunicaciones hacia la nube por proveedor distinto; enlace privado o VPN cifrada; equipamiento de la red operacional del patio, en rango sujeto a site survey; plataforma de integración y entrega continua y gestor de secretos; y el servicio de custodia y verificación de restauración. Los componentes de red de núcleo y cortafuegos ya están en el catálogo de C2 y **no se duplican**.
+**Candidatos de T-11 propios de C3.** Sin precios y con cantidad en C4, conforme al Art. 16 y a la regla del Maestro. Esta lista estaba en prosa y sin identificador; C4 §9 y `TRZ_C4` ya citaban `T11-C3-01` y `T11-C3-03` como si existieran, de modo que dos filas del control 1:1 no volvían a ninguna parte. Se publica con ID el 2026-09-06 (`F2-COR-012`).
+
+| Candidato | Componente | Producto o servicio | Ubicación | Cantidad | Origen |
+|---|---|---|---|---|---|
+| `T11-C3-01` | segundo camino de comunicaciones hacia la nube | enlace por **proveedor distinto** del principal, con conmutación automática y tiempo declarado | terminal ↔ nube | C4: ≥35 Mbps disponibles, dos caminos | `RT-03.17`; `F2-SPOF-01` |
+| `T11-C3-02` | canal privado hacia la nube | enlace privado dedicado o VPN cifrada de sitio a sitio | terminal ↔ región primaria | 1 conjunto, redundado sobre los dos caminos | `RT-03.04`; `SEC-SYNC-01` de D1 |
+| `T11-C3-03` | red operacional del patio | equipamiento de cobertura del patio según la alternativa que fije `ADR-006` | 18 ha de patio | **6–8, rango**; lo cierra el site survey (`F2-ESC-001`) | `CP, Cap. 15, RT-03.24`; Decisión N° 9 |
+| `T11-C3-04` | plataforma de integración y entrega continua | CI/CD con SAST, SCA, DAST, escaneo de secretos y de imágenes, y registro de artefactos con SBOM | nube, ambiente de ingeniería separado de producción | por proyectos y ejecuciones concurrentes; C4 | §4; `SEC-SDLC-01`/`SEC-PIPE-01` y `SEC-SUPPLY-01`/`SEC-ART-01` de D1 |
+
+**Dos candidatos que este entregable creía propios y no lo son.** Al ponerles identificador aparecieron duplicados con filas que ya existían, y se declaran en lugar de arrastrarlos al T-11:
+
+| Lo que decía la lista anterior | Dónde ya estaba | Por qué no es una fila nueva |
+|---|---|---|
+| «el servicio de custodia y verificación de restauración» | `T11-C2-12` custodia de medios de respaldo | Es el mismo servicio. La **verificación de restauración** que exige `RT-07.12` —prueba mensual con tiempo medido— es una **condición de esa fila**, no una segunda compra |
+| «gestor de secretos», junto a la plataforma CI/CD | `T11-SEC-03` KMS o HSM y gestor de secretos | El gestor de secretos es una sola plataforma para todos los ambientes: partirla entre C3 y seguridad la habría contado dos veces. `T11-C3-04` queda solo con CI/CD |
+
+Los componentes de red de núcleo y cortafuegos ya están en el catálogo de C2 —`T11-C2-03` y `T11-C2-04`— y **no se duplican**.
 
 ### 14. Definición de terminado — estado
 

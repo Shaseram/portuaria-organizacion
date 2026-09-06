@@ -36,6 +36,26 @@ Nunca citar solo `RT-xx.xx`. La referencia mínima es:
 
 Ejemplo válido: `Caso 06, Cap. 15, RT-10.05 — retorno y tiempo máximo por intervención`.
 
+**Los 27 códigos del Capítulo 15 del caso reutilizan códigos del BTT. En once la materia es distinta.** La lista se obtuvo comparando los 374 códigos del BTT contra los 27 del caso, materia por materia, el 2026-09-06. Reemplaza al listado de cinco del Supuesto M de Célula 2, que quedó corto.
+
+| Código | Materia en el **BTT** | Materia en el **`CP, Cap. 15`** |
+|---|---|---|
+| `RT-03.13` | declarar qué funciones **no** están disponibles offline | sincronización tras reconexión ≤90 min |
+| `RT-03.24` | calidad de servicio y priorización de tráfico | rediseño de la red del patio |
+| `RT-05.10` | catálogo de datos con linaje automatizado | retención de históricos y de auditoría |
+| `RT-05.15` | históricos **no** migrados en repositorio de consulta | históricos **a** migrar |
+| `RT-06.01` | encabezado de rango del numeral 6 | tipología del emplazamiento on-premise |
+| `RT-09.01` | cálculo de capacidad con supuestos | transacción operacional crítica ≤1 s |
+| `RT-15.02` | apagar ambientes no productivos fuera de horario | certificaciones sectoriales del adjudicatario |
+| `RT-16.14` | motor de reglas sin recompilación | firma electrónica |
+| `RT-16.21` | plantillas de notificación administrables | canales de notificación y escalamiento |
+| `RT-16.30` | registro de exportación de información sensible | portal público |
+| `RT-21.06` | SLA del centro de atención: 80/20, FCR 70 %, abandono ≤5 % | horario del centro de atención |
+
+**Dos casos que no son colisión y se registran para que no se lean como una.** `RT-13.12`: el caso conserva la materia —multiidioma— pero **cambia su clasificación**, y lo dice literalmente: «Obligatorio, y no deseable como en el documento transversal». Es el único código que reclasifica al BTT de forma explícita, y obliga a tratarlo como exigible. `RT-21.16`: el caso declara «no exigible en los términos del documento transversal» el traslado de especialistas a sitios alejados, **porque toda la operación ocurre en un emplazamiento** — es una constatación fáctica del caso, no un rebaje del piso transversal que `FEP02 §1.3` prohíbe.
+
+**Verificación de uso.** Las 970 citas de código `RT` que hacen los tres frentes se contrastaron contra el texto de las tres bases: **ninguna cita un código inexistente**. Cierra `F2-ESC-006`.
+
 ## 2. Qué debe demostrar el Subdocumento 4
 
 El Subdocumento 4 representa **32 % del Informe 1**:
@@ -412,6 +432,29 @@ Referencia directa: [RNF vigentes](../../Celula2/01_Requerimientos/RNF.md), `RNF
 | Restauración | prueba documentada mensual |
 | Mantenimiento | fuera de ventana crítica, aviso ≥10 días hábiles, sin interrupción |
 
+#### 9.2.1 El Capítulo 7 del BTT, completo
+
+Esta tabla resumía algunos umbrales del Capítulo 7 sin controlar sus catorce requisitos, y el capítulo **no estaba citado en ninguna parte de Célula 3** pese a que `T21-4.2-E` —data center secundario— es un elemento evaluado. Se incorpora completo el 2026-09-06, cerrando `F2-ESC-003`.
+
+| Código | Exigencia | Clase | Dueño |
+|---|---|---|---|
+| `RT-07.01` | declarar la modalidad, activo-activo o activo-pasivo, y justificarla frente a costo, RTO y complejidad operacional | Obligatorio | C2/C3 |
+| `RT-07.02` | sitio secundario a distancia suficiente para no verse afectado por el mismo evento; **declarar la distancia y el análisis de amenazas comunes** | Obligatorio | C1/C2 |
+| `RT-07.03` | replicación continua, con medición y alertamiento del retraso | Obligatorio | C3/C4 |
+| `RT-07.04` | RTO ≤4 h y RPO ≤15 min para servicios críticos, **salvo exigencia superior del caso** | Obligatorio | C3 |
+| `RT-07.05` | conmutación documentada, automatizada en lo posible y **ejecutable por el personal del CLIENTE** tras la transferencia de conocimiento | Obligatorio | C3 |
+| `RT-07.06` | procedimiento de **retorno** al sitio principal, documentado y probado, con reconciliación de lo generado en contingencia | Obligatorio | C3 |
+| `RT-07.07` | probar el plan de DR **al menos dos veces al año** con conmutación real, informe y RTO/RPO efectivamente alcanzados | Obligatorio | C3 |
+| `RT-07.08` | conmutación automática ante indisponibilidad, con criterio de disparo y protección contra conmutación innecesaria | **Deseable** | C3 |
+| `RT-07.09` | respaldo 3-2-1-1-0: tres copias, dos medios, una fuera de sitio, una inmutable o fuera de línea, cero errores de verificación | Obligatorio | C2/C3 |
+| `RT-07.10` | respaldos cifrados en reposo y tránsito, **con clave gestionada de forma independiente de la infraestructura respaldada** | Obligatorio | C2/D1 |
+| `RT-07.11` | copias inmutables protegidas contra borrado y modificación **incluso frente a credenciales administrativas comprometidas** | Obligatorio | C2/D1 |
+| `RT-07.12` | prueba de restauración **mensual** sobre muestra representativa, con tiempo efectivo medido | Obligatorio | C3 |
+| `RT-07.13` | declarar por dominio de datos la frecuencia de respaldo, la retención y el tiempo de restauración completa | Obligatorio | C3/C4 |
+| `RT-07.14` | restauración granular: un registro, una tabla, un módulo o el sistema completo | **Deseable** | C2 |
+
+Dos consecuencias que este maestro debe fijar. **`RT-07.02` decide el emplazamiento del secundario**: el `CP, Cap. 3` dice que toda la operación ocurre en un solo emplazamiento, de modo que un segundo rack dentro del terminal compartiría marejada, corte del acceso vial, atmósfera salina y evento ISPS con el principal, y no satisface el análisis de amenazas comunes. **`RT-07.10` y `RT-07.11` chocan con una nube única**: si la clave y la copia inmutable viven bajo el mismo plano de control que la infraestructura respaldada, ni la independencia de la clave ni la protección frente a credenciales comprometidas se sostienen. Es el fundamento de `ADR-011` y de `SPOF-22`.
+
 ## 10. Arquitectura física y Artículo 16
 
 La solución debe ser híbrida; una propuesta solo nube o solo on-premise es inadmisible. Cada componente se justifica individualmente con:
@@ -453,7 +496,7 @@ El ADR debe comparar:
 2. reemplazarla o reconstruirla dentro del terminal;
 3. edge local mínimo más nube.
 
-Ninguna alternativa puede eliminar la autonomía local de 72 h ni presumir una instalación fuera del ambiente portuario. Si existe cómputo sustantivo en sala principal, se aplican íntegramente los requisitos RT-06.01 a RT-06.24. Se deben especificar racks separados, distribución interna, UPS ≥30 min a plena carga, generación ≥24 h, carga kW, factor de potencia y PUE, sin sobredimensionar.
+Ninguna alternativa puede eliminar la autonomía local de 72 h ni presumir una instalación fuera del ambiente portuario. Si existe cómputo sustantivo en sala principal, se aplican íntegramente los requisitos `BTT, Cap. 6, RT-06.01` a **`RT-06.34`** — *rango corregido el 2026-09-06: este maestro decía `.24` y el numeral 3.2 del BTT exige hasta `.34`. Los diez omitidos no son menores: `RT-06.26` a `.28` custodia e inventario de medios, `RT-06.29` a `.31` espacio de operación del personal separado del recinto técnico, y `RT-06.32` a `.34` rutas de comunicaciones con ingreso al edificio por puntos separados. Cierra `F2-ESC-004` y `F2-ESC-015`, que registraron su propagación a tres documentos*. Se deben especificar racks separados, distribución interna, UPS ≥30 min a plena carga, generación ≥24 h, carga kW, factor de potencia y PUE, sin sobredimensionar.
 
 ## 11. Seguridad transversal
 
