@@ -7,7 +7,7 @@
 | `TRZ-D1-001` | FEP02 Cap. 11 RT-11.01/02 | RNF-SEG-01/02 | Zero Trust/STRIDE | todos | transversal | nodos POR VALIDAR A1/C1 | D1 B1.2/B3.1–3; Zero Trust diseñado, modelo STRIDE D2 pendiente | candidatos SEC-PHYS | EN CURSO |
 | `TRZ-D1-002` | FEP02 Cap. 12 + Caso 06 | MC-04; RNF-SEG-10 | IAM terminal/eventual | ACT-EVT/externos | SRV-IAM + capacidad local | nodo/producto POR VALIDAR C1–C3 | D1 B1/B2; matriz, sesiones, offline y pruebas previstas | sí, cantidad/producto pendiente | EN CURSO |
 | `TRZ-D1-003` | FEP02 Cap. 11 RT-11.07/08/12/13 | RNF-SEG-04 | WAF/DDoS/TLS/exposición | públicos | GW-EDGE | nube multi-AZ propuesta; origen privado | D1 B3.3–B3.6; configuración/inventario/pruebas pendientes | sí, servicio/capacidad pendiente | EN CURSO |
-| `TRZ-D1-004` | FEP02 Cap. 11 RT-11.14..16; Maestro §§11.3/16 | RNF-SEG/OPE | log/SIEM/EDR | operación | transversal | híbrido; central + colectores/buffer local | D1 B5.1–B5.3/B5.7; retención, corte y casos portuarios | sí, producto/cantidad pendiente | EN CURSO |
+| `TRZ-D1-004` | FEP02 Cap. 11 RT-11.14..16; Maestro §§11.3/16 | RNF-SEG/OPE | log/SIEM/EDR | operación | transversal | híbrido; central + colectores/buffer local | D1 B5.1–B5.3/B5.7; política de admisión, medición para capacidad, retención, corte y casos portuarios | sí, producto/cantidad pendiente | EN CURSO |
 | `TRZ-D1-005` | FEP02 Cap. 7 RT-07.09..12; C2 B1 | RNF-DIS-14 | respaldo cifrado/inmutable | datos y claves | continuidad/datos | POR VALIDAR C2/C3 | B4.5–B4.8; restauración mensual y resistencia al borrado | sí, producto/cantidad pendiente | EN CURSO |
 | `TRZ-D1-006` | Caso 06 Anexo A; FEP02 Cap. 12; C2 B2/C3 | RF-POR-02; RF-POR-09 | identidad/autorización y evidencia de carga | ACT-AGE | CH-PORTAL/SRV-IAM | producto/nodo POR VALIDAR A1/C1 | D1 B1.3/B1.5/B2.2–3; representación/recuperación/pruebas pendientes | IAM/borde candidatos | EN CURSO |
 | `TRZ-D1-007` | FEP02 Cap. 11 RT-11.17; Caso 06 Cap. 10 restricción 11 | obligación directa BTT; RNF-OPE-08 apoyo | SOC 24x7 | TI=5 + servicio especialista | SEC-SOC-01 | servicio gestionado/subcontratado propuesto; ubicación POR VALIDAR | D1 B5.4/B5.7/B5.8; ubicación, dotación, RACI y procedimientos pendientes | sí, servicio/costo pendiente | EN CURSO |
@@ -28,7 +28,7 @@ El capítulo 11 es central para D1, pero no sustituye las obligaciones ya identi
 | RT FEP02 | Numeral / carácter BTT | Consideración que debe conservarse | Referencia Célula 2 / matriz global | Destino y coordinación | Evidencia prevista / enlace por completar | Estado |
 |---|---|---|---|---|---|---|
 | `RT-11.01` | 11.1 / Obligatorio | Zero Trust conforme NIST SP 800-207: verificación explícita, mínimo privilegio y presunción de compromiso | RNF-SEG-01; STD-03 | D1; A1/C1 | D1 B1.2/B2.2/B3.1–3 y SEC-IAM/NET/API-01; nodos/configuración/pruebas pendientes | EN CURSO |
-| `RT-11.02` | 11.1 / Obligatorio | Amenazas por cada componente e integración externa; metodología declarada y actualización ante cambios relevantes | RNF-SEG-02; STD-13 | D2 produce; D1 aplica controles; A1/A2/C1 aportan inventario | modelo de amenazas versionado y vínculo amenaza–control | PENDIENTE |
+| `RT-11.02` | 11.1 / Obligatorio | Amenazas por cada componente e integración externa; metodología declarada y actualización ante cambios relevantes | RNF-SEG-02; STD-13 | D2 produce; D1 aplica controles; A1/A2/C1 aportan inventario | D2 B2 aporta escala, método y 66 amenazas `THR-001..066` por clase y frontera con vínculo amenaza–control `SEC-*`; faltan cobertura por componente real y evidencia de actualización ante cambios | EN CURSO (actualizado por D2 B2, 2026-09-05) |
 | `RT-11.03` | 11.1 / Obligatorio | Clasificación de información por sensibilidad, con controles diferenciados en matriz | RNF-SEG-05/09 (apoyo, no equivalencia total); STD-02 | D1; Subdoc. 5 | D1 B4.1/2; taxonomía y controles iniciales, catálogo de campos pendiente | EN CURSO |
 | `RT-11.04` | 11.1 / Obligatorio | Escaneo continuo; remediación críticas ≤7 días corridos, altas ≤15 y medias ≤30, desde publicación o detección | RNF-SEG-03 | D1; C3/operación | D1 B5.6/B5.7 y SEC-VULN-01; cobertura, producto, ejecución y cierres pendientes | EN CURSO |
 | `RT-11.05` | 11.1 / Obligatorio | Matriz trazable a ISO/IEC 27001 y 27002: control, implementación concreta y evidencia | STD-01/02; obligación directa BTT | D1; D3 verifica | matriz de controles + D1 B7.3/B7.4 y SEC-GOV-01; mapeo normativo completo y evidencia pendientes | EN CURSO |
@@ -40,7 +40,7 @@ El capítulo 11 es central para D1, pero no sustituye las obligaciones ya identi
 | `RT-11.11` | 11.2 / Obligatorio | Gateway autentica, autoriza, aplica cuotas/rate limit, valida esquema e inspecciona payload | obligación directa BTT | D1; A2/C3 | D1 B3.3/B3.4/B3.6 y SEC-API-01; contratos, límites/configuración y pruebas pendientes | EN CURSO |
 | `RT-11.12` | 11.2 / Obligatorio | Protección contra bots/abuso con reto progresivo, preservando accesibilidad y usuarios legítimos | STD-11 (apoyo); obligación directa BTT | D1; A1 | D1 B3.3/B3.4/B3.6 y SEC-EDGE-01; reglas/producto y pruebas de legitimidad/accesibilidad pendientes | EN CURSO |
 | `RT-11.13` | 11.2 / Obligatorio | Declarar cada dominio, puerto y servicio alcanzable desde fuera de la red del CLIENTE | obligación directa BTT | D1; A2/C1/C3 | D1 B3.5/B3.6 y SEC-EXP-01; plantilla por familias lista, inventario real/escaneo pendientes | EN CURSO |
-| `RT-11.14` | 11.3 / Obligatorio | Eventos centralizados e inalterables: ≥12 meses en línea y 24 adicionales en archivo recuperable | Maestro §11.3/16.1; obligación directa BTT | D1; C2/C4 | D1 B5.1/B5.7 y SEC-LOG-01; capacidad, producto y pruebas de integridad/corte/archivo pendientes | EN CURSO |
+| `RT-11.14` | 11.3 / Obligatorio | Eventos centralizados e inalterables: ≥12 meses en línea y 24 adicionales en archivo recuperable | Maestro §11.3/16.1; obligación directa BTT | D1; C2/C4 | D1 B5.1/B5.2.1/B5.7 y SEC-LOG-01; política de admisión y fórmula de medición definidas; EPS/tamaño/peaks/factores, producto y pruebas pendientes | EN CURSO |
 | `RT-11.15` | 11.3 / Obligatorio | Correlación SIEM con casos de uso específicos de la operación portuaria | ADR-010; obligación directa BTT | D1/D2; A1/A2 | D1 B5.2/B5.3/B5.7 y SEC-SIEM-01; reglas definitivas y pruebas pendientes | EN CURSO |
 | `RT-11.16` | 11.3 / Obligatorio | Detección y respuesta en endpoints y cargas de trabajo, en nube y on-premise | obligación directa BTT | D1; C2/C3 | D1 B5.2/B5.3/B5.7 y SEC-END-01; inventario/compatibilidad/licencias/pruebas pendientes | EN CURSO |
 | `RT-11.17` | 11.3 / Obligatorio | SOC 24x7 propio o subcontratado; ubicación, dotación y procedimientos | GTR-014; TRZ-D1-007 | D1; C3/C4 y equipo de operación | D1 B5.4/B5.8 y SEC-SOC-01; servicio gestionado propuesto, contrato/dotación/RACI pendientes | EN CURSO |
@@ -147,7 +147,7 @@ Detalle de diseño en [D1 B5](../D1_ARQUITECTURA_DE_SEGURIDAD.md#b5-detección-y
 
 | Fuente / control | Evidencia documental actual | Falta para cerrar | Estado |
 |---|---|---|---|
-| RT-11.14 / SEC-LOG-01 | B5.1/2/7 diseña esquema, minimización, colector/buffer local, repositorio inalterable y retención 12 meses en línea + 24 adicionales en archivo | fuentes completas A1/A2, capacidad C4, ubicación/HA C1–C3 y pruebas de integridad/corte/recuperación | EN CURSO |
+| RT-11.14 / SEC-LOG-01 | B5.1/2.1/7 diseña esquema, política de admisión/deduplicación, variables de capacidad, minimización, colector/buffer local, repositorio inalterable y retención 12 meses en línea + 24 adicionales en archivo | inventario de fuentes A1/A2; medición C4 de EPS, bytes, peaks y factores; ubicación/HA C1–C3 y pruebas de integridad/corte/recuperación | EN CURSO |
 | RT-11.15 / SEC-SIEM-01 | B5.3 cataloga nueve casos portuarios y exige regla con fuente, propietario, acción, corte y prueba | D2 refina amenazas/severidades; A1–A3 confirman eventos; producto y afinamiento/pruebas pendientes | EN CURSO |
 | RT-11.16 / SEC-END-01 | B5.2 cubre nube, on-premise y puestos compatibles, con excepción explícita y controles compensatorios para OT/legado | inventario definitivo, compatibilidad, licencias y ensayo de detección/aislamiento seguro | EN CURSO |
 | RT-11.17 / SEC-SOC-01 | B5.4 propone SOC gestionado/subcontratado 24x7 y separa su función de TI=5/operación del CLIENTE | validar ADR-010, ubicación, dotación, proveedor, RACI, SLA, canales, procedimientos y costo T-11 | EN CURSO |
@@ -155,6 +155,8 @@ Detalle de diseño en [D1 B5](../D1_ARQUITECTURA_DE_SEGURIDAD.md#b5-detección-y
 | RT-11.04 / SEC-VULN-01 | B5.6 conserva escaneo y plazos crítica ≤7 días corridos, alta ≤15, media ≤30 desde publicación/detección | cobertura/herramienta, responsables y evidencia real de remediación/reprueba | EN CURSO |
 | RT-11.20 / SEC-PENTEST-01 | B5.6 exige tercero independiente, anual y antes de cada producción, informe íntegro, plan y reprueba | tercero, alcance, calendario, informes y cierres ejecutados | EN CURSO |
 | RT-11.21 / SEC-IR-01 | B5.6 propone incorporar simulación anual con participación del CLIENTE y acta/mejoras | aceptación explícita por ser requisito deseable y calendario operativo | EN CURSO |
+
+**Ajuste para `T11-SEC-04` (identificador informado por Frente 2, aún no integrado en esta rama):** B5.2.1 cierra la ambigüedad de alcance documental —qué clases ingresan completas, cuáles se agregan y qué telemetría permanece en el dominio operacional—, pero no cierra capacidad. C4 debe medir fuentes, EPS, tamaño, peaks, reducción y factores de almacenamiento; el piso conocido no sustituye el término dominante. La traza queda `EN CURSO`, no aprobada.
 
 La alternativa C de ADR-010 —detección híbrida federada y SOC gestionado 24x7— queda `PROPUESTO`, no `APROBADO`. La alarma operativa permanece en su sistema local; el SIEM correlaciona señales de manipulación o acceso indebido, sin sustituir la autoridad de operación ni asumir video general de `EXT-VMS`.
 
@@ -182,16 +184,16 @@ Detalle y hallazgos en [D1 B7](../D1_ARQUITECTURA_DE_SEGURIDAD.md#b7-auditoría-
 | Comprobación | Resultado verificable | Estado |
 |---|---|---|
 | Trabajo requerido D1 | 11/11 materias con sección/control de diseño | EN CURSO; ninguna aprobada |
-| FEP02 Cap. 11 | 27/28 RT con diseño enlazado; RT-11.02 reservado a D2 | EN CURSO / RT-11.02 PENDIENTE |
+| FEP02 Cap. 11 | 28/28 RT con diseño enlazado; RT-11.02 pasa a `EN CURSO` con D2 B2 | EN CURSO; ninguna fila aprobada. La cobertura por componente real sigue pendiente de A1/A2/C1/C3 |
 | FEP02 Cap. 12 | 13/13 RT con diseño enlazado | EN CURSO; pruebas/productos pendientes |
 | Gobierno/nube/hardening | SEC-GOV-01, SEC-CLOUD-01 y SEC-HARD-01 agregados por B7-F02 | EN CURSO; mapeo/configuración/evidencia pendientes |
 | Matriz SEC-* | 31 controles identificados con fuente, implementación, evidencia y responsable funcional | EN CURSO; nodos/amenazas/personas pendientes |
 | SEC-PHYS-v0.1 | 17 grupos con tratamiento de T-11 y condición de inclusión/agrupación | LISTO PARA INTERCAMBIO; no transferido |
-| ADR | ADR-008 EN ANÁLISIS; ADR-009/010 PROPUESTO; alternativas/criterios/consecuencias conservados | SIN ADR APROBADO |
+| ADR | ADR-008/009/010 `PROPUESTO`; ADR-008 condicionado a F3-ESC-001/002; alternativas/criterios/consecuencias conservados | SIN ADR APROBADO |
 | Montos/cantidades | sin montos; cantidades no inventadas y derivadas a C4 | CONFORME PARA INTERCAMBIO |
 | Implementación/prueba | no se declara evidencia ejecutada | PENDIENTE por etapa |
 
-Correcciones de estado: TRZ-D1-001/002/003/006 y RT-11.01/05/06/07/11/12/13 pasan a `EN CURSO` porque ya tienen diseño concreto enlazado. B7-F13 actualiza de igual forma las filas D1 correspondientes de la matriz global. Los cambios no declaran conformidad final. `RT-11.02` permanece `PENDIENTE` porque D2 aún no contiene el modelado exigido.
+Correcciones de estado: TRZ-D1-001/002/003/006 y RT-11.01/05/06/07/11/12/13 pasan a `EN CURSO` porque ya tienen diseño concreto enlazado. B7-F13 actualiza de igual forma las filas D1 correspondientes de la matriz global. Después del corte B7, `RT-11.02` pasa también a `EN CURSO` por el modelado provisional D2 B2–B5; no está cerrado porque falta refinarlo contra componentes e interfaces reales en D2 B6/B7. Los cambios no declaran conformidad final.
 
 Dependencias de cierre: F3-DEP-001..004 continúan `PENDIENTE`; F3-ESC-001/002 continúan externos. A1–A3/C1–C4/D2 visibles siguen sin contenido desarrollado suficiente para validar componentes, contratos, autoridad, nodos, productos, capacidad o amenazas. Esto no impide entregar SEC-PHYS-v0.1, pero sí impide aprobar D1 y producir diagramas físicos definitivos.
 
