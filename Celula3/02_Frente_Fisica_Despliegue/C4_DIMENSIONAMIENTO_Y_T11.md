@@ -293,17 +293,22 @@ El posible cuarto sitio de 2030–2032 queda fuera del horizonte de tres años, 
 
 ### 9.bis Candidatos T-11 de seguridad, consolidados desde `SEC-PHYS-v0.1`
 
-D1 entregó 31 controles agrupados en 17 entradas y clasificó cada una. Su regla `F3-DEC-005` es explícita: *«C4 debe asignar ID T-11 solo cuando exista un producto, plataforma, licencia, servicio o hardware efectivamente ofertado. Capacidades nativas o incluidas se referencian desde la fila principal; no se duplican por cada control lógico.»* Se aplica literalmente. **De los 17 grupos, siete generan fila propia; el resto se referencia desde filas que ya existen.**
+D1 entregó 31 controles agrupados en 17 entradas y clasificó cada una. Su regla `F3-DEC-005` es explícita: *«C4 debe asignar ID T-11 solo cuando exista un producto, plataforma, licencia, servicio o hardware efectivamente ofertado. Capacidades nativas o incluidas se referencian desde la fila principal; no se duplican por cada control lógico.»* Se aplica literalmente, y el cruce con la auditoría de cierre de D2 obliga a un ajuste: **de los 17 grupos, seis generan fila propia nueva, uno —registro y SIEM— se resuelve sobre una fila que ya existía y no se cuenta dos veces, y los diez restantes se referencian desde filas existentes.**
 
 | Candidato | Grupo `SEC-PHYS` | Componente | Ubicación | Unidad de cantidad | Fuente del cálculo |
 |---|---|---|---|---|---|
 | `T11-SEC-01` | `SEC-EDGE-01/02` + `SEC-API-01` | servicio de borde y gateway gestionados | nube primaria | por volumen de tráfico y de peticiones | C4 §5.1: 369 kbps en régimen, 625 en peak estacional |
 | `T11-SEC-02` | `SEC-IAM-01 / SEC-ADM-01` | plataforma de identidad y PAM | nube, con capacidad local en `PHY-OPS-01` | por identidades administradas y sesiones privilegiadas | `DIM-06` 160→175 internas; `DIM-07` 159→187 externas; **más 2.100→2.400 eventuales distintos al año**, que no son concurrentes pero sí identidades a administrar |
 | `T11-SEC-03` | `SEC-KEY-01 / SEC-SECRET-01` | KMS o HSM y gestor de secretos, con material local protegido | nube y sala técnica | por ámbito de clave y capacidad local | requisito excluyente de `ADR-009`; no depende del volumen |
-| `T11-SEC-04` | `SEC-LOG-01 / SEC-SIEM-01` | plataforma SIEM y de registro, con colector y buffer local | nube, con colector en `PHY-OPS-01` | **por ingesta diaria y retención** | ver §9.ter |
 | `T11-SEC-05` | `SEC-END-01` | EDR: agentes y consola | nube, sala y puestos | por carga y por puesto administrado | 3 nodos locales + cargas en nube + puestos de `PHY-OPS-06`. **Excluye los dispositivos de terreno**, ver C2 §8.bis |
 | `T11-SEC-06` | `SEC-SOC-01 / SEC-IR-01` | SOC gestionado 24×7 y gestión de incidentes | servicio | por cobertura y volumen de eventos | restricción no negociable 11: se oferta como servicio, no se asigna a TI=5 |
 | `T11-SEC-07` | `SEC-VULN-01` + `SEC-PENTEST-01` | escaneo continuo y pentest independiente | servicio | por activos analizados y por ejercicio anual | `RT-11`: pentest anual y antes de cada paso a producción |
+
+**El registro y el SIEM se resuelven sobre una fila existente, no sobre una nueva.** D2 `B6-F05` observó un posible doble conteo entre `T11-C2-19` (observabilidad y SIEM, de C2 §9) y el `T11-SEC-04` que este entregable había abierto para `SEC-LOG-01 / SEC-SIEM-01`. La observación es correcta y se cierra por fusión: `RT-03.16` exige **una sola** plataforma para nube y on-premise, sin puntos ciegos, de modo que observabilidad y SIEM no pueden ser dos compras. El identificador `T11-SEC-04` se conserva como **ancla de trazabilidad** desde `SEC-PHYS-v0.1` —lo usan `TRZ-D1-004` y `F2-ESC-013`— pero **resuelve sobre `T11-C2-19`** y no genera fila propia en el Formulario T-11. El dimensionamiento de §9.ter alimenta esa fila única. Se registra como `F2-COR-007`.
+
+| Ancla | Se cubre desde | Razón |
+|---|---|---|
+| `T11-SEC-04` — `SEC-LOG-01 / SEC-SIEM-01` | `T11-C2-19` observabilidad y SIEM | `RT-03.16`: una sola plataforma. §9.ter dimensiona su ingesta y retención |
 
 **Los diez grupos restantes no generan fila, y se declara desde dónde se cubren:**
 
@@ -353,9 +358,11 @@ Es la única entrada de `SEC-PHYS-v0.1` cuya cantidad depende de un cálculo pro
 
 **Buffer local durante el corte:** ≈0,07 GB en 72 horas a 1 KB por registro. Confirma lo dicho arriba: cabe holgadamente dentro de los ≈50 GB ya previstos en §6.1, y **no obliga a reabrir el almacenamiento local**.
 
-**Qué queda fuera de esta estimación, y es lo que impide cerrar el valor total.** No están los registros de plataforma, de red y de borde —flujos del cortafuegos, peticiones del gateway, trazas de infraestructura—, que en un SIEM suelen ser el término dominante y pueden superar en uno o dos órdenes de magnitud a los eventos de aplicación. Su volumen depende de dos cosas que no son nuestras: la **política de qué se registra**, que es de D1, y la **clasificación campo→sensibilidad** que D1 mantiene abierta como `F3-DEP-004`, dependiente del Subdocumento 5 y del CLIENTE.
+**La política de admisión ya existe, y confirma el método de esta tabla.** Cuando se escribió esta estimación, la política de qué se registra estaba abierta. D1 la publicó en su bloque `B5.2.1`: los eventos de **seguridad, auditoría y alertas obligatorias ingresan al 100 %**, mientras que la **telemetría operacional cruda permanece en su dominio** y aporta al SIEM solo anomalías, metadatos y referencias, salvo requisito aprobado en contrario. Eso valida la línea «telemetría anómala» de la tabla anterior —que era justamente el supuesto de que la lectura normal no es evento de seguridad— y deja de ser un supuesto propio de C4 para pasar a ser política declarada de D1. Lo que sigue siendo supuesto es la **tasa**: el 0,1 % de anomalía sobre 73 ev/s no lo fija ninguna base y se mantiene marcado `[supuesto]`.
 
-**Cómo se trata mientras tanto.** La cifra de ≈8 GB al año se declara como **piso derivable, no como total**, y la unidad de la fila `T11-SEC-04` es ingesta diaria y retención. Una vez exista la política de registro, el total es aritmética sobre esta misma tabla. Se registra como `F2-ESC-013`.
+**Qué queda fuera de esta estimación, y es lo que impide cerrar el valor total.** Siguen sin estar los registros de **plataforma, de red y de borde** —flujos del cortafuegos, peticiones del gateway, trazas de infraestructura—, que en un SIEM suelen ser el término dominante y pueden superar en uno o dos órdenes de magnitud a los eventos de aplicación. La política de admisión no los cuantifica: dice qué entra, no cuánto pesa. D1 es explícito al respecto —*«el volumen dominante debe medirse; no se infiere desde el piso disponible»*— y este entregable lo suscribe. Sigue además abierta la **clasificación campo→sensibilidad** que D1 mantiene como `F3-DEP-004`, dependiente del Subdocumento 5 y del CLIENTE, que decide qué campos se retienen y con qué protección.
+
+**Cómo se trata mientras tanto.** La cifra de ≈8 GB al año se declara como **piso derivable, no como total**, y la unidad de la fila es ingesta diaria y retención. El destino de este cálculo es `T11-C2-19` —la plataforma única de observabilidad y SIEM—, no una fila separada; `T11-SEC-04` es el ancla de trazabilidad hacia `SEC-LOG-01 / SEC-SIEM-01`. Una vez medidos los registros de plataforma, red y borde, el total es aritmética sobre esta misma tabla. Se mantiene `F2-ESC-013`, ahora **acotado**: lo que falta ya no es la política, es la medición.
 
 ### 10. Matriz T-11 y control 1:1
 
@@ -368,7 +375,8 @@ Los candidatos de este frente están en C2 §9 y en la tabla de conversión de �
 | toda fila de C2 y C3 tiene nodo `PHY-*` en C1 | **cumple** | §9 y tabla de emplazamiento de C1 §4 |
 | toda cantidad tiene cálculo o criterio declarado | **cumple**, con seis cantidades en rango o pendientes de dato externo | §9 |
 | cada nodo desplegable de C1 aparece en T-11 o tiene exclusión justificada | **cumple** | C2 §9 lista lo excluido y por qué |
-| controles y licencias de seguridad considerados | **cumple** | §9.bis: los 17 grupos de `SEC-PHYS-v0.1` clasificados, 7 con fila propia y 10 con su origen declarado, conforme a `F3-DEC-005` |
+| controles y licencias de seguridad considerados | **cumple** | §9.bis: los 17 grupos de `SEC-PHYS-v0.1` clasificados, 6 con fila propia, 1 resuelto sobre `T11-C2-19` y 10 con su origen declarado, conforme a `F3-DEC-005` |
+| ninguna plataforma se cuenta dos veces entre C2 y seguridad | **cumple tras corrección** | `T11-SEC-04` fusionado en `T11-C2-19` por `RT-03.16` (hallazgo `B6-F05` de D2); `SPOF-13` y `SPOF-22` **no** se consolidan, ver C2 §4.1 |
 | no existen precios | **cumple** | revisión de los cuatro paquetes |
 | el formulario final conserva exactamente cinco columnas | **cumple** | plantilla de `90_Consolidado` |
 

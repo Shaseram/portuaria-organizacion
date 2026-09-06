@@ -158,6 +158,34 @@ Cumple la exigencia de declaración del numeral 6.1.
 
 Esa es una decisión de arquitectura con alternativas reales, consecuencias y criterios — exactamente lo que el Registro ADR Global define como ADR. **No existe un ADR asignado a ella**: la lista `ADR-001` a `ADR-010` no la cubre. Se escala como `F2-ESC-009` y se propone abrirla como `ADR-011`, con estos criterios de comparación: presencia de región en Chile o Sudamérica y número de zonas de disponibilidad; latencia medida al terminal; intensidad de carbono declarada; catálogo de servicios gestionados que cubra la pila del numeral 3; certificaciones y residencia de datos frente a la condición de operador de importancia vital; y esfuerzo de reversibilidad. Este frente no la resuelve unilateralmente porque afecta a los tres.
 
+#### 4.1 Las alternativas concretas de `ADR-011`
+
+La auditoría de cierre de D2 (`B7.2 #8`) observa que `ADR-011` *«aún no compara alternativas concretas ni selecciona una»*, y tiene razón: enumerar criterios no es comparar alternativas. Lo que sí puede hacerse en el Informe 1, sin nombrar proveedores ni inventar cifras que ninguna base entrega, es **acotar el espacio de decisión** para que la comparación quede planteada y la elección sea trazable cuando existan los datos.
+
+La decisión tiene dos ejes que se resuelven juntos.
+
+**Eje 1 — región primaria.**
+
+| Alternativa | Qué implica | Consecuencia que decide |
+|---|---|---|
+| `A1-CL` región del proveedor **en Chile** | latencia mínima al terminal y residencia nacional del dato | única que satisface sin discusión la residencia frente a la condición de operador de importancia vital; el número de zonas de disponibilidad efectivas debe verificarse, porque `RT-03.02` exige multi-AZ y una región nueva puede no tenerlas todas |
+| `A2-SA` región **en Sudamérica** fuera de Chile | catálogo de servicios gestionados normalmente más completo y maduro | agrega latencia y abre la pregunta de residencia; exige justificación regulatoria explícita, no basta la conveniencia técnica |
+| `A3-MIX` región en Chile para datos operacionales y regional para servicios que no los tocan | recoge lo mejor de las dos | **aumenta la superficie y la complejidad de red**, y multiplica los conductos que D1 debe controlar; solo se justifica si `A1-CL` no ofrece un servicio indispensable de la pila del numeral 3 |
+
+**Eje 2 — región secundaria (BTT, Cap. 7).**
+
+| Alternativa | Qué implica | Consecuencia que decide |
+|---|---|---|
+| `B1-MISMO` segunda región del **mismo** proveedor | conmutación más simple, réplica nativa, un solo contrato y un solo modelo de operación | **no elimina el dominio de fallo común**: proveedor, plano de control e identidad son los mismos. Es exactamente `SPOF-22` de D2 y la amenaza `THR-073` |
+| `B2-OTRO` segunda región de **otro** proveedor | rompe el dominio común de fallo | exige portabilidad real por componente (`RT-03.07`), duplica la ingeniería de operación y choca con un área TI de cinco personas (restricción no negociable 11) |
+| `B3-HIBRIDO` respaldo inmutable custodiado fuera del proveedor primario, con producción en una sola nube | mitiga el fallo común **en el dato**, no en el cómputo | es la única de las tres que se sostiene hoy con la dotación declarada; deja el RTO de un fallo de proveedor sin cubrir y eso hay que declararlo |
+
+**Qué falta para seleccionar, y por qué no se selecciona aquí.** Faltan tres datos que ninguna de las tres bases entrega y que este frente tiene prohibido inventar: la **latencia medida** desde el terminal a cada región candidata, la **intensidad de carbono declarada** por región que exige `RT-15.04`, y el catálogo de servicios gestionados efectivamente disponible en cada una. Sin ellos, elegir sería inventar el fundamento de la elección.
+
+**Recomendación técnica que sí se puede dejar escrita, condicionada.** Si la medición confirma que una región en Chile ofrece multi-AZ real y cubre la pila del numeral 3, la combinación `A1-CL` + `B1-MISMO` es la que menos riesgo operacional agrega, **con la condición explícita** de tratar `SPOF-22` mediante `B3-HIBRIDO` sobre el respaldo: copia inmutable con autoridad de borrado separada, fuera del plano de control del proveedor primario. Esa condición no es opcional: es lo que impide que la caída de un proveedor deje al terminal sin producción **y** sin recuperación. La selección definitiva y la aprobación del ADR corresponden al integrador con el CLIENTE; se mantiene `F2-ESC-009`.
+
+**`SPOF-13` y `SPOF-22` no se consolidan.** D2 lo pide expresamente en `B7-O01` y este frente lo confirma, porque son dos cosas distintas: `SPOF-13` es la **recuperabilidad del respaldo** —que exista, que sea inmutable y que la autoridad que puede borrarlo esté separada, tratado en §6.1 con `RT-07.10`, `.11` y `.12`—; `SPOF-22` es el **dominio de fallo común del proveedor**, que ninguna política de respaldo resuelve por sí sola. Un solo control no cierra los dos, y en el T-11 tampoco se funden: `T11-C2-18` cubre la región secundaria y `T11-C2-12` la custodia de medios, y ambas siguen siendo necesarias. Consolidarlas habría ahorrado una fila y perdido un dominio de fallo.
+
 ### 5. Sala técnica principal
 
 Se especifica contra los 34 requisitos. Las cantidades y la carga eléctrica se cierran en C4: aquí va la especificación, no el dimensionamiento.
@@ -378,6 +406,8 @@ Sin precios, conforme al Art. 16 y a la regla del Maestro. Un componente lógico
 | `T11-C2-17` | servicios de nube — cómputo, datos, objetos, bus, analítica | plataforma del proveedor, región primaria | nube primaria | C4 | Cap. 3 |
 | `T11-C2-18` | servicios de nube — región secundaria y DR | réplica y conmutación | nube secundaria | C4 | Cap. 7 |
 | `T11-C2-19` | observabilidad y SIEM | plataforma compatible OpenTelemetry | nube, con recolector local | C4 | `RT-03.16`, D1 |
+
+> **Una sola plataforma, una sola fila.** `RT-03.16` exige que el monitoreo on-premise se integre a **la misma** plataforma que la nube, sin puntos ciegos. Por eso `T11-C2-19` y los grupos `SEC-LOG-01 / SEC-SIEM-01` de `SEC-PHYS-v0.1` **no son dos compras**: son la misma plataforma vista desde observabilidad y desde seguridad. C4 §9.bis lo resuelve sobre esta fila y §9.ter la dimensiona. D2 lo había marcado como posible doble conteo en `B6-F05`; queda cerrado por fusión, no por omisión.
 | `T11-C2-20` | licenciamiento de sistema operativo y soporte | distribución empresarial con soporte | sala técnica y borde | C4 | `RT-03.15` |
 
 Quedan **fuera del T-11 y se declara por qué**: la obra civil de la sala, que es de cargo del CLIENTE con especificación nuestra (`RT-06.06`); los sistemas conservados —ERP, control de grúas, VMS, control de acceso del recinto portuario, básculas, TOS—; y las canalizaciones exteriores, que se especifican pero las ejecuta el CLIENTE.

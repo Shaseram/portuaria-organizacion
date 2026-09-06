@@ -127,7 +127,7 @@ El Art. 16.2 de las BA exige justificar **componente por componente** con seis c
 | `PHY-CLD-08` | `DATA-AN` | nube | analítico | no crítico | derivado | indicadores del concedente | nulo | gestionado | El `RT-05.29` del caso exige consolidar los indicadores del concedente ≤1 h tras el cierre de turno; eso no compite con la operación. |
 | `PHY-CLD-09` | observabilidad y SIEM | nube | asíncrono | el borde almacena y reenvía | logs 12 meses en línea + 24 en archivo | log central inalterable | nulo | gestionado | `RT-03.16` exige que el monitoreo on-premise se integre a **la misma** plataforma que la nube, sin puntos ciegos. |
 | `PHY-CLD-10` | réplica de `DATA-CORE`, `DATA-DOC`, `DATA-TS` | nube, región secundaria | n/a | es el destino de la conmutación | réplica | BTT Cap. 7 | nulo | capacidad reducida en reposo | No hay segundo recinto del CLIENTE (CP, Cap. 3) y un secundario en el terminal compartiría las amenazas del principal (`RT-07.02`). |
-| `PHY-OPS-01` | `EDGE-RUN` + `CTX-OPS`, `CTX-GATE`, `CTX-YARD`, `CTX-REEFER`, `CTX-BILL` | on-premise, sala | **≤1 s determinista** | **debe continuar 72 h** | alto, generado localmente | zona operacional segregada, IEC 62443 | directo, vía borde | inversión local con operación acotada | `RT-09.01` del caso exige confirmar un movimiento en ≤1 s y ver la posición en ≤30 s; `RT-03.10` exige 72 h. Ninguna de las dos cosas se resuelve con un enlace de por medio. |
+| `PHY-OPS-01` | `EDGE-RUN` + `CTX-OPS`, `CTX-GATE`, `CTX-YARD`, `CTX-REEFER`, `CTX-BILL`, `CTX-VESSEL` | on-premise, sala | **≤1 s determinista** | **debe continuar 72 h** | alto, generado localmente | zona operacional segregada, IEC 62443 | directo, vía borde | inversión local con operación acotada | `RT-09.01` del caso exige confirmar un movimiento en ≤1 s y ver la posición en ≤30 s; `RT-03.10` exige 72 h. Ninguna de las dos cosas se resuelve con un enlace de por medio. |
 | `PHY-OPS-02` | almacenamiento local | on-premise, sala | ≤1 s | buffer del corte, ≈13 GB + holgura | alto | cifrado en reposo | directo | RAID con tolerancia declarada | `RT-03.14` exige tolerar la falla de al menos un disco y declarar el nivel RAID con su justificación. Dimensionamiento en C4. |
 | `PHY-OPS-03` | `INT-TOS` | on-premise, sala | ≤1 s | debe seguir durante el corte | moderado | zona operacional | directo con `EXT-TOS12` | acotado a la coexistencia | El TOS 2012 está en el terminal. Traducir y conciliar a través del enlace agregaría un punto de falla a una integración que ya es la más frágil del proyecto. |
 | `PHY-OPS-04` | núcleo de red operacional | on-premise, sala | determinista | **sostiene el corte** | todo el tráfico operacional | segregación operacional / administrativa / protección | directo | equipamiento en HA | La Declaración Mandatoria exige segregar; hoy operación, terminales, cámaras y oficina comparten conmutación (CP, Cap. 6). `RT-08.03` exige HA sin punto único. |
@@ -139,7 +139,7 @@ El Art. 16.2 de las BA exige justificar **componente por componente** con seis c
 | `PHY-EDG-04` | borde de muelle | borde, 3 sitios | lectura periódica | opera sin enlace | bajo | **solo lectura, autorización del fabricante** | acoplamiento restringido | mínimo | La restricción 3 y la exclusión del CP, Cap. 11 prohíben intervenir el control de grúas. La cabina recibe una pantalla, no un terminal de captura: el operador no puede manipular un dispositivo mientras opera. |
 | `PHY-EDG-05` | borde de zona de inspección | borde, **sin gabinete propio** | ≤1 s | continúa | actas e imágenes | acta firmada como evidencia | dispositivo móvil sobre la red del patio | mínimo | La inspección debe estar disponible a la hora acordada y el acta se firma en terreno. *Corregido en C2 §1: el `CP, Cap. 15, RT-06.01` nombra gabinetes de borde solo en muelle, patio, patio refrigerado y gate; la inspección se sirve por la red operacional del patio y no genera recinto ni fila de T-11 propios.* |
 
-**Componentes lógicos sin nodo propio.** `CH-PORTAL` y `CH-APP` se ejecutan en el dispositivo del usuario y se sirven desde `PHY-CLD-01`; `CH-CAB` se ejecuta en la pantalla de cabina alimentada por `PHY-EDG-04`. No generan fila de emplazamiento propia y **no** generan fila de T-11 por sí mismos, sin perjuicio de las licencias que declare C2.
+**Componentes lógicos sin nodo propio.** `CH-PORTAL` y `CH-APP` se ejecutan en el dispositivo del usuario y se sirven desde `PHY-CLD-01`; `CH-CAB` se ejecuta en las pantallas de cabina y de terreno alimentadas por `PHY-EDG-04` en muelle, `PHY-EDG-02` en el patio y `PHY-EDG-01` en las casetas de gate *(corregido tras el cruce de D2 B6.3; ver §5.1)*. No generan fila de emplazamiento propia y **no** generan fila de T-11 por sí mismos, sin perjuicio de las licencias que declare C2.
 
 ### 5. Matriz lógico → físico
 
@@ -147,19 +147,19 @@ El Art. 16.2 de las BA exige justificar **componente por componente** con seis c
 |---|---|---|---|---|
 | `CH-PORTAL` | `PHY-CLD-01` | — | media | no; procedimiento manual declarado en A3 |
 | `CH-APP` | dispositivo + `PHY-CLD-01` | `PHY-OPS-01` para perfiles internos | alta | sí, en modo interno cifrado |
-| `CH-CAB` | `PHY-EDG-04` | — | alta | sí |
-| `GW-EDGE` | `PHY-CLD-01` | — | media | no |
-| `GW-API` | `PHY-CLD-02` | — | media | no |
+| `CH-CAB` | `PHY-EDG-04` muelle + `PHY-EDG-02` patio + `PHY-EDG-01` gate | — | alta | sí |
+| `GW-EDGE` | `PHY-CLD-01` | — | alta | no; degradación declarada en A3 §7 |
+| `GW-API` | `PHY-CLD-02` | — | alta | no; el catálogo central espera al enlace *(A3 §7)* |
 | `CTX-OPS` | `PHY-OPS-01` | `PHY-CLD-03` | **crítica** | **sí** |
 | `CTX-GATE` | `PHY-OPS-01` + `PHY-EDG-01` | `PHY-CLD-03` | **crítica** | **sí** |
 | `CTX-YARD` | `PHY-OPS-01` + `PHY-EDG-02` | `PHY-CLD-03` | **crítica** | **sí** |
 | `CTX-REEFER` | `PHY-OPS-01` + `PHY-EDG-03` | `PHY-CLD-03` | **crítica** | **sí** |
 | `CTX-BILL` | `PHY-OPS-01` | `PHY-CLD-03` | **crítica** | **sí**, captura de hecho y evidencia |
 | `CTX-PLAN` | `PHY-CLD-03` | `PHY-OPS-01` en solo lectura | alta | plan vigente sí; replanificación no |
-| `CTX-VESSEL` | `PHY-CLD-03` | — | alta | operación de muelle sí; mensajería no |
-| `CTX-INSP` | `PHY-CLD-03` + `PHY-EDG-05` | — | media | agenda vigente y acta sí |
-| `CTX-EMIS` | `PHY-CLD-03` | `PHY-EDG-02` captura | media | captura sí; cálculo no |
-| `SRV-IAM` | `PHY-CLD-03` | `PHY-OPS-01` caché de sesión | **crítica** | sí, con credenciales vigentes |
+| `CTX-VESSEL` | `PHY-OPS-01` | `PHY-CLD-03` | **crítica** | **sí**: plan de estiba vigente, movimientos y confirmaciones, localmente. La mensajería EDIFACT queda en cola en `INT-HUB` |
+| `CTX-INSP` | `PHY-CLD-03` + `PHY-EDG-05` | — | alta | agenda vigente y acta sí; programar nuevas inspecciones no *(A3 §7)* |
+| `CTX-EMIS` | `PHY-CLD-03` | `PHY-EDG-02` captura | alta | captura sí; cálculo ISO 14083 y reporte no *(A3 §7)* |
+| `SRV-IAM` | `PHY-CLD-03` | `PHY-OPS-01` caché de sesión | alta *(A1)*; **este frente propone elevarla a crítica**, ver §5.1 | sí, con credenciales vigentes; alta de identidad nueva no *(A3 §7)* |
 | `SRV-NOTIF` | `PHY-CLD-03` | `PHY-OPS-01` canal local | alta | alarma de frío sí, por canal local |
 | `SRV-EVID` | `PHY-CLD-03` | `PHY-OPS-01` sello local | alta | sí, con sello diferido |
 | `INT-HUB` | `PHY-CLD-04` | `PHY-OPS-01` cola de salida | alta | acumula, no entrega |
@@ -167,10 +167,47 @@ El Art. 16.2 de las BA exige justificar **componente por componente** con seis c
 | `EDGE-RUN` | `PHY-OPS-01` | — | **crítica** | **sí, es el que lo sostiene** |
 | `DATA-CORE` | `PHY-CLD-05` | `PHY-OPS-01`/`02` | **crítica** | **sí, autoridad local durante el corte** |
 | `DATA-TS` | `PHY-CLD-06` | `PHY-OPS-02` ventana caliente | alta | sí, ventana local |
-| `DATA-DOC` | `PHY-CLD-07` | `PHY-OPS-02` buffer | media | retiene y sincroniza |
+| `DATA-DOC` | `PHY-CLD-07` | `PHY-OPS-02` buffer | alta | retiene y sincroniza |
 | `DATA-AN` | `PHY-CLD-08` | — | media | no |
 
-Las trece filas marcadas como críticas o que viven durante el corte son la traducción física de las cinco funciones del Maestro §9.1. `SRV-IAM` aparece con caché local porque una autenticación que dependa de la nube convertiría el corte de enlace en un corte de operación.
+Las **nueve** filas marcadas como críticas —`CTX-OPS`, `CTX-GATE`, `CTX-YARD`, `CTX-REEFER`, `CTX-BILL`, `CTX-VESSEL`, `INT-TOS`, `EDGE-RUN` y `DATA-CORE`— son exactamente las que A1 §3.1 incluye en `EDGE-RUN`, y son la traducción física de las cinco funciones del Maestro §9.1. `SRV-IAM` aparece con caché local porque una autenticación que dependa de la nube convertiría el corte de enlace en un corte de operación.
+
+#### 5.1 De dónde sale la criticidad, y las siete diferencias que detectó D2
+
+**La criticidad no la define este entregable.** Es un atributo del catálogo lógico: A1 §3.1 la declara componente por componente y publica su escala —*crítica* es «debe sobrevivir 72 h sin enlace exterior; incluida en `EDGE-RUN`»; *alta* es «degradación tolerable por horas; requiere fallback documentado»; *media* es «disponible solo con enlace exterior activo»—. C1 la **traduce a nodos**; no la reescribe. La versión anterior de esta matriz llevaba valores propios y ahí nació el problema.
+
+El cruce `B6.3` de D2 comparó las dos tablas componente por componente y encontró **siete diferencias**. Todas eran reales. Se resuelven así:
+
+| Componente | A1 §3.1 | C1 antes | Resolución | Por qué |
+|---|---|---|---|---|
+| `CTX-VESSEL` | **Crítica** | alta, solo en `PHY-CLD-03` | **se adopta A1 y se corrige el nodo** | ver el párrafo siguiente: es una contradicción, no un matiz |
+| `GW-EDGE` | Alta | media | se adopta A1 | el borde público no vive el corte, pero su caída **sí** deja al terminal sin canal externo; «media» decía que no importa |
+| `GW-API` | Alta | media | se adopta A1 | ídem: es el punto de identidad, cuotas y trazabilidad de 21 contrapartes |
+| `CTX-INSP` | Alta | media | se adopta A1 | el acta de inspección es evidencia con valor ante autoridad; su pérdida no es indolora |
+| `CTX-EMIS` | Alta | media | se adopta A1 | el cálculo ISO 14083 es obligación de reporte, no un indicador interno |
+| `DATA-DOC` | Alta | media | se adopta A1 | contiene imágenes OCR, actas y firmas; es el respaldo probatorio del gate y de la inspección |
+| `SRV-IAM` | Alta | **crítica** | **se adopta A1 en la tabla y se escala la propuesta de elevarla** | único caso donde C1 era **más** exigente que A1, y con razón física; ver abajo |
+
+**`CTX-VESSEL` era una contradicción de este frente consigo mismo, y hay que decirlo.** A1 §3.1 lo declara `Crítica` y lo nombra explícitamente entre los componentes que `EDGE-RUN` replica; A3 incluye la operación de nave entre las cinco funciones críticas; y la propia matriz de continuidad de C3 §7 pone «Nave y movimientos» sobre el núcleo local. Sin embargo la tabla de emplazamiento del §4 lo dejaba **solo** en `PHY-CLD-03`, en nube. Con esa asignación, un corte de enlace habría detenido la atención de nave: exactamente lo que el `CP, Cap. 15, RT-03.10` prohíbe. `PHY-OPS-01` incorpora ahora `CTX-VESSEL` y la fila de la matriz lo refleja. Lo que **sí** espera al enlace es la mensajería EDIFACT, que queda en cola en `INT-HUB` — eso ya estaba bien dicho en A1 §3.2 y en C3 §7.1. Hallazgo `B6-F03` de D2; se registra como `F2-COR-005`.
+
+**`SRV-IAM`: aquí C1 no se alinea en silencio, propone.** Si durante las 72 horas nadie puede autenticarse, las cinco funciones críticas no se operan aunque el cómputo esté vivo: el corte de enlace se convierte en corte de operación. Ese es el motivo por el que la matriz le asigna caché de sesión en `PHY-OPS-01` y por el que C2 marca `SEC-IAM-01` como requisito excluyente de capacidad local. Por la escala de A1, «debe sobrevivir 72 h e ir en `EDGE-RUN`» es la definición de *crítica*. La tabla adopta el valor de A1 porque el catálogo es suyo, y **se escala a Frente 1 la propuesta de elevar `SRV-IAM` a `Crítica`** con este argumento. Queda como `F2-ESC-017`. Mientras no se resuelva, la capacidad local se especifica igual: la decisión afecta la etiqueta, no el dimensionamiento.
+
+**`CH-CAB` no vive solo en el muelle.** D2 observó que C1 lo ubicaba en `PHY-EDG-04` mientras A1 lo usa como canal de cabina **y de terreno**. Al revisar A1 §2.1, `CH-CAB` es el canal de `ACT-GRU` (cabina de grúa y de equipos de patio), de `ACT-GATE` (terminal en caseta) y de `ACT-EVT` (terminal compartido por turno); y A1 §3.2 le atribuye el umbral de **8 horas de sombra de radio en el patio**, que es un dato de patio, no de muelle. La corrección alcanza a los tres bordes: `PHY-EDG-04` en muelle, `PHY-EDG-02` en patio y `PHY-EDG-01` en las casetas de gate. No cambia el T-11 —las pantallas de cabina y los terminales robustos ya están contados en `T11-C2-15` y en los gabinetes de `T11-C2-14`—, pero sí cambia el diagrama físico y la superficie que D1 debe proteger. Hallazgo `B6-F04`; `F2-COR-006`.
+
+#### 5.2 La consola de administración de `ACT-TI`: respuesta física a una brecha de A1
+
+A1 declara una brecha explícita en `F1-OBS-002`: el canal de `ACT-TI` («consola de administración») no corresponde a ningún componente de su §3.1, y el Maestro §4.3 exige que la plataforma sea operable por las **cinco** personas de TI del CLIENTE sin especialistas por módulo. D1 la protege con PAM sin inventar un `CH-*`. La brecha es de Frente 1 y este entregable no la cierra, pero sí debe responder qué pasa **físicamente** si A1 termina nombrando ese canal, porque una respuesta tardía cambiaría nodos y T-11 a última hora.
+
+La respuesta es que **no aparece un nodo nuevo**. La administración técnica ya tiene lugar en esta arquitectura:
+
+| Pregunta física | Respuesta con la arquitectura actual |
+|---|---|
+| ¿desde dónde se administra? | `PHY-OPS-06`, el espacio de operación del personal fuera de la sala de equipos que exige `RT-06.30`, y los puestos de `T11-C2-13` |
+| ¿por qué camino? | la zona `Z-MGMT` de D1, servida por `PHY-CLD-02` hacia la nube y por `PHY-OPS-04` hacia el terminal, con PAM y grabación de sesión (`RT-12.06`) |
+| ¿qué se compra? | nada nuevo: la plataforma de identidad y PAM ya es `T11-SEC-02`; el puesto ya es `T11-C2-13` |
+| ¿qué cambiaría si A1 nombra un `CH-ADM`? | una fila más en la matriz lógico→físico de §5, con nodo primario `PHY-CLD-02` y acceso desde `PHY-OPS-06`. **Ninguna fila nueva de T-11** |
+
+Se deja escrito para que la resolución de `F1-OBS-002` no reabra el emplazamiento ni el T-11. Registrado como `F2-INT-003`.
 
 ### 6. Autoridad del dato durante la desconexión
 
