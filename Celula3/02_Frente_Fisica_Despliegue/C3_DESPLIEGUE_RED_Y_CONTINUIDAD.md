@@ -295,7 +295,7 @@ Entregable N° 12 del checklist, exigido por `RT-10.03` conforme a **ISO 22301**
 
 Contiene análisis de impacto en el negocio sobre los procesos del `CP, Cap. 4`; escenarios de contingencia —corte de enlace exterior, indisponibilidad de región, falla de la sala técnica, corte eléctrico del patio refrigerado, indisponibilidad del TOS 2012, pérdida de la red de patio—; **procedimientos manuales de respaldo** para cada uno, que en varios casos son la forma de trabajar actual del terminal y por eso existen y son enseñables; y criterios de activación y de vuelta a la normalidad.
 
-Un dato del caso que el plan debe incorporar y que no es nuestro: el respaldo eléctrico del patio refrigerado *«nunca ha sido verificado a carga total de temporada»* (`CP, Cap. 6`). Es `SPOF-05` de C1, queda fuera del límite de la oferta, y el plan de continuidad especifica la prueba y escala la ejecución al CLIENTE.
+Un dato del caso que el plan debe incorporar y que no es nuestro: el respaldo eléctrico del patio refrigerado *«nunca ha sido verificado a carga total de temporada»* (`CP, Cap. 6`). Es `F2-SPOF-05` de C1, queda fuera del límite de la oferta, y el plan de continuidad especifica la prueba y escala la ejecución al CLIENTE.
 
 ### 11. Plan de pruebas
 

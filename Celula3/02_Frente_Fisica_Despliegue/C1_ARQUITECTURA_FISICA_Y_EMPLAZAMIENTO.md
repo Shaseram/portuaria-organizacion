@@ -256,16 +256,45 @@ El Maestro, regla negativa 14, prohíbe ocultarlos. Los cinco primeros son condi
 
 | ID | Punto único de falla | Origen | Estado tras el diseño propuesto | Tratamiento |
 |---|---|---|---|---|
-| `SPOF-01` | fibra de un solo proveedor hacia el exterior | CP, Cap. 6 | **corregido** | `RT-03.17`: segundo camino por proveedor distinto y conmutación automática con tiempo declarado; C3 |
-| `SPOF-02` | radioenlace de respaldo sin prueba de conmutación real desde 2022 | CP, Cap. 6 | **corregido** | prueba de corte real como criterio de aceptación; C3 |
-| `SPOF-03` | operación, administración y CCTV sobre la misma conmutación | CP, Cap. 6 | **corregido** | segregación IEC 62443 con conductos controlados; Decisión 19; C3 y D1 |
-| `SPOF-04` | 26 tableros reefer sin instrumentación remota | CP, Cap. 6 y 7.2 | **corregido** | `PHY-EDG-03`, concentrador por tablero; alarma de tablero como evento propio |
-| `SPOF-05` | generación de respaldo del patio refrigerado nunca verificada a carga total de temporada | CP, Cap. 6 | **queda abierto** | fuera del límite de oferta; se especifica la prueba y se escala al CLIENTE |
-| `SPOF-06` | emplazamiento único: todo el terminal comparte sitio, acceso vial y amenazas | CP, Cap. 3 | **mitigado, no eliminado** | secundario en región secundaria de nube; `RT-07.02` con análisis de amenazas comunes |
-| `SPOF-07` | sala técnica única en el terminal durante el corte de 72 h | diseño | **residual aceptado** | redundancia interna de equipos (`RT-03.14`, `RT-08.03/04`); un segundo recinto local no es viable ni útil frente a amenazas comunes |
-| `SPOF-08` | `EXT-TOS12` como fuente de verdad durante la coexistencia | Decisión 1 | **acotado en el tiempo** | puerta de viabilidad en H2/mes 4; A3 |
-| `SPOF-09` | proveedor de nube único | Art. 16 | **residual declarado** | `RT-03.07`: estrategia de reversibilidad y portabilidad por componente; C2 |
-| `SPOF-10` | red inalámbrica de patio con sombras móviles | CP, Cap. 6 | **mitigado por diseño** | el terminal de patio es autónomo hasta 8 h fuera de cobertura; la red no se declara perfecta; site survey pendiente (`F2-ESC-001`) |
+| `F2-SPOF-01` | fibra de un solo proveedor hacia el exterior | CP, Cap. 6 | **corregido** | `RT-03.17`: segundo camino por proveedor distinto y conmutación automática con tiempo declarado; C3 |
+| `F2-SPOF-02` | radioenlace de respaldo sin prueba de conmutación real desde 2022 | CP, Cap. 6 | **corregido** | prueba de corte real como criterio de aceptación; C3 |
+| `F2-SPOF-03` | operación, administración y CCTV sobre la misma conmutación | CP, Cap. 6 | **corregido** | segregación IEC 62443 con conductos controlados; Decisión 19; C3 y D1 |
+| `F2-SPOF-04` | 26 tableros reefer sin instrumentación remota | CP, Cap. 6 y 7.2 | **corregido** | `PHY-EDG-03`, concentrador por tablero; alarma de tablero como evento propio |
+| `F2-SPOF-05` | generación de respaldo del patio refrigerado nunca verificada a carga total de temporada | CP, Cap. 6 | **queda abierto** | fuera del límite de oferta; se especifica la prueba y se escala al CLIENTE |
+| `F2-SPOF-06` | emplazamiento único: todo el terminal comparte sitio, acceso vial y amenazas | CP, Cap. 3 | **mitigado, no eliminado** | secundario en región secundaria de nube; `RT-07.02` con análisis de amenazas comunes |
+| `F2-SPOF-07` | sala técnica única en el terminal durante el corte de 72 h | diseño | **residual aceptado** | redundancia interna de equipos (`RT-03.14`, `RT-08.03/04`); un segundo recinto local no es viable ni útil frente a amenazas comunes |
+| `F2-SPOF-08` | `EXT-TOS12` como fuente de verdad durante la coexistencia | Decisión 1 | **acotado en el tiempo** | puerta de viabilidad en H2/mes 4; A3 |
+| `F2-SPOF-09` | proveedor de nube único | Art. 16 | **residual declarado** | `RT-03.07`: estrategia de reversibilidad y portabilidad por componente; C2 |
+| `F2-SPOF-10` | red inalámbrica de patio con sombras móviles | CP, Cap. 6 | **mitigado por diseño** | el terminal de patio es autónomo hasta 8 h fuera de cobertura; la red no se declara perfecta; site survey pendiente (`F2-ESC-001`) |
+
+
+#### 8.1 Correspondencia con el registro consolidado de D2
+
+El `B4` de D2 publicó un **registro consolidado de 21 puntos únicos de falla**, y ese es su producto obligatorio: es el registro de referencia del Subdocumento 4. Los diez de esta sección se habían numerado antes de que existiera, con los mismos códigos `SPOF-01` a `SPOF-10` **para materias distintas**. Los diez de aquí pasan a `F2-SPOF-*` y la numeración de D2 queda como la única global. Se registra en `F2-ESC-014`.
+
+| `F2-SPOF` de este entregable | Materia | En el registro de D2 |
+|---|---|---|
+| `F2-SPOF-01` | fibra de un solo proveedor | cubierto por `SPOF-02` enlace exterior |
+| `F2-SPOF-02` | radioenlace de respaldo sin prueba desde 2022 | cubierto por `SPOF-02`, pero **el matiz «sin conmutación real desde 2022» es dato del `CP, Cap. 6`** y conviene que su ficha lo recoja |
+| `F2-SPOF-03` | operación, administración y CCTV sobre la misma conmutación | **no está en D2.** Su `SPOF-18` trata el VMS y su conducto, que es otra cosa |
+| `F2-SPOF-04` | 26 tableros reefer sin instrumentación remota | **no está en D2** |
+| `F2-SPOF-05` | generación de respaldo del patio refrigerado nunca verificada a carga total | **no está en D2** |
+| `F2-SPOF-06` | emplazamiento único: sitio, acceso vial y amenazas compartidas | parcialmente en `SPOF-06`, que es de la sala; el nuestro es del **recinto completo** |
+| `F2-SPOF-07` | sala técnica única durante el corte de 72 h | cubierto por `SPOF-06` |
+| `F2-SPOF-08` | `EXT-TOS12` como fuente de verdad durante la coexistencia | cubierto por `SPOF-17` |
+| `F2-SPOF-09` | proveedor de nube único | **no está en D2.** Su `SPOF-20` es el proveedor de SOC, distinto |
+| `F2-SPOF-10` | red inalámbrica de patio con sombras móviles | cubierto por `SPOF-03` medio de radio del patio |
+
+**Cuatro puntos de falla de este entregable no están en el registro consolidado** —`F2-SPOF-03`, `04`, `05` y `09`—, y los cuatro son **condiciones preexistentes que el `CP, Cap. 6` describe explícitamente**, no riesgos de diseño. `RT-02.11` del BTT exige declarar los puntos únicos de falla que subsistan **y justificar por qué son aceptables**, y advierte que omitirlo cuando existen se evalúa como falta. Se traspasan a D2 en `F2-ESC-014`.
+
+**Y tres del registro de D2 que este entregable no tenía**, incorporados aquí por referencia:
+
+| De D2 | Por qué toca a este frente |
+|---|---|
+| `SPOF-04` referencia temporal | es la consecuencia de `FL-10`: sin hora común no hay orden de eventos y la reconciliación determinista tras el corte falla. Está tratado en C3 §5.ter, pero no estaba **declarado como punto de falla** |
+| `SPOF-15` aprobador único de break-glass | con un área TI de cinco personas y turnos 24×7, el acceso de emergencia puede depender de una sola persona localizable. Condiciona el procedimiento de C3 §9 |
+| `SPOF-16` dotación de turno, suplencias y habilitación ISPS | la estabilización exige presencia en los tres turnos con habilitación ISPS (`CP, Cap. 13.3`, condición 8); si esa dotación no existe, el paso a producción se detiene |
+
 
 ### 9. Lo que este entregable deja sujeto a levantamiento
 

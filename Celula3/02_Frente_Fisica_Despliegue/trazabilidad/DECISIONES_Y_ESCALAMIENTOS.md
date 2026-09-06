@@ -23,6 +23,7 @@
 | `F2-ESC-012` | 2026-09-05 | C3/C4 | EXTERNO | capacidad real de la fibra y del radioenlace de respaldo | la sincronización en ≤90 min exige **32,5 Mbps sostenidos** a peak estacional; el caso describe el respaldo como «de menor capacidad» | solicitar la capacidad contratada de ambos enlaces; si el respaldo no la sostiene, el compromiso de `RNF-DIS-04` se cumple sobre el principal restablecido o sobre el segundo camino de `RT-03.17` | C3, C4, `RNF-DIS-04` | BLOQUEADO EXTERNO |
 | `F2-INT-001` | 2026-09-05 | C1..C4 | INTERCAMBIO CUMPLIDO | cruce con `SEC-PHYS-v0.1` del Frente 3 | 17 grupos emplazados en C1 §6.bis, con producto en C2 §8.bis, zonas y flujos en C3 §5.bis y clasificación T-11 en C4 §9.bis | cerrar `F3-DEP-003` contra este material; `B7-F05` quedó superado | D1, D2, D3 | **APLICADO** |
 | `F2-ESC-013` | 2026-09-05 | C4 | EXTERNO | política de registro de seguridad y clasificación campo→sensibilidad | fija la ingesta total de `T11-SEC-04`. C4 estima el **piso derivable** en ≈8 GB/año en línea, pero los registros de plataforma, red y borde suelen dominar y dependen de esa política | D1 declara la política de qué se registra; la clasificación viene del Subdocumento 5 y del CLIENTE (`F3-DEP-004`) | C4, D1, T-11 | BLOQUEADO EXTERNO |
+| `F2-ESC-014` | 2026-09-06 | C1 | COLISIÓN DE IDs + BRECHA | los códigos `SPOF-01` a `SPOF-10` significan materias distintas en C1 y en el `B4` de D2 | ninguno de los diez coincide; D2 es el dueño del registro consolidado, que es su producto obligatorio | C1 renumera a `F2-SPOF-*`; D2 conserva la numeración global. **Cuatro puntos de falla de C1 no están en el registro de D2** y deben incorporarse | D2, D3, consolidado §4.3 | **APLICADO** en C1; traspaso a D2 pendiente |
 | `F2-DEC-002` | 2026-09-05 | C2 | TENSIÓN A DECLARAR | `RT-06.20` exige biometría facial para el recinto técnico | la restricción no negociable 8 registra la objeción a la biometría obligatoria | declarar que son poblaciones distintas; no silenciar | C2, D1 | PENDIENTE |
 | `F2-DEC-003` | 2026-09-05 | C2 | TENSIÓN A DECLARAR | `RT-06.24` exige videovigilancia propia del recinto, 30 días en línea | la regla negativa 6 prohíbe crear un portal de video y conserva el VMS | declarar que el CCTV del recinto no es el VMS del terminal | C2, C3, D1 | PENDIENTE |
 | `F2-COR-001` | 2026-09-05 | C1 | CORRECCIÓN PROPIA | cumplimientos decían `RT-03.01..15` | el capítulo llega a `RT-03.24` | corregido en C1 | C1, C3, C4 | APLICADO |
@@ -175,6 +176,25 @@
 `SEC-END-01` obligó a declarar que **el EDR no cubre los dispositivos de terreno**. Los equipos de las cinco clases marinas son de fabricantes industriales cuyo soporte de agente no está confirmado, y el `CP, Cap. 11` prohíbe imponer software al fabricante. Se cubren por segmentación y por la gestión de flota de `RT-03.18`. Contar una licencia por dispositivo habría inflado el T-11 con algo no instalable.
 
 **Lo que sigue abierto.** `T11-SEC-04`, el dimensionamiento de la ingesta del registro de seguridad, depende de la política de qué se registra y de la clasificación campo→sensibilidad que D1 mantiene como `F3-DEP-004`. La **unidad** está declarada; el **valor** no se inventa.
+
+### `F2-ESC-014` — Colisión de identificadores `SPOF` entre C1 y D2, y cuatro puntos de falla que faltan
+
+**Cómo apareció.** Al integrar `frente_3` con el `B4` de D2 recién completado, se comparó su registro consolidado de 21 puntos únicos de falla contra los diez de C1 §8. **Los códigos `SPOF-01` a `SPOF-10` existen en ambos y ninguno significa lo mismo.** Ejemplo: `SPOF-01` es «`EDGE-RUN` y su almacenamiento» en D2 y «fibra de un solo proveedor» en C1.
+
+**Por qué importa.** La sección 4.3 del consolidado reúne ambos registros. Con la numeración cruzada, veintiún identificadores tendrían diez con doble significado, y `RT-02.11` del BTT —que exige declarar los puntos únicos de falla **y justificar por qué son aceptables**— quedaría sin traza seguible.
+
+**Resolución aplicada.** D2 es el propietario formal del registro consolidado: su contrato lo nombra como producto obligatorio. Su numeración queda como la global. Los diez de C1 pasan a `F2-SPOF-01` a `F2-SPOF-10`, con la tabla de correspondencia en C1 §8.1. No se tocó ningún archivo de D2.
+
+**Lo que falta y hay que traspasar a D2.** Cuatro puntos de falla de C1 **no tienen equivalente** en el registro consolidado, y los cuatro son condiciones preexistentes que el `CP, Cap. 6` describe de forma explícita:
+
+| Falta en D2 | Texto del caso que lo respalda |
+|---|---|
+| operación, administración y CCTV sobre la misma conmutación | *«comparten infraestructura de conmutación […] en eventos de alta actividad se ha observado degradación del acceso al sistema de operación»* |
+| 26 tableros del patio refrigerado sin instrumentación remota | *«la falla de un tablero solo se conoce cuando alguien pasa caminando»* |
+| generación de respaldo del patio refrigerado nunca verificada a carga total de temporada | *«la autonomía del respaldo del patio refrigerado no está verificada bajo carga total de temporada»* |
+| proveedor de nube único | consecuencia del Art. 16; `RT-03.07` obliga a declarar la estrategia de reversibilidad. El `SPOF-20` de D2 es el proveedor de SOC, que es otra cosa |
+
+**Lo que C1 incorporó de D2.** Tres de sus 21 no estaban en este frente y sí le tocan: `SPOF-04` referencia temporal —consecuencia de `FL-10`, tratada en C3 §5.ter pero no declarada como punto de falla—, `SPOF-15` aprobador único de break-glass, y `SPOF-16` dotación de turno con habilitación ISPS. Quedan referenciados en C1 §8.1.
 
 ## 3. Tensiones declaradas, no resueltas
 
