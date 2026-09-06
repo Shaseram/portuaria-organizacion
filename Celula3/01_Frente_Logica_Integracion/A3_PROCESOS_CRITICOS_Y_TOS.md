@@ -274,6 +274,8 @@ Basada en la secuencia de sustitución adoptada por Célula 2 (§5.4 del registr
 
 **Ventanas:** 48 h para posición/movimientos (con 3 turnos rotativos, en 48 h la dotación que originó el registro ha vuelto a servicio al menos dos veces); 24 h para gate/hechos (ciclo natural del cierre diario).
 
+> **Estas ventanas son más cortas que el corte de 72 h, y de ahí sale un requisito de emplazamiento.** Si durante una desconexión del enlace exterior la conciliación se detuviera, las divergencias de gate y hechos facturables superarían su ventana de 24 h antes de que el enlace vuelva, y por la regla de arriba pasarían a computar como **no explicadas**, deteniendo el avance sin que nadie haya hecho nada mal. No hace falta que ocurra: esta conciliación compara el registro propio con el sistema de 2012, y **ambos viven en la sala técnica del terminal** —`PHY-OPS-01` e `INT-TOS` sobre `PHY-OPS-03`, C1 §4—, de modo que no atraviesa el enlace caído. La consecuencia para el Frente 2 es concreta: **el motor de conciliación y su bitácora son locales, no un informe que se calcula en la nube**; si vivieran en `DATA-AN`, un corte de 72 h rompería las ventanas de este numeral. Lo que sí espera a la reconexión es la conciliación con contrapartes externas —ERP y navieras— y la consolidación hacia la nube.
+
 *Fuente: Decisión 1 (Célula 2) §7.1, §15.2, §15.3.*
 
 ---
@@ -292,9 +294,9 @@ Basada en la secuencia de sustitución adoptada por Célula 2 (§5.4 del registr
 
 **Autoridad — doble control normal, break-glass de emergencia:** en operación normal, la reversión requiere aprobación conjunta del **supervisor de turno del CLIENTE** (existe en los 3 turnos, operación 24×7×365) y el **jefe de turno de marcha blanca de Terabyte** (presencia en terreno en los 3 turnos exigida por RT-21.16). En emergencia, cualquiera de los dos activa **break-glass** previamente autorizado: motivo obligatorio, privilegio temporal, alerta inmediata al otro cargo y al Comité, revisión posterior — el escalamiento al Comité es posterior al retorno, nunca una condición que paralice la emergencia de madrugada.
 
-**Asimetría declarada:** revertir sin necesidad cuesta poco (el TOS sigue al día mientras la escritura dual esté activa); no revertir cuando correspondía cuesta una nave detenida. **Ante la duda se revierte, y se documenta** — la misma lección del 18 de febrero (una alarma/decisión que espera a alguien que no está a las 03:00 tiene el mismo defecto de diseño).
+**Asimetría declarada:** revertir sin necesidad cuesta poco —el TOS sigue al día mientras la escritura dual esté activa, y «al día» tiene una cifra: `RF-CON-03` exige que ambos registros contengan el mismo hecho **en no más de 60 segundos**, con criterio de aceptación del **100 % sobre un turno completo**, y toda diferencia mayor computa como divergencia. Es el RPO efectivo del retorno. El valor es **provisional** y se fija definitivamente en la puerta del mes 4 al medir la latencia real de escritura hacia el sistema de 2012 (Célula 2, Supuesto T)—; no revertir cuando correspondía cuesta una nave detenida. **Ante la duda se revierte, y se documenta** — la misma lección del 18 de febrero (una alarma/decisión que espera a alguien que no está a las 03:00 tiene el mismo defecto de diseño).
 
-**Cierre de la ventana de reversión:** la escritura dual no se apaga hasta el cierre formal de la marcha blanca. Apagada, no hay reversión sino corrección hacia adelante — **el apagado es un hito bajo doble control y aprobación explícita del CLIENTE, nunca automático** (mes 22, condicionado a acta de conformidad del repositorio histórico).
+**Cierre de la ventana de reversión** (`RF-CON-04`, Crítica)**:** la escritura dual no se apaga hasta el cierre formal de la marcha blanca. Apagada, no hay reversión sino corrección hacia adelante — **el apagado es un hito bajo doble control y aprobación explícita del CLIENTE, nunca automático** (mes 22, condicionado a acta de conformidad del repositorio histórico).
 
 *Fuente: Decisión 1 (Célula 2) §7.2, §15.1, §15.4.*
 
@@ -322,7 +324,7 @@ Profundiza A1 §2.4 con el procedimiento manual exigido por BTT RT-03.13 (su aus
 | Función crítica (A1 §2.4) | Qué se degrada sin enlace | Procedimiento manual de respaldo | RTO/RPO operacional |
 |---|---|---|---|
 | Nave y movimientos | Mensajería EDIFACT nueva con navieras queda en buffer | Ninguno — la operación de nave continúa localmente sin degradar | RPO ≈0 (local); RTO de mensajería = tiempo de reconexión |
-| Posición/cruce de zonas | Conciliación fina con TOS se posterga | Ninguno — posición sigue con DGPS/RTLS+óptica local | RPO ≈0; conflictos resueltos en ≤90 min post-reconexión |
+| Posición/cruce de zonas | Se posterga la conciliación **hacia la nube**; la del §4 —plataforma ↔ TOS 2012— **continúa localmente**: ambos sistemas están en la sala técnica (`C1 §4`, `PHY-OPS-03`) y no atraviesan el enlace caído | Ninguno — posición sigue con DGPS/RTLS+óptica local | RPO ≈0; conflictos con la nube resueltos en ≤90 min post-reconexión |
 | Gate | Verificación contra autoridades externas usa fallback asistido | Carril de excepción manual (ya existente — RN-07) | RPO ≈0; RTO de verificación externa = tiempo de reconexión |
 | Reefer | Reporte agregado a `DATA-AN` se difiere | Ninguno — alarma y registro continúan localmente | RPO ≈0 (crítica, incluida en `EDGE-RUN`) |
 | Hechos facturables | Entrega a ERP y conciliación 1:1 se posterga | Ninguno — evidencia se sella localmente | RPO ≈0; RTO de conciliación ERP = tiempo de reconexión |

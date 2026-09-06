@@ -153,7 +153,8 @@ La selección debe considerar complejidad operacional, resiliencia, autonomía d
 | Patio | 18 ha / 12.400 TEU | debe crecer sin rediseño rígido |
 | Tomas reefer | 2.400 / 26 tableros | 2.900 / 32 tableros |
 | Camiones/día | 1.450 promedio / 2.600 peak | 1.700 / 3.100 |
-| Equipos | 6 grúas muelle, 18 patio, 42 tractocamiones, 14 pesados | hasta 88 equipos instrumentables |
+| Equipos **a instrumentar** | 18 grúas de patio, 42 tractocamiones, 14 equipos pesados = **74** | hasta 88 equipos |
+| Equipos **no instrumentados** | 6 grúas de muelle | telemetría de **solo lectura** con autorización del fabricante; la restricción 3 y el `CP, Cap. 11` prohíben intervenir su control. *No suman al conteo de 74; corregido el 2026-09-06, este maestro las incluía y daba 80 frente a los 74 del `CP` línea 750* |
 | Gate | 8 entradas + 6 salidas | 10 + 8 |
 | Personas en recinto peak | 1.100 | 1.300 |
 | Eventuales por turno peak | hasta 380 | rotación diaria por nombrada |
