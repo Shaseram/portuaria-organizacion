@@ -4,7 +4,7 @@
 
 ### Objetivo y destino
 
-Definir ambientes, redes, despliegue, alta disponibilidad, recuperación, respaldos y comportamiento ante desconexión. Alimenta las secciones 4.2.7–4.2.10.
+Definir ambientes, redes, despliegue, alta disponibilidad, recuperación, respaldos y comportamiento ante desconexión. Alimenta la sección 4.2.6.
 
 ### Cumplimientos asignados
 
@@ -92,7 +92,7 @@ Entrega a C4 componentes de red, HA, respaldo, DR, monitoreo y sitio que requier
 ## Contenido listo para integrar
 
 **Versión:** `v0.5` — contenido completo, sujeto a revisión cruzada en la Puerta 2.
-**Fecha:** 2026-09-05. **Destino:** consolidado 4.2.7 a 4.2.10.
+**Fecha:** 2026-09-05. **Destino vigente tras MA-7:** consolidado 4.2.6.
 
 ### 1. La restricción que ordena todo este paquete
 
@@ -214,13 +214,14 @@ Es la consecuencia de `FL-10` y del `B3.4` de D1, y es un hueco real que este en
 
 | Servicio | Por qué falla si depende de nube | Tratamiento local |
 |---|---|---|
+| **Entrada API y aplicación de políticas** | sin una puerta local, `CH-APP` y `CH-CAB` no pueden alcanzar las funciones críticas sin violar la prohibición de acceso directo a `CTX-*` | perfil local restringido de `GW-API` en `PHY-OPS-01`: esquema, identidad/autorización con versión vigente cacheada, ruteo solo crítico y correlación; catálogo y administración centrales quedan fuera de línea |
 | **Resolución de nombres** | los servicios se llaman entre sí por nombre; sin resolución, el núcleo local no se encuentra a sí mismo | resolvedor local autoritativo para la zona operacional, con la vista externa como reenvío opcional |
 | **Sincronización horaria** | sin hora común no hay orden de eventos, y la reconciliación determinista tras el corte depende del orden | fuente de tiempo local con al menos dos referencias; el sello de evidencia y la bitácora dependen de esto |
 | **Validación de certificados** | si la comprobación de revocación solo se hace en línea, el TLS interno falla al caer el enlace | validación con material local vigente; **prohibido desactivar la validación o aceptar certificados vencidos** durante el corte, como advierte D1, `B3.4` |
 | **Identidad y sesión** | una autenticación que consulte a nube convierte el corte de enlace en corte de operación | caché local de `SRV-IAM` con credenciales vigentes; ver C1 §5 |
 | **Registro y buffer de seguridad** | los eventos del corte no pueden perderse ni esperar al enlace | colector local con buffer de 72 h más margen; se reenvía al reconectar |
 
-Los cinco se incorporan a la matriz de continuidad del §7 como dependencias de las funciones críticas, y su capacidad —especialmente el buffer del colector— se dimensiona en C4. Ninguno genera fila propia de T-11: son capacidades del núcleo local y de la plataforma de observabilidad ya ofertadas.
+Los seis se incorporan a la matriz de continuidad del §7 como dependencias comunes de las funciones críticas, y su capacidad —especialmente el buffer del colector— se dimensiona en C4. El perfil local de `GW-API` se incluye en la misma plataforma/runtime del núcleo, no como una segunda compra; los demás son capacidades del núcleo local y de la plataforma de observabilidad ya ofertadas.
 
 ### 6. Clasificación de servicios
 
@@ -247,11 +248,11 @@ Las cinco críticas son exactamente las cinco funciones que el Maestro §9.1 exi
 
 | Servicio o proceso | Clase | HA | Dependencia | RTO | RPO | 72 h local | Fallback manual | Prueba | SPOF residual |
 |---|---|---|---|---|---|---|---|---|---|
-| Nave y movimientos | crítica | clúster local ≥3 nodos + multi-AZ en nube | núcleo local, borde de muelle | ≤4 h | ≤15 min | **sí, completo** | **ninguno**: la operación continúa localmente sin degradar. Lo que espera es la mensajería EDIFACT, que queda en cola *(A3 §7)* | E2E y DR semestral | sala técnica única, aceptado |
-| Gate: entrada y salida | crítica | ídem + gabinete por puesto con proceso local | núcleo local, OCR, báscula, barrera | ≤4 h | ≤15 min | **sí, completo** | carril de excepción de `RN-07`, que **ya existe hoy**; lo que se degrada es solo la verificación contra autoridades externas *(A3 §7)* | corte real de enlace | barrera y báscula del CLIENTE |
-| Posición e inventario | crítica | ídem | núcleo local, red de patio, terminales | ≤4 h | ≤15 min | **sí**, con la red de patio operativa | **ninguno**: la posición sigue con DGPS/RTLS y lectura óptica local. Lo que se posterga es la conciliación fina con el TOS *(A3 §7)*. El terminal de equipo aguanta 8 h fuera de cobertura | prueba de campo con desconexión deliberada | red de patio, mitigado |
-| Alarma de patio refrigerado | crítica | ídem + concentrador por tablero | núcleo local, 26 concentradores | ≤4 h | ≤15 min | **sí**, alarma local con canal redundante | **ninguno**: alarma y registro continúan localmente. Solo se difiere el reporte agregado a `DATA-AN` *(A3 §7)*. La ronda física cada 4 h queda como reversibilidad de último recurso, no como respaldo del corte | inyección de falla de sensor y de tablero | respaldo eléctrico del patio reefer no verificado |
-| Hecho y evidencia facturable | crítica | ídem | núcleo local | ≤4 h | ≤15 min | **sí**, captura y sello diferido | **ninguno**: la evidencia se sella localmente. Se posterga la entrega al ERP y su conciliación 1:1 *(A3 §7)* | conciliación por turno | — |
+| Nave y movimientos | crítica | clúster local ≥3 nodos + multi-AZ en nube | gateway local, núcleo local, borde de muelle | ≤4 h | ≤15 min | **sí, completo** | **ninguno**: la operación continúa localmente sin degradar. Lo que espera es la mensajería EDIFACT, que queda en cola *(A3 §7)* | E2E y DR semestral | sala técnica única, **POR ACEPTAR** |
+| Gate: entrada y salida | crítica | ídem + gabinete por puesto con proceso local | gateway local, núcleo local, OCR, báscula, barrera | ≤4 h | ≤15 min | **sí, completo** | carril de excepción de `RN-07`, que **ya existe hoy**; lo que se degrada es solo la verificación contra autoridades externas *(A3 §7)* | corte real de enlace | barrera y báscula del CLIENTE |
+| Posición e inventario | crítica | ídem | gateway local, núcleo local, red de patio, terminales | ≤4 h | ≤15 min | **sí**, con la red de patio operativa | **ninguno**: la posición sigue con DGPS/RTLS y lectura óptica local. Lo que se posterga es la conciliación fina con el TOS *(A3 §7)*. El terminal de equipo aguanta 8 h fuera de cobertura | prueba de campo con desconexión deliberada | red de patio, **POR ACEPTAR** |
+| Alarma de patio refrigerado | crítica | ídem + concentrador por tablero | gateway local, núcleo local, 26 concentradores | ≤4 h | ≤15 min | **sí**, alarma local con canal redundante | **ninguno**: alarma y registro continúan localmente. Solo se difiere el reporte agregado a `DATA-AN` *(A3 §7)*. La ronda física cada 4 h queda como reversibilidad de último recurso, no como respaldo del corte | inyección de falla de sensor y de tablero | respaldo eléctrico del patio reefer no verificado; **ESCALADO** |
+| Hecho y evidencia facturable | crítica | ídem | gateway local, núcleo local, evidencia local | ≤4 h | ≤15 min | **sí**, captura y sello diferido | **ninguno**: la evidencia se sella localmente. Se posterga la entrega al ERP y su conciliación 1:1 *(A3 §7)* | conciliación por turno | — |
 | Planificación | alta | multi-AZ en nube; plan vigente replicado local | nube | ≤4 h | ≤15 min | plan vigente **sí**; replanificación **no** | planificación manual, que es el estado actual | DR semestral | dependencia de una persona hasta 2028 |
 | Mensajería con navieras | alta | multi-AZ; cola durable con acumulación local | nube, contraparte | ≤4 h | ≤15 min | **no**: acumula y entrega al reconectar | canal puente transitorio, prohibido para la alianza desde 2029 | prueba por contraparte | disponibilidad de la contraparte |
 | Inspecciones | alta | multi-AZ | nube, autoridad | ≤4 h | ≤15 min | agenda vigente y acta **sí** | coordinación telefónica y acta en papel | DR semestral | interfaz de la autoridad inexistente |
@@ -276,7 +277,7 @@ La columna «fallback manual» de la matriz anterior proponía procedimientos de
 
 Escribir «planilla de turno» como respaldo daba a entender que la función cae, y es exactamente lo contrario de lo que se está ofertando. Corregido en la matriz del §7.
 
-**Lo que sí se degrada por diseño**, declarado por A3 y que este entregable debe reflejar en el calendario y en la capacidad: planificación, inspecciones, emisiones, analítica, alta de identidad nueva y el catálogo central del gateway. Para la planificación el respaldo es el plan impreso y la radio, que es el modo degradado explícito de la Decisión N° 1. Esa declaración es el **entregable N° 4 del checklist del BTT** (`RT-03.13`), cuya ausencia el propio requisito califica de «observación grave», y ahora existe: la produce A3 y este entregable la respalda con la infraestructura que la hace posible.
+**Lo que sí se degrada por diseño**, declarado por A3 y que este entregable debe reflejar en el calendario y en la capacidad: generación de un plan nuevo, programación de nuevas inspecciones, cálculo de emisiones, analítica, alta de identidad nueva y catálogo/administración central del gateway. El último plan vigente permanece cacheado en solo lectura; el respaldo operacional es plan impreso + radio. Esa declaración es el **entregable N° 4 del checklist del BTT** (`RT-03.13`), cuya ausencia el propio requisito califica de «observación grave», y ahora existe: la produce A3 y este entregable la respalda con la infraestructura que la hace posible.
 
 #### 7.2 Autoridad por bloque de patio, no por sistema completo
 
@@ -371,16 +372,16 @@ Un dato del caso que el plan debe incorporar y que no es nuestro: el respaldo el
 
 ### 13. Aportes a ADR y a T-11
 
-**`ADR-006` — red del patio y conectividad redundante.** Alternativas: red inalámbrica empresarial redensificada sobre postación nueva; **red celular privada LTE/5G**, que la Decisión N° 9 dejó como alternativa primaria; o esquema mixto por zona. Criterios: comportamiento con pilas de hasta cinco alturas y sombras móviles, handover sin interrumpir transacción, cantidad de puntos de instalación en ambiente salino y su reposición, operabilidad con TI de cinco personas, y plazo de instalación dentro de la ventana mayo–noviembre antes del 14-dic-2027. **No se cierra sin el site survey** (`F2-ESC-001`).
+**`ADR-006` — red del patio y conectividad redundante. Estado MA-4: `PROPUESTO`.** Alternativas: red inalámbrica empresarial redensificada sobre postación nueva; **red celular privada LTE/5G**; o esquema mixto por zona. Se adopta LTE/5G privada como baseline condicionada, con rango inicial de 6–8 estaciones y autonomía de terminal de 8 h; si el site survey no demuestra cobertura/handover e independencia suficientes, se activa el esquema mixto por zona. Criterios: pilas de hasta cinco alturas y sombras móviles, handover sin interrumpir transacción, resistencia/reemplazo en ambiente salino, operabilidad con TI de cinco personas y ventana mayo–noviembre antes del 14-dic-2027. `F2-ESC-001` mantiene pendiente la cantidad/ubicación exacta y la evidencia, no la arquitectura de referencia.
 
-**`ADR-007` — almacenamiento, RAID, HA y DR.** Aporta desde aquí la modalidad activo-pasivo justificada en C2 §6, el criterio de activación que separa corte de enlace de desastre, y los objetivos RTO 4 h y RPO 15 min. El nivel RAID se justifica en C4 frente a alternativas, como exige `RT-03.14`.
+**`ADR-007` — almacenamiento, RAID, HA y DR. Estado MA-4: `PROPUESTO`.** Se adopta para la baseline: tres nodos de cómputo por cuórum, almacenamiento local `RAID 10` 4×480 GB, réplica cloud activa-pasiva con RTO 4 h/RPO 15 min y respaldo 3-2-1-1-0 con copia inmutable y autoridad de borrado separada. `RAID 6` conserva mejor capacidad pero agrega penalización/reconstrucción innecesaria para la carga local acotada; activo-activo y multicloud elevan operación sin proporción para TI=5. Producto, rendimiento, restauración y conmutación se validan después; esas evidencias condicionan aprobación, no la selección de diseño para I1.
 
 **Candidatos de T-11 propios de C3.** Sin precios y con cantidad en C4, conforme al Art. 16 y a la regla del Maestro. Esta lista estaba en prosa y sin identificador; C4 §9 y `TRZ_C4` ya citaban `T11-C3-01` y `T11-C3-03` como si existieran, de modo que dos filas del control 1:1 no volvían a ninguna parte. Se publica con ID el 2026-09-06 (`F2-COR-012`).
 
 | Candidato | Componente | Producto o servicio | Ubicación | Cantidad | Origen |
 |---|---|---|---|---|---|
 | `T11-C3-01` | segundo camino de comunicaciones hacia la nube | enlace por **proveedor distinto** del principal, con conmutación automática y tiempo declarado | terminal ↔ nube | C4: ≥35 Mbps disponibles, dos caminos | `RT-03.17`; `F2-SPOF-01` |
-| `T11-C3-02` | canal privado hacia la nube | enlace privado dedicado o VPN cifrada de sitio a sitio | terminal ↔ región primaria | 1 conjunto, redundado sobre los dos caminos | `RT-03.04`; `SEC-SYNC-01` de D1 |
+| `T11-C3-02` | canal privado hacia la nube | AWS Site-to-Site VPN sobre ambos caminos | terminal ↔ `sa-east-1` | 1 conjunto lógico: 2 conexiones VPN y 4 túneles | `RT-03.04`; `SEC-SYNC-01` de D1; `ADR-011` |
 | `T11-C3-03` | red operacional del patio | equipamiento de cobertura del patio según la alternativa que fije `ADR-006` | 18 ha de patio | **6–8, rango**; lo cierra el site survey (`F2-ESC-001`) | `CP, Cap. 15, RT-03.24`; Decisión N° 9 |
 | `T11-C3-04` | plataforma de integración y entrega continua | CI/CD con SAST, SCA, DAST, escaneo de secretos y de imágenes, y registro de artefactos con SBOM | nube, ambiente de ingeniería separado de producción | por proyectos y ejecuciones concurrentes; C4 | §4; `SEC-SDLC-01`/`SEC-PIPE-01` y `SEC-SUPPLY-01`/`SEC-ART-01` de D1 |
 
@@ -414,4 +415,3 @@ Los componentes de red de núcleo y cortafuegos ya están en el catálogo de C2 
 ## Trazabilidad
 
 Ver [`trazabilidad/TRZ_C3.md`](trazabilidad/TRZ_C3.md).
-

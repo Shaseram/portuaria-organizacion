@@ -330,9 +330,13 @@ Punto único de contacto con el exterior. Protege la plataforma mediante WAF ges
 
 **Capa 3 — Gateway de servicios** (Maestro §6, fila 3)
 
-Punto de control que media entre los canales de presentación y los servicios de negocio. Aplica autenticación (tokens OIDC/OAuth 2.1), autorización basada en roles y atributos (RBAC+ABAC), cuotas por cliente/servicio, rate limiting, validación de esquema de entrada, catálogo de servicios, versionado de contratos y trazabilidad de cada solicitud mediante correlación de identificadores.
+Punto de control que media entre los canales de presentación y los servicios de negocio. Aplica autenticación (tokens OIDC/OAuth 2.1), autorización basada en roles y atributos (RBAC+ABAC), cuotas por cliente/servicio, rate limiting, validación de esquema de entrada, catálogo de servicios, versionado de contratos y trazabilidad de cada solicitud mediante correlación de identificadores. La regla se conserva también durante una desconexión: ningún canal obtiene acceso directo a `CTX-*` o datos para “saltar” la nube.
 
-- `GW-API` — Gateway de servicios: enruta solicitudes autenticadas hacia el bounded context correspondiente; registra cada transacción para auditoría y observabilidad. Umbrales de desempeño bajo peak (`RNF-DES-10`, Célula 2): consulta simple ≤500 ms, escritura transaccional ≤800 ms (p95); complementados por `RNF-DES-11` (lotes ≥10.000 registros/min, carga de archivo de 100 MB ≤60 s, arranque en frío ≤60 s) y `RNF-DES-12` (prueba de carga/estrés a 1,5× el peak antes de cada paso a producción).
+- `GW-API` — Gateway de servicios con **dos perfiles de despliegue del mismo componente lógico**:
+  - **perfil central**, en nube: catálogo completo, administración, publicación/versionado y acceso de contrapartes;
+  - **perfil local restringido**, incluido en `EDGE-RUN`: valida esquema, identidad y autorización contra la versión vigente cacheada, y enruta únicamente las operaciones permitidas de las cinco funciones críticas. No publica administración, altas de identidad, analítica ni integraciones externas.
+
+  Ambos perfiles registran la misma identidad de operación y versión de política. Al reconectar, el perfil local entrega su bitácora y diferencial por el mecanismo de reconciliación; no toma decisiones de conflicto por sí solo. Umbrales de desempeño bajo peak (`RNF-DES-10`, Célula 2): consulta simple ≤500 ms, escritura transaccional ≤800 ms (p95); complementados por `RNF-DES-11` (lotes ≥10.000 registros/min, carga de archivo de 100 MB ≤60 s, arranque en frío ≤60 s) y `RNF-DES-12` (prueba de carga/estrés a 1,5× el peak antes de cada paso a producción).
 
 **Capa 4 — Servicios de negocio** (Maestro §6, fila 4; §6.1)
 
@@ -342,7 +346,7 @@ Núcleo funcional de la plataforma. Contiene nueve bounded contexts con responsa
 - `CTX-GATE` — Gate y citas: prevalidación documental, gestión de citas con prioridad, cola virtual, registro de entradas/salidas con OCR (camión completo ≤120 s), control de tiempos y manejo de excepciones (carril de excepción ≥50 % más lento que validado).
 - `CTX-YARD` — Patio y posición: asignación de posiciones (bahía-fila-nivel), verificación cruzada con telemetría de equipos, gestión de condiciones dinámicas (pilas, pesos, tipos), **programación anticipada de remociones** (`RF-PAT-10` — ataca el 18 % de remociones evitables de forma proactiva, no solo reactiva, y es la base física que `CTX-INSP` usa para agendar inspecciones con margen) y cálculo de remociones. Meta: 100 % de posiciones conocidas correctas y ≤0,5 % "por verificar" al cierre (Maestro §4.8).
 - `CTX-REEFER` — Reefer y telemetría: recepción de muestras de temperatura de 2.400 tomas (2.900 proyectadas), evaluación contra consigna, generación de alarmas en ≤5 minutos, gestión de confirmación/escalamiento y registro de series temporales para evidencia.
-- `CTX-PLAN` — Planificación: algoritmos de estiba y patio que proponen asignaciones, permiten corrección humana y capturan motivos de excepción para aprendizaje. Reemplaza la dependencia de una persona única (Nibaldo) mediante sistematización de reglas tácitas desde el mes 1.
+- `CTX-PLAN` — Planificación: motor determinista de reglas de estiba y patio que propone asignaciones, permite corrección humana y captura motivos de excepción para convertir conocimiento tácito en reglas explícitas versionadas. **Informe 1 no incorpora inteligencia artificial, entrenamiento de modelos ni decisión autónoma**; cualquier incorporación futura activa revisión de alcance, ADR y controles NIST AI RMF/ISO 42001. Reemplaza la dependencia de una persona única (Nibaldo) mediante sistematización desde el mes 1.
 - `CTX-VESSEL` — Nave y mensajería. **Se declara con partición dual**, porque sus dos mitades tienen comportamiento distinto ante la pérdida del enlace exterior y tratarlas como un bloque único fue el origen de una contradicción con C1:
   - **(a) Subconjunto operacional de muelle — local, `Crítica`, replicado en `EDGE-RUN`.** Recaladas en ejecución, secuencias de carga y descarga STS, confirmación de movimientos contenedor a contenedor, ventana de atraque activa y productividad por grúa/hora en tiempo real (`RF-NAV-12`). Debe operar 72 h sin enlace: es la primera de las cinco funciones críticas del Maestro §9.1. Su nodo físico es `PHY-OPS-01`, asignado por C1 el 2026-09-06 (`F2-COR-005`).
   - **(b) Subconjunto de mensajería e integración externa — nube, `Alta`, `PHY-CLD-03`.** Anuncios de recaladas futuras y mensajería marítima EDIFACT —BAPLIE, COPRAR, COARRI y CODECO— a través de `INT-HUB`. **Por definición no puede operar sin enlace exterior**: durante el corte la mensajería entrante espera en el origen y la saliente se acumula en el buffer local persistente de `EDGE-RUN`, sin detener la atención física de la nave.
@@ -385,7 +389,19 @@ Métricas, logs y trazas correlacionadas entre componentes nube y on-premise, si
 
 **Componente transversal adicional:**
 
-- `EDGE-RUN` — Runtime local: réplica de las funciones críticas que debe operar durante 72 horas sin enlace exterior. Replica exactamente los componentes marcados "Crítica" en el catálogo §3.1 — `CTX-OPS`, `CTX-GATE`, `CTX-YARD`, `CTX-REEFER`, `CTX-VESSEL` *(subconjunto de muelle local; ver su descripción arriba)*, `CTX-BILL`, `INT-TOS`, **`SRV-IAM` *(autenticación y autorización de identidades vigentes; no el directorio completo ni la emisión de credenciales nuevas)*** y su almacenamiento transaccional `DATA-CORE` — más buffer dimensionado al peak coincidente (2 naves + gate saturado), almacenamiento local tolerante a fallo y mecanismo de reconciliación automática y determinista. No es una capa formal sino un componente que atraviesa las capas 4, 5 y 6 mediante réplica selectiva.
+- `EDGE-RUN` — Runtime local: sostiene durante 72 horas sin enlace exterior una ruta autorizada de punta a punta. No es una capa formal ni una copia total de la nube; es un perfil de ejecución acotado que atraviesa gateway, negocio, integración, datos, seguridad y observabilidad.
+
+  **Inventario canónico de continuidad local:**
+
+  | Grupo | Capacidades incluidas en `EDGE-RUN` | Alcance durante el corte |
+  |---|---|---|
+  | entrada y política | `GW-API` perfil local restringido | esquema, autenticación/autorización con política vigente cacheada, ruteo solo a operaciones críticas y correlación |
+  | negocio crítico | `CTX-OPS`, `CTX-GATE`, `CTX-YARD`, `CTX-REEFER`, `CTX-VESSEL` —subconjunto de muelle— y `CTX-BILL` | las cinco funciones de §2.4 |
+  | coexistencia e identidad | `INT-TOS`; `SRV-IAM` —identidades vigentes y revocación/bloqueo local— | no incluye alta de identidades ni sincronización del directorio |
+  | datos críticos | `DATA-CORE`; ventana caliente reefer de `DATA-TS`; buffer temporal de evidencia de `DATA-DOC` | autoridad transaccional local, alarma reefer y evidencia del corte |
+  | apoyos locales parciales | canal local de `SRV-NOTIF`; sello/registro de `SRV-EVID`; cola de salida de `INT-HUB`; colector de logs, tiempo, nombres, validación de certificados y material criptográfico protegido | solo lo indispensable para operar, atribuir y reconciliar; la entrega externa espera al enlace |
+
+  El almacenamiento se dimensiona al peak coincidente —dos naves y gate saturado—, con tolerancia a falla y reconciliación automática y determinista. Este inventario es la referencia única para C1/C3/D1/D2; una capacidad parcial no convierte en local todo el servicio central.
 
   **Dos escenarios de continuidad, no uno (no confundir en el consolidado):** (a) *pérdida del enlace exterior* con el sitio local operando con normalidad — 72 h sin pérdida, sync ≤90 min, gobernado por `RNF-DIS-02/04` y, acumulativamente, `CP, Cap. 15, RT-03.13` (parámetro del caso: sincronización ≤90 min tras reconexión — mismo código que `BTT RT-03.13`, que exige otra cosa distinta: declarar qué funciones no están disponibles en modo desconectado; colisión confirmada por Frente 2, `F2-ESC-006`, y tratada como Supuesto M — ver `DECISIONES_Y_ESCALAMIENTOS.md`, `F1-CONFLICTO-001`) — ejecutado enteramente por `EDGE-RUN`. El ancho de banda que ese umbral exige a peak estacional (~32,5 Mbps sostenidos durante la reposición, no ~1 Mbps de operación normal) es dimensionamiento físico de C3/C4 (`F2-ESC-012`), no de esta arquitectura lógica, pero condiciona si el enlace de respaldo real puede sostener el compromiso — riesgo declarado por Frente 2, no resuelto aquí; (b) *interrupción mayor* del propio sitio (desastre, no solo enlace) — RTO ≤4 h / RPO ≤15 min (`RNF-DIS-13`, Célula 2, FEP02 Cap. 7 RT-07.04), con conmutación a sitio/región secundaria, respaldo 3-2-1-1-0 cifrado con copia inmutable (`RNF-DIS-14`) y prueba de conmutación real semestral (`RNF-DIS-15`) — este segundo escenario es responsabilidad física de C1/C3, no de `EDGE-RUN`. El ambiente de recuperación debe estar **operativo desde el mes 6** (hito H3, `BTT RT-04.01` leído junto a los cinco ambientes, no solo antes de producción — interpretación de Frente 2, `F2-ESC-010`, que nombra explícitamente la planificación del Frente 1 como afectada): el cronograma de este frente no puede asumir que el sitio secundario es un entregable de última etapa.
 
@@ -394,13 +410,15 @@ Métricas, logs y trazas correlacionadas entre componentes nube y on-premise, si
 1. Toda escritura reintentable requiere **idempotencia** con clave y ventana de deduplicación (Maestro §6.2; BTT RT-02.06).
 2. Toda llamada remota requiere **timeout explícito** y, según criticidad, reintento con backoff exponencial+jitter, circuit breaker, bulkhead y rate limit (BTT RT-02.08 — ninguna llamada remota carece de tiempo de espera).
 3. Se debe declarar **degradación elegante**: qué se degrada, cuál es el fallback, cómo se recupera y cómo se reconcilia; ante indisponibilidad de un componente no crítico la plataforma sigue operando en modo reducido y **nunca falla totalmente** (BTT RT-02.09). La degradación se informa a la persona usuaria en el canal correspondiente — `CH-PORTAL`/`CH-APP` muestran el estado de sincronización o de servicio reducido; `CH-CAB` señaliza cuando opera con telemetría en modo local — nunca de forma silenciosa.
-4. Los canales de presentación (Capa 1) **nunca acceden directamente a datos** (Capa 6); toda operación fluye a través del gateway (Capa 3) y los servicios de negocio (Capa 4).
+4. Los canales de presentación (Capa 1) **nunca acceden directamente a datos** (Capa 6); toda operación fluye a través del perfil activo del gateway (Capa 3) y los servicios de negocio (Capa 4). Durante el corte, `CH-APP` y `CH-CAB` usan el perfil local restringido de `GW-API` dentro de `EDGE-RUN`.
 5. Los bounded contexts (Capa 4) **no llaman directamente a sistemas externos** (EXT-*); toda integración externa fluye a través de INT-HUB o INT-TOS (Capa 5).
 6. Cualquier **punto único de falla residual** debe declararse explícitamente y tener plan de mitigación documentado.
 
 #### 2.4 Cinco funciones críticas de continuidad (salida temprana v0.1 a Frente 2 y Frente 3)
 
 Estas son las cinco funciones que el Maestro (§9.1) exige mantener localmente sin pérdida durante 72 horas sin enlace exterior. Se listan aquí como salida temprana explícita, tal como lo pide [`00_INDICE_DEL_FRENTE.md`](00_INDICE_DEL_FRENTE.md), y sirven de base para que Frente 2 dimensione `EDGE-RUN` y Frente 3 modele sus amenazas.
+
+Todas recorren la misma ruta común autorizada: `CH-APP/CH-CAB → GW-API` local restringido `→ CTX crítico → DATA` local `→ evidencia/log` local. Comparten además `SRV-IAM`, tiempo, nombres, validación de certificados, material criptográfico y buffer persistente locales. La tabla siguiente enumera el núcleo funcional específico de cada cadena, no vuelve a repetir esos apoyos comunes.
 
 | # | Función crítica | Componente(s) responsable(s) | Qué debe seguir funcionando sin enlace | Qué se degrada explícitamente | Umbral/fuente |
 |---|---|---|---|---|---|
@@ -410,7 +428,7 @@ Estas son las cinco funciones que el Maestro (§9.1) exige mantener localmente s
 | 4 | Monitoreo y alarma reefer | `CTX-REEFER`, serie reefer de `DATA-TS` | Muestreo, evaluación contra consigna, generación y confirmación de alarma | Reporte agregado/histórico hacia `DATA-AN` se difiere | Maestro §9.1; alarma ≤5 min |
 | 5 | Hechos y evidencia facturable | `CTX-BILL`, `SRV-EVID` (parcial) | Registro del hecho con evidencia vinculada y sello local | Entrega estructurada al ERP (`EXT-ERP`) y conciliación 1:1 se reconcilian al reconectar | Maestro §9.1, §4.7 |
 
-Estas cinco funciones son exactamente las que justifican qué queda dentro de `EDGE-RUN` (§2.2, §3.1, §4.1): todo componente marcado "Crítica" en el catálogo pertenece a una de estas cinco cadenas. Lo que **no** está en esta lista (identidad nueva, catálogo central del gateway, planificación, inspecciones, emisiones, analítica) se degrada de forma explícita y documentada, no silenciosa.
+Estas cinco funciones justifican el núcleo funcional de `EDGE-RUN` (§2.2, §3.1, §4.1). El inventario canónico de §2.2 agrega los apoyos parciales sin los cuales las cadenas no serían ejecutables o auditables. Lo que **no** está en ese inventario —identidad nueva, catálogo y administración central del gateway, planificación nueva, inspecciones nuevas, emisiones y analítica— se degrada de forma explícita y documentada, no silenciosa.
 
 *Fuente: Maestro §9.1.*
 
@@ -420,11 +438,11 @@ BTT RT-02.11 exige declarar explícitamente los puntos únicos de falla (SPOF) q
 
 | SPOF lógico | Por qué es un punto único | Por qué se acepta en esta vista | Mitigación (frente que la ejecuta) | ID en el registro consolidado de D2 |
 |---|---|---|---|---|
-| `GW-API` como única puerta de entrada a `CTX-*`/`SRV-*` | Toda operación de negocio pasa por un solo componente lógico de enrutamiento/autorización | Concentrar el control de acceso es preferible a distribuirlo sin gobierno; el riesgo se traslada a redundancia física, no a duplicar lógica | Alta disponibilidad e instancias redundantes sin estado (C1/C3) | **ninguno.** D2 no declara un punto de falla propio para `GW-API`; su superficie se trata por amenaza (`THR-030` a `034`), no como SPOF. Se deja visible en lugar de forzarle un ID ajeno |
+| `GW-API` como única puerta lógica de entrada a `CTX-*`/`SRV-*` | Toda operación de negocio pasa por un solo componente de enrutamiento/autorización, aunque tenga perfiles central y local | **No está aceptado.** Concentrar el control evita accesos laterales, pero obliga a demostrar HA e independencia del perfil local frente a la nube | instancias sin estado redundantes; perfil local restringido en `EDGE-RUN`; políticas versionadas y reconciliación (C1/C3) | `SPOF-23` `GW-API`, puerta lógica común |
 | `INT-TOS` como único traductor hacia el TOS 2012 | Si falla, se pierde toda coexistencia nuevo↔legado mientras dure la falla | Duplicar la capa anticorrupción multiplicaría el riesgo de secuencia/idempotencia sin necesidad, dado el volumen (≈0,27 TPS peak) | Redundancia activo-pasivo y cola persistente con reintento (C1/C3); alcance de mitigación en `ADR-004` | `SPOF-07` `INT-TOS`, capa anticorrupción |
 | `SRV-IAM` como única autoridad de identidad | Sin `SRV-IAM` no hay autenticación nueva ni revocación | Se acepta porque la **capacidad local de autenticación es parte de `EDGE-RUN`** y no una mitigación opcional (§3.1, criticidad `Crítica`): durante el corte se valida contra las credenciales vigentes cacheadas. Lo que se degrada es el alta de identidades nuevas, y `RT-02.09` exige degradación informada, no cero autoridad | Alta disponibilidad e IAM redundante (D1); la baja efectiva de `RT-12.10` se cuenta **desde la desvinculación** y debe poder ejecutarse localmente durante el corte | `SPOF-10` `SRV-IAM`, identidad |
 | `EDGE-RUN` como único mecanismo de continuidad de 72 h | Si el runtime local falla simultáneamente con la pérdida del enlace exterior, no existe una tercera capa de resguardo | El caso no exige ni financia un segundo sitio local; se acepta con redundancia interna de `EDGE-RUN` (no de un tercer sistema) | Componentes internos redundantes y almacenamiento tolerante a disco (C1/C2); condición de aceptación en `ADR-002` | `SPOF-01` `EDGE-RUN` y su almacenamiento |
-| `CTX-PLAN` como único módulo que sistematiza el conocimiento del planificador | Concentra en un solo módulo lo que hoy depende de una sola persona (Nibaldo) | Es precisamente la mitigación al SPOF humano preexistente (Maestro §4.2); el riesgo remanente es de calidad del modelo capturado, no de disponibilidad | Corrección humana y aprendizaje continuo de excepciones (A1); validación antes de mes 12 | `SPOF-14` planificación dependiente de una persona |
+| `CTX-PLAN` como único módulo que sistematiza el conocimiento del planificador | Concentra en un solo módulo lo que hoy depende de una sola persona (Nibaldo) | Es la mitigación al SPOF humano preexistente (Maestro §4.2); el riesgo remanente es de calidad de las reglas capturadas, no de disponibilidad | corrección humana, captura de excepciones y versionado de reglas; validación antes de mes 12. Sin IA en Informe 1 | `SPOF-14` planificación dependiente de una persona |
 | `INT-HUB` como único bus de intercambio | Las 21 contrapartes y las 7 familias técnicas convergen en un solo punto de integración; si cae, se detiene todo intercambio externo | Un segundo bus duplicaría el gobierno de contratos y de versiones sin reducir el riesgo real, que es de disponibilidad de plataforma, no de diseño. Ninguna de las cinco funciones críticas depende de él durante el corte: acumula y entrega al reconectar | Servicio gestionado con colas durables, DLQ y reintento (C2/C3); `ADR-003` | `SPOF-08` `INT-HUB`, bus de integración |
 
 *Fuente: BTT RT-02.11; Maestro §19 regla 14 (no ocultar puntos únicos de falla).*
@@ -443,12 +461,12 @@ Este catálogo es la **salida temprana obligatoria** hacia el Frente 2 (dimensio
 | `CH-APP` | App móvil instalable | 1-Presentación | Cuatro perfiles; offline cifrado para perfiles internos | Alta |
 | `CH-CAB` | Interfaz de cabina/terreno | 1-Presentación | Indicaciones visuales y alertas de seguridad; uso con guantes | Alta |
 | `GW-EDGE` | Borde público | 2-Borde | Protección y terminación de tráfico expuesto | Alta |
-| `GW-API` | Gateway de servicios | 3-Gateway | Políticas, identidad, versionado y trazabilidad | Alta |
+| `GW-API` | Gateway de servicios | 3-Gateway | **Partición dual:** (a) entrada local restringida para las cinco funciones críticas; (b) catálogo, administración y exposición de servicios en nube | **Crítica** (a, perfil local) / **Alta** (b, perfil central) |
 | `CTX-OPS` | Núcleo operacional | 4-Negocio | Agregado contenedor, movimientos, posición y hechos operacionales | Crítica |
 | `CTX-GATE` | Gate y citas | 4-Negocio | Prevalidación, citas, cola virtual, entradas/salidas y excepciones | Crítica |
 | `CTX-YARD` | Patio y posición | 4-Negocio | Asignación, verificación cruzada, condiciones dinámicas y remociones | Crítica |
 | `CTX-REEFER` | Reefer y telemetría | 4-Negocio | Medición, alarmas ≤5 min, series y estado de tomas/tableros | Crítica |
-| `CTX-PLAN` | Planificación | 4-Negocio | Estiba/patio, propuesta, corrección y aprendizaje de reglas | Alta |
+| `CTX-PLAN` | Planificación | 4-Negocio | Estiba/patio, propuesta, corrección y captura/versionado de reglas explícitas; sin IA en Informe 1 | Alta |
 | `CTX-VESSEL` | Nave y mensajería | 4-Negocio | **Partición dual:** (a) subconjunto operacional de muelle local — órdenes STS, movimientos, ventana activa y productividad; (b) mensajería externa EDIFACT y anuncios de recaladas futuras | **Crítica** (a, muelle local) / **Alta** (b, mensajería en nube) |
 | `CTX-BILL` | Evidencia facturable | 4-Negocio | Hecho, evidencia, objeción y entrega al ERP | Crítica |
 | `CTX-INSP` | Inspecciones | 4-Negocio | Agenda, remoción anticipada, acta y cierre | Alta |
@@ -489,7 +507,7 @@ Este catálogo es la **salida temprana obligatoria** hacia el Frente 2 (dimensio
 | `CTX-GATE` | Citas, validaciones, entradas/salidas, tiempos | CTX-OPS, SRV-IAM, EXT-OCR vía INT-HUB | Sí — incluido en EDGE-RUN | CTX-GATE |
 | `CTX-YARD` | Posiciones, asignaciones, condiciones, remociones | CTX-OPS, CTX-PLAN, telemetría equipos | Sí — incluido en EDGE-RUN | CTX-YARD |
 | `CTX-REEFER` | Temperaturas, alarmas, estado de tomas/tableros | CTX-OPS, SRV-NOTIF, DATA-TS | Sí — incluido en EDGE-RUN | CTX-REEFER |
-| `CTX-PLAN` | Reglas, propuestas, correcciones, motivos | CTX-OPS, CTX-YARD, CTX-VESSEL | Parcial — propuesta ejecutable localmente | CTX-PLAN |
+| `CTX-PLAN` | Reglas, propuestas, correcciones, motivos | CTX-OPS, CTX-YARD, CTX-VESSEL | Parcial — consulta del último plan vigente cacheado; no genera ni recalcula un plan nuevo. Respaldo: plan impreso + radio | CTX-PLAN |
 | `CTX-VESSEL` | Recalada activa, órdenes de carga/descarga, ventana activa, productividad | CTX-OPS, INT-HUB (EDIFACT), CTX-PLAN | Sí — el subconjunto de muelle opera 72 h en `EDGE-RUN`; la mensajería externa EDIFACT se encola en buffer local persistente **sin detener la atención física de la nave** | CTX-VESSEL |
 | `CTX-BILL` | Hechos, evidencias, objeciones, estado ERP | CTX-OPS, SRV-EVID, EXT-ERP vía INT-HUB | Sí — registro de hechos incluido en EDGE-RUN | CTX-BILL |
 | `CTX-INSP` | Agendas, remociones anticipadas, actas | CTX-OPS, CTX-YARD, SRV-EVID, EXT-AUT vía INT-HUB | Parcial — acta firmable localmente | CTX-INSP |
@@ -499,7 +517,7 @@ Este catálogo es la **salida temprana obligatoria** hacia el Frente 2 (dimensio
 | `SRV-EVID` | Firmas, sellos, hashes, cadena de custodia | CTX-BILL, CTX-INSP | Parcial — firma local con sincronización posterior | SRV-EVID |
 | `INT-HUB` | Contratos, colas, estado de entregas, DLQ | Todos los CTX-*, todos los EXT-* | Parcial — buffer local en EDGE-RUN | INT-HUB |
 | `INT-TOS` | Traducciones, secuencias, estado de coexistencia | CTX-OPS, EXT-TOS12 | Sí — coexistencia local incluida en EDGE-RUN | INT-TOS |
-| `EDGE-RUN` | Réplica de datos críticos, buffer de eventos | CTX-OPS, CTX-GATE, CTX-YARD, CTX-REEFER, CTX-BILL, CTX-VESSEL, INT-TOS, DATA-CORE | Es el componente de continuidad | EDGE-RUN |
+| `EDGE-RUN` | Ruta local autorizada, datos críticos y buffer | `GW-API` local; CTX críticos; `INT-TOS`; `SRV-IAM`; `DATA-CORE`; apoyos parciales de `DATA-TS/DOC`, `SRV-NOTIF/EVID`, `INT-HUB` y observabilidad | Es el componente de continuidad; inventario completo en §2.2 | EDGE-RUN |
 | `DATA-CORE` | Estado transaccional completo | CTX-OPS, CTX-GATE, CTX-YARD y otros | Sí — réplica local en EDGE-RUN | Según bounded context |
 | `DATA-TS` | Series de telemetría y consumo | CTX-REEFER, CTX-EMIS | Parcial — la serie reefer (asociada a la función crítica de `CTX-REEFER`) se almacena y evalúa localmente para sostener alarma ≤5 min; la serie de consumo/emisiones (`CTX-EMIS`, no crítica) tolera demora | CTX-REEFER / CTX-EMIS |
 | `DATA-DOC` | Imágenes, actas, firmas, expedientes | CTX-BILL, CTX-INSP, SRV-EVID | Parcial — almacenamiento local temporal | Según contexto origen |
@@ -715,7 +733,7 @@ Se evalúan tres estilos arquitectónicos contra los criterios que impone el Cas
 | **Telemetría reefer (35–43 ev/s local)** | Problema: la ingestión de series temporales compite con la transaccional | Favorable: servicio de ingestión independiente | Favorable: módulo de reefer con almacén de series separado |
 | **Costo de infraestructura** | Bajo | Alto: múltiples instancias, bases de datos por servicio, malla de red | Moderado: concentra recursos sin fragmentar |
 | **Evolución y reemplazo del TOS** | Riesgo alto: cambios profundos al monolito | Favorable: servicio de TOS reemplazable | Favorable: módulo anticorrupción con contrato estable |
-| **Despliegue sin interrupción** | Difícil: despliegue completo | Nativo: despliegue por servicio | Alcanzable: despliegue por módulo con estrategia azul-verde |
+| **Despliegue sin interrupción** | Difícil: despliegue completo | Nativo: despliegue por servicio | Alcanzable: despliegue por módulo, progresivo por zona y con canario |
 | **Pruebas a 1,5× peak** | Simple: un entorno | Compleja: orquestación de todos los servicios | Moderada: entorno representativo |
 
 #### 6.2 ADR-001 — Estilo arquitectónico de la plataforma
@@ -756,7 +774,7 @@ Se adopta un **Núcleo Modular Híbrido con Runtime de Borde** como estilo arqui
 
 **Consecuencias negativas (mitigaciones):**
 
-- Menor independencia de despliegue entre módulos de negocio → se mitiga con estrategia azul-verde y pruebas integradas en preproducción equivalente.
+- Menor independencia de despliegue entre módulos de negocio → se mitiga con despliegue progresivo por zona, canario, reversión automatizada y pruebas integradas en preproducción equivalente, conforme a C3.
 - Acoplamiento temporal entre módulos dentro del mismo artefacto → se mitiga con contratos versionados y comunicación por eventos asincrónicos a través de `INT-HUB`.
 - El runtime local requiere mecanismo de sincronización determinista → se mitiga con reconciliación automatizada, detección temprana de divergencias y ventanas de investigación (48 h posición, 24 h gate/hechos).
 
@@ -805,4 +823,3 @@ Esta lista es la cuarta salida temprana exigida por [`00_INDICE_DEL_FRENTE.md`](
 ## Trazabilidad
 
 Ver [`trazabilidad/TRZ_A1.md`](trazabilidad/TRZ_A1.md).
-

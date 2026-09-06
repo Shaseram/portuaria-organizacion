@@ -4,7 +4,7 @@
 
 ### Objetivo y destino
 
-Ubicar cada componente desplegable en nube, on-premise o borde y justificarlo conforme al Artículo 16. Alimenta las secciones 4.2.1 y 4.2.2 del consolidado.
+Ubicar cada componente desplegable en nube, on-premise o borde y justificarlo conforme al Artículo 16. Alimenta la sección 4.2.1 del consolidado.
 
 ### Cumplimientos asignados
 
@@ -109,7 +109,7 @@ La distinción importa por el CP, Cap. 11: no se construye infraestructura civil
 
 ### 3. Diagramas físicos
 
-> **Pendiente por decisión de equipo.** Los diagramas del Subdocumento 4 se producen al final, en un solo pase y con notación común a los tres frentes, para que las cinco vistas de `RT-02.03` sean coherentes entre sí. Este entregable deja el material que el diagrama debe representar: los 21 nodos `PHY-*` de §4, la matriz lógico→físico de §5, las zonas y fronteras del §2 y los puntos únicos de falla de §8.
+> **Pendiente por decisión de equipo.** Los diagramas del Subdocumento 4 se producen al final, en un solo pase y con notación común a los tres frentes, para que las cinco vistas de `RT-02.03` sean coherentes entre sí. Este entregable deja el material que el diagrama debe representar: los **20 nodos `PHY-*`** de §4 más `LOC-INSP-01` como ubicación funcional sin infraestructura propia, la matriz lógico→físico de §5, las zonas y fronteras del §2 y los puntos únicos de falla de §8.
 
 Cuando se dibuje, la vista física de C1 debe mostrar, conforme a las reglas de este contrato: el límite de la oferta; zona pública, subred privada de aplicación, subred privada de datos, zona operacional, zona administrativa y zona de protección; región primaria y secundaria; sala técnica, borde por zona del recinto y sistemas conservados; el enlace redundante y su comportamiento ante corte; y la correspondencia con el catálogo lógico por ID.
 
@@ -117,10 +117,12 @@ Cuando se dibuje, la vista física de C1 debe mostrar, conforme a las reglas de 
 
 El Art. 16.2 de las BA exige justificar **componente por componente** con seis criterios: latencia, criticidad operacional, volumen de datos, restricción regulatoria o de seguridad, disponibilidad de conectividad y acoplamiento físico, y costo total de propiedad. Una asignación no justificada *«será evaluada como observación grave»*. El costo se expresa cualitativamente: el Informe 1 no lleva cifras económicas.
 
+**Ubicación cloud de baseline:** todos los nodos `PHY-CLD-01..09` se despliegan en AWS São Paulo `sa-east-1`; los que requieren alta disponibilidad usan al menos dos AZ. `PHY-CLD-10` se despliega en AWS Norte de Virginia `us-east-1` como sitio secundario activo-pasivo. Esto fija el lugar sin presentar como ejecutadas las verificaciones de `ADR-011`.
+
 | ID físico | Componente lógico | Ubicación | Latencia | Continuidad ante corte | Volumen | Regulación / seguridad | Acoplamiento físico | TCO cualitativo | Justificación final |
 |---|---|---|---|---|---|---|---|---|---|
-| `PHY-CLD-01` | `GW-EDGE` | nube, zona pública | tolera >100 ms | el portal puede esperar; el terminal no depende de él | moderado | única superficie expuesta; CDN/WAF/anti-DDoS | nulo | elástico, gestionado | La exposición pública se concentra en un solo punto administrado. Ponerlo on-premise obligaría a exponer la red del terminal a Internet, contra `RT-03.04` y la restricción 6. |
-| `PHY-CLD-02` | `GW-API` | nube, subred privada | >100 ms | puede esperar | moderado | punto de identidad, cuotas y trazabilidad | nulo | gestionado | Políticas, versionado y catálogo de servicios centralizados. Los consumidores externos son 21 contrapartes; ninguna requiere latencia determinista. |
+| `PHY-CLD-01` | `GW-EDGE` | AWS São Paulo `sa-east-1`, zona pública multi-AZ | tolera >100 ms | el portal puede esperar; el terminal no depende de él | moderado | única superficie expuesta; CDN/WAF/anti-DDoS | nulo | elástico, gestionado | La exposición pública se concentra en un solo punto administrado. Ponerlo on-premise obligaría a exponer la red del terminal a Internet, contra `RT-03.04` y la restricción 6. |
+| `PHY-CLD-02` | `GW-API` —perfil central— | nube, subred privada | >100 ms | el perfil central puede esperar; el local no | moderado | punto de identidad, cuotas y trazabilidad | nulo | gestionado | Aloja catálogo completo, administración y publicación de servicios. El mismo componente tiene un perfil local restringido en `PHY-OPS-01` para que la ruta autorizada de las cinco funciones críticas no dependa de nube. |
 | `PHY-CLD-03` | `CTX-PLAN`, `CTX-VESSEL`, `CTX-INSP`, `CTX-EMIS`, `SRV-IAM`, `SRV-NOTIF`, `SRV-EVID` | nube, multi-AZ | 100 ms a 1 s | degradación aceptable; ver §6 | moderado | datos comerciales y personales cifrados | nulo | elasticidad estacional | Son procesos de planificación, coordinación y notificación con contraparte externa. Ninguno tiene un umbral inferior a 1 s en el CP, Cap. 15. |
 | `PHY-CLD-04` | `INT-HUB` | nube, subred privada | asíncrono | cola durable; el borde acumula | alto en mensajería | contratos y versionado por contraparte | nulo | gestionado | El intercambio con navieras, autoridades, concedente y ferrocarril es asíncrono por naturaleza (EDIFACT, archivo, API). |
 | `PHY-CLD-05` | `DATA-CORE` consolidado | nube, multi-AZ | consultas >100 ms | la fuente de verdad operacional durante el corte es local | ≈20–24 GB/año | cifrado en reposo con KMS | nulo | gestionado, multi-AZ | Es el consolidado y el sistema de registro fuera del corte. Durante los 72 h la autoridad pasa a `PHY-OPS-01`; ver §6. |
@@ -128,9 +130,9 @@ El Art. 16.2 de las BA exige justificar **componente por componente** con seis c
 | `PHY-CLD-07` | `DATA-DOC` | nube, objetos | tolera latencia | el borde retiene lo del corte | ≈1,4–1,6 TB/año de imágenes OCR | retención 12 meses con eliminación controlada | nulo | objetos con ciclo de vida | Dominan las imágenes OCR. Retenerlas localmente obligaría a dimensionar la sala para 1,6 TB/año sin necesidad operacional. |
 | `PHY-CLD-08` | `DATA-AN` | nube | analítico | no crítico | derivado | indicadores del concedente | nulo | gestionado | El `RT-05.29` del caso exige consolidar los indicadores del concedente ≤1 h tras el cierre de turno; eso no compite con la operación. |
 | `PHY-CLD-09` | observabilidad y SIEM | nube | asíncrono | el borde almacena y reenvía | logs 12 meses en línea + 24 en archivo | log central inalterable | nulo | gestionado | `RT-03.16` exige que el monitoreo on-premise se integre a **la misma** plataforma que la nube, sin puntos ciegos. |
-| `PHY-CLD-10` | réplica de `DATA-CORE`, `DATA-DOC`, `DATA-TS` | nube, región secundaria | n/a | es el destino de la conmutación | réplica | BTT Cap. 7 | nulo | capacidad reducida en reposo | No hay segundo recinto del CLIENTE (CP, Cap. 3) y un secundario en el terminal compartiría las amenazas del principal (`RT-07.02`). |
-| `PHY-OPS-01` | `EDGE-RUN` + `CTX-OPS`, `CTX-GATE`, `CTX-YARD`, `CTX-REEFER`, `CTX-BILL`, `CTX-VESSEL` *(subconjunto de muelle)* | on-premise, sala | **≤1 s determinista** | **debe continuar 72 h** | alto, generado localmente | zona operacional segregada, IEC 62443 | directo, vía borde | inversión local con operación acotada | `RT-09.01` del caso exige confirmar un movimiento en ≤1 s y ver la posición en ≤30 s; `RT-03.10` exige 72 h. Ninguna de las dos cosas se resuelve con un enlace de por medio. |
-| `PHY-OPS-02` | almacenamiento local | on-premise, sala | ≤1 s | buffer del corte, ≈13 GB + holgura | alto | cifrado en reposo | directo | RAID con tolerancia declarada | `RT-03.14` exige tolerar la falla de al menos un disco y declarar el nivel RAID con su justificación. Dimensionamiento en C4. |
+| `PHY-CLD-10` | réplica de `DATA-CORE`, `DATA-DOC`, `DATA-TS` | AWS Norte de Virginia `us-east-1`, región secundaria | n/a | es el destino de la conmutación | réplica | BTT Cap. 7 | nulo | capacidad reducida en reposo | No hay segundo recinto del CLIENTE (CP, Cap. 3) y un secundario en el terminal compartiría las amenazas del principal (`RT-07.02`). La separación regional reduce amenazas físicas comunes, aunque conserva el riesgo residual de proveedor/plano de control (`SPOF-22`). |
+| `PHY-OPS-01` | `EDGE-RUN` + perfil local restringido de `GW-API` + núcleo funcional crítico | on-premise, sala | **≤1 s determinista** | **debe continuar 72 h** | alto, generado localmente | zona operacional segregada, IEC 62443 | directo, vía gateway local | inversión local con operación acotada | Aloja la ruta `CH-APP/CH-CAB → GW-API local → CTX crítico → DATA/evidencia local`, además de `SRV-IAM`, cola y colector parciales. `RT-09.01` exige confirmar un movimiento en ≤1 s y `RT-03.10` exige 72 h; ninguna condición puede depender de la nube. Inventario canónico: A1 §2.2. |
+| `PHY-OPS-02` | almacenamiento local | on-premise, sala | ≤1 s | buffer gobernante **21,9 GB** a peak; capacidad total **≈183 GB útiles** con ventana caliente, réplica, sistema/logs/trabajo y 30 % de holgura | alto | cifrado en reposo | directo | RAID con tolerancia declarada | `RT-03.14` exige tolerar la falla de al menos un disco y declarar el nivel RAID con su justificación. El buffer no se confunde con la capacidad total; cálculo vigente en C4 §4/§6.1. |
 | `PHY-OPS-03` | `INT-TOS` | on-premise, sala | ≤1 s | debe seguir durante el corte | moderado | zona operacional | directo con `EXT-TOS12` | acotado a la coexistencia | El TOS 2012 está en el terminal. Traducir y conciliar a través del enlace agregaría un punto de falla a una integración que ya es la más frágil del proyecto. |
 | `PHY-OPS-04` | núcleo de red operacional | on-premise, sala | determinista | **sostiene el corte** | todo el tráfico operacional | segregación operacional / administrativa / protección | directo | equipamiento en HA | La Declaración Mandatoria exige segregar; hoy operación, terminales, cámaras y oficina comparten conmutación (CP, Cap. 6). `RT-08.03` exige HA sin punto único. |
 | `PHY-OPS-05` | custodia de medios | on-premise, recinto separado | n/a | soporta el «fuera de sitio» del 3-2-1-1-0 | medios físicos | `RT-06.26` a `RT-06.28` | ninguno | recinto con condiciones ambientales | Exigencia explícita del BTT para el sitio primario, con inventario, rotación y verificación de legibilidad. |
@@ -139,7 +141,7 @@ El Art. 16.2 de las BA exige justificar **componente por componente** con seis c
 | `PHY-EDG-02` | borde de patio | borde, 18 ha | ≤1 s en confirmación | **terminal autónomo hasta 8 h fuera de cobertura** | telemetría de posición ≈37–44 ev/s | zona operacional | directo con equipos | según site survey | Las sombras de la red se mueven cada hora con las pilas (CP, Cap. 6). El diseño no promete cobertura perfecta: hace autónomo al terminal. |
 | `PHY-EDG-03` | borde de patio refrigerado | borde, 26 tableros | **alarma ≤5 min** | **alarma local durante el corte** | ≈35,8–43,3 ev/s con muestreo de 1 min | continuidad de cadena de frío | directo con tomas y tableros | concentrador por tablero | El evento del 18 de febrero fue la falla de un tablero completo en turno de madrugada. La alarma no puede depender de un enlace hacia fuera del terminal. |
 | `PHY-EDG-04` | borde de muelle | borde, 3 sitios | lectura periódica | opera sin enlace | bajo | **solo lectura, autorización del fabricante** | acoplamiento restringido | mínimo | La restricción 3 y la exclusión del CP, Cap. 11 prohíben intervenir el control de grúas. La cabina recibe una pantalla, no un terminal de captura: el operador no puede manipular un dispositivo mientras opera. |
-| `PHY-EDG-05` | borde de zona de inspección | borde, **sin gabinete propio** | ≤1 s | continúa | actas e imágenes | acta firmada como evidencia | dispositivo móvil sobre la red del patio | mínimo | La inspección debe estar disponible a la hora acordada y el acta se firma en terreno. *Corregido en C2 §1: el `CP, Cap. 15, RT-06.01` nombra gabinetes de borde solo en muelle, patio, patio refrigerado y gate; la inspección se sirve por la red operacional del patio y no genera recinto ni fila de T-11 propios.* |
+| `LOC-INSP-01` *(ubicación funcional; no nodo)* | zona de inspección | dispositivo móvil sobre `PHY-EDG-02` y la red del patio; **sin gabinete ni cómputo propios** | ≤1 s | continúa mientras la red del patio esté operativa | actas e imágenes | acta firmada como evidencia | dispositivo móvil de terreno | incluido en patio | La inspección debe estar disponible a la hora acordada y el acta se firma en terreno. El `CP, Cap. 15, RT-06.01` nombra gabinetes solo en muelle, patio, patio refrigerado y gate; por eso esta ubicación no se cuenta como quinto nodo `PHY-EDG-*` ni genera una fila T-11 propia. |
 
 **Componentes lógicos sin nodo propio.** `CH-PORTAL` y `CH-APP` se ejecutan en el dispositivo del usuario y se sirven desde `PHY-CLD-01`; `CH-CAB` se ejecuta en las pantallas de cabina y de terreno alimentadas por `PHY-EDG-04` en muelle, `PHY-EDG-02` en el patio y `PHY-EDG-01` en las casetas de gate *(corregido tras el cruce de D2 B6.3; ver §5.1)*. No generan fila de emplazamiento propia y **no** generan fila de T-11 por sí mismos, sin perjuicio de las licencias que declare C2.
 
@@ -151,7 +153,7 @@ El Art. 16.2 de las BA exige justificar **componente por componente** con seis c
 | `CH-APP` | dispositivo + `PHY-CLD-01` | `PHY-OPS-01` para perfiles internos | alta | sí, en modo interno cifrado |
 | `CH-CAB` | `PHY-EDG-04` muelle + `PHY-EDG-02` patio + `PHY-EDG-01` gate | — | alta | sí |
 | `GW-EDGE` | `PHY-CLD-01` | — | alta | no; degradación declarada en A3 §7 |
-| `GW-API` | `PHY-CLD-02` | — | alta | no; el catálogo central espera al enlace *(A3 §7)* |
+| `GW-API` | `PHY-CLD-02` *(perfil central)* | `PHY-OPS-01` *(perfil local restringido)* | **crítica** (entrada local) / alta (catálogo central) | **sí**, solo para las operaciones autorizadas de las cinco funciones críticas; catálogo y administración centrales esperan al enlace |
 | `CTX-OPS` | `PHY-OPS-01` | `PHY-CLD-03` | **crítica** | **sí** |
 | `CTX-GATE` | `PHY-OPS-01` + `PHY-EDG-01` | `PHY-CLD-03` | **crítica** | **sí** |
 | `CTX-YARD` | `PHY-OPS-01` + `PHY-EDG-02` | `PHY-CLD-03` | **crítica** | **sí** |
@@ -159,7 +161,7 @@ El Art. 16.2 de las BA exige justificar **componente por componente** con seis c
 | `CTX-BILL` | `PHY-OPS-01` | `PHY-CLD-03` | **crítica** | **sí**, captura de hecho y evidencia |
 | `CTX-PLAN` | `PHY-CLD-03` | `PHY-OPS-01` en solo lectura | alta | plan vigente sí; replanificación no |
 | `CTX-VESSEL` | `PHY-OPS-01` *(subconjunto muelle)* | `PHY-CLD-03` *(mensajería)* | **crítica** (muelle) / alta (mensajería) | **sí**: órdenes STS, movimientos, ventana activa y productividad, localmente. La mensajería EDIFACT y los anuncios de naves futuras quedan en cola en `INT-HUB` |
-| `CTX-INSP` | `PHY-CLD-03` + `PHY-EDG-05` | — | alta | agenda vigente y acta sí; programar nuevas inspecciones no *(A3 §7)* |
+| `CTX-INSP` | `PHY-CLD-03` + dispositivo móvil en `LOC-INSP-01` sobre `PHY-EDG-02` | — | alta | agenda vigente y acta sí; programar nuevas inspecciones no *(A3 §7)* |
 | `CTX-EMIS` | `PHY-CLD-03` | `PHY-EDG-02` captura | alta | captura sí; cálculo ISO 14083 y reporte no *(A3 §7)* |
 | `SRV-IAM` | `PHY-OPS-01` *(identidades vigentes)* | `PHY-CLD-03` *(directorio y altas)* | **crítica** (autenticación vigente) / alta (altas y directorio) | **sí**: se autentica y autoriza contra credenciales vigentes cacheadas. El alta de identidad nueva y la sincronización con el directorio esperan al enlace *(A3 §7)* |
 | `SRV-NOTIF` | `PHY-CLD-03` | `PHY-OPS-01` canal local | alta | alarma de frío sí, por canal local |
@@ -172,7 +174,7 @@ El Art. 16.2 de las BA exige justificar **componente por componente** con seis c
 | `DATA-DOC` | `PHY-CLD-07` | `PHY-OPS-02` buffer | alta | retiene y sincroniza |
 | `DATA-AN` | `PHY-CLD-08` | — | media | no |
 
-Las **diez** filas marcadas como críticas —`CTX-OPS`, `CTX-GATE`, `CTX-YARD`, `CTX-REEFER`, `CTX-BILL`, `CTX-VESSEL`, `SRV-IAM`, `INT-TOS`, `EDGE-RUN` y `DATA-CORE`— son exactamente las que A1 §3.1 incluye en `EDGE-RUN`, y son la traducción física de las cinco funciones del Maestro §9.1. `SRV-IAM` aparece con caché local porque una autenticación que dependa de la nube convertiría el corte de enlace en un corte de operación.
+Las **once** filas con una función crítica —`GW-API`, `CTX-OPS`, `CTX-GATE`, `CTX-YARD`, `CTX-REEFER`, `CTX-BILL`, `CTX-VESSEL`, `SRV-IAM`, `INT-TOS`, `EDGE-RUN` y `DATA-CORE`— forman el núcleo de la ruta local. A ellas se agregan los apoyos parciales inventariados en A1 §2.2 (`DATA-TS/DOC`, `SRV-NOTIF/EVID`, cola `INT-HUB`, logs, tiempo, nombres, certificados y claves). Que una capacidad sea parcial no convierte todo su servicio central en crítico ni local.
 
 #### 5.1 De dónde sale la criticidad, y las siete diferencias que detectó D2
 
@@ -186,7 +188,7 @@ El cruce `B6.3` de D2 comparó las dos tablas componente por componente y encont
 |---|---|---|---|---|
 | `CTX-VESSEL` | **Crítica**; A1 la precisa el 06-09 como **dual**: `Crítica` en el subconjunto de muelle, `Alta` en la mensajería | alta, solo en `PHY-CLD-03` | **se adopta la partición dual de A1 y se corrige el nodo** | ver el párrafo siguiente: era una contradicción, no un matiz |
 | `GW-EDGE` | Alta | media | se adopta A1 | el borde público no vive el corte, pero su caída **sí** deja al terminal sin canal externo; «media» decía que no importa |
-| `GW-API` | Alta | media | se adopta A1 | ídem: es el punto de identidad, cuotas y trazabilidad de 21 contrapartes |
+| `GW-API` | Alta → **Crítica/Alta dual** | media | se adopta la partición dual de A1 | el perfil central puede degradarse, pero la entrada local restringida es obligatoria para ejecutar las cinco cadenas sin acceso directo a `CTX-*` |
 | `CTX-INSP` | Alta | media | se adopta A1 | el acta de inspección es evidencia con valor ante autoridad; su pérdida no es indolora |
 | `CTX-EMIS` | Alta | media | se adopta A1 | el cálculo ISO 14083 es obligación de reporte, no un indicador interno |
 | `DATA-DOC` | Alta | media | se adopta A1 | contiene imágenes OCR, actas y firmas; es el respaldo probatorio del gate y de la inspección |
@@ -238,7 +240,7 @@ El traspaso debe ser explícito y auditado. La sincronización objetivo es ≤90
 | `Z-EDGE` borde expuesto | `PHY-CLD-01` | única superficie pública; el origen no se publica (`RT-03.04`) |
 | `Z-SVC` servicios privados en nube | `PHY-CLD-02`, `PHY-CLD-03`, `PHY-CLD-04` | subred privada de aplicación, sin alcance desde Internet |
 | `Z-DATA` almacenes protegidos | `PHY-CLD-05` a `PHY-CLD-08` en nube; `PHY-OPS-02` en el terminal | subred privada de datos; acceso solo por identidad de servicio. **Es un ámbito de política repartido entre nube y sala**, no una base única |
-| `Z-LOCAL` servicios operacionales locales | `PHY-OPS-01` y `PHY-OPS-03` | sostiene las 72 h sin enlace; no depende del borde en nube |
+| `Z-LOCAL` servicios operacionales locales | `PHY-OPS-01` y `PHY-OPS-03` | sostiene las 72 h mediante el perfil local restringido de `GW-API`; no depende del borde ni del gateway central en nube |
 | `Z-FIELD` equipos de terreno | `PHY-EDG-01` a `PHY-EDG-04` y los terminales de equipo | segmentación por tipo de dispositivo (`RT-03.23`); C3 la subdivide por criticidad y por fabricante |
 | `Z-ADM` red administrativa | `PHY-OPS-06`, espacio de operación del personal | sin ruta general hacia patio, protección ni datos |
 | `Z-PROT` protección | `EXT-VMS` y `EXT-ACC` del terminal, **fuera del límite de la oferta** | conducto mínimo aprobado; sin portal de video ni tránsito general |
@@ -257,7 +259,7 @@ El traspaso debe ser explícito y auditado. La sincronización objetivo es ≤90
 | Grupo `SEC-PHYS` | Nodo físico que lo aloja | Nota de emplazamiento |
 |---|---|---|
 | `SEC-EDGE-01/02` borde, WAF, DDoS, TLS | `PHY-CLD-01` | único borde público; no se replica en el terminal |
-| `SEC-API-01` gateway | `PHY-CLD-02` | detrás del borde |
+| `SEC-API-01` gateway | `PHY-CLD-02` perfil central + `PHY-OPS-01` perfil local restringido | detrás del borde en operación normal; durante el corte el perfil local conserva validación, autorización, ruteo crítico y trazabilidad sin exposición pública |
 | `SEC-NET-01 / SEC-EXP-01` segmentación e inventario de exposición | `PHY-OPS-04` en el terminal y controles de plataforma en nube | el núcleo de red operacional es el punto de aplicación local |
 | `SEC-IAM-01 / SEC-ADM-01 / SEC-PROD-01` identidad, PAM, terreno | `PHY-CLD-03` con **capacidad local en `PHY-OPS-01`** | la caché local es la que impide que un corte de enlace se vuelva un corte de operación (§5) |
 | `SEC-SYNC-01` conducto nube–local | enlace `PHY-OPS-04` ↔ nube | su dimensionamiento es el de C4 §5.1: lo fija la reposición, no el régimen |
@@ -291,11 +293,11 @@ La Decisión N° 20 de Célula 2 dejó el destino de la sala como ADR con tres a
 
 **Observaciones para quien redacte el ADR.** Primero, `RT-06.32` puede resolver la comparación antes que cualquier criterio de costo: si el edificio administrativo no admite dos ingresos físicos separados de comunicaciones, la alternativa A no cumple una obligación del BTT y queda descartada por norma, no por opinión. Ese dato **no está en el caso** y debe levantarse; queda registrado como `F2-ESC-008`. Segundo, la alternativa C no puede interpretarse como «poner lo mínimo en el terminal»: el piso de lo local está fijado por las cinco funciones críticas y por los umbrales de ≤1 s y ≤5 min, de modo que C se distingue de B por el tamaño del recinto, no por la existencia de cómputo local. Tercero, ninguna alternativa puede presumir que mover la sala elimina el ambiente marino.
 
-**Lo que aporta la revisión de ADR de D2 §B5.** El Frente 3 amarró `ADR-005` a puntos de falla y amenazas concretos, y fijó su consecuencia negativa ineludible: *«ninguna alternativa puede eliminar la autonomía de 72 h ni presumir instalación fuera del ambiente marino»* — coincide con la regla negativa 11 del Maestro y con lo dicho arriba. Los anclajes son `SPOF-06` (sala técnica, energía y ambiente) y `SPOF-01` (`EDGE-RUN` y su almacenamiento) de su registro, más las amenazas `THR-052` y `THR-054`, y el disparador de revisión es `ESC-09`. El estado recomendado es `CANDIDATO`, con riesgo residual atado a `SPOF-06` en estado `ESCALADO`.
+**Corte histórico D2 B5.** El Frente 3 amarró `ADR-005` a `SPOF-06`, `SPOF-01`, `THR-052` y `THR-054`, y mantuvo entonces el estado `CANDIDATO`. MA-4 conserva esos riesgos y agrega una decisión condicional verificable; el historial no se interpreta como estado vigente.
 
 > **Ojo con el rango.** La fila de `ADR-005` en D2 §B5 dice «aplican íntegros `RT-06.01` a `RT-06.24`». Es el mismo error que el Maestro §10.3 y que el contrato original de C2: el BTT exige hasta **`RT-06.34`**. Es el tercer documento donde se propaga; ver `F2-ESC-004`.
 
-**Recomendación preliminar de este frente, no vinculante:** una variante acotada de C —recinto técnico nuevo y pequeño, dimensionado estrictamente a las cinco funciones críticas y a su buffer de 72 h, con el resto de la plataforma en nube y el secundario en la región secundaria— es la que mejor concilia el plazo del 14-dic-2027, el congelamiento estacional y un área TI de cinco personas. Se somete a `ADR-005` con las tres alternativas desarrolladas.
+**Decisión propuesta por MA-4:** rehabilitar la sala existente de **34 m²** como baseline del Informe 1, únicamente si el levantamiento acredita tres puertas excluyentes: uso/acceso independiente, espacio de operación separado y dos ingresos físicos de comunicaciones por puntos distintos. Si cualquiera falla, el fallback obligatorio es reemplazarla por un recinto técnico nuevo y compacto dentro del terminal, con la misma baseline de C4; la alternativa sin sala principal queda descartada por el caso. Esta regla permite diagramar una sola función `sala principal` y conservar las mismas filas T-11, sin fingir que la cabida o la conformidad actual ya fueron demostradas. `ADR-005` pasa a `PROPUESTO`, condicionado a `F2-ESC-004/008/009`, plano a escala e ingeniería de detalle.
 
 ### 8. Registro inicial de puntos únicos de falla
 
@@ -309,7 +311,7 @@ El Maestro, regla negativa 14, prohíbe ocultarlos. Los cinco primeros son condi
 | `F2-SPOF-04` | 26 tableros reefer sin instrumentación remota | CP, Cap. 6 y 7.2 | **corregido** | `PHY-EDG-03`, concentrador por tablero; alarma de tablero como evento propio |
 | `F2-SPOF-05` | generación de respaldo del patio refrigerado nunca verificada a carga total de temporada | CP, Cap. 6 | **queda abierto** | fuera del límite de oferta; se especifica la prueba y se escala al CLIENTE |
 | `F2-SPOF-06` | emplazamiento único: todo el terminal comparte sitio, acceso vial y amenazas | CP, Cap. 3 | **mitigado, no eliminado** | secundario en región secundaria de nube; `RT-07.02` con análisis de amenazas comunes |
-| `F2-SPOF-07` | sala técnica única en el terminal durante el corte de 72 h | diseño | **residual aceptado** | redundancia interna de equipos (`RT-03.14`, `RT-08.03/04`); un segundo recinto local no es viable ni útil frente a amenazas comunes |
+| `F2-SPOF-07` | sala técnica única en el terminal durante el corte de 72 h | diseño | **POR ACEPTAR** | redundancia interna de equipos (`RT-03.14`, `RT-08.03/04`); un segundo recinto local no se propone por compartir amenazas comunes, pero la aceptación exige autoridad, fundamento y evidencia |
 | `F2-SPOF-08` | `EXT-TOS12` como fuente de verdad durante la coexistencia | Decisión 1 | **acotado en el tiempo** | puerta de viabilidad en H2/mes 4; A3 |
 | `F2-SPOF-09` | proveedor de nube único | Art. 16 | **residual declarado** | `RT-03.07`: estrategia de reversibilidad y portabilidad por componente; C2 |
 | `F2-SPOF-10` | red inalámbrica de patio con sombras móviles | CP, Cap. 6 | **mitigado por diseño** | el terminal de patio es autónomo hasta 8 h fuera de cobertura; la red no se declara perfecta; site survey pendiente (`F2-ESC-001`) |
@@ -323,16 +325,16 @@ El `B4` de D2 publicó un **registro consolidado de 21 puntos únicos de falla**
 |---|---|---|
 | `F2-SPOF-01` | fibra de un solo proveedor | cubierto por `SPOF-02` enlace exterior |
 | `F2-SPOF-02` | radioenlace de respaldo sin prueba desde 2022 | cubierto por `SPOF-02`, pero **el matiz «sin conmutación real desde 2022» es dato del `CP, Cap. 6`** y conviene que su ficha lo recoja |
-| `F2-SPOF-03` | operación, administración y CCTV sobre la misma conmutación | **no está en D2.** Su `SPOF-18` trata el VMS y su conducto, que es otra cosa |
-| `F2-SPOF-04` | 26 tableros reefer sin instrumentación remota | **no está en D2** |
-| `F2-SPOF-05` | generación de respaldo del patio refrigerado nunca verificada a carga total | **no está en D2** |
+| `F2-SPOF-03` | operación, administración y CCTV sobre la misma conmutación | `SPOF-24`; condición preexistente mitigada por segregación, pendiente de prueba |
+| `F2-SPOF-04` | 26 tableros reefer sin instrumentación remota | `SPOF-25`; condición preexistente tratada con concentradores, pendiente de recepción/prueba |
+| `F2-SPOF-05` | generación de respaldo del patio refrigerado nunca verificada a carga total | `SPOF-26`; condición preexistente escalada al CLIENTE |
 | `F2-SPOF-06` | emplazamiento único: sitio, acceso vial y amenazas compartidas | parcialmente en `SPOF-06`, que es de la sala; el nuestro es del **recinto completo** |
 | `F2-SPOF-07` | sala técnica única durante el corte de 72 h | cubierto por `SPOF-06` |
 | `F2-SPOF-08` | `EXT-TOS12` como fuente de verdad durante la coexistencia | cubierto por `SPOF-17` |
-| `F2-SPOF-09` | proveedor de nube único | **no está en D2.** Su `SPOF-20` es el proveedor de SOC, distinto |
+| `F2-SPOF-09` | proveedor de nube único | cubierto por `SPOF-22`, que incluye proveedor, regiones y plano de control cloud |
 | `F2-SPOF-10` | red inalámbrica de patio con sombras móviles | cubierto por `SPOF-03` medio de radio del patio |
 
-**Cuatro puntos de falla de este entregable no están en el registro consolidado** —`F2-SPOF-03`, `04`, `05` y `09`—, y los cuatro son **condiciones preexistentes que el `CP, Cap. 6` describe explícitamente**, no riesgos de diseño. `RT-02.11` del BTT exige declarar los puntos únicos de falla que subsistan **y justificar por qué son aceptables**, y advierte que omitirlo cuando existen se evalúa como falta. Se traspasan a D2 en `F2-ESC-014`.
+**Conciliación vigente:** los diez `F2-SPOF-*` tienen ahora correspondencia sustantiva en D2. `F2-SPOF-03/04/05` se incorporan como `SPOF-24/25/26`; el proveedor cloud único se absorbe en `SPOF-22` y no se duplica. Son condiciones preexistentes del `CP, Cap. 6` o riesgos explícitos de la solución, y ninguna se considera aceptada solo por tener tratamiento. `F2-ESC-014` queda cerrado documentalmente; pruebas y autoridad de aceptación permanecen abiertas.
 
 **Y tres del registro de D2 que este entregable no tenía**, incorporados aquí por referencia:
 
@@ -355,18 +357,17 @@ El `B4` de D2 publicó un **registro consolidado de 21 puntos únicos de falla**
 ### 10. Definición de terminado — estado
 
 - [x] Todos los componentes desplegables tienen ubicación y justificación por los seis criterios.
-- [x] La solución es híbrida y multi-AZ, con región primaria y secundaria declaradas.
+- [x] La solución es híbrida y multi-AZ: AWS `sa-east-1` primaria y `us-east-1` secundaria, conforme a `ADR-011`; sus validaciones de aceptación siguen condicionadas.
 - [~] Se describen sala, borde, nube, DR, enlaces y sistemas conservados; **la vista gráfica queda pendiente** por la decisión de equipo de dibujar al final.
 - [x] Las 72 h no dependen de nube: la autoridad del dato pasa al núcleo local.
 - [x] No se presume que el ambiente marino desaparece.
 - [x] Físico, catálogo lógico y T-11 usan los mismos IDs.
-- [ ] `TRZ_C1.md` completo — en curso.
+- [x] `TRZ_C1.md` disponible; sus estados se sanean en MA-3 y la evidencia de pruebas sigue futura.
 - [x] Cruce con D1 `SEC-PHYS-v0.1` — §6.bis: nueve zonas mapeadas a nodos y las 17 capacidades emplazadas.
-- [ ] Revisión cruzada con A1 `v0.1` — Puerta 1.
+- [x] Revisión cruzada con A1 — incluida la ruta local `GW-API`/`EDGE-RUN` y el inventario canónico de continuidad.
 - [ ] Diagrama de la vista física — se produce en el pase final de diagramas del Subdocumento 4.
 
 
 ## Trazabilidad
 
 Ver [`trazabilidad/TRZ_C1.md`](trazabilidad/TRZ_C1.md).
-

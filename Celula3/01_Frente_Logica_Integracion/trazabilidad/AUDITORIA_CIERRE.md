@@ -1,5 +1,7 @@
 # Auditoría de cierre — Frente 1
 
+> **Plantilla inicial conservada como historial.** Sus casillas no representan el corte vigente MA-4. La auditoría semántica global, las trazas `TRZ_A*` y los registros MA-3/MA-4 de `Celula3/00_Gobierno/` gobiernan hasta ejecutar D3.
+
 | Control | A1 | A2 | A3 | Evidencia | Estado |
 |---|---|---|---|---|---|
 | contratos de entregable completos | ☐ | ☐ | ☐ | enlaces/secciones | PENDIENTE |
@@ -16,4 +18,3 @@
 **Resultado del frente:** `PENDIENTE`  
 **Brechas abiertas:** POR COMPLETAR  
 **Revisor:** POR ASIGNAR
-

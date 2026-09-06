@@ -589,7 +589,7 @@ El cumplimiento general de ventanas se mantiene separado: >90 %. No se inventa u
 | Histórico TOS | ≈480 GB | por confirmar | estimación gruesa; solicitar real |
 | Red patio sin video | ≈375–500 kbps | +15–20 % | alta incertidumbre; site survey |
 | Estaciones base | ≈6–8 | ubicación pendiente | no comprar/ubicar sin site survey |
-| Datos 72 h sin enlace | ≈13 GB | +15–20 % | imágenes dominan; revalidar a peak |
+| Datos 72 h sin enlace | **13,7 GB promedio / 21,9 GB peak estacional** | capacidad local total de referencia ≈183 GB útiles; arreglo de referencia ≈960 GB útiles | gobierna el peak; imágenes dominan; C4 §4/§6.1 |
 | Sincronización posterior | ≤90 min | ≤90 min | objetivo RNF |
 
 Estas cifras son insumos, no dimensionamiento final. El Frente 2 debe declarar método, supuestos, holgura y sensibilidad; no puede transformar aproximaciones en hechos del CLIENTE.
@@ -599,7 +599,7 @@ Estas cifras son insumos, no dimensionamiento final. El Frente 2 debe declarar m
 Fuente directa: [volumetría Célula 2](../../Celula2/plantilla_volumetria_caso_portuaria.md), filas 15–16 y «Factor estacional»; [RNF](../../Celula2/01_Requerimientos/RNF.md), `RNF-DES-09..12`.
 
 - Camiones: 2.600/1.450 ≈ **1,79×**; volumen refrigerado mensual enero–marzo frente al promedio anual: **2,48×**. Son factores por dimensión: C4 debe justificar su aplicación, evitar duplicar un peak ya incluido y distinguir volumen de carga de frecuencia de muestreo.
-- ≈13 GB / 90 min implican **≈19,3 Mbps de transferencia útil sostenida** (unidades decimales). Es una derivación bajo el volumen estimado, no capacidad de enlace contratada ni demostración E2E: deben añadirse tráfico concurrente, protocolo/cifrado, conciliación y holgura, y revalidarse las 72 h en temporada peak.
+- **21,9 GB peak / 90 min** implican ≈32,5 Mbps útiles sostenidos; con holgura, C4 adopta **≥35 Mbps disponibles** y dos caminos. Los antiguos ≈13 GB/19,3 Mbps describen solo el régimen promedio y no gobiernan el compromiso. Sigue siendo cálculo de diseño, no capacidad contratada ni prueba E2E.
 - `RNF-DES-09`: portal ≤2 s, navegación ≤1 s, búsqueda ≤3 s e informe ≤30 s, p95 bajo peak.
 - `RNF-DES-10`: API de consulta simple ≤500 ms y escritura ≤800 ms, p95 bajo peak.
 - `RNF-DES-11`: lotes ≥10.000 registros/min, archivo de 100 MB ≤60 s y arranque en frío ≤60 s.

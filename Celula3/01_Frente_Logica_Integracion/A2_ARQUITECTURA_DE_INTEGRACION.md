@@ -4,7 +4,7 @@
 
 ### Objetivo y destino
 
-Definir contratos, mensajería, resiliencia y gobierno para todas las contrapartes. Alimenta la sección 4.1.6 y referencias de continuidad del consolidado.
+Definir contratos, mensajería, resiliencia y gobierno para todas las contrapartes. Alimenta la sección 4.1.3 y las referencias de continuidad de 4.2.6 del consolidado.
 
 ### Cumplimientos asignados
 
@@ -98,7 +98,7 @@ Ejemplos directos de la traducción AS-IS → TO-BE (Anexo A, Caso 06):
 
 #### 1.2 Principios de gobierno de contratos
 
-1. **Catálogo único y versionado**: todo contrato de interfaz se documenta en OpenAPI 3.1 (síncrono) o AsyncAPI 2.6+ (eventos), generado desde el código y mantenido automáticamente (BTT RT-05.16).
+1. **Catálogo único, versionado y `contract-first`**: la especificación OpenAPI 3.1 (síncrono) o AsyncAPI 2.6+ (eventos) es la fuente del contrato. Stubs, validadores, documentación y pruebas se generan o se verifican automáticamente contra ella; el código no puede cambiar unilateralmente el contrato (BTT RT-05.16).
 2. **Versionado semántico y compatibilidad hacia atrás**, con preaviso de obsolescencia ≥6 meses antes del retiro de una versión (BTT RT-05.17).
 3. **Autenticación entre sistemas** mediante OAuth 2.1 con credenciales de cliente o mTLS; prohibida clave estática en la URL (BTT RT-05.18).
 4. **Correlación de extremo a extremo**: todo evento e invocación porta un identificador de correlación común que permite reconstruir una transacción de negocio completa a través de `INT-HUB`, `EXT-*` y de vuelta (BTT RT-05.19).
@@ -302,4 +302,3 @@ graph LR
 ## Trazabilidad
 
 Ver [`trazabilidad/TRZ_A2.md`](trazabilidad/TRZ_A2.md).
-

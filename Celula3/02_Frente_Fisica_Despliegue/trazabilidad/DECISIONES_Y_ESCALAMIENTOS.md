@@ -10,7 +10,7 @@
 
 | ID | Fecha | Entregable | Tipo | Tema | Alternativas/impacto | Recomendación o pregunta | Afecta a | Estado |
 |---|---|---|---|---|---|---|---|---|
-| `F2-DEC-001` | — | C1/C2 | CANDIDATO ADR | sala técnica | actual/nueva/edge mínimo | desarrollar ADR-005 | todos | PENDIENTE |
+| `F2-DEC-001` | — | C1/C2 | CANDIDATO ADR | sala técnica | actual/nueva/edge mínimo | MA-4 propone rehabilitar los 34 m² si superan tres puertas físicas; reemplazo compacto obligatorio si alguna falla | todos | RESUELTO COMO BASELINE I1; `ADR-005` PROPUESTO, aprobación/site survey pendientes |
 | `F2-ESC-001` | — | C3 | EXTERNO | site survey | cantidad/ubicación radio | mantener rango y levantar | C4/T-11 | BLOQUEADO EXTERNO |
 | `F2-ESC-002` | — | C3 | EXTERNO | plan protección | autoridad aprueba segregación | no intervenir sin aprobación | D1 | BLOQUEADO EXTERNO |
 | `F2-ESC-003` | 2026-09-05 | C2/C3 | OMISIÓN DE ALCANCE | Capítulo 7 del BTT ausente en toda la célula | 14 requisitos no citados; `T21-4.2-E` es elemento evaluado | incorporar al Maestro §9.2 y a los cumplimientos de C2/C3 | C2, C3, C4, D1, matriz global | **CERRADO 2026-09-06** — Maestro §9.2.1 incorpora los 14 requisitos del Cap. 7 |
@@ -19,7 +19,7 @@
 | `F2-ESC-006` | 2026-09-05 | C1/C3/C4 | COLISIÓN DE CÓDIGOS | 4 códigos `RT` de los capítulos del Frente 2 designan materias distintas en BTT y caso | el Supuesto M de Célula 2 solo documenta 5 colisiones, ninguna de estas | ampliar el listado del Maestro §1.1 con estos códigos | C1, C3, C4, T-12 | **CERRADO 2026-09-06** — Maestro §1.1 publica las 11 colisiones verificadas |
 | `F2-ESC-007` | 2026-09-05 | todos | LÍNEA BASE DESFASADA | Maestro §2.2 y `MC-19` citan 138 RF / 84 RNF / 10 reglas | hoy son 139 / 91 / 11 y el reparto es 82 / 57 | actualizar §2.2 y registrar el commit `c4756df` según la regla de lectura 5 | los tres frentes | **CERRADO** — Maestro §2.2 ya declara 139/91/11 y la línea base `c4756df`; verificado el 2026-09-06 |
 | `F2-ESC-008` | 2026-09-05 | C1/C2 | EXTERNO | ingresos físicos de comunicaciones del edificio administrativo | `RT-06.32` exige rutas físicas distintas con ingreso al edificio por puntos separados; el caso no dice si el edificio lo admite | levantar antes de cerrar `ADR-005`; puede descartar por norma la alternativa de endurecer la sala actual | C1, C2, C3, `ADR-005` | BLOQUEADO EXTERNO |
-| `F2-ESC-009` | 2026-09-05 | C2 | DECISIÓN SIN ADR | proveedor y región de nube | `RT-03.01` exige declarar proveedor y regiones primaria y secundaria; `RT-15.04`/`.05` exigen intensidad de carbono y análisis comparativo. La lista `ADR-001` a `ADR-010` no cubre esta decisión | abrir `ADR-011`; afecta a los tres frentes, no se resuelve en el Frente 2 | todos | PARA REVISIÓN DEL INTEGRADOR |
+| `F2-ESC-009` | 2026-09-05 | C2 | DECISIÓN TRANSVERSAL | proveedor y región de nube | `RT-03.01` exige declarar proveedor y regiones primaria y secundaria; `RT-15.04`/`.05` exigen intensidad de carbono y análisis comparativo | AWS; primaria `sa-east-1` multi-AZ y secundaria `us-east-1`; validar latencia, catálogo, carbono, residencia y salida antes de aprobar | todos | CERRADO COMO BASELINE MA-5 — `ADR-011 PROPUESTO`; verificaciones pendientes |
 | `F2-ESC-010` | 2026-09-05 | C3 | INTERPRETACIÓN CON EFECTO DE PLAZO | el ambiente de DR debe estar operativo en el **mes 6** | `RT-04.01` condiciona el hito H3 a los **cinco** ambientes; el E-25 describe H3 nombrando cuatro. Art. 5.2 y 5.4 de las BA obligan a la lectura más exigente | planificar región secundaria, replicación y conmutación para el mes 6, no para el paso a producción. Afecta el cronograma del Subdocumento 7 | C2, C3, C4, Frente 1, planificación | PARA REVISIÓN DEL INTEGRADOR |
 | `F2-ESC-011` | 2026-09-05 | C4 | EXTERNO | tamaño real de imagen de los lectores de patente y contenedor | el supuesto propio de 500 KB gobierna el **91 % del buffer de 72 h**, el ancho de banda de reposición y el 100 % del almacenamiento documental. A 1 MB el buffer sube a 40 GB y la reposición a 58 Mbps | solicitar el tamaño real que producen los lectores actuales; entretanto el margen del 30 % absorbe hasta ≈650 KB | C2, C3, C4, T-11 | BLOQUEADO EXTERNO |
 | `F2-ESC-012` | 2026-09-05 | C3/C4 | EXTERNO | capacidad real de la fibra y del radioenlace de respaldo | la sincronización en ≤90 min exige **32,5 Mbps sostenidos** a peak estacional; el caso describe el respaldo como «de menor capacidad» | solicitar la capacidad contratada de ambos enlaces; si el respaldo no la sostiene, el compromiso de `RNF-DIS-04` se cumple sobre el principal restablecido o sobre el segundo camino de `RT-03.17` | C3, C4, `RNF-DIS-04` | BLOQUEADO EXTERNO |
@@ -70,7 +70,7 @@
 | `RT-07.13` | por **cada dominio de dato**: frecuencia, retención y tiempo estimado de restauración completa | engancha con las siete retenciones del Maestro §16.1, hoy sin plan de respaldo asociado |
 | §7.2 | disponibilidad **99,95 % por componente** —energía, climatización, red, cómputo, motor de BD, portal— | el Maestro lo comprimió a un único «99,95 % infraestructura aplicable» |
 
-**Recomendación.** Incorporar el capítulo completo al Maestro §9.2, y agregarlo a los cumplimientos asignados de C2 y C3. Este frente ya lo aplicó a sus propios contratos (`F2-COR-002` y `F2-COR-003`), pero el Maestro es la autoridad contextual de los tres frentes y el Frente 3 escribe 4.2.12 sobre la misma base.
+**Recomendación del corte histórico.** Incorporar el capítulo completo al Maestro §9.2 y a los cumplimientos de C2/C3. El efecto vigente del Frente 3 se sintetiza en 4.1.4 y apoya 4.2.3/4.2.6; la referencia anterior a 4.2.12 quedó superada por MA-7.
 
 ### `F2-ESC-004` — El rango del site principal está truncado
 
@@ -219,7 +219,7 @@
 
 **Cómo apareció.** Al integrar `frente_3` con el `B4` de D2 recién completado, se comparó su registro consolidado de 21 puntos únicos de falla contra los diez de C1 §8. **Los códigos `SPOF-01` a `SPOF-10` existen en ambos y ninguno significa lo mismo.** Ejemplo: `SPOF-01` es «`EDGE-RUN` y su almacenamiento» en D2 y «fibra de un solo proveedor» en C1.
 
-**Por qué importa.** La sección 4.3 del consolidado reúne ambos registros. Con la numeración cruzada, veintiún identificadores tendrían diez con doble significado, y `RT-02.11` del BTT —que exige declarar los puntos únicos de falla **y justificar por qué son aceptables**— quedaría sin traza seguible.
+**Por qué importa.** El consolidado sintetiza ambos registros en 4.1.4–4.1.5 y en las secciones físicas afectadas. Con la numeración cruzada, veintiún identificadores tendrían diez con doble significado, y `RT-02.11` del BTT —que exige declarar los puntos únicos de falla **y justificar por qué son aceptables**— quedaría sin traza seguible.
 
 **Resolución aplicada.** D2 es el propietario formal del registro consolidado: su contrato lo nombra como producto obligatorio. Su numeración queda como la global. Los diez de C1 pasan a `F2-SPOF-01` a `F2-SPOF-10`, con la tabla de correspondencia en C1 §8.1. No se tocó ningún archivo de D2.
 
@@ -252,7 +252,7 @@
 | `B6-F04` | seis diferencias de criticidad y ubicación de `CH-CAB` | corregido: `F2-COR-006`, C1 §5 y §5.1 |
 | `B6-F05` | posible doble conteo `T11-C2-19` / `T11-SEC-04` | corregido por fusión: `F2-COR-007`, C2 §9 y C4 §9.bis |
 | `B7-O01` | `SPOF-13` y `SPOF-22` no deben consolidarse | confirmado y declarado: C2 §4.1 |
-| `B7-O02` | la cobertura de 21 nodos es sobre el catálogo declarado, no sobre la instalación real | **se acepta la observación tal cual.** C1 §9 ya condiciona el catálogo al levantamiento de sitio (`F2-ESC-001`, `F2-ESC-008`); no se declara cobertura de la instalación real y no se convertirá en afirmación de cierre |
+| `B7-O02` | el corte histórico cubría 21 nodos; MA-3 normaliza a 20 nodos `PHY-*` + `LOC-INSP-01`, siempre sobre catálogo declarado y no instalación real | **se mantiene la observación de fondo.** C1 §9 condiciona el catálogo al levantamiento de sitio (`F2-ESC-001`, `F2-ESC-008`); no se declara cobertura de la instalación real ni se convierte en afirmación de cierre |
 | `B7.2 #8` | `ADR-011` sin alternativas concretas ni selección | atendido hasta donde el Informe 1 permite: C2 §4.1 acota el espacio de decisión con seis alternativas nombradas, declara los tres datos que faltan y deja una recomendación condicionada. La selección sigue siendo del integrador con el CLIENTE (`F2-ESC-009`) |
 | `ACT-TI` | brecha de canal de A1, con posible consecuencia física | respondida por anticipado: `F2-INT-003`, C1 §5.2 |
 

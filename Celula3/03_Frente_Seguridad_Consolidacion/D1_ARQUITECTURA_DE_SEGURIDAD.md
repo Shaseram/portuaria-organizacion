@@ -4,7 +4,7 @@
 
 ### Objetivo y destino
 
-Definir Zero Trust, exposición, identidad, cifrado, detección y DevSecOps, y entregar requisitos utilizables por Física desde `v0.1`. Alimenta las secciones 4.1.8 y 4.2.12.
+Definir Zero Trust, exposición, identidad, cifrado, detección y DevSecOps, y entregar requisitos utilizables por Física desde `v0.1`. Alimenta 4.1.4 y apoya 4.2.3 y 4.2.6.
 
 ### Cumplimientos asignados
 
@@ -36,18 +36,18 @@ La [traza D1, §2](trazabilidad/TRZ_D1.md) desglosa **FEP02 RT-11.01 a RT-11.28*
 - [x] Definir logs inalterables, SIEM, EDR y alertas portuarias, con SOC 24x7; ubicación/dotación/proveedor siguen pendientes.
 - [x] Definir respuesta, plazos de vulnerabilidad e incidentes.
 - [x] Definir SAST/SCA/DAST, imágenes, SBOM, firma/SLSA y datos no productivos.
-- [x] Mapear control→capa→componente→nodo→amenaza→evidencia; B7-R cruza 31/31 controles con D2 y los 21 nodos declarados por C1.
+- [x] Mapear control→capa→componente→nodo→amenaza→evidencia; MA-3 cruza 31/31 controles con D2 y los 20 nodos `PHY-*` más `LOC-INSP-01` declarados por C1.
 - [x] Preparar componentes/licencias/servicios candidatos a T-11 en `SEC-PHYS-v0.1`; C1–C4 ya incorporan los 17 grupos y conservan productos, cantidades finales y pruebas como pendientes.
 
 ### Entrega temprana `SEC-PHYS-v0.1`
 
-**Estado tras B7-C:** `INTEGRADO Y REVISADO DOCUMENTALMENTE`. C1 emplaza los 17 grupos, C2 declara su tratamiento tecnológico y C4 registra 7 candidatos de fila propia más 10 grupos incluidos/condicionales. El bloque 5/B7-C verificó el cruce conjunto con D2 y gobierno sin observaciones internas nuevas. Esto no acredita compra, producto final, cantidad contractual ni prueba. La última columna evita duplicar compras.
+**Estado vigente tras MA-3:** `INTEGRADO Y CONCILIADO DOCUMENTALMENTE`. C1 emplaza los 17 grupos, C2 declara su tratamiento tecnológico y C4 registra 6 filas propias de seguridad, 1 capacidad absorbida por la fila unificada de observabilidad/SIEM y 10 grupos incluidos/condicionados. Esto no acredita compra, producto final, cantidad contractual ni prueba. La última columna evita duplicar compras.
 
 | ID control | Capacidad requerida | Componente/servicio candidato | Ubicación/restricción | HA/continuidad | Evidencia | Entrada para T-11 |
 |---|---|---|---|---|---|---|
 | `SEC-NET-01 / SEC-EXP-01` | segmentación, filtrado e inventario de exposición | firewall/controles de red, host o plataforma; verificación externa | zonas nube/local/operación/administración/protección | rutas críticas redundantes y administración segregada | rutas permitidas/denegadas, escaneo e inventario B3.1–B3.6 | **Condicional:** fila si existe equipo/licencia separada; si viene incluida, C4 lo justifica |
 | `SEC-EDGE-01 / SEC-EDGE-02` | CDN, WAF, DDoS, TLS 1.3, HSTS, certificados y bots | servicio de borde gestionado | único borde público nube; origen no expuesto | multi-AZ/HA demostrable; ruta local crítica independiente | bypass, TLS, renovación, abuso y carga legítima B3.3–B3.6 | **Fila propia candidata** de servicio; capacidad/cobertura por C4 |
-| `SEC-API-01` | autenticación, autorización, cuota, esquema y payload | API gateway/management | detrás del borde; variante local solo si A2/A3 la requieren | HA y límites compatibles con carga | identidad/objeto ajeno, esquema, tamaño y tasa B3.3–B3.6 | **Agrupar o separar** de borde/integración según producto, sin doble conteo |
+| `SEC-API-01` | autenticación, autorización, cuota, esquema y payload | API gateway/management con perfil local restringido | perfil central detrás del borde en `PHY-CLD-02`; perfil local obligatorio en `PHY-OPS-01` | HA; operación local 72 h; políticas/contratos vigentes cacheados | identidad/objeto ajeno, esquema, tamaño, tasa, corte y reconciliación B3.3–B3.6 | **Incluido** en la plataforma de gateway/runtime; no duplicar fila por el perfil local |
 | `SEC-IAM-01 / SEC-ADM-01 / SEC-PROD-01` | SSO, MFA, RBAC/ABAC, PAM, acceso de terreno y excepción de producción | IAM/PAM; credencial/lector solo si la alternativa elegida lo exige | gobierno híbrido; capacidad local crítica y administración segregada | operación local 72 h, terminal 8 h y HA por validar | matriz, sesiones, relevo, baja, elevación, producción y emergencia B2.3–B2.6/B6.6 | **Filas candidatas** IAM/PAM; lectores/licencias solo con cantidad justificada |
 | `SEC-SYNC-01` | conducto autenticado nube/local y reconciliación | canal/broker/conector seguro de integración | no público salvo contrato; identidad técnica acotada | buffer 72 h y sincronización ≤90 min | corte, repetición, orden, integridad y conciliación B3.2/B3.6 | **Incluido normalmente** en integración/red/runtime; fila solo si hay servicio separado |
 | `SEC-DATA-01 / SEC-ENC-01 / SEC-FIELD-01` | cifrado de reposo/campo y acceso por clasificación | capacidades nativas de almacén/aplicación o servicio de cifrado de campo | todos los almacenes/copias; descifrado solo por servicio autorizado | claves recuperables y operación local según dato | configuración y consulta directa sin revelar campos B4.1–B4.3 | **Incluido o condicional:** no crear fila por cada dato; separar licencia/servicio solo si existe |
@@ -130,7 +130,7 @@ Puede definir patrones y controles mínimos. Debe escalar identidad federada no 
 
 ## Plan de desarrollo acordado
 
-**Estado:** desarrollo técnico `EN CURSO`; bloques B1–B7, reapertura B7-R y revisión conjunta B7-C completados como diseño/auditoría documental. `SEC-PHYS-v0.1` fue consumido por C1–C4, D2 B7 quedó auditado y el paquete conjunto quedó preparado para auditoría independiente. Los diagramas permanecen diferidos por decisión de secuencia y siguen siendo obligatorios para aprobar D1.
+**Estado vigente tras MA-8:** desarrollo técnico `EN CURSO`; B1–B7, B7-R/B7-C y MA-3..8 están completados como diseño/preparación documental. El corte deja 11 ADR `PROPUESTO`, 0 `APROBADO`, 32 filas T-11 y la estructura 4.1/4.2 trazada a fuentes y controles D3. AWS `sa-east-1`/`us-east-1` está incorporado. F5 representará seguridad y límites de confianza. P4 está aprobada; faltan redacción/figuras y luego la ejecución D3.
 
 ### Uso de los archivos
 
@@ -175,10 +175,10 @@ La matriz de identidad se desarrollará con: actor del Maestro, rol propuesto, a
 | B6 — Desarrollo y operación seguros | SAST/SCA/DAST/imágenes, SBOM, firma/SLSA, aprobación de dependencias, datos no productivos y marco SAMM; completar controles de acceso a producción con B2 | **Propuesta redactada**, no aprobada: B6.1–B6.9. Puertas automáticas, artefacto único, cadena de suministro, separación de ambientes/producción y glosario; herramientas, responsables y pruebas por validar con C3 |
 | B7 — Cobertura y paquete temprano | Completar matriz control–componente–evidencia, traza de capítulos 11/12 y demás fuentes aplicables; consolidar SEC-PHYS-v0.1, candidatos T-11 y propuestas ADR | **Auditoría histórica ejecutada:** paquete v0.1 consolidado. Sus pendientes de entradas fueron revaluados en B7-R con los catálogos reales |
 | B7-R — Integración documental D1–D2 | Cruzar actores, contratos, nodos, amenazas, controles y SEC-PHYS/T-11; clasificar dependencias | **COMPLETADO COMO DISEÑO, no aprobado:** 31/31 controles enlazados a amenazas; 17/17 grupos emplazados/tratados por C1–C4; dependencias internas cruzadas con observaciones |
-| B7-C — Revisión conjunta (bloque 5) | Auditar D1, D2, trazas, ADR, matriz global y registro de pendientes como un solo paquete | **COMPLETADO DOCUMENTALMENTE, no aprobado:** referencias e inventarios coherentes; pendientes separados por propietario; listo para auditoría independiente |
+| B7-C — Revisión conjunta (bloque 5) | Auditar D1, D2, trazas, ADR, matriz global y registro de pendientes como un solo paquete | **CORTE HISTÓRICO COMPLETADO:** dejó el paquete listo para la auditoría independiente ya ejecutada; MA-3 y MA-4 contienen los cortes posteriores |
 | B8 — Integración visual y cierre | Producir diagramas coherentes y preparar narrativa final después de la revisión conjunta | **DIFERIDO.** No iniciar antes del cierre documental conjunto/auditoría; no aprobar con brechas externas o de prueba |
 
-**Retomar exactamente aquí:** entregar el paquete B7-C a auditoría independiente/general y aplicar sus hallazgos antes de B8. No reabrir B1–B7 salvo evidencia nueva o uno de los disparadores de actualización. Permanecen observaciones de autor, Subdocumento 5, productos/contratos finales, responsables, pruebas y decisiones externas. `ADR-008/009/010` están `PROPUESTO`; `ADR-011` sigue `CANDIDATO` sin alternativas concretas ni selección. No producir diagramas todavía.
+**Retomar exactamente aquí:** MA-8 está completada como preparación y P4 aprobada. Redactar el consolidado y producir F1–F5; F6 solo si continuidad no resulta legible. Cruzar `V-DATA-01` con Subdocumento 5 y ejecutar D3 sobre la versión ensamblada. No reabrir B1–B7 ni los ADR salvo evidencia nueva o disparador. `ADR-001..011` están `PROPUESTO`; ninguno está aprobado.
 
 **Lectura mínima para continuar:** este D1 (contrato, plan y B1–B7); Maestro vigente (completo si el agente no conoce el proyecto); índice del Frente 3; reglas comunes y Frente 3 del Plan de entregables; TRZ_D1, DECISIONES_Y_ESCALAMIENTOS y auditoría intermedia. Consultar A1/A2/A3 y C1–C4 para identificar aportes nuevos; Célula 2 es la fuente de detalle cuando una decisión lo requiera. La línea base utilizada es Maestro v1.1 / Célula 2 `c4756df`: comprobar si cambió antes de asumirla vigente. Preferir Markdown; usar PDF si falta información o aparece inconsistencia.
 
@@ -406,8 +406,8 @@ Una zona agrupa recursos con políticas de acceso similares. Cruzar una frontera
 |---|---|---|
 | Z-EXT — redes externas | ACT-NAV/AGE/TRA/AUT/FER/CON/VER y sistemas de terceros | Ninguna identidad ni dirección externa es confiable por sí misma; entrada solo por punto publicado y contrato autorizado |
 | Z-EDGE — borde expuesto | GW-EDGE; publicación de CH-PORTAL y acceso remoto de CH-APP | CDN/WAF/DDoS/TLS; único acceso público a servicios, sin publicación directa del origen |
-| Z-SVC — servicios privados nube | GW-API y contextos ubicados en nube por C1 | Autorizar por identidad, recurso y operación; no asignar aquí todos los contextos a nube |
-| Z-LOCAL — servicios operacionales locales | EDGE-RUN y capacidades críticas, SRV-IAM local, INT-TOS según emplazamiento | Mantener 72 h sin enlace exterior; accesos por servicios controlados, sin depender del borde nube |
+| Z-SVC — servicios privados nube | perfil central de GW-API y contextos ubicados en nube por C1 | Autorizar por identidad, recurso y operación; no asignar aquí todos los contextos a nube |
+| Z-LOCAL — servicios operacionales locales | EDGE-RUN, perfil local restringido de GW-API, capacidades críticas, SRV-IAM local e INT-TOS | Mantener 72 h sin enlace exterior; toda acción crítica entra por el gateway local y no depende del borde ni del gateway central nube |
 | Z-FIELD — equipos de terreno | CH-CAB, CH-APP interno, gate, sensores y lectores | Identidad de dispositivo/persona según flujo; limitar alcance a servicio/tarea. C3 subdivide por criticidad y fabricante, sin presumir que todos soportan agente o TLS |
 | Z-ADM — red administrativa | Puestos ACT-COM y usuarios administrativos | Acceso a servicios autorizados, sin ruta general a patio, protección o base de datos |
 | Z-PROT — protección | EXT-VMS y EXT-ACC según red real y plan de protección | Mantener autoridad y operación ISPS; intercambio solo autorizado por adaptador, sin portal de video ni tránsito general a la red operacional |
@@ -443,7 +443,7 @@ FL-10 es una familia por desglosar, no una regla «permitir cualquiera». FL-06/
 | SEC-NET-01 — segregación y conductos explícitos | RNF-SEG-06; Caso 06 Cap. 15 RT-03.24 y Cap. 10 restricción 6; FEP02 RT-11.01 | Separar operación, administración y protección; controlar también servicio a servicio. Una red común con confianza por ubicación permitiría movimiento lateral | Matriz B3.2 y prueba de rutas permitidas/denegadas; C3 materializa aislamiento, D2 amenazas |
 | SEC-EDGE-01 — publicación exclusiva mediante borde protegido | FEP02 Cap. 11 RT-11.07/12; Maestro §6 | CDN para contenido público estático; WAF gestionado más reglas de trámites; anti-DDoS L3/L4/L7 gestionado. Capacidad especialista compatible con TI=5 (RNF-OPE-08), sin producto elegido | Intento de bypass al origen debe fallar; prueba de reglas, capacidad y tráfico legítimo. Orígenes privados o restringidos al borde con autenticación de origen |
 | SEC-EDGE-02 — TLS y ciclo de certificados | FEP02 Cap. 11 RT-11.08; RNF-SEG-04 | TLS 1.3 en servicios de la solución; cifrados modernos, TLS 1.0/1.1 prohibidos. No usar terminación en borde para dejar salto interior en claro | Escaneo de cada terminación y salto; HSTS/renovación/alertas y compatibilidad en B3.4; legado incompatible no se declara conforme |
-| SEC-API-01 — controles del gateway y autorización en el servicio | FEP02 Cap. 11 RT-11.01/11; RF-POR-02/09; RF-INT-02; RNF-SEG-09 | Autenticación, autorización, cuotas, límite de tasa, esquema y payload. Servicio comprueba organización/recurso para impedir acceso a expediente ajeno; WAF no reemplaza permiso de negocio | Pruebas de identidad, objeto ajeno, esquema inválido, tamaño y abuso; límites por contrato/volumen A2/C4 |
+| SEC-API-01 — controles del gateway y autorización en el servicio | FEP02 Cap. 11 RT-11.01/11; RF-POR-02/09; RF-INT-02; RNF-SEG-09 | Autenticación, autorización, cuotas, límite de tasa, esquema y payload. El perfil central cubre el servicio completo; el perfil local restringido usa política vigente cacheada y solo enruta las operaciones de continuidad. El servicio comprueba organización/recurso; WAF no reemplaza permiso de negocio | Pruebas de identidad, objeto ajeno, esquema inválido, tamaño y abuso; además corte 72 h recorriendo `CH-APP/CH-CAB → GW-API local → CTX/DATA/evidencia local`, sin acceso directo |
 | SEC-ADM-01 — administración aislada y temporal | FEP02 Cap. 11 RT-11.27 y Cap. 12 RT-12.03/06/13 | Consolas detrás de acceso controlado/PAM; MFA y cuenta nominativa, sin SSH/RDP/BD públicos directos ni desarrollo interactivo permanente | Escaneo externo y prueba de acceso/PAM/emergencia; B2.3/2.5, producto C2/C3 |
 | SEC-SYNC-01 — conducto nube/local independiente del tráfico público | RNF-DIS-02/04; RNF-SEG-04; Maestro §§6.2/8/9 | Canal mutuamente autenticado para servicios compatibles y cifrado, contrato acotado y registro persistente. No extender confianza de toda la red ni exigir nube para una acción crítica local | Corte 72 h, reintento/repetición y conciliación ≤90 min; A2 define transporte y A3 autoridad, ADR-009 custodia |
 | SEC-EXP-01 — inventario de exposición y control de cambios | FEP02 Cap. 11 RT-11.13 | Declarar cada dominio, puerto y servicio externo, incluyendo acceso administrativo/federación si son alcanzables; contrastar configuración e inventario | B3.5, escaneo externo y revisión tras cambios; listado actual es plantilla poblada por familias, no inventario final |
@@ -949,8 +949,8 @@ El paquete permite que C1–C4 comiencen ubicación, compatibilidad, dimensionam
 |---|---|---|---|
 | A1 | 16 actores, 24 componentes, criticidad y continuidad | valida el universo de la matriz de identidad y los componentes protegidos | `ACT-TI` conserva la brecha de consola administrativa; roles/permisos no están aprobados |
 | A2/A3 | contratos lógicos, autoridad TOS, degradación y respaldo manual | valida tipos de flujo, continuidad y acumulación/reconciliación | contratos/protocolos efectivos y aprobadores siguen externos |
-| C1/C2/C3/C4 | 21 nodos, zonas, emplazamiento de 17 grupos, tecnologías de referencia y candidatos T-11 | reemplaza `POR DEFINIR` por correspondencia documental; confirma capacidad local para IAM, claves, logs y evidencia | site survey, producto final, compatibilidad, cantidades contractuales y pruebas |
-| D2 B7 | 73 amenazas, 22 SPOF, 11 ADR revisados y regla de actualización | permite cerrar la relación control↔amenaza y cubrir `RT-11.02` documentalmente | `ADR-011` incompleto; residuales, pruebas y aprobación pendientes |
+| C1/C2/C3/C4 | 20 nodos `PHY-*`, una ubicación funcional `LOC-INSP-01`, zonas, emplazamiento de 17 grupos, tecnologías de referencia y candidatos T-11 | reemplaza `POR DEFINIR` por correspondencia documental; confirma gateway, IAM, claves, logs y evidencia locales | site survey, producto final, compatibilidad, cantidades contractuales y pruebas |
+| D2 B7 + MA-3/MA-4 | 73 amenazas, 26 SPOF, 11 ADR revisados y regla de actualización | permite cerrar la relación control↔amenaza y cubrir `RT-11.02` documentalmente | corte histórico MA-4: 10 propuestos y `ADR-011` candidato; estado vigente tras MA-5: 11 propuestos y 0 aprobados |
 | Subdocumento 5 | catálogo de campos no disponible | no cambia la taxonomía provisional `PUB/INT/CONF/RES` | campo→propietario→sensibilidad→retención→licitud continúa abierto |
 
 #### B7-R.2 Cruce bidireccional control–amenaza
@@ -970,44 +970,45 @@ Relaciones nuevas relevantes: `SEC-CLOUD-01` gobierna `THR-049/060/072/073`; `SE
 
 | Grupo | Emplazamiento confirmado por C1 | Tratamiento C4 | Estado de integración |
 |---|---|---|---|
-| borde y API | `PHY-CLD-01/02` | `T11-SEC-01` | INCORPORADO; producto/capacidad final pendientes |
+| borde y API | `PHY-CLD-01/02` + perfil local de API en `PHY-OPS-01` | `T11-SEC-01`/runtime incluido | INCORPORADO; producto/capacidad final pendientes, sin duplicar compra local |
 | IAM, PAM y producción | `PHY-CLD-03` + capacidad local `PHY-OPS-01` | `T11-SEC-02` | INCORPORADO; `ADR-008` y directorio/revocación condicionan cierre |
 | red, exposición y sincronización | `PHY-OPS-04` + controles cloud/enlace | `T11-C2-03/04`, `T11-C3-01`, `T11-C2-17` | INCLUIDO; site survey e independencia por probar |
 | datos y cifrado | `PHY-CLD-05..08` + `PHY-OPS-02` | `T11-C2-17` y `T11-C2-02` | INCLUIDO; catálogo de campos pendiente |
 | claves y secretos | gestión cloud + capacidad local protegida `PHY-OPS-01` | `T11-SEC-03` | INCORPORADO; custodios/producto/prueba pendientes |
 | respaldo | `PHY-CLD-10` + `PHY-OPS-05` | condición de `T11-C2-12/18` | INCLUIDO SIN DUPLICAR; distinguir `SPOF-13` de `SPOF-22` |
-| logging y SIEM | `PHY-CLD-09` + colector/buffer `PHY-OPS-01` | `T11-SEC-04` | INCORPORADO; ingesta dominante y posible solape `T11-C2-19` pendientes |
+| logging y SIEM | `PHY-CLD-09` + colector/buffer `PHY-OPS-01` | ancla `T11-SEC-04` resuelta sobre `T11-C2-19` | INCORPORADO SIN DOBLE CONTEO; ingesta dominante por medir |
 | EDR | `PHY-OPS-01`, `PHY-CLD-03`, `PHY-OPS-06` compatibles | `T11-SEC-05` | INCORPORADO; excluye terreno sin agente compatible |
 | SOC e incidentes | servicio, sin nodo | `T11-SEC-06` | INCORPORADO; no se asigna a TI=5 |
 | vulnerabilidades y pentest | servicio, sin nodo | `T11-SEC-07` | INCORPORADO; alcance/tercero/pruebas pendientes |
 | SDLC, pipeline, suministro y datos no productivos | DEV/QA/PREPROD fuera de operación | plataforma CI/CD o proceso | INCLUIDO/CONDICIONAL; herramientas y ejecución pendientes |
 | gobierno, nube, hardening y SAMM | transversal, sin nodo propio | implementación/servicios | INCLUIDO; evidencia por producto/servicio pendiente |
 
-Los 17/17 grupos quedan ubicados o justificados como servicio/proceso. C4 materializa siete candidatos `T11-SEC-01..07` y referencia los diez restantes desde filas existentes o procesos. Se conserva `F3-DEC-005`: control no equivale a compra. D1 no modifica cantidades ni el formulario T-11.
+Los 17/17 grupos quedan ubicados o justificados como servicio/proceso. C4 materializa seis filas propias `T11-SEC-01..03/05..07`, absorbe `T11-SEC-04` en `T11-C2-19` y referencia los diez restantes desde filas existentes o procesos. Se conserva `F3-DEC-005`: control no equivale a compra. D1 no modifica cantidades ni el formulario T-11.
 
 #### B7-R.4 Identidad y continuidad
 
 | Materia | Resultado del cruce | Estado |
 |---|---|---|
 | 16 actores A1 | todos pertenecen al universo D1; no se crea catálogo paralelo | CRUZADO |
-| `ACT-TI` | existe como actor, pero su consola administrativa no tiene componente A1 propio | OBSERVACIÓN A1; D1 la protege mediante PAM/administración sin inventar `CH-*` |
+| `ACT-TI` | administración funcional como perfil autenticado de `CH-PORTAL`; administración técnica por `Z-MGMT`/PAM desde `PHY-OPS-06` | RESUELTO DOCUMENTALMENTE; no crea un cuarto canal ni una fila T-11 nueva |
+| entrada API durante 72 h | perfil local restringido de `GW-API` en `PHY-OPS-01`; mismas políticas/contratos vigentes, alcance solo crítico | COHERENTE; debe probarse de punta a punta y sigue `SPOF-23` POR ACEPTAR |
 | IAM durante 72 h | C1 ubica `SRV-IAM` en `PHY-CLD-03` con caché/capacidad local en `PHY-OPS-01` | COHERENTE CON `ADR-008`, condicionado a producto y prueba |
 | claves/secretos durante 72 h | C1/C2 exigen material local protegido en `PHY-OPS-01` | COHERENTE CON `ADR-009`, custodios y recuperación pendientes |
 | logs/evidencia durante 72 h | `PHY-OPS-01` conserva colector, buffer y sello local; `PHY-CLD-09` centraliza al reconectar | COHERENTE CON `ADR-010`, capacidad/prueba pendientes |
 | funciones degradadas | A3 §7 declara qué no está disponible y el respaldo manual | RESUELTO DOCUMENTALMENTE |
-| `CTX-VESSEL` | A1/A3 lo incluyen crítico/local; C1 lo deja alta/solo nube | NO CONCILIADO; condiciona `ADR-002`, no se corrige desde D1 |
+| `CTX-VESSEL` | subconjunto operacional de muelle crítico en `PHY-OPS-01`; mensajería externa alta en `PHY-CLD-03` | RESUELTO DOCUMENTALMENTE mediante partición dual |
 | revocación aislada | `F3-ESC-002` continúa sin procedimiento aprobado del CLIENTE | BLOQUEADO EXTERNO |
 
 #### B7-R.5 Dependencias y observaciones vigentes
 
 | Dependencia | Estado tras integración | Qué permanece |
 |---|---|---|
-| `F3-DEP-001` A1 | **CRUZADA CON OBSERVACIÓN** | `ACT-TI`/consola, funciones técnicas externas y aprobación final de roles |
+| `F3-DEP-001` A1 | **RESUELTA PARA DISEÑO** | aprobación final de roles y permisos permanece externa |
 | `F3-DEP-002` A2/A3 | **RESUELTA PARA DISEÑO DOCUMENTAL** | contratos/protocolos efectivos, nombradas y aprobadores externos |
-| `F3-DEP-003` C1–C4 | **CRUZADA CON OBSERVACIONES** | `CTX-VESSEL`, criticidades, `CH-CAB`, site survey, producto/cantidad final y pruebas |
+| `F3-DEP-003` C1–C4 | **RESUELTA PARA DISEÑO CON EXTERNOS** | site survey, producto/cantidad contractual y pruebas; las divergencias internas fueron conciliadas |
 | `F3-DEP-004` D2/Subdocumento 5 | **PARCIAL** | D2 resuelto para modelo; falta catálogo de campos y tratamiento de privacidad |
 
-Además permanecen: seis diferencias de criticidad entre A1/C1 aparte de `CTX-VESSEL`; ubicación de `CH-CAB`; posible doble conteo `T11-C2-19`/`T11-SEC-04`; distinción `SPOF-13`/`SPOF-22`; y `ADR-011` sin comparación concreta ni selección. Son salidas a sus autores, no fallos que D1 deba resolver silenciosamente.
+Quedan resueltas en el corte vigente las diferencias de criticidad, `CTX-VESSEL`, la ubicación de `CH-CAB`, la consola de `ACT-TI`, el doble conteo `T11-C2-19`/`T11-SEC-04` y la suficiencia de la baseline de `ADR-001..010`. MA-5 debe conservar separados `SPOF-13`/`SPOF-22` y expresar como condiciones —no como omisiones— la selección de proveedor/regiones de `ADR-011`, productos, responsables y pruebas.
 
 #### B7-R.6 Veredicto y continuación
 
@@ -1016,11 +1017,11 @@ Además permanecen: seis diferencias de criticidad entre A1/C1 aparte de `CTX-VE
 | 31 controles con amenaza | 31/31 | CONFORME DOCUMENTAL |
 | 17 grupos SEC-PHYS integrados | 17/17 con nodo, servicio o proceso y tratamiento T-11 | CONFORME DOCUMENTAL |
 | `RT-11.02` | modelo D2 auditado y regla de cinco disparadores | CUBIERTO EN DISEÑO; `EN CURSO` por pruebas/revisión/aprobación |
-| dependencias internas | entradas recibidas y cruzadas | CONFORME CON OBSERVACIONES |
+| dependencias internas | entradas recibidas y contradicciones conciliadas en MA-3 | CONFORME DOCUMENTAL; externos tratados |
 | pruebas ejecutadas / riesgos aceptados / ADR aprobados | 0 / 0 / 0 | NO SE DECLARA CIERRE |
 | diagramas | no producidos | DIFERIDOS A B8 |
 
-**Punto exacto de continuación:** realizar la revisión documental conjunta de D1, D2, trazas, registro ADR, matriz global y auditoría del frente. D1 queda integrado y listo para esa revisión, no para aprobación. No ejecutar B8 ni D3 y no dibujar diagramas antes de estabilizar el cierre documental.
+**Corte histórico B7-R:** el punto de continuación original era la revisión conjunta. Esa revisión, la auditoría semántica y MA-3..5 ya se ejecutaron; P2 quedó superada y el corte vigente está en P3. No ejecutar B8 ni D3 y no dibujar diagramas antes de la secuencia que fija el plan maestro.
 
 ### B7-C. Revisión documental conjunta — bloque 5
 
@@ -1028,14 +1029,14 @@ Además permanecen: seis diferencias de criticidad entre A1/C1 aparte de `CTX-VE
 
 | Puerta conjunta | Resultado verificable | Estado |
 |---|---|---|
-| inventarios e identificadores | 31 controles D1, 73 amenazas y 22 SPOF definidos; sin referencias huérfanas en el paquete revisado | CONFORME DOCUMENTAL |
+| inventarios e identificadores | 31 controles D1, 73 amenazas y 26 SPOF definidos; 20 nodos físicos y `LOC-INSP-01` como ubicación funcional; sin referencias huérfanas vigentes | CONFORME DOCUMENTAL |
 | control ↔ amenaza ↔ físico/T-11 | 31/31 controles con amenaza; 17/17 grupos físicos emplazados o justificados; tratamiento T-11 explícito | CONFORME DOCUMENTAL CON PENDIENTES DE PRODUCTO/CANTIDAD |
-| ADR y aceptación | 11 ADR registrados; `ADR-011` incompleto; 0 ADR aprobados, 0 riesgos aceptados y 0 SPOF cerrados | PENDIENTE DE AUTORES/CLIENTE |
-| continuidad local | IAM, claves y evidencia cuentan con capacidad local propuesta; `CTX-VESSEL` sigue sin conciliar | CONFORME DE DISEÑO CON OBSERVACIÓN EXTERNA |
+| ADR y aceptación | corte histórico: 11 ADR registrados; `ADR-011` aún sin patrón recomendado; 0 ADR aprobados, 0 riesgos aceptados y 0 SPOF cerrados | SUPERADO EN SUFICIENCIA POR MA-4; aprobación pendiente |
+| continuidad local | ruta completa `CH-APP/CH-CAB → GW-API local → CTX/DATA/evidencia local`; IAM, claves, cola, tiempo, nombres y logs incluidos | CONFORME DE DISEÑO; producto y prueba pendientes |
 | trazabilidad y gobierno | D1/D2, trazas, matriz global y registro de decisiones conservan estados compatibles | CONFORME DOCUMENTAL |
 | evidencia de implementación | productos, contratos, responsables nominales, capacidad, site survey y pruebas no acreditados | PENDIENTE; NO IMPIDE AUDITAR EL DISEÑO |
 
-**Veredicto del bloque 5:** el paquete D1–D2 queda **listo para auditoría independiente/general**, no para aprobación contractual. Los pendientes transferidos están consolidados en `trazabilidad/AUDITORIA_CIERRE.md`; no se crean nuevas decisiones ni dependencias. B8, diagramas y D3 permanecen diferidos.
+**Veredicto histórico del bloque 5:** el paquete D1–D2 quedó listo para auditoría independiente/general. Esa auditoría y MA-3..5 ya fueron ejecutadas; el estado vigente se lee en `trazabilidad/AUDITORIA_CIERRE.md` y en los registros MA-3..5 de `../00_Gobierno/`. B8, diagramas y D3 permanecen diferidos.
 
 ## Contenido listo para integrar
 

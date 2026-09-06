@@ -4,15 +4,17 @@
 **Autoridad contextual:** [`00_MAESTRO_CONTEXTO_ARQUITECTURA.md`](00_MAESTRO_CONTEXTO_ARQUITECTURA.md).  
 **Regla:** este archivo define el trabajo; los nombres personales se asignan únicamente en la tabla siguiente.
 
-**Corte de entrada:** Célula 2 `c4756df` (2026-09-05), conforme al Maestro v1.1. Antes del desarrollo, cada frente lee las consecuencias del Maestro §2.3 y sus destinos en la matriz global §3 y conserva sus entregables en `PENDIENTE` hasta iniciar el trabajo técnico.
+> **Lectura vigente tras MA-8:** este archivo conserva el plan de construcción de los frentes. Las tres baselines ya fueron producidas y sus destinos se actualizaron a la estructura MA-7. Para continuar desde el estado actual, usar [`Celula3/README.md`](../README.md) y el plan `R1–R6` de [`07_PLAN_MAESTRO_CIERRE_INFORME1_SUBDOC4.md`](07_PLAN_MAESTRO_CIERRE_INFORME1_SUBDOC4.md).
+
+**Corte histórico de entrada:** Célula 2 `c4756df` (2026-09-05), conforme al Maestro v1.1. Antes del desarrollo, cada frente debía leer las consecuencias del Maestro §2.3 y sus destinos en la matriz global §3.
 
 ## 1. Asignación y control
 
 | Frente | Responsable | Revisor cruzado | Estado | Carpeta |
 |---|---|---|---|---|
-| Frente 1 — Lógica e integración | `POR ASIGNAR` | `POR ASIGNAR` | PENDIENTE | `01_Frente_Logica_Integracion/` |
-| Frente 2 — Física y despliegue | `POR ASIGNAR` | `POR ASIGNAR` | PENDIENTE | `02_Frente_Fisica_Despliegue/` |
-| Frente 3 — Seguridad y consolidación | `POR ASIGNAR` | `POR ASIGNAR` | PENDIENTE | `03_Frente_Seguridad_Consolidacion/` |
+| Frente 1 — Lógica e integración | `POR ASIGNAR` | `POR ASIGNAR` | BASELINE I1 COMPLETADA | `01_Frente_Logica_Integracion/` |
+| Frente 2 — Física y despliegue | `POR ASIGNAR` | `POR ASIGNAR` | BASELINE I1 COMPLETADA | `02_Frente_Fisica_Despliegue/` |
+| Frente 3 — Seguridad y consolidación | `POR ASIGNAR` | `POR ASIGNAR` | BASELINE/PREPARACIÓN COMPLETADA; D3 PENDIENTE | `03_Frente_Seguridad_Consolidacion/` |
 
 No se renombran carpetas cuando se asignen personas.
 
@@ -135,7 +137,7 @@ No se considera entregado un archivo que solo contenga recomendaciones o un dibu
 
 **Salida temprana:** matriz de interfaces `v0.1` con sensibilidad y criticidad para Seguridad y Física.
 
-**Destino final:** sección 4.1.6 y referencias físicas asociadas.
+**Destino final vigente tras MA-7:** sección 4.1.3 y referencias de continuidad en 4.2.6.
 
 ### A3 — Procesos críticos y convivencia TOS
 
@@ -157,7 +159,7 @@ No se considera entregado un archivo que solo contenga recomendaciones o un dibu
 
 **Salida temprana:** lista de cinco funciones críticas, sus dependencias y RTO/RPO operacional.
 
-**Destino final:** secciones 4.1.7 y 4.2.9 del consolidado.
+**Destino final vigente tras MA-7:** sección 4.1.3 y apoyo a 4.2.6 del consolidado.
 
 ## 7. Frente 2 — Física y despliegue
 
@@ -182,7 +184,7 @@ No se considera entregado un archivo que solo contenga recomendaciones o un dibu
 
 **Salida temprana:** topología y alternativas de sala `v0.1`, aun con componentes lógicos provisionales.
 
-**Destino final:** secciones 4.2.1 y 4.2.2.
+**Destino final vigente tras MA-7:** sección 4.2.1.
 
 ### C2 — Tecnologías, hardware y data centers
 
@@ -206,7 +208,7 @@ No se considera entregado un archivo que solo contenga recomendaciones o un dibu
 
 **Dependencia de refinamiento:** catálogo lógico A1 y controles/servicios de D1.
 
-**Destino final:** secciones 4.2.3 a 4.2.6.
+**Destino final vigente tras MA-7:** secciones 4.2.2 a 4.2.5.
 
 ### C3 — Despliegue, red y continuidad
 
@@ -230,7 +232,7 @@ No se considera entregado un archivo que solo contenga recomendaciones o un dibu
 
 **Salida temprana:** zonas de red y restricciones físicas para D1.
 
-**Destino final:** secciones 4.2.7 a 4.2.10.
+**Destino final vigente tras MA-7:** sección 4.2.6.
 
 ### C4 — Dimensionamiento y T-11
 
@@ -252,7 +254,7 @@ No se considera entregado un archivo que solo contenga recomendaciones o un dibu
 
 **Dependencia:** usa A1/A2 y D1 `v0.1`, pero puede comenzar validando la volumetría heredada.
 
-**Destino final:** sección 4.2.11 y formulario T-11.
+**Destino final vigente tras MA-7:** secciones 4.2.7 y 4.2.8/Formulario T-11.
 
 ## 8. Frente 3 — Seguridad y consolidación
 
@@ -280,7 +282,7 @@ Este frente **no queda esperando**. Sus dependencias son de refinamiento. Desde 
 
 **Salida temprana obligatoria:** paquete `SEC-PHYS-v0.1` con controles, zonas, componentes y restricciones de emplazamiento. No requiere esperar A1/C1.
 
-**Destino final:** secciones 4.1.8 y 4.2.12.
+**Destino final vigente tras MA-7:** sección 4.1.4; apoyo a 4.2.3 y 4.2.6.
 
 ### D2 — Amenazas, ADR y puntos de falla
 
@@ -301,7 +303,7 @@ Este frente **no queda esperando**. Sus dependencias son de refinamiento. Desde 
 
 **Trabajo independiente inicial:** modelo por clases (`canal`, `gateway`, `servicio`, `broker`, `dato`, `edge`, `tercero`) y ADR obligatorios del Maestro.
 
-**Destino final:** sección 4.3.
+**Destino final vigente tras MA-7:** secciones 4.1.4 y 4.1.5; apoyo transversal a las secciones físicas afectadas.
 
 ### D3 — Auditoría y consolidación
 
@@ -389,4 +391,3 @@ El trabajo está terminado solo si:
 - las dependencias externas no están disfrazadas como decisiones;
 - se puede recorrer la cadena requisito→lógico→físico→seguridad→capacidad→T-11;
 - el documento final explica la solución sin exigir leer las carpetas de trabajo.
-

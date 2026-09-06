@@ -40,6 +40,7 @@
 
 | `TRZ-C3-031` | A3 §7 — cinco funciones críticas y su respaldo manual · BTT `RT-03.13` — declarar qué funciones **no** estarán disponibles; su ausencia es «observación grave» | — | continuidad | **corrección:** las cinco críticas **no requieren fallback manual**; lo que se degrada es la contraparte externa, no la función. Se retira «planilla de turno» y «acta en papel» de la matriz | prueba de desconexión de 72 h | vista de despliegue | n/a | PARA REVISIÓN |
 | `TRZ-C3-032` | A3 §3 — matriz de autoridad `dominio × zona × fase`, sustitución por bloque de patio · Decisión N° 1 §5.4 | MC-08 | autoridad | `PHY-OPS-03` sostiene autoridad diferenciada **por bloque simultáneamente**; escritura dual hacia el TOS post-cutover; retorno por redirección en la fachada | prueba de cruce de zona con fallo parcial | vista de despliegue | dentro de `T11-C2-01` | PARA REVISIÓN |
+| `TRZ-C3-033` | A1 §3/§5 y D1 `SEC-API-01` — ningún canal invoca directamente un contexto; `CP, Cap. 15, RT-03.10` — 72 h sin enlace | MC-09 | puerta local de servicios | durante el corte `CH-APP` y `CH-CAB` usan el perfil local restringido de `GW-API` en `PHY-OPS-01`; aplica políticas/contratos vigentes cacheados, enruta solo funciones críticas y registra para reconciliación | prueba E2E de 72 h recorriendo canal→gateway→contexto→dato→evidencia local | vista de despliegue diferida | incluido en `T11-C2-01`; sin fila duplicada | PARA REVISIÓN |
 
 ## 2. Cobertura declarada
 
@@ -49,7 +50,7 @@
 | `SD4-05` ambientes, redes, HA, DR y respaldos | matriz de ambientes, matriz de continuidad, plan DR y política de respaldo | §3, §7, §9 |
 | `SD4-07` decisiones registradas | aportes a `ADR-006` y `ADR-007` | §13 |
 | `SD4-08` arquitectura propia del caso | 620 naves, congelamiento estacional, sombras móviles, radioenlace sin probar desde 2022, TI de 5 personas | §1, §5, §9 |
-| `T21-4.2` ambientes, redes, continuidad y DR | secciones 4.2.7 a 4.2.10 del consolidado | todo |
+| `T21-4.2` ambientes, redes, continuidad y DR | sección 4.2.6 del consolidado | todo |
 | Checklist BTT, Cap. C, N° 4 | declaración de funciones no disponibles en modo desconectado, con A3 | §7, §8 |
 | Checklist BTT, Cap. C, N° 9 | plan de recuperación ante desastres y política de respaldo | §9 |
 | Checklist BTT, Cap. C, N° 12 | plan de continuidad conforme a ISO 22301 | §10 |
@@ -61,3 +62,4 @@
 - ~~Completar con A3 la declaración de funciones no disponibles (checklist N° 4)~~ — **hecho** en C3 §7.1; ver `TRZ-C3-031` y `032`.
 - `TRZ-C3-009`, `010`, `011`, `017` y `028` dependen de dato o autorización externa.
 - `TRZ-C3-003` requiere decisión del integrador sobre `F2-ESC-010`.
+- `TRZ-C3-033` queda cubierto como diseño; su prueba E2E es evidencia futura y no se declara ejecutada en Informe 1.

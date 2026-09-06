@@ -29,7 +29,7 @@ Este cierre debe ejecutarse después de corregir las inconsistencias del contras
 | Sistema operativo | Linux empresarial endurecido y con soporte vigente | familia definida; distribución por decidir |
 | Seguridad | IAM/MFA/PAM, KMS/HSM, secretos, SIEM, EDR, SOC y respaldo | capacidades definidas; productos/licencias pendientes |
 | CI/CD y cadena de suministro | SAST, SCA, DAST, SBOM, firma, procedencia y registro de artefactos | controles definidos; herramientas pendientes |
-| Nube | operación primaria/secundaria y DR | proveedor y regiones pendientes de `ADR-011` |
+| Nube | operación primaria/secundaria y DR | AWS; `sa-east-1` primaria multi-AZ y `us-east-1` secundaria, `ADR-011 PROPUESTO` |
 | Aplicaciones | canales y componentes lógicos definidos en A1–A3 | **stack de frontend, backend/API y aplicación de terreno pendiente** |
 
 ## 3. Decisiones mínimas que faltan
@@ -39,12 +39,12 @@ No es necesario seleccionar cada biblioteca. Sí deben quedar definidos y justif
 | Decisión | Contenido mínimo | Efecto directo |
 |---|---|---|
 | Canal web/frontend | tecnología o framework, compatibilidad, despliegue y política LTS | 4.2.3 y diagrama de despliegue |
-| Backend y APIs | lenguaje, framework/runtime, estilo de API, autenticación y ejecución nube/local | 4.1.6, 4.2.3 y nodos de cómputo |
+| Backend y APIs | lenguaje, framework/runtime, estilo de API, autenticación y ejecución nube/local | 4.1.3, 4.2.2 y nodos de cómputo |
 | Aplicación móvil/terminal | PWA, multiplataforma o nativa; operación offline, sincronización, gestión y compatibilidad con equipo robusto | 4.2.3, 4.2.4 y continuidad de 8 h |
 | Contenedores/orquestación | Kubernetes gestionado o alternativa más simple; límite del runtime local | 4.2.1, 4.2.3, capacidad y operación con TI=5 |
 | Persistencia y mensajería | selección entre candidatos ya documentados y reglas de portabilidad | 4.2.3, `ADR-003` y T-11 cuando corresponda |
 | Plataforma de ingeniería | repositorio, CI/CD, registro de artefactos, IaC y herramientas DevSecOps | 4.2.3, 4.2.7 y licencias/servicios |
-| Seguridad y observabilidad | productos o servicios compatibles con operación híbrida y aislamiento de 72 h | 4.1.8, 4.2.3, 4.2.12 y T-11 |
+| Seguridad y observabilidad | productos o servicios compatibles con operación híbrida y aislamiento de 72 h | 4.1.4, 4.2.2, 4.2.3, 4.2.6 y T-11 |
 | Ciclo de vida | versión de referencia, soporte vigente, actualización, reversibilidad y fin de soporte | catálogo, ADR y condiciones de operación |
 
 La selección debe preferir la alternativa más simple que cumpla continuidad, seguridad, portabilidad y operación por un equipo TI de cinco personas. Solo se abre o amplía un ADR cuando la elección tenga alternativas reales y consecuencias arquitectónicas relevantes.
@@ -91,4 +91,3 @@ Se puede diagramar cuando:
 - las dependencias realmente externas estén identificadas como tales.
 
 Cumplidas estas condiciones, los diagramas podrán construirse desde un único catálogo y no será necesario corregir nombres, cajas y emplazamientos durante la redacción del Subdocumento 4.
-

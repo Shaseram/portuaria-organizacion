@@ -16,9 +16,9 @@ Se registran durante la planificación. No bloquean el avance independiente y no
 
 | ID | Entrada / productor | Validación necesaria | Estado |
 |---|---|---|---|
-| `F3-DEP-001` | A1: actores y componentes v0.1 | Confirmar correspondencia ACT-* → roles propuestos → funciones/componentes; sin catálogo paralelo | CRUZADA CON OBSERVACIÓN — `ACT-TI`/consola y aprobación de roles |
+| `F3-DEP-001` | A1: actores y componentes v0.1 | Confirmar correspondencia ACT-* → roles propuestos → funciones/componentes; sin catálogo paralelo | RESUELTA PARA DISEÑO — `ACT-TI` funcional/técnico conciliado; aprobación nominal externa |
 | `F3-DEP-002` | A2/A3: contratos y operación local/TOS | Concretar controles de interfaces, autoridad y 72 h; no inventar contratos de terceros | RESUELTA PARA DISEÑO DOCUMENTAL — contratos efectivos externos |
-| `F3-DEP-003` | C1–C4: físico, redes, productos y capacidad | Ubicar controles, comprobar viabilidad/HA y cantidades/licencias para T-11 | CRUZADA CON OBSERVACIONES — producto final, site survey y pruebas pendientes |
+| `F3-DEP-003` | C1–C4: físico, redes, productos y capacidad | Ubicar controles, comprobar viabilidad/HA y cantidades/licencias para T-11 | RESUELTA PARA DISEÑO — producto contractual, site survey y pruebas permanecen externos |
 | `F3-DEP-004` | D2 y Subdoc. 5 | Revisar cobertura de amenazas y correspondencia de protección con datos concretos | PARCIAL — D2 auditado; catálogo de campos pendiente |
 
 Los bloqueos externos conservan F3-ESC-001 y los ESC del Maestro; no se fusionan con estas dependencias de compañeros. Los diagramas se elaboran tras definir el contenido y son condición para cerrar D1, no para intercambiar su paquete temprano.
@@ -168,7 +168,7 @@ D2 revisó los diez ADR disponibles en aquel corte y no promovió ninguno. Esta 
 
 **`B5-F03` — parcialmente corregido.** A3 §7 aporta la lista de degradación y respaldo manual. Permanece la contradicción `CTX-VESSEL` entre A1/A3 y C1.
 
-## Reapertura de integración D2 — B0/B1
+## Reapertura de integración D2 — B0/B1 (corte histórico)
 
 - `D2-DEP-001` y las entradas documentales de `D2-DEP-002/003` fueron recibidas; B6 queda habilitado.
 - `D2-DEP-004` queda parcial: D1 aporta controles y política de eventos, pero falta el catálogo del Subdocumento 5.
@@ -242,9 +242,9 @@ B7 **no abre decisiones de arquitectura ni dependencias nuevas**. El modelo D2 q
 | identidad local | `SRV-IAM` en `PHY-CLD-03` con capacidad local en `PHY-OPS-01` | COHERENTE CON ADR-008; producto/revocación/prueba pendientes |
 | claves y registro local | material protegido y colector/buffer en `PHY-OPS-01`; SIEM en `PHY-CLD-09` | COHERENTE CON ADR-009/010; capacidad/custodia/prueba pendientes |
 | `RT-11.02` | modelo D2 auditado y regla de actualización cruzados con D1 | CUBIERTO EN DISEÑO; continúa `EN CURSO` |
-| `ADR-011` | `SEC-CLOUD-01` enlazado a `THR-049/060/072/073` y `SPOF-22` | CANDIDATO; faltan alternativas concretas y selección |
+| `ADR-011` | `SEC-CLOUD-01` enlazado a `THR-049/060/072/073` y `SPOF-22` | corte B7-R: candidato aún sin selección concreta; MA-4 agrega patrón recomendado y conserva el estado `CANDIDATO` |
 
-Dependencias: `F3-DEP-001` queda cruzada con observación; `F3-DEP-002`, resuelta para diseño documental; `F3-DEP-003`, cruzada con observaciones; `F3-DEP-004`, parcial por Subdocumento 5. Siguen abiertos `ACT-TI`, `CTX-VESSEL`, seis diferencias adicionales de criticidad, `CH-CAB`, el solape `T11-C2-19`/`T11-SEC-04`, site survey, contratos/productos finales, responsables y pruebas. No se modificaron A1–A3/C1–C4, no se aprobaron ADR y no se aceptaron riesgos.
+**Corte histórico B7-R:** en ese corte `F3-DEP-001/003` aún tenían observaciones internas. MA-3 las concilia en A1/C1/C2/C3/D1/D2. El estado vigente conserva como externos site survey, contratos/productos finales, responsables, pruebas y aprobaciones; no se aprobaron ADR ni se aceptaron riesgos.
 
 ## Revisión conjunta D1–D2 — bloque 5/B7-C — 2026-09-06
 
@@ -253,3 +253,50 @@ Dependencias: `F3-DEP-001` queda cruzada con observación; `F3-DEP-002`, resuelt
 - El paquete D1–D2 se declara listo para auditoría independiente/general, sin promover ADR, aceptar riesgos, cerrar SPOF ni acreditar implementación.
 - La auditoría recibe como lista única: `ACT-TI`, `CTX-VESSEL`, criticidades, `CH-CAB`, solape SIEM, distinción `SPOF-13`/`SPOF-22`, `ADR-011`, Subdocumento 5, contratos/productos, responsables, site survey, capacidad, pruebas y aprobaciones.
 - B8, diagramas y D3 continúan diferidos hasta que los hallazgos de auditoría sean aplicados o queden formalmente asignados/aceptados.
+
+## Corte MA-3 — 2026-09-06 (histórico)
+
+- La ruta local queda cerrada como `CH-APP/CH-CAB → GW-API local → CTX crítico → DATA/evidencia/log local`; el perfil local de gateway está incluido en `EDGE-RUN` y no genera una compra duplicada.
+- `CTX-VESSEL`, criticidades, `CH-CAB`, `ACT-TI` y el solape SIEM dejan de ser observaciones abiertas; las secciones B6/B7 que las enumeran se leen como cortes históricos.
+- `F3-DEP-001/002/003` están resueltas para diseño de Informe 1. `F3-DEP-004` sigue parcial por el catálogo de campos del Subdocumento 5.
+- El registro vigente es `THR-001..073` y `SPOF-01..26`, con 0 aceptados. Productos, site survey, pruebas, responsables nominales y aceptación formal continúan como dependencias externas tratadas.
+- Próxima puerta en ese corte: MA-4; ya ejecutada. B8, diagramas y D3 continúan diferidos.
+
+## Corte histórico MA-4 — 2026-09-06
+
+- `ADR-001..010` quedan `PROPUESTO` como baseline del Informe 1; `ADR-011` permanece `CANDIDATO`; ninguno queda `APROBADO`.
+- `ADR-005/006/007` pasan de candidato a propuesta porque ya tienen selección condicional, alternativa de salida, consecuencias y efecto transversal/T-11. Sus condiciones externas no desaparecen ni equivalen a aceptación del riesgo.
+- `ADR-011` conserva el patrón región Chile multi-AZ + secundario del mismo proveedor + copia inmutable fuera de su plano de control, pero la selección de proveedor/regiones requiere mediciones y ofertas.
+- No se acepta ningún riesgo ni se cierra ningún SPOF. La continuación queda en puerta P2 antes de MA-5/T-11; B8, diagramas y D3 continúan diferidos.
+
+## Corte histórico MA-5 — 2026-09-06
+
+- El usuario selecciona AWS: `sa-east-1` primaria multi-AZ y `us-east-1` secundaria activo-pasivo.
+- `ADR-011` pasa a `PROPUESTO`; total vigente: 11 `PROPUESTO`, 0 `APROBADO`.
+- `THR-073` y `SPOF-22` permanecen: usar un mismo proveedor no elimina el dominio común; portabilidad, copia inmutable y autoridad separada son tratamiento, no aceptación.
+- T-11 contiene 32 filas. `T11-SEC-04` sigue como ancla y se absorbe en `T11-C2-19`; no se duplica el SIEM.
+- B8, diagramas y D3 continúan diferidos. Próxima puerta: P3 antes de MA-6.
+
+## Corte histórico MA-6 — 2026-09-06
+
+- El Artículo 4 queda trazado en `00_Gobierno/11_MATRIZ_ARTICULO4_MA6.md` mediante 38 estándares/prácticas y 15 materias normativas.
+- La cadena vigente es `estándar/norma → requisito → control → componente → evidencia I1 → evidencia futura`; citar un estándar ya no sustituye su tratamiento.
+- ISO/IEC 42010, calidad de datos y accesibilidad conservan salidas parciales controladas; certificaciones y visados externos mantienen dueño y condición.
+- NIST AI RMF e ISO/IEC 42001 quedan `NO APLICA JUSTIFICADO`: `CTX-PLAN` no incorpora IA en la baseline.
+- No se aprueba ADR, no se acepta riesgo ni se cierra SPOF. En el corte MA-6 el próximo bloque era MA-7; el corte vigente aparece a continuación.
+
+## Corte histórico MA-7 — 2026-09-06
+
+- Se adopta la estructura oficial 4.1/4.2; ADR, cumplimiento y dependencias se integran dentro de esas partes y no como capítulos 4.3–4.5.
+- Se proponen cinco figuras obligatorias: F1 contexto, F2 lógica, F3 integración/proceso, F4 físico/despliegue y F5 seguridad.
+- La vista de datos se resuelve con `V-DATA-01`; F6 continuidad queda condicionada a legibilidad, evitando una figura redundante.
+- La extensión objetivo es 20–25 páginas incluido T-11. Las matrices completas permanecen como evidencia interna.
+- En ese corte P4 quedó activa; MA-8 registra su aprobación y la secuencia vigente.
+
+## Corte vigente MA-8 — 2026-09-06
+
+- El usuario aprueba P4 y autoriza preparar el último bloque MA.
+- D3 no redactará: auditará el consolidado real después de la redacción y los diagramas.
+- Trece secciones quedan enlazadas a fuentes y trece controles quedan preparados en TRZ-D3.
+- En contenido solo restan redacción total, F1–F5 y cruce fino `V-DATA-01`; F6 sigue condicional.
+- La ejecución D3 y la maquetación son controles finales, no nuevos diseños de arquitectura.

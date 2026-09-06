@@ -4,7 +4,7 @@
 
 ### Objetivo y destino
 
-Especificar las tecnologías y los implementos que materializan la arquitectura, incluido recinto primario y secundario/DR. Alimenta las secciones 4.2.3–4.2.6.
+Especificar las tecnologías y los implementos que materializan la arquitectura, incluido recinto primario y secundario/DR. Alimenta las secciones 4.2.2–4.2.5.
 
 ### Cumplimientos asignados
 
@@ -134,27 +134,27 @@ Cumple la exigencia de declaración del numeral 6.1.
 
 `RT-08.01` obliga a especificar con marca y **modelo de referencia**; el numeral 6.5 del BTT usa la fórmula «tipo AnaLASER **o equivalente de prestaciones iguales o superiores**». Adoptamos esa misma regla en todo el catálogo: **el producto nombrado es referencia y la especificación es lo vinculante**; cualquier equivalente que la satisfaga es admisible. Un nombre de producto sin la especificación que lo justifica sería relleno comercial, que el propio contrato de este paquete prohíbe.
 
-**Criterio de vigencia en lugar de versión congelada.** Fijar hoy una versión exacta para un contrato de 56 meses garantiza quedar fuera de soporte antes de terminarlo. Se declara, por componente: versión de referencia a la fecha de la oferta, política de soporte del fabricante (LTS o equivalente), y la regla de que **ningún componente entrará en producción ni permanecerá en ella con soporte extendido vencido**, con ventana de actualización acordada conforme a `RT-03.15`.
+**Línea base para Informe 1 y control de versión.** La columna «Referencia» es la selección técnica principal de este corte; la columna «Alternativa» conserva la opción evaluada y no representa una segunda oferta simultánea. La versión exacta se congela en el catálogo/T-11 al cierre de la oferta, junto con su fecha de fin de soporte; durante los 56 meses se mantiene en una rama LTS o equivalente y **ningún componente entra ni permanece en producción con soporte vencido**, con ventana de actualización conforme a `RT-03.15`. Así se evita tanto una lista de opciones sin decisión como prometer hoy una versión inmutable durante todo el Contrato.
 
 | Capa | Función | Referencia | Alternativa | Gestionado o autogestionado | Criterio de vigencia |
 |---|---|---|---|---|---|
 | **Canal web** | `CH-PORTAL`: portal público y autenticado, y perfil de administración funcional | aplicación web de página única sobre **React** con TypeScript, o equivalente con soporte a largo plazo | **Angular** con TypeScript, si se prefiere un marco con opinión completa y ciclo de soporte publicado | autogestionado; se sirve como contenido estático desde `PHY-CLD-01` | rama LTS o versión mayor con soporte del proyecto durante todo el Contrato; **WCAG 2.2 AA** verificable (`RT-13.01`) y bilingüe (`RT-13.12`, endurecido por el caso) |
 | **Backend y APIs** | `CTX-*`, `SRV-*`, `INT-*`: lógica de negocio, contratos y eventos | servicios en contenedor sobre **Java con Spring Boot**, o equivalente de plataforma empresarial con soporte a largo plazo | **.NET** con ASP.NET Core, o **Go** para los servicios de borde donde el tamaño de imagen y el arranque importen | autogestionado, en la misma pila de contenedores de la fila «Ejecución de servicios» | versión LTS del runtime y del marco; **la misma imagen debe correr en nube y en la sala**, sin dependencia del plano de control del proveedor (regla negativa 8) |
-| **Contratos de interfaz** | `RT-05.16`: documentación de interfaces | **OpenAPI 3.1** para lo síncrono y **AsyncAPI 3.0** para lo asíncrono, generados desde el código y versionados | — | autogestionado | especificación vigente; el contrato es la fuente, no el código |
+| **Contratos de interfaz** | `RT-05.16`: documentación de interfaces | **OpenAPI 3.1** para lo síncrono y **AsyncAPI 3.0** para lo asíncrono, bajo enfoque `contract-first` | — | autogestionado | la especificación versionada es la fuente; stubs, validadores y pruebas se generan o verifican contra ella. El código no redefine unilateralmente el contrato |
 | **Aplicación de terreno** | `CH-APP`: cuatro perfiles con operación sin conexión | aplicación instalable multiplataforma sobre **React Native**, o equivalente que comparta código entre Android e iOS con acceso nativo a periféricos | **Flutter**, o desarrollo nativo si el fabricante del equipo robusto solo certifica su cadena | autogestionado; se instala en el equipo `T11-C2-15` | versión mayor con soporte del proyecto; **no es una web responsiva empaquetada** (regla negativa 1) y es **una sola aplicación con cuatro perfiles**, no cuatro aplicaciones (regla negativa 2) |
 | **Almacenamiento del terreno** | offline cifrado de `CH-APP` y de `CH-CAB` | base embebida cifrada en el dispositivo —**SQLite con cifrado**— con cola de sincronización y resolución determinista por marca de tiempo del equipo | — | autogestionado | el umbral es **8 h de sombra de radio en patio** sin pérdida de registro (Maestro §4.6), distinto de las 72 h de `EDGE-RUN` |
 | **Interfaz de cabina** | `CH-CAB`: pantallas de cabina y terreno | vista de solo indicación construida con la misma pila de `CH-APP`, en modo quiosco sobre la pantalla del equipo | — | autogestionado | objetivos táctiles ≥44×44 px, alto contraste bajo luz solar directa, uso con guantes; **sin confirmación rutinaria manual**: la telemetría es la fuente primaria |
-| Borde público | CDN, WAF, anti-DDoS L3/L4/L7, TLS 1.3 | servicio gestionado del proveedor de nube | CDN/WAF de tercero especializado | **gestionado** — `RT-03.05`: reduce riesgo operacional con TI de 5 personas | servicio, sin versión propia |
-| Gateway de servicios | identidad, cuotas, versionado, esquema | gateway gestionado del proveedor | Kong o APISIX autogestionado | **gestionado** | ídem |
-| Ejecución de servicios | contenedores orquestados | Kubernetes gestionado del proveedor | contenedores gestionados sin orquestador | **gestionado** en nube; **autogestionado ligero** en la sala | Kubernetes: rama con soporte vigente del proveedor |
-| Runtime local | núcleo operacional de 72 h | misma pila de contenedores, sin dependencia del plano de control de nube | — | **autogestionado**, por regla negativa 8 del Maestro | ídem |
-| Datos transaccionales | `DATA-CORE` | PostgreSQL gestionado, multi-AZ | motor equivalente con réplica síncrona | **gestionado** en nube; instancia local en la sala | versión mayor con soporte comunitario/proveedor vigente |
+| Borde público | CDN, WAF, anti-DDoS L3/L4/L7, TLS 1.3 | **Amazon CloudFront + AWS WAF + AWS Shield**, o equivalente superior del catálogo AWS | CDN/WAF de tercero especializado | **gestionado** — `RT-03.05`: reduce riesgo operacional con TI de 5 personas | servicio, sin versión propia |
+| Gateway de servicios | identidad, cuotas, versionado, esquema y entrada local 72 h | **Kong Gateway o equivalente con despliegue híbrido**: plano/perfil central en nube y data plane/perfil local restringido en `PHY-OPS-01` | gateway gestionado del proveedor solo si permite exportar y ejecutar localmente las mismas políticas/contratos sin plano de control | gestionado en nube y autogestionado acotado en sala | misma familia y política compatible en ambos perfiles; el local no expone catálogo ni administración y se prueba aislado |
+| Ejecución de servicios | contenedores orquestados | **Amazon EKS** en nube; Kubernetes ligero compatible en sala | contenedores gestionados sin orquestador | **gestionado** en nube; **autogestionado ligero** en la sala | rama Kubernetes soportada por AWS y por la distribución local |
+| Runtime local | ruta operacional de 72 h | misma pila de contenedores + perfil local restringido de `GW-API`, sin dependencia del plano de control de nube | — | **autogestionado**, por regla negativa 8 del Maestro | inventario canónico A1 §2.2; no agrega una segunda plataforma completa |
+| Datos transaccionales | `DATA-CORE` | **Amazon RDS for PostgreSQL Multi-AZ**; PostgreSQL local | motor equivalente con réplica síncrona | **gestionado** en nube; instancia local en la sala | versión mayor soportada por AWS y por la distribución local |
 | Series temporales | `DATA-TS` telemetría reefer y equipos | extensión de series sobre PostgreSQL, o motor de series dedicado | — | gestionado | ídem |
-| Objetos y documentos | `DATA-DOC`, imágenes OCR y actas | almacenamiento de objetos del proveedor, con ciclo de vida y modo inmutable | — | **gestionado** — el modo inmutable sostiene `RT-07.11` | servicio |
-| Bus de eventos | `INT-HUB`, colas durables y DLQ | broker gestionado del proveedor | Kafka o RabbitMQ autogestionado | **gestionado** | ídem |
-| Analítica | `DATA-AN`, KPI y concedente | almacén analítico gestionado | — | gestionado | ídem |
+| Objetos y documentos | `DATA-DOC`, imágenes OCR y actas | **Amazon S3 con Versioning, Lifecycle y Object Lock** | — | **gestionado** — el modo inmutable sostiene `RT-07.11` | servicio |
+| Bus de eventos | `INT-HUB`, colas durables y DLQ | **Amazon EventBridge + Amazon SQS FIFO/DLQ** | Kafka o RabbitMQ autogestionado | **gestionado** | servicio |
+| Analítica | `DATA-AN`, KPI y concedente | **Amazon Athena + AWS Glue** sobre el lago de objetos | almacén analítico dedicado si el rendimiento lo exige | gestionado | servicio |
 | Identidad | `SRV-IAM`, OIDC/OAuth 2.1 o SAML 2.0, MFA, PAM | plataforma de identidad gestionada | identidad autogestionada | gestionado; **detalle de D1** | ídem |
-| Observabilidad | métricas, logs y trazas, nube y on-premise | pila compatible **OpenTelemetry** | — | gestionado, con recolector local | especificación OTel vigente |
+| Observabilidad | métricas, logs y trazas, nube y on-premise | **Amazon CloudWatch + AWS Distro for OpenTelemetry + Amazon OpenSearch Service** | plataforma SIEM compatible OpenTelemetry | gestionado, con recolector local | servicio y especificación OTel vigente |
 | Infraestructura como código | `RT-03.03` | Terraform u OpenTofu, versionado **en el repositorio del CLIENTE** | — | autogestionado | rama con soporte vigente |
 | Sistema operativo de servidores | núcleo local y edge | distribución Linux empresarial con soporte extendido | — | autogestionado, endurecido **CIS** por `RT-03.15` | release con soporte del fabricante durante todo el Contrato |
 
@@ -162,19 +162,19 @@ Cumple la exigencia de declaración del numeral 6.1.
 
 **Por qué esta selección y no otra.** El criterio no es preferencia técnica: es la restricción no negociable 11 y el área de TI de **cinco personas**. Se elige, en cada línea, **la alternativa más simple que cumpla continuidad, seguridad, portabilidad y operación con esa dotación**. Tres consecuencias concretas. La primera: el backend corre en contenedor y **la misma imagen se ejecuta en la nube y en la sala técnica**, que es lo único que hace posible la regla negativa 8 —si el runtime dependiera de un servicio gestionado propietario, las cinco funciones críticas no sobrevivirían las 72 h—. La segunda: la aplicación de terreno es **instalable y multiplataforma, no una web empaquetada**, porque las reglas negativas 1 y 2 lo exigen y porque el offline de 8 h con periféricos —lector óptico, NFC, GPS, báscula (`CP, Cap. 15, RT-17.06`)— no se resuelve desde un navegador. La tercera: **se nombran productos de referencia y no versiones congeladas**, conforme al criterio de vigencia declarado arriba; el contrato dura 56 meses y fijar hoy una versión exacta garantiza quedar fuera de soporte antes de terminarlo.
 
-**Lo que aquí no se decide.** No se elige proveedor de nube —es `ADR-011`—, ni producto de identidad —es `ADR-008` de D1—, ni la distribución concreta de Linux. Y no se abre un ADR para el stack de aplicación: la elección tiene alternativas reales, pero **ninguna de ellas cambia la arquitectura** —las tres opciones de backend corren en el mismo contenedor sobre los mismos nodos, y las tres de aplicación de terreno satisfacen el mismo offline de 8 h—, de modo que registrarla como decisión de arquitectura inflaría el registro sin aportar trazabilidad. El Maestro fija ese criterio: se abre un ADR cuando la elección tiene **consecuencias arquitectónicas**, no cada vez que hay más de un producto posible.
+**Lo que aquí no se decide.** AWS y las regiones ya quedaron fijados por `ADR-011`; siguen abiertos el producto de identidad —`ADR-008`— y la distribución concreta de Linux. No se abre un ADR para el stack de aplicación: la elección tiene alternativas reales, pero **ninguna de ellas cambia la arquitectura** —las opciones de backend corren en el mismo contenedor sobre los mismos nodos, y las de aplicación de terreno satisfacen el mismo offline de 8 h—, de modo que registrarla como decisión de arquitectura inflaría el registro sin aportar trazabilidad.
 
 **Reversibilidad y bloqueo por proveedor** (`RT-03.07`, obligatorio). Portables sin reescritura: los servicios propios, empaquetados en contenedores; el motor transaccional y el de series, por ser estándar; la infraestructura como código, con reescritura del proveedor pero no del diseño. No portables sin esfuerzo declarado: el borde público gestionado, el broker gestionado y el almacén analítico, cuya sustitución exige reimplementar integraciones. La mitigación es que **ninguna de las cinco funciones críticas depende de un servicio gestionado propietario**: el núcleo local corre la misma pila de contenedores sin plano de control de nube, que es lo que hace posible la regla negativa 8 del Maestro.
 
-### 4. Proveedor y región de nube — decisión que hoy no tiene ADR
+### 4. Proveedor y región de nube — `ADR-011` propuesto
 
 `RT-03.01` exige declarar el proveedor y las regiones primaria y secundaria, con presencia en Chile o Sudamérica. `RT-15.04` exige declarar la **intensidad de carbono de la región escogida**, y `RT-15.05` valora escoger la de menor intensidad cuando latencia y regulación lo permitan, con análisis comparativo.
 
-Esa es una decisión de arquitectura con alternativas reales, consecuencias y criterios — exactamente lo que el Registro ADR Global define como ADR. **No existe un ADR asignado a ella**: la lista `ADR-001` a `ADR-010` no la cubre. Se escala como `F2-ESC-009` y se propone abrirla como `ADR-011`, con estos criterios de comparación: presencia de región en Chile o Sudamérica y número de zonas de disponibilidad; latencia medida al terminal; intensidad de carbono declarada; catálogo de servicios gestionados que cubra la pila del numeral 3; certificaciones y residencia de datos frente a la condición de operador de importancia vital; y esfuerzo de reversibilidad. Este frente no la resuelve unilateralmente porque afecta a los tres.
+Es una decisión de arquitectura con alternativas reales, consecuencias y criterios. En MA-5 se seleccionó **AWS**, con **São Paulo `sa-east-1`** como región primaria desplegada en al menos dos zonas de disponibilidad y **Norte de Virginia `us-east-1`** como región secundaria activo-pasivo. `ADR-011` pasa a `PROPUESTO`: la ubicación ya no está indefinida, pero la aprobación requiere medir latencia desde el terminal, acreditar residencia/tratamiento, verificar catálogo y certificaciones al congelar la oferta, y registrar la métrica regional de carbono.
 
 #### 4.1 Las alternativas concretas de `ADR-011`
 
-La auditoría de cierre de D2 (`B7.2 #8`) observa que `ADR-011` *«aún no compara alternativas concretas ni selecciona una»*, y tiene razón: enumerar criterios no es comparar alternativas. Lo que sí puede hacerse en el Informe 1, sin nombrar proveedores ni inventar cifras que ninguna base entrega, es **acotar el espacio de decisión** para que la comparación quede planteada y la elección sea trazable cuando existan los datos.
+La auditoría de cierre de D2 (`B7.2 #8`) observó que `ADR-011` no comparaba alternativas concretas. MA-4 acotó el espacio de decisión y MA-5 seleccionó AWS y las dos regiones. Las tablas siguientes se conservan porque demuestran que la decisión no nació de nombrar una marca sin criterio.
 
 La decisión tiene dos ejes que se resuelven juntos.
 
@@ -194,9 +194,7 @@ La decisión tiene dos ejes que se resuelven juntos.
 | `B2-OTRO` segunda región de **otro** proveedor | rompe el dominio común de fallo | exige portabilidad real por componente (`RT-03.07`), duplica la ingeniería de operación y choca con un área TI de cinco personas (restricción no negociable 11) |
 | `B3-HIBRIDO` respaldo inmutable custodiado fuera del proveedor primario, con producción en una sola nube | mitiga el fallo común **en el dato**, no en el cómputo | es la única de las tres que se sostiene hoy con la dotación declarada; deja el RTO de un fallo de proveedor sin cubrir y eso hay que declararlo |
 
-**Qué falta para seleccionar, y por qué no se selecciona aquí.** Faltan tres datos que ninguna de las tres bases entrega y que este frente tiene prohibido inventar: la **latencia medida** desde el terminal a cada región candidata, la **intensidad de carbono declarada** por región que exige `RT-15.04`, y el catálogo de servicios gestionados efectivamente disponible en cada una. Sin ellos, elegir sería inventar el fundamento de la elección.
-
-**Recomendación técnica que sí se puede dejar escrita, condicionada.** Si la medición confirma que una región en Chile ofrece multi-AZ real y cubre la pila del numeral 3, la combinación `A1-CL` + `B1-MISMO` es la que menos riesgo operacional agrega, **con la condición explícita** de tratar `SPOF-22` mediante `B3-HIBRIDO` sobre el respaldo: copia inmutable con autoridad de borrado separada, fuera del plano de control del proveedor primario. Esa condición no es opcional: es lo que impide que la caída de un proveedor deje al terminal sin producción **y** sin recuperación. La selección definitiva y la aprobación del ADR corresponden al integrador con el CLIENTE; se mantiene `F2-ESC-009`.
+**Selección y condición de revisión.** Se adopta `A2-SA + B1-MISMO`: `sa-east-1` satisface la presencia sudamericana y ofrece una región operativa para la baseline; `us-east-1` aporta separación geográfica y catálogo maduro para DR. Producción se distribuye en al menos dos AZ y el secundario opera activo-pasivo con réplica caliente de datos y capacidad de cómputo reducida. El riesgo de dominio común `SPOF-22` no desaparece: se complementa con copia inmutable y autoridad de borrado separada. La región AWS anunciada para Chile se revisará después de su disponibilidad general; solo reemplazará la primaria si acredita multi-AZ, catálogo, latencia, residencia y carbono sin degradar el diseño. `F2-ESC-009` queda cerrado como selección y se transforma en condición de verificación de aceptación.
 
 **`SPOF-13` y `SPOF-22` no se consolidan.** D2 lo pide expresamente en `B7-O01` y este frente lo confirma, porque son dos cosas distintas: `SPOF-13` es la **recuperabilidad del respaldo** —que exista, que sea inmutable y que la autoridad que puede borrarlo esté separada, tratado en §6.1 con `RT-07.10`, `.11` y `.12`—; `SPOF-22` es el **dominio de fallo común del proveedor**, que ninguna política de respaldo resuelve por sí sola. Un solo control no cierra los dos, y en el T-11 tampoco se funden: `T11-C2-18` cubre la región secundaria y `T11-C2-12` la custodia de medios, y ambas siguen siendo necesarias. Consolidarlas habría ahorrado una fila y perdido un dominio de fallo.
 
@@ -320,7 +318,7 @@ El propio BTT advierte que *«los niveles de disponibilidad de infraestructura s
 | Crecimiento | margen declarado **como porcentaje sobre la carga proyectada del caso**, y procedimiento de ampliación | `RT-08.05` |
 | Condición | **equipamiento nuevo, sin uso previo**, con garantía de fábrica vigente desde la recepción conforme | `RT-08.06` |
 
-**Referencias.** Servidores de rack de doble socket de familia empresarial —Dell PowerEdge R, HPE ProLiant DL o Lenovo ThinkSystem SR—, en clúster de al menos tres nodos para tolerar la caída de uno sin perder cuórum. Almacenamiento por arreglo con paridad doble o espejo distribuido: **el nivel RAID exacto se declara y justifica en C4**, porque `RT-03.14` exige justificarlo *frente a las alternativas* y esa comparación depende del volumen y del perfil de escritura, que aún no está cerrado. Conmutación de núcleo en par redundante —Cisco Catalyst, Aruba CX o Juniper EX— y cortafuegos en alta disponibilidad —Palo Alto PA o Fortinet FortiGate—, con las capacidades de segmentación que exige D1. Cantidades, capacidades y consumo: C4.
+**Referencias y línea base dimensional.** C4 §6.2.bis fija tres servidores 1U de 16 núcleos/128 GB/2×10 GbE y 350 W de diseño por nodo; almacenamiento de referencia 4×480 GB SSD en `RAID 10` —1,92 TB brutos/≈960 GB útiles—; dos racks 42U; pares HA de conmutación y cortafuegos. Las familias comerciales de referencia siguen siendo Dell PowerEdge R/HPE ProLiant DL/Lenovo ThinkSystem SR, Cisco Catalyst/Aruba CX/Juniper EX y Palo Alto PA/Fortinet FortiGate o equivalentes. El modelo final debe satisfacer esos mínimos; `ADR-007` formaliza RAID/almacenamiento. C4 también fija UPS, generación, combustible, climatización, CCTV, carga TI y PUE de referencia.
 
 #### 7.1 Puestos de trabajo
 
@@ -369,10 +367,10 @@ Dos advertencias honestas. Primera: `CP, Cap. 6` dice que hoy *«los gabinetes d
 
 | Grupo `SEC-PHYS` | Producto o servicio de referencia | Compatibilidad y vigencia | Clasificación T-11 |
 |---|---|---|---|
-| `SEC-EDGE-01/02` | servicio de borde gestionado del proveedor de nube: CDN, WAF, anti-DDoS L3/L4/L7, TLS 1.3, HSTS y protección de bots | servicio, sin versión propia; depende de `ADR-011` | **fila propia** |
-| `SEC-API-01` | gateway gestionado del proveedor; alternativa autogestionada Kong o APISIX | ídem | **agrupada** con el borde si el producto es el mismo; separada si no |
+| `SEC-EDGE-01/02` | Amazon CloudFront + AWS WAF + AWS Shield: CDN, anti-DDoS L3/L4/L7, TLS 1.3, HSTS y protección de bots | servicio AWS, sin versión propia; región/borde fijados por `ADR-011` | **fila propia** |
+| `SEC-API-01` | Kong Gateway o equivalente híbrido: perfil central y perfil local restringido | misma política/contrato versionado en nube y sala; operación local 72 h sin plano de control nube | **incluida** en plataforma de gateway/runtime; una sola fila, sin duplicar el perfil local |
 | `SEC-NET-01 / SEC-EXP-01` | cortafuegos y conmutación de núcleo ya especificados en §7 —familias Palo Alto PA, Fortinet FortiGate, Cisco Catalyst, Aruba CX, Juniper EX— más verificación externa de exposición | debe soportar segmentación por zona y conductos declarados; IEC 62443 | **incluida** en `T11-C2-03` y `T11-C2-04`; **no genera fila nueva** |
-| `SEC-IAM-01 / SEC-ADM-01 / SEC-PROD-01` | plataforma de identidad gestionada con OIDC/OAuth 2.1 o SAML 2.0, MFA y PAM con grabación de sesión | **requisito excluyente:** capacidad local de autenticación durante 72 h. `ADR-008` sigue `EN ANÁLISIS` en D1 | **fila propia** IAM y PAM; lectores o credenciales solo con cantidad justificada por C4 |
+| `SEC-IAM-01 / SEC-ADM-01 / SEC-PROD-01` | plataforma de identidad gestionada con OIDC/OAuth 2.1 o SAML 2.0, MFA y PAM con grabación de sesión | **requisito excluyente:** capacidad local de autenticación/autorización y bloqueo durante 72 h. `ADR-008` está `PROPUESTO CONDICIONADO`, no aprobado | **fila propia** IAM y PAM; lectores o credenciales solo con cantidad justificada por C4 |
 | `SEC-SYNC-01` | canal del broker de integración ya ofertado | cifrado, identidad de servicio, protección contra repetición | **incluida** en integración y red; sin fila |
 | `SEC-DATA-01 / SEC-ENC-01 / SEC-FIELD-01` | capacidades nativas de cifrado del motor transaccional, del almacén de objetos y del de series | cifrado de campo sobre los datos que `RT-11.10` y el `CP, Cap. 15` identifican como sensibles | **incluida**; fila separada solo si se oferta un servicio de cifrado de campo aparte |
 | `SEC-KEY-01 / SEC-SECRET-01` | KMS o HSM gestionado más gestor de secretos con rotación | **requisito excluyente que C2 confirma:** si la clave vive solo en nube, el núcleo local no puede descifrar durante el corte. Exige material de clave protegido en el sitio, con raíz no exportable | **fila propia**; se consolidan KMS, HSM y bóveda sin duplicar funciones incluidas |
@@ -413,18 +411,19 @@ Sin precios, conforme al Art. 16 y a la regla del Maestro. Un componente lógico
 | `T11-C2-10` | control de acceso biométrico y esclusa | facial con AFIS de respaldo | acceso a sala técnica | 1 conjunto | `RT-06.20`, `RT-06.23` |
 | `T11-C2-11` | videovigilancia del recinto | CCTV IP con ≥30 días en línea | sala técnica | C4 | `RT-06.24` |
 | `T11-C2-12` | custodia de medios de respaldo | servicio de custodia externa | fuera del recinto principal | 1 servicio | `RT-06.26` |
-| `T11-C2-13` | estaciones de trabajo de operación | estación con monitores duales | espacio de operación | C4 | `RT-08.07` |
-| `T11-C2-14` | gabinetes de borde | IP66 con tratamiento marino, por clase | gate, patio, patio refrigerado, muelle | C4 | `RT-08.12`, `CP, Cap. 15, RT-06.01` |
-| `T11-C2-15` | dispositivos móviles de terreno | equipo robusto IP65, uso con guantes | patio, gate, inspección, frío | C4 | `RT-08.11` |
+| `T11-C2-13` | estaciones de trabajo de operación | estación con monitores duales | espacio de operación | 3 de baseline; validación AHT en H2 | `RT-08.07`, C4 `DIM-18` |
+| `T11-C2-14` | gabinetes de borde | IP66 con tratamiento marino, por clase | gate, patio, patio refrigerado, muelle | 59–61; site survey cierra patio | `RT-08.12`, `CP, Cap. 15, RT-06.01` |
+| `T11-C2-15` | dispositivos móviles de terreno | equipo robusto IP65, uso con guantes | patio, gate, inspección, frío | 97: 88 operativos + 9 repuestos | `RT-08.11`, C4 §9 |
 | `T11-C2-16` | concentradores de patio refrigerado | uno por tablero | 26 tableros | 26 → 32 | `PHY-EDG-03` |
-| `T11-C2-17` | servicios de nube — cómputo, datos, objetos, bus, analítica | plataforma del proveedor, región primaria | nube primaria | C4 | Cap. 3 |
-| `T11-C2-18` | servicios de nube — región secundaria y DR | réplica y conmutación | nube secundaria | C4 | Cap. 7 |
-| `T11-C2-19` | observabilidad y SIEM | plataforma compatible OpenTelemetry | nube, con recolector local | C4 | `RT-03.16`, D1 |
+| `T11-C2-17` | servicios de nube — cómputo, datos, objetos, bus, analítica | AWS EKS, RDS PostgreSQL, S3, EventBridge/SQS y Athena/Glue | São Paulo `sa-east-1`, multi-AZ | 1 plataforma elástica; C4 | Cap. 3, `ADR-011` |
+| `T11-C2-18` | servicios de nube — región secundaria y DR | AWS réplica cross-region y cómputo reducido activo-pasivo | Norte de Virginia `us-east-1` | 1 sitio lógico regional | Cap. 7, `ADR-007/011` |
+| `T11-C2-19` | observabilidad y SIEM | CloudWatch + AWS Distro for OpenTelemetry + OpenSearch/SIEM | AWS, con recolector local | 1 suscripción por ingesta/retención | `RT-03.16`, D1 |
 
 > **Una sola plataforma, una sola fila.** `RT-03.16` exige que el monitoreo on-premise se integre a **la misma** plataforma que la nube, sin puntos ciegos. Por eso `T11-C2-19` y los grupos `SEC-LOG-01 / SEC-SIEM-01` de `SEC-PHYS-v0.1` **no son dos compras**: son la misma plataforma vista desde observabilidad y desde seguridad. C4 §9.bis lo resuelve sobre esta fila y §9.ter la dimensiona. D2 lo había marcado como posible doble conteo en `B6-F05`; queda cerrado por fusión, no por omisión.
 | `T11-C2-20` | licenciamiento de sistema operativo y soporte | distribución empresarial con soporte | sala técnica y borde | C4 | `RT-03.15` |
+| `T11-C2-21` | racks y distribución eléctrica A/B | rack 42U, PDU A/B, tierra y gestión de cables | sala técnica | 2 racks | `RT-06.03..05`, C4 §9 |
 
-Quedan **fuera del T-11 y se declara por qué**: la obra civil de la sala, que es de cargo del CLIENTE con especificación nuestra (`RT-06.06`); los sistemas conservados —ERP, control de grúas, VMS, control de acceso del recinto portuario, básculas, TOS—; y las canalizaciones exteriores, que se especifican pero las ejecuta el CLIENTE.
+**Regla única de alcance T-11.** Los equipos de terreno que TERABYTE debe especificar (`T11-C2-14..16`) permanecen en la matriz técnica aunque su adquisición corresponda al CLIENTE; la columna Justificación lo declara y el Informe 1 no incluye precios. Si el formulario se interpreta como provisión exclusiva del adjudicatario, esas mismas filas pasan 1:1 a un anexo de “hardware especificado por TERABYTE y adquirido por el CLIENTE”, sin desaparecer ni duplicarse. Quedan fuera como provisión la obra civil de la sala, los sistemas conservados y las canalizaciones ejecutadas por el CLIENTE, todos con su referencia técnica.
 
 ### 10. Ciclo de vida y salida de servicio
 
@@ -446,13 +445,12 @@ Quedan **fuera del T-11 y se declara por qué**: la obra civil de la sala, que e
 - [x] Primario y secundario diferenciados, con responsabilidades separadas.
 - [x] Cantidades vinculadas a C4; **no hay precios**.
 - [x] Tipología declarada por sitio, conforme al numeral 6.1.
-- [ ] `TRZ_C2.md` completo — en curso.
-- [ ] Cantidades, capacidades, kW, factor de potencia, PUE y nivel RAID — dependen de C4.
+- [x] `TRZ_C2.md` disponible; su estado vigente se sanea en MA-3.
+- [x] Línea base de cantidades, capacidades, kW, factor de potencia, PUE y RAID — C4 §6.2.bis/§9; modelos y pruebas permanecen condicionados.
 - [x] Componentes y licencias de seguridad — §8.bis: los 17 grupos con producto, compatibilidad y clasificación T-11.
-- [ ] `ADR-011` proveedor y región de nube — propuesto, no abierto (`F2-ESC-009`).
+- [x] `ADR-011` proveedor y región — AWS, `sa-east-1` primaria y `us-east-1` secundaria; estado `PROPUESTO`, con verificaciones de aceptación declaradas.
 - [ ] Plano de distribución interna del recinto (`RT-06.03`) y plano de racks — en el pase final de diagramas.
 
 ## Trazabilidad
 
 Ver [`trazabilidad/TRZ_C2.md`](trazabilidad/TRZ_C2.md).
-

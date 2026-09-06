@@ -1,0 +1,14 @@
+# Artefactos del sistema y temporales
+.DS_Store
+**/.DS_Store
+tmp/
+
+# Fuentes y material auxiliar local que no forman parte del cierre versionado
+Base_pdfs/
+Bases_caso/
+archivo/
+continuacion_correccion/
+cronograma.md
+CONSULTAS_TERABYTE_*.xlsx
+*.zip
+Celula3/PROPUESTA TECNICA.pdf

@@ -4,7 +4,7 @@
 
 ### Objetivo y destino
 
-Explicar el comportamiento dinámico de los procesos críticos, la convivencia con el TOS y la continuidad local. Alimenta las secciones 4.1.7 y 4.2.9 del consolidado.
+Explicar el comportamiento dinámico de los procesos críticos, la convivencia con el TOS y la continuidad local. Alimenta la sección 4.1.3 y apoya 4.2.6 del consolidado.
 
 ### Cumplimientos asignados
 
@@ -202,15 +202,21 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    participant CH as CH-APP / CH-CAB
     participant EDGE as EDGE-RUN
+    participant GW as GW-API local restringido
     participant CTX as CTX-OPS/GATE/YARD/REEFER/BILL/VESSEL/INT-TOS
     participant CORE as DATA-CORE (réplica local)
 
-    Note over EDGE,CTX: Enlace exterior perdido
+    Note over CH,CORE: Enlace exterior perdido; la ruta local autorizada sigue activa
     EDGE->>CTX: EnlaceExteriorPerdido (Maestro §9.1)
+    CH->>GW: Operación crítica con identidad/política vigente cacheada
+    GW->>CTX: Valida esquema y autoriza solo operación permitida
     CTX->>CORE: Continúa registrando localmente, íntegro (RF-OPD-01/02)
-    Note over EDGE,CTX: Hasta 72 h — funciones críticas de A1 §2.4 operan sin degradar
-    Note over EDGE,CTX: Equipos de patio: hasta 8 h de sombra de radio local (distinto del enlace exterior — A1 §2.2)
+    CTX-->>GW: Resultado + correlación + evidencia local
+    GW-->>CH: Respuesta y estado de sincronización
+    Note over CH,CORE: Hasta 72 h — funciones críticas de A1 §2.4 operan sin degradar
+    Note over CH,CORE: Equipos de patio: hasta 8 h de sombra de radio local (distinto del enlace exterior — A1 §2.2)
     EDGE->>CTX: Enlace restablecido
     EDGE->>CTX: SincronizacionIniciada
     CTX->>CTX: Resolución determinista de conflictos de posición (RF-OPD-05)
@@ -219,6 +225,8 @@ sequenceDiagram
 ```
 
 **Qué NO está disponible offline (declaración obligatoria, BTT RT-03.13 — omitirla es "observación grave"):** ver tabla §7.
+
+**Condición común de las cinco funciones:** ninguna evita el gateway mediante acceso directo. `CH-APP` y `CH-CAB` ingresan por el perfil local restringido de `GW-API`, que usa identidad, políticas y contratos vigentes cacheados; el catálogo, la administración y la exposición externa del gateway central permanecen fuera de línea hasta la reconexión. El inventario completo de apoyos locales está en A1 §2.2.
 
 **El umbral ≤90 min no es solo `RNF-DIS-04`:** `CP, Cap. 15, RT-03.13` fija el mismo valor como parámetro del caso — mismo código que `BTT RT-03.13` (que exige, en cambio, declarar qué funciones no están disponibles offline, ya citado en el párrafo anterior). Colisión confirmada por Frente 2 (`F2-ESC-006`) y tratada como Supuesto M — ambos exigibles y acumulativos, no alternativos (ver A1 §2.2 `EDGE-RUN` y `DECISIONES_Y_ESCALAMIENTOS.md`, `F1-CONFLICTO-001`). A peak estacional ese umbral exige del orden de 32,5 Mbps sostenidos durante la reposición (dimensionamiento físico de C3/C4, `F2-ESC-012`; el enlace de respaldo real —radioenlace, sin prueba de conmutación desde 2022 según el caso— puede no sostenerlo, riesgo que ese frente declara y este documento no resuelve).
 
@@ -318,7 +326,7 @@ Profundiza A1 §2.4 con el procedimiento manual exigido por BTT RT-03.13 (su aus
 | Gate | Verificación contra autoridades externas usa fallback asistido | Carril de excepción manual (ya existente — RN-07) | RPO ≈0; RTO de verificación externa = tiempo de reconexión |
 | Reefer | Reporte agregado a `DATA-AN` se difiere | Ninguno — alarma y registro continúan localmente | RPO ≈0 (crítica, incluida en `EDGE-RUN`) |
 | Hechos facturables | Entrega a ERP y conciliación 1:1 se posterga | Ninguno — evidencia se sella localmente | RPO ≈0; RTO de conciliación ERP = tiempo de reconexión |
-| *(fuera de las 5 críticas, declarado explícitamente)* Planificación, inspecciones, emisiones, analítica, alta de identidad nueva, catálogo central del gateway | Se degradan por diseño (A1 §2.4, §2.5) | Plan impreso y radio (modo degradado explícito — Decisión 1 §7.2); confirmación manual de headcount (`RF-ACC-08`) | No crítico — tolera demora hasta reconexión |
+| *(fuera de las 5 críticas, declarado explícitamente)* nueva planificación, nuevas inspecciones, cálculo de emisiones, analítica, alta de identidad nueva, catálogo y administración central del gateway | Se degradan por diseño (A1 §2.4, §2.5); el último plan vigente cacheado queda solo para consulta | Plan impreso y radio (modo degradado explícito — Decisión 1 §7.2); confirmación manual de headcount (`RF-ACC-08`) | No crítico — tolera demora hasta reconexión |
 
 *Fuente: A1 §2.4, §2.5; BTT RT-03.10/13, RT-10.08; RF-ACC-08 (conteo operativo sin conectividad); Decisión 1 (Célula 2) §7.2.*
 
@@ -357,13 +365,13 @@ Las tres condiciones de la alianza naviera (34 % de los contenedores) entran en 
 
 ---
 
-### 10. ADR-002 y ADR-004 — candidatos
+### 10. ADR-002 y ADR-004 — propuestos
 
 #### ADR-002 — Frontera del runtime local y sincronización
 
 **Estado:** Propuesto · **Fecha:** 2026-09-05 · **Participantes:** Frente 1
 
-**Decisión:** `EDGE-RUN` replica exactamente las 5 funciones críticas de A1 §2.4 (idéntico alcance a A1 §2.2/§2.5), con resincronización determinista ≤90 min tras hasta 72 h de desconexión, resolviendo conflictos de posición de forma determinista (`RF-OPD-05`) y dejando bitácora auditable (`RF-OPD-06`). Frontera: ningún componente fuera de esas 5 funciones se replica (planificación, inspecciones, emisiones, analítica se degradan por diseño, no por omisión).
+**Decisión:** `EDGE-RUN` sostiene exactamente las 5 funciones críticas de A1 §2.4 mediante el inventario canónico de A1 §2.2: perfil local restringido de `GW-API`, núcleo funcional, identidad/datos críticos y apoyos parciales de evidencia, notificación, cola y observabilidad. Mantiene resincronización determinista ≤90 min tras hasta 72 h de desconexión, resuelve conflictos de posición de forma determinista (`RF-OPD-05`) y deja bitácora auditable (`RF-OPD-06`). Frontera: no se replica una segunda plataforma completa; la generación de un plan nuevo, las nuevas inspecciones, el cálculo de emisiones y la analítica se degradan por diseño, no por omisión.
 
 **Alternativas descartadas:** replicar todo el núcleo (sobredimensiona el edge sin necesidad, contradice BTT §2.3); no replicar nada y detener la operación ante pérdida de enlace (viola restricción no negociable N° 4, RF-OPD-01).
 
@@ -397,4 +405,3 @@ stateDiagram-v2
 ## Trazabilidad
 
 Ver [`trazabilidad/TRZ_A3.md`](trazabilidad/TRZ_A3.md).
-

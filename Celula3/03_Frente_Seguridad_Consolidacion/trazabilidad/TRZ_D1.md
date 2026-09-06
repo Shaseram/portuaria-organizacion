@@ -4,7 +4,7 @@
 
 | ID | Fuente | RNF/MC | Control | Actor/dato | Capa/componente | Nodo/servicio | Evidencia | T-11 | Estado |
 |---|---|---|---|---|---|---|---|---|---|
-| `TRZ-D1-001` | FEP02 Cap. 11 RT-11.01/02 | RNF-SEG-01/02 | Zero Trust/STRIDE | todos | transversal | 21 nodos C1 cruzados | D1 B1.2/B3.1–3/B7-R; D2 B7/B7.8: modelo STRIDE auditado y 31/31 controles enlazados | SEC-PHYS incorporado por C1–C4 | EN CURSO — diseño cubierto; pruebas/aprobación pendientes |
+| `TRZ-D1-001` | FEP02 Cap. 11 RT-11.01/02 | RNF-SEG-01/02 | Zero Trust/STRIDE | todos | transversal | 20 nodos `PHY-*` + `LOC-INSP-01` cruzados | D1 B1.2/B3.1–3/B7-R; D2 B7/B7.8: modelo STRIDE auditado y 31/31 controles enlazados | SEC-PHYS incorporado por C1–C4 | EN CURSO — diseño cubierto; pruebas/aprobación pendientes |
 | `TRZ-D1-002` | FEP02 Cap. 12 + Caso 06 | MC-04; RNF-SEG-10 | IAM terminal/eventual | ACT-EVT/externos | SRV-IAM + capacidad local | `PHY-CLD-03` + `PHY-OPS-01` | D1 B1/B2/B7-R; matriz, sesiones, offline y pruebas previstas | `T11-SEC-02`; producto/prueba pendientes | EN CURSO |
 | `TRZ-D1-003` | FEP02 Cap. 11 RT-11.07/08/12/13 | RNF-SEG-04 | WAF/DDoS/TLS/exposición | públicos | GW-EDGE | nube multi-AZ propuesta; origen privado | D1 B3.3–B3.6; configuración/inventario/pruebas pendientes | sí, servicio/capacidad pendiente | EN CURSO |
 | `TRZ-D1-004` | FEP02 Cap. 11 RT-11.14..16; Maestro §§11.3/16 | RNF-SEG/OPE | log/SIEM/EDR | operación | transversal | `PHY-CLD-09` + `PHY-OPS-01`; EDR en nodos compatibles | D1 B5/B7-R; política de admisión, retención, corte y casos; ingesta dominante/pruebas pendientes | `T11-SEC-04/05`; revisar solape `T11-C2-19` | EN CURSO |
@@ -15,9 +15,9 @@
 | `TRZ-D1-009` | FEP02 Cap. 11 RT-11.09; Maestro §§9/11/16 | RNF-SEG-04; RNF-DIS-02/04/14 | claves, secretos, rotación y recuperación | claves/certificados/secretos | transversal | híbrido; capacidad local POR VALIDAR | B4.4–B4.8; corte/rotación/recuperación | sí | EN CURSO |
 | `TRZ-D1-010` | FEP02 Cap. 11 RT-11.04/18..21 | RNF-SEG-03/07/08/11; RNF-OPE-05 | incidentes, vulnerabilidades, pentest y simulación | todos los activos/servicios | SEC-IR-01/SEC-VULN-01/SEC-PENTEST-01 | híbrido + servicio independiente | D1 B5.5–B5.7; marcas 2 h/24 h/5 días, 7/15/30 y reprueba | sí, capacidades/servicios pendientes | EN CURSO |
 | `TRZ-D1-011` | FEP02 Cap. 11 RT-11.22..28; Cap. 4 RT-04.03..07/11; FEP01 Art. 4.3 | RNF-MAN-01..06/11 | DevSecOps, cadena de suministro, datos no productivos y acceso a producción | código, dependencias, artefactos y datos | SEC-SDLC/PIPE/SUPPLY/ART/NPDATA/PROD/SAMM | servicio de ingeniería; producción segregada | D1 B6.1–B6.8; bloqueos, SBOM, firma, trazabilidad y acceso excepcional | sí, herramientas/licencias pendientes | EN CURSO |
-| `TRZ-D1-012` | Contrato D1; FEP02 Cap. 11/12; Plan §8; T-11 | SD4-04; apoyo SD4-02/05/08 | auditoría de cobertura y SEC-PHYS-v0.1 | todos | 31 SEC-* / 17 grupos de aporte | 17/17 emplazados o justificados por C1 | D1 B7/B7-R; 28/28 RT11 y 13/13 RT12 en diseño; amenazas/nodos cruzados | 7 candidatos `T11-SEC-*` + 10 incluidos/condicionales | EN CURSO |
-| `TRZ-D1-013` | A1–A3; C1–C4; D2 B7 | dependencias F3-DEP-001..004 | integración documental de seguridad | 16 actores, 24 componentes | 31 controles / 73 amenazas | 21 nodos; servicios/procesos sin nodo justificados | D1 B7-R: control↔amenaza 31/31, SEC-PHYS 17/17 y continuidad IAM/llaves/logs | C4 §9.bis/ter; sin alterar cantidades | EN CURSO — listo para revisión conjunta |
-| `TRZ-D1-014` | D1/D2; TRZ-D1/D2; registro ADR; matriz global | puerta conjunta B7-C | revisión de coherencia previa a auditoría independiente | todos | 31 controles / 73 amenazas / 22 SPOF | 21 nodos C1 | D1 B7-C y auditoría de cierre: sin referencias huérfanas ni estados incompatibles detectados | sin cambios de producto/cantidad | EN CURSO — REVISIÓN CONJUNTA COMPLETA; aprobación pendiente |
+| `TRZ-D1-012` | Contrato D1; FEP02 Cap. 11/12; Plan §8; T-11 | SD4-04; apoyo SD4-02/05/08 | auditoría de cobertura y SEC-PHYS-v0.1 | todos | 31 SEC-* / 17 grupos de aporte | 17/17 emplazados o justificados por C1 | D1 B7/B7-R/MA-3; 28/28 RT11 y 13/13 RT12 en diseño; amenazas/nodos cruzados | 6 filas propias `T11-SEC`, 1 absorbida en `T11-C2-19` y 10 incluidas/condicionadas | EN CURSO |
+| `TRZ-D1-013` | A1–A3; C1–C4; D2 B7/MA-3 | dependencias F3-DEP-001..004 | integración documental de seguridad | 16 actores, 24 componentes | 31 controles / 73 amenazas | 20 nodos `PHY-*` + `LOC-INSP-01`; servicios/procesos sin nodo justificados | D1 B7-R/MA-3: control↔amenaza 31/31, SEC-PHYS 17/17 y continuidad IAM/llaves/logs/gateway local | C4 §9.bis/ter; sin alterar cantidades | EN CURSO — coherencia interna conciliada; externos pendientes |
+| `TRZ-D1-014` | D1/D2; TRZ-D1/D2; registro ADR; matriz global | puerta conjunta B7-C + MA-3 | revisión de coherencia y corrección quirúrgica | todos | 31 controles / 73 amenazas / 26 SPOF | 20 nodos `PHY-*` + `LOC-INSP-01` | D1 B7-C/MA-3 y registro de correcciones: ruta local, criticidades, ubicación, capacidades y conteos conciliados | sin doble conteo T-11; productos finales permanecen condicionados | EN CURSO — MA-3 COMPLETADA; revisión ADR/armado final pendientes |
 
 ## 2. Cobertura de entrada — FEP02, capítulo 11
 
@@ -30,10 +30,10 @@ El capítulo 11 es central para D1, pero no sustituye las obligaciones ya identi
 | RT FEP02 | Numeral / carácter BTT | Consideración que debe conservarse | Referencia Célula 2 / matriz global | Destino y coordinación | Evidencia prevista / enlace por completar | Estado |
 |---|---|---|---|---|---|---|
 | `RT-11.01` | 11.1 / Obligatorio | Zero Trust conforme NIST SP 800-207: verificación explícita, mínimo privilegio y presunción de compromiso | RNF-SEG-01; STD-03 | D1; A1/C1 | D1 B1.2/B2.2/B3.1–3 y SEC-IAM/NET/API-01; nodos/configuración/pruebas pendientes | EN CURSO |
-| `RT-11.02` | 11.1 / Obligatorio | Amenazas por cada componente e integración externa; metodología declarada y actualización ante cambios relevantes | RNF-SEG-02; STD-13 | D2 produce; D1 aplica controles; A1/A2/C1 aportan inventario | D2 B7 cubre el diseño con `THR-001..073`, 24/24 componentes, 11 sistemas+`EXT-CON`, 21/21 nodos y regla de cinco disparadores; D1 B7-R confirma 31/31 controles enlazados | EN CURSO — CUBIERTO EN DISEÑO; pruebas, revisión independiente y aprobación pendientes |
+| `RT-11.02` | 11.1 / Obligatorio | Amenazas por cada componente e integración externa; metodología declarada y actualización ante cambios relevantes | RNF-SEG-02; STD-13 | D2 produce; D1 aplica controles; A1/A2/C1 aportan inventario | D2 B7/MA-3 cubre el diseño con `THR-001..073`, 24/24 componentes, 11 sistemas+`EXT-CON`, 20 nodos `PHY-*` + `LOC-INSP-01`, `SPOF-01..26` y regla de cinco disparadores; D1 confirma 31/31 controles enlazados | EN CURSO — CUBIERTO EN DISEÑO; pruebas, revisión independiente y aprobación pendientes |
 | `RT-11.03` | 11.1 / Obligatorio | Clasificación de información por sensibilidad, con controles diferenciados en matriz | RNF-SEG-05/09 (apoyo, no equivalencia total); STD-02 | D1; Subdoc. 5 | D1 B4.1/2; taxonomía y controles iniciales, catálogo de campos pendiente | EN CURSO |
 | `RT-11.04` | 11.1 / Obligatorio | Escaneo continuo; remediación críticas ≤7 días corridos, altas ≤15 y medias ≤30, desde publicación o detección | RNF-SEG-03 | D1; C3/operación | D1 B5.6/B5.7 y SEC-VULN-01; cobertura, producto, ejecución y cierres pendientes | EN CURSO |
-| `RT-11.05` | 11.1 / Obligatorio | Matriz trazable a ISO/IEC 27001 y 27002: control, implementación concreta y evidencia | STD-01/02; obligación directa BTT | D1; D3 verifica | matriz de controles + D1 B7.3/B7.4 y SEC-GOV-01; mapeo normativo completo y evidencia pendientes | EN CURSO |
+| `RT-11.05` | 11.1 / Obligatorio | Matriz trazable a ISO/IEC 27001 y 27002: control, implementación concreta y evidencia | `STD-A4-01/02`; obligación directa BTT | D1; D3 verifica | matriz de controles + D1 B7.3/B7.4 + `SEC-GOV-01`; MA-6 completa estándar→control→componente→evidencia I1/futura | CUBIERTO PARA I1; EJECUCIÓN FUTURA |
 | `RT-11.06` | 11.1 / Obligatorio | Aplicar ISO/IEC 27017 a nube y 27018 al tratamiento de datos personales en nube | STD-02 | D1; C1/C2 y Subdoc. 5 | D1 B7.3 y SEC-CLOUD-01; proveedor/servicios/datos, responsabilidades y evidencia pendientes | EN CURSO |
 | `RT-11.07` | 11.2 / Obligatorio | Exposición exclusivamente por borde: CDN, WAF con reglas gestionadas/personalizadas y DDoS L3/L4/L7 | STD-05 (apoyo); obligación directa BTT | D1; A1/A2/C1/C3 | D1 B3.3/B3.4/B3.6 y SEC-EDGE-01; producto, reglas/capacidad y pruebas pendientes | EN CURSO |
 | `RT-11.08` | 11.2 / Obligatorio | TLS 1.3; prohibir TLS 1.0/1.1; cifrados modernos; HSTS con precarga; certificados automatizados, rotación y aviso de vencimiento | RNF-SEG-04; STD-15 | D1; A2/C3 | D1 B3.4 y B4.4/6/7; inventario, productos y pruebas pendientes | EN CURSO |
@@ -64,7 +64,7 @@ Este numeral no agrega códigos RT. Se controla a través de las filas anteriore
 
 | Ámbito | Referencia de §11.5 | Destino de trazabilidad |
 |---|---|---|
-| Gestión y controles de seguridad | ISO/IEC 27001 y 27002 | RT-11.05; STD-01/02 |
+| Gestión y controles de seguridad | ISO/IEC 27001 y 27002 | RT-11.05; `STD-A4-01/02` en MA-6 |
 | Nube y datos personales en nube | ISO/IEC 27017 y 27018 | RT-11.06; STD-02 |
 | Marco de ciberseguridad | NIST CSF 2.0 | STD-03; D1/D2, controles y gestión de riesgos |
 | Zero Trust | NIST SP 800-207 | RT-11.01; STD-03 |
@@ -199,7 +199,7 @@ Detalle y hallazgos en [D1 B7](../D1_ARQUITECTURA_DE_SEGURIDAD.md#b7-auditoría-
 
 Correcciones de estado: TRZ-D1-001/002/003/006 y RT-11.01/05/06/07/11/12/13 pasan a `EN CURSO` porque ya tienen diseño concreto enlazado. B7-F13 actualiza de igual forma las filas D1 correspondientes de la matriz global. Después del corte B7, `RT-11.02` pasa también a `EN CURSO` por el modelado provisional D2 B2–B5; no está cerrado porque falta refinarlo contra componentes e interfaces reales en D2 B6/B7. Los cambios no declaran conformidad final.
 
-Dependencias de cierre: F3-DEP-001..004 continúan `PENDIENTE`; F3-ESC-001/002 continúan externos. A1–A3/C1–C4/D2 visibles siguen sin contenido desarrollado suficiente para validar componentes, contratos, autoridad, nodos, productos, capacidad o amenazas. Esto no impide entregar SEC-PHYS-v0.1, pero sí impide aprobar D1 y producir diagramas físicos definitivos.
+**Corte histórico B7:** en ese momento F3-DEP-001..004 continuaban `PENDIENTE` y A1–A3/C1–C4/D2 no estaban integrados. Los cortes posteriores se registran en §12, MA-3 y MA-4; este párrafo no describe el estado actual.
 
 `F3-DEC-005` evita la equivalencia errónea control = compra: C4 crea fila T-11 solo para un producto, servicio, licencia o hardware ofertado; una capacidad incluida se referencia desde la fila principal. El consolidado T-11 central no se modificó antes del intercambio con su propietario.
 
@@ -211,14 +211,66 @@ Dependencias de cierre: F3-DEP-001..004 continúan `PENDIENTE`; F3-ESC-001/002 c
 |---|---|---|
 | A1 | 16 actores y 24 componentes cruzados; `ACT-TI` conserva brecha de consola | CRUZADO CON OBSERVACIÓN |
 | A2/A3 | contratos lógicos, autoridad, degradación y respaldo manual cruzados | RESUELTO PARA DISEÑO; contratos efectivos externos |
-| C1–C4 | 21 nodos y 17 grupos SEC-PHYS emplazados/tratados; 7 candidatos T11-SEC y 10 incluidos/condicionales | CRUZADO CON OBSERVACIONES |
-| D2 | 73 amenazas y 22 SPOF auditados; 31/31 controles D1 asociados | CONFORME DOCUMENTAL; `ADR-011` pendiente |
+| C1–C4 | 20 nodos `PHY-*` + `LOC-INSP-01` y 17 grupos SEC-PHYS emplazados/tratados; 6 filas T11-SEC propias, 1 absorbida y 10 incluidas/condicionadas | CONFORME DOCUMENTAL; pruebas/site survey pendientes |
+| D2 | 73 amenazas y 26 SPOF registrados; 31/31 controles D1 asociados | CONFORME DOCUMENTAL; aceptación de riesgos y revisión ADR pendientes |
 | RT-11.02 | método, inventario real, controles/evidencia y regla de cinco disparadores | CUBIERTO EN DISEÑO; EN CURSO por prueba/revisión/aprobación |
 | Subdocumento 5 | campo→propietario→sensibilidad→retención | PENDIENTE |
 
-Dependencias vigentes: `F3-DEP-001` cruzada con observación; `F3-DEP-002` resuelta para diseño documental; `F3-DEP-003` cruzada con observaciones; `F3-DEP-004` parcial porque D2 está disponible y el catálogo de campos no. Permanecen `F3-ESC-001/002`, `CTX-VESSEL`, diferencias de criticidad, `CH-CAB`, el posible solape SIEM, productos/contratos finales, site survey, responsables y pruebas.
+Dependencias vigentes tras MA-3: `F3-DEP-001/002/003` quedan resueltas para diseño documental; `F3-DEP-004` permanece parcial por el catálogo campo→sensibilidad→retención del Subdocumento 5. `CTX-VESSEL`, las criticidades, `CH-CAB`, `ACT-TI` y el solape SIEM quedaron conciliados. Permanecen externos `F3-ESC-001/002`, productos/contratos finales, site survey, responsables, pruebas y aceptación formal.
 
 **Conclusión:** D1 queda integrado y trazable para la revisión documental conjunta del Frente 3. No está aprobado; no hay pruebas ejecutadas ni riesgos aceptados. Diagramas y narrativa visual permanecen diferidos a B8.
+
+## 13. Corte histórico MA-4 — baseline ADR y puerta P2
+
+| Universo | Resultado vigente | Estado |
+|---|---|---|
+| ADR | 11/11 revisados; `ADR-001..010` `PROPUESTO`, `ADR-011` `CANDIDATO`, 0 `APROBADO` | BASELINE I1 REVISADA |
+| identidad, claves y detección | `ADR-008/009/010` conservan su selección y condiciones; no se inventan productos, custodios ni pruebas | EN CURSO |
+| relación con D2 | 73 amenazas, 26 SPOF, 31/31 controles enlazados; 0 riesgos aceptados | CONFORME DOCUMENTAL |
+| relación con T-11 | condiciones de `ADR-005/007/011` y capacidades de seguridad deben propagarse sin duplicar filas | HABILITA MA-5 |
+| diagramas/B8/D3 | no ejecutados | DIFERIDOS |
+
+La revisión completa está en [`09_REVISION_ADR_BASELINE_I1_MA4.md`](../../00_Gobierno/09_REVISION_ADR_BASELINE_I1_MA4.md). En ese corte la continuación se detuvo en P2 antes de MA-5/T-11; P2 ya fue superada.
+
+## 14. Corte histórico MA-5 — seguridad en T-11 y puerta P3
+
+| Universo | Resultado vigente | Estado |
+|---|---|---|
+| ADR | 11/11 `PROPUESTO`, 0 `APROBADO`; AWS `sa-east-1`/`us-east-1` en `ADR-011` | BASELINE I1 |
+| controles con fila propia | borde/gateway, IAM/PAM, KMS/secretos, EDR, SOC y vulnerabilidades/pentest | 6 FILAS |
+| control agrupado | `T11-SEC-04` registro/SIEM resuelve en `T11-C2-19` | SIN DUPLICIDAD |
+| capacidades incluidas | red, cifrado nativo, backup e IaC/SBOM referencian su plataforma dueña | TRAZADAS |
+| cantidades | identidades, endpoints y unidades de servicio explícitas; mediciones futuras declaradas | LISTAS I1 |
+| diagramas/B8/D3 | no ejecutados | DIFERIDOS |
+
+Detalle histórico en [`10_CONSOLIDACION_T11_MA5.md`](../../00_Gobierno/10_CONSOLIDACION_T11_MA5.md). En ese corte el siguiente bloque fue MA-6; el estado vigente está en §17 y `Celula3/README.md`.
+
+## 15. Corte histórico MA-6 — estándar, control y evidencia
+
+| Materia | Resultado | Estado |
+|---|---|---|
+| Artículo 4.3 | 38 estándares/prácticas respondidos individualmente | CUBIERTO PARA I1 |
+| seguridad y nube | ISO/IEC 27001/27002/27017/27018, NIST CSF y Zero Trust aterrizan en `SEC-GOV-01`, `SEC-CLOUD-01`, zonas/conductos e IAM/API | TRAZADO |
+| software y cadena de suministro | OWASP, CIS, SLSA, SBOM, firma y procedencia aterrizan en controles B6 y `T11-C3-04` | TRAZADO; PRUEBAS FUTURAS |
+| normativa | 15 materias nacionales/sectoriales declaran efecto arquitectónico y dueño | TRAZADO; CONDICIONES EXTERNAS TRATADAS |
+| IA | `CTX-PLAN` permanece determinista, con aprobación humana y sin modelo IA | NO APLICA JUSTIFICADO |
+
+La fuente canónica es [`11_MATRIZ_ARTICULO4_MA6.md`](../../00_Gobierno/11_MATRIZ_ARTICULO4_MA6.md). `PROPUESTO`, control diseñado, certificación y evidencia ejecutada continúan siendo estados distintos. En ese corte el próximo bloque era MA-7; el corte vigente se registra a continuación.
+
+## 16. Corte histórico MA-7 — publicación de seguridad
+
+| Elemento D1 | Salida al Subdocumento 4 | Estado |
+|---|---|---|
+| Zero Trust, zonas y conductos | F5 — seguridad y límites de confianza | DISEÑADA; B8 LA DIBUJA |
+| identidad y operación desconectada | F3/F5 + 4.1.4/4.2.6 | BASELINE I1; PRODUCTO/PRUEBA FUTUROS |
+| cifrado, claves, registros y SIEM | síntesis 4.1.4 + filas T-11 correspondientes | TRAZADO SIN DOBLE CONTEO |
+| datos | tabla `V-DATA-01`, detalle en Subdocumento 5 | DEPENDENCIA TRATADA |
+
+MA-7 se registra en [`12_PROYECCION_EDITORIAL_Y_PLAN_DIAGRAMAS_MA7.md`](../../00_Gobierno/12_PROYECCION_EDITORIAL_Y_PLAN_DIAGRAMAS_MA7.md). En ese corte P4 quedó activa; MA-8 registra el estado posterior.
+
+## 17. Corte vigente MA-8 — contrato D3
+
+La publicación de D1 queda asignada a 4.1.4, 4.2.3 y 4.2.6, con F5 como vista principal y apoyos en F3/F4/T-11. D3 define los controles de identidad local, zonas, cifrado, claves, registro/SIEM y evidencia futura. Estado: **control preparado, no auditado**. P4 está aprobada; faltan redacción y figuras antes de ejecutar D3.
 
 ## Corrección de fuente — 2026-09-06 (integrador)
 
@@ -226,4 +278,3 @@ Dependencias vigentes: `F3-DEP-001` cruzada con observación; `F3-DEP-002` resue
 |---|---|---|
 | `SEC-IAM-01` | Citaba `FEP02 Cap. 11, RT-11.27` como fuente. Ese código trata **exclusivamente** del acceso de personas desarrolladoras al ambiente de producción y no cubre la identidad de personas externas ni de eventuales, que es el alcance del control. Se sustituye por los códigos del Capítulo 12 que sí corresponden: `RT-12.01` federación y directorio, `RT-12.03` MFA, `RT-12.05` RBAC/ABAC con segregación, `RT-12.10` baja ≤24 h desde la desvinculación y `RT-12.11` credencial temporal de eventuales | Texto del `BTT` verificado: *«Las personas desarrolladoras no tendrán acceso interactivo directo al ambiente de producción…»*. Hallazgo `X-2` de la auditoría cruzada de Frente 1 |
 | `SEC-PROD-01` y `SEC-ADM-01` | `RT-11.27` **se conserva**: ahí sí es la materia correcta | — |
-
