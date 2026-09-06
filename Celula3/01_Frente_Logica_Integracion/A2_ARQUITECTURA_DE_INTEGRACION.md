@@ -140,6 +140,16 @@ Base de dimensionamiento: **21 contrapartes lógicas actuales** (14 navieras + 3
 
 *Total: 7 filas individuales (`EXT-TOS12`, `EXT-ERP`, `EXT-CON`, `EXT-FER`, `EXT-AUT-ADU`, `EXT-AUT-SAG`, `EXT-AUT-SAN`) + 14 navieras agrupadas en una fila (`CP-NAV-01`…`CP-NAV-14`) = **21 contrapartes**, sin doble conteo.*
 
+**Equivalencia de identificadores con el Maestro y con A1 (para que los nombres coincidan, Definición de terminado de este entregable):** esta tabla desglosa por contrato lo que el Maestro §5.2 y A1 §1.3 nombran de forma agregada. Ningún código de aquí sustituye al del catálogo: lo detalla.
+
+| Código en este documento | Equivale a | Por qué se desglosa aquí |
+|---|---|---|
+| `CP-NAV-01`…`CP-NAV-14` | `EXT-NAV` (Maestro §5.2; A1 §1.3) | El contrato EDIFACT es por naviera, con madurez desigual (Caso 06 Cap. 13.1); el dimensionamiento de contrapartes las cuenta una a una. `EXT-NAV` sigue siendo el identificador canónico de la familia. |
+| `EXT-AUT-ADU`, `EXT-AUT-SAG`, `EXT-AUT-SAN` | `EXT-AUT` (Maestro §5.2; A1 §1.3) | Cada autoridad tiene interfaz, disponibilidad y fallback propios; `EXT-AUT` sigue siendo el identificador canónico de la familia. |
+| `EXT-CON` | Canal de salida hacia el actor `ACT-CON` (Maestro §5.1; A1 §1.2) | **No es un duodécimo sistema conservado.** El concedente no aporta un sistema a integrar: recibe reportes generados desde `DATA-AN`. Los 11 sistemas de Maestro §5.2 y A1 §1.3 no cambian; `EXT-CON` existe solo como contraparte de este catálogo porque tiene contrato, periodicidad y fallback propios. |
+
+*Es el mismo criterio que §2.2 aplica a `PER-REEFER` y `PER-EQPOS`: contratos que A1 da por sentado y que aquí se formalizan, sin alterar el catálogo de A1.*
+
 **Nota sobre las "3 autoridades" (sin inventar precisión que el caso no da):** Caso 06 Cap. 4.7 nombra exactamente Aduana, SAG y autoridad sanitaria como quienes seleccionan contenedores para inspección — son las 3 contrapartes de este catálogo. El Cap. 12 menciona además una "autoridad marítima" (atraque, permanencia y zarpe de naves), pero la trata como marco normativo de `CTX-VESSEL`, no como una cuarta contraparte de intercambio de datos de inspección; por eso no se cuenta aparte aquí. Si el levantamiento posterior confirma que la autoridad marítima requiere su propio contrato de datos, se agrega como contraparte N° 22 y se actualiza esta cifra — no se fuerza a encajar en las 3 actuales.
 
 #### 2.2 Familias técnicas de periferia/instrumentación (7)
@@ -182,7 +192,7 @@ Los cuatro mensajes EDIFACT que la Decisión 18 de Célula 2 fija como estándar
 | Flujo | Remitente | Mensaje/canal | Requerimiento | Meta | Contraparte en §2 |
 |---|---|---|---|---|---|
 | Orden de embarque | Naviera | COPRAR (EDIFACT) | `RF-INT-02` | 0 % alianza; ≤5 % resto (sin cifra base propia) | `CP-NAV-*` |
-| Instrucción de embarque | Embarcador o agencia de aduana | Portal, canal estructurado con validación por registro (BTT RT-05.22) | `RF-POR-09` (Etapa 2, Crítica) | Cero digitación manual (línea base 41 %) | `EXT-AGE` (nueva, ver abajo) |
+| Instrucción de embarque | Embarcador o agencia de aduana | Portal, canal estructurado con validación por registro (BTT RT-05.22) | `RF-POR-09` (Etapa 2, Crítica) | Cero digitación manual (línea base 41 %) | `ACT-AGE` → `CH-PORTAL` (actor ya existente, no contraparte nueva — ver abajo) |
 
 **No es una 22ª contraparte de §2.1.** El embarcador/agencia (`ACT-AGE`) ya es un actor servido por `CH-PORTAL` en A1 (no un sistema externo con su propio contrato de integración, a diferencia de las 21 contrapartes de §2.1). `RF-POR-09` es **funcionalidad nueva de ese canal ya existente**, no una contraparte adicional: presentación estructurada con validación previa e informe de error por registro (BTT RT-05.22), precondición de identidad `RF-POR-02` (Etapa 2), dirección entrante (`ACT-AGE` → `CH-PORTAL` → `CTX-VESSEL`), sensibilidad Comercial, sin fallback alterno declarado (el objetivo es eliminar la digitación manual existente, no ofrecer un canal paralelo a ella), evidencia = informe de error por registro + cero instrucciones redigitadas por el terminal. Estado: `EN CURSO` — ya reflejado en A1 `CH-PORTAL`/`ACT-AGE`; el contrato de validación se detalla con A1/D1.
 

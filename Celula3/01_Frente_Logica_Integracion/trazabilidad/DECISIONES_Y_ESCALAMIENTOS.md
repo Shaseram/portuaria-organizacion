@@ -14,3 +14,21 @@
 
 Tipos permitidos: `DECISIÓN LOCAL`, `CANDIDATO ADR`, `CONFLICTO`, `ESCALAMIENTO EXTERNO`.
 
+## Anexo — Revisión de consistencia de identificadores entre A1 y A2 (2026-09-05)
+
+Barrido automático de todos los códigos `ACT-*`, `EXT-*`, `CTX-*`, `CH-*`, `DATA-*`, `SRV-*`, `INT-*`, `GW-*`, `PER-*` y `CP-*` en A1, A2 y A3, cruzado contra el catálogo del Maestro (§5.1, §5.2) y el de A1 §3.1. Los cinco primeros hallazgos ya están corregidos en los documentos; el sexto queda abierto.
+
+| # | Hallazgo | Verificación | Corrección aplicada |
+|---|---|---|---|
+| 1 | `EXT-AGE` era un código inexistente en todo catálogo | A2 lo introducía en la tabla de §3 como "(nueva)", y su propio párrafo siguiente afirmaba lo contrario: "No es una 22ª contraparte… (`ACT-AGE`) ya es un actor servido por `CH-PORTAL`" | Celda corregida a `ACT-AGE` → `CH-PORTAL`. `EXT-AGE` ya no aparece en el frente |
+| 2 | Navieras con tres identificadores (`ACT-NAV`, `EXT-NAV`, `CP-NAV-01..14`) | `EXT-NAV` es canónico del Maestro §5.2, pero aparecía solo 2 veces, ambas en A1, y ninguna en A2/A3 — incumpliendo la Definición de terminado de A2 ("los nombres coinciden con A1") | Tabla de equivalencias en A2 §2.1 y nota en la fila `EXT-NAV` de A1 §1.3. `CP-NAV-*` queda declarado como desglose por contrato, no como sustituto |
+| 3 | `EXT-CON` no existe en el catálogo del Maestro §5.2 ni en A1 §1.3 | Los 11 sistemas del Maestro y de A1 coinciden exactamente y no lo incluyen; el concedente existe como actor `ACT-CON` (Maestro §5.1) | Declarado en A2 §2.1 como canal de salida hacia `ACT-CON`, **no** como duodécimo sistema conservado. El conteo de 11 sistemas y el de 21 contrapartes quedan ambos intactos |
+| 4 | `EXT-AUT` (A1, Maestro) vs `EXT-AUT-ADU/SAG/SAN` (A2) sin equivalencia declarada | Ambos vigentes en paralelo, sin decir que uno desglosa al otro | Equivalencia declarada en A2 §2.1 y en la fila `EXT-AUT` de A1 §1.3 |
+| 5 | La tabla de actores de A1 §1.2 usaba 11 denominaciones de canal para los 3 componentes de §3.1, sin citar ningún código | Ninguna celda de "Canal primario" usaba el vocabulario del catálogo; "Consola de administración" y "Reportes trazables" no correspondían a componente alguno | Columna "Componente de canal (§3.1)" añadida a las dos tablas de §1.2, con nota que traduce cada canal y declara las dos observaciones que se derivan |
+| 6 | Los 16 actores están desconectados del resto del frente | Cada `ACT-*` aparece exactamente 2 veces, ambas en A1 (tabla y diagrama de contexto). Ninguno se referencia en A2 ni A3, salvo `ACT-AGE` | **Abierto.** Ver `F1-OBS-003` |
+
+| ID | Fecha | Entregable | Tipo | Tema | Alternativas/impacto | Recomendación o pregunta | Afecta a | Estado |
+|---|---|---|---|---|---|---|---|---|
+| `F1-OBS-002` | 2026-09-05 | A1 | CONFLICTO | brecha de canal para `ACT-TI` | El canal declarado para `ACT-TI` ("consola de administración") no corresponde a ningún componente de A1 §3.1, y sin embargo Maestro §4.3 exige que la plataforma sea operable por 5 personas de TI sin especialistas por módulo. Asignarla forzadamente a `CH-PORTAL` ocultaría el vacío | Declarada como brecha explícita en la nota de A1 §1.2 en lugar de resolverse por asignación. Corresponde a D1/D3 definir el canal administrativo junto con los perfiles, PAM y grabación de sesión (`RT-12.06`); si el resultado es un cuarto componente de capa 1, A1 §3.1 debe incorporarlo en la próxima versión | A1, D1, D3 | ABIERTO |
+| `F1-OBS-003` | 2026-09-05 | A1 | CONFLICTO | el catálogo de 16 actores no se usa aguas abajo | Ningún `ACT-*` salvo `ACT-AGE` se referencia en A2 ni A3. Dos parecen redundantes por función: `ACT-EVT` no tiene función distinta de `ACT-OPS` (lo que lo separa es la credencial temporal sin biometría, atributo de `SRV-IAM`/`RT-12.11`, no un perfil de uso), y `ACT-CON`/`ACT-VER` comparten patrón (reciben reportes desde `DATA-AN`, sin interacción operacional) | **No se fusionan actores en esta versión.** El catálogo de 16 proviene de Maestro §5.1 y su conteo puede ser un compromiso formal ante las Bases; reducirlo sin verificar ese punto es un riesgo mayor que la redundancia. Se propone en cambio agrupar los 16 en 6 grupos **solo para efectos de diagrama** (esquema general del frente), manteniendo el catálogo íntegro en el texto. Confirmar con el integrador antes de tocar el conteo | A1, integrador | ABIERTO |
+

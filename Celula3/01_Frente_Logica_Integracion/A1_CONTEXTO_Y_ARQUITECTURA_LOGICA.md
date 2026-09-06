@@ -101,29 +101,34 @@ La arquitectura reconoce 16 perfiles de actor organizados en dos grupos: interno
 
 **Actores internos del terminal:**
 
-| ID | Actor / grupo | Canal primario | Contexto operacional | Restricción de interfaz clave |
-|---|---|---|---|---|
-| `ACT-OPS` | Operación y supervisores de turno | App / Terminal / Radio | 3 turnos, 24×7, patio y muelle | Decisiones operacionales en tiempo real; alarmas y excepciones |
-| `ACT-PLAN` | Planificador de patio y estiba | Terminal dedicado | Conocimiento tácito; captura de reglas desde mes 1 | Persona única (retiro inminente); propuesta, corrección y aprobación |
-| `ACT-GATE` | Operadores y jefatura de gate | Terminal gate + OCR | Validación y excepciones; peak 2.600 camiones/día | ≤120 s por camión completo; carril de excepción ≥50 % más lento |
-| `ACT-REEFER` | Operadores y supervisores reefer | App / Terminal | 3 turnos; rondas, alarmas e intervención | Alarma ≤5 min; confirmación obligatoria; canal redundante |
-| `ACT-MANT` | Mantenimiento y energía, incluida jefatura de energía | App / Terminal | Equipos, tableros, continuidad y evidencia | Registro de intervenciones y condición de 88 equipos proyectados |
-| `ACT-TI` | Área TI del CLIENTE | Consola de administración | 5 personas; operación posterior y monitoreo | Solución operable sin especialistas dedicados por módulo |
-| `ACT-EVT` | Eventuales por nombrada | Terminal compartido | Rotación diaria; hasta 380 por turno peak | Credencial temporal sin biometría; guantes e intemperie; expiración |
-| `ACT-GRU` | Operadores de equipos y grúa | Cabina (pantalla dedicada) | Indicaciones visuales; sin confirmación rutinaria manual | Sin apartar vista de la carga; telemetría como fuente primaria |
-| `ACT-COM` | Comercial y facturación | Portal / Terminal | Hechos facturables, objeciones y evidencia | Relación con ERP para emisión tributaria; no emite documentos |
+| ID | Actor / grupo | Canal primario | Componente de canal (§3.1) | Contexto operacional | Restricción de interfaz clave |
+|---|---|---|---|---|---|
+| `ACT-OPS` | Operación y supervisores de turno | App / Terminal / Radio | `CH-APP` (perfil operacion) + `CH-CAB`; radio como canal de `SRV-NOTIF` | 3 turnos, 24×7, patio y muelle | Decisiones operacionales en tiempo real; alarmas y excepciones |
+| `ACT-PLAN` | Planificador de patio y estiba | Terminal dedicado | `CH-PORTAL` autenticado (puesto de escritorio) | Conocimiento tácito; captura de reglas desde mes 1 | Persona única (retiro inminente); propuesta, corrección y aprobación |
+| `ACT-GATE` | Operadores y jefatura de gate | Terminal gate + OCR | `CH-CAB` en caseta, con eventos de `EXT-OCR` via `INT-HUB` | Validación y excepciones; peak 2.600 camiones/día | ≤120 s por camión completo; carril de excepción ≥50 % más lento |
+| `ACT-REEFER` | Operadores y supervisores reefer | App / Terminal | `CH-APP` (perfil reefer) | 3 turnos; rondas, alarmas e intervención | Alarma ≤5 min; confirmación obligatoria; canal redundante |
+| `ACT-MANT` | Mantenimiento y energía, incluida jefatura de energía | App / Terminal | `CH-APP` (perfil mantenimiento) | Equipos, tableros, continuidad y evidencia | Registro de intervenciones y condición de 88 equipos proyectados |
+| `ACT-TI` | Área TI del CLIENTE | Consola de administración | **Brecha declarada** — la consola de administracion no tiene componente en §3.1 (ver nota) | 5 personas; operación posterior y monitoreo | Solución operable sin especialistas dedicados por módulo |
+| `ACT-EVT` | Eventuales por nombrada | Terminal compartido | `CH-CAB` / `CH-APP` en dispositivo compartido por turno | Rotación diaria; hasta 380 por turno peak | Credencial temporal sin biometría; guantes e intemperie; expiración |
+| `ACT-GRU` | Operadores de equipos y grúa | Cabina (pantalla dedicada) | `CH-CAB` | Indicaciones visuales; sin confirmación rutinaria manual | Sin apartar vista de la carga; telemetría como fuente primaria |
+| `ACT-COM` | Comercial y facturación | Portal / Terminal | `CH-PORTAL` autenticado | Hechos facturables, objeciones y evidencia | Relación con ERP para emisión tributaria; no emite documentos |
 
 **Actores externos:**
 
-| ID | Actor / grupo | Canal primario | Contexto operacional | Restricción de interfaz clave |
-|---|---|---|---|---|
-| `ACT-NAV` | Navieras y alianza | Mensajería EDIFACT | 14 navieras actuales (16 proyectadas); alianza = 34 % vol. | BAPLIE/COPRAR/COARRI/CODECO; cero redigitación alianza 2029 |
-| `ACT-AGE` | Agencias de aduana, embarcadores, importadores y exportadores | Portal autenticado | Trámites, instrucción de embarque estructurada (`RF-POR-09`), trazabilidad y documentos | Autoservicio sin teléfono ni mostrador; presentación estructurada sin redigitación por el terminal |
-| `ACT-TRA` | Transportistas | Portal / App | Citas, validación previa y cola virtual | Estadía objetivo: de 78 hacia 45 min sostenida y auditable |
-| `ACT-AUT` | Aduana, SAG y autoridad marítima | Interfaz si existe; canal asistido si no | Inspecciones, resultados y actas | No se inventan APIs; fallback asistido trazable |
-| `ACT-FER` | Operador ferroviario | Interfaz bidireccional por definir | Coordinación, arribo y entrega/recepción | Contrato por levantar (`ESC-06`) |
-| `ACT-CON` | Concedente | Reportes trazables | Indicadores operacionales y regulatorios | Producidos oportunamente; no reconstruidos después del evento |
-| `ACT-VER` | Verificador de emisiones | Reporte verificable ISO 14083 | Historia, cálculo y verificación efectiva | Suficiencia de historia acordada tempranamente (`ESC-02`) |
+| ID | Actor / grupo | Canal primario | Componente de canal (§3.1) | Contexto operacional | Restricción de interfaz clave |
+|---|---|---|---|---|---|
+| `ACT-NAV` | Navieras y alianza | Mensajería EDIFACT | `INT-HUB` via `EXT-NAV` — no entra por capa 1 | 14 navieras actuales (16 proyectadas); alianza = 34 % vol. | BAPLIE/COPRAR/COARRI/CODECO; cero redigitación alianza 2029 |
+| `ACT-AGE` | Agencias de aduana, embarcadores, importadores y exportadores | Portal autenticado | `CH-PORTAL` autenticado | Trámites, instrucción de embarque estructurada (`RF-POR-09`), trazabilidad y documentos | Autoservicio sin teléfono ni mostrador; presentación estructurada sin redigitación por el terminal |
+| `ACT-TRA` | Transportistas | Portal / App | `CH-PORTAL` + `CH-APP` | Citas, validación previa y cola virtual | Estadía objetivo: de 78 hacia 45 min sostenida y auditable |
+| `ACT-AUT` | Aduana, SAG y autoridad marítima | Interfaz si existe; canal asistido si no | `INT-HUB` via `EXT-AUT` — no entra por capa 1 | Inspecciones, resultados y actas | No se inventan APIs; fallback asistido trazable |
+| `ACT-FER` | Operador ferroviario | Interfaz bidireccional por definir | `INT-HUB` via `EXT-FER` — no entra por capa 1 | Coordinación, arribo y entrega/recepción | Contrato por levantar (`ESC-06`) |
+| `ACT-CON` | Concedente | Reportes trazables | `DATA-AN` → `INT-HUB` via `EXT-CON` (A2 §2.1) — no entra por capa 1 | Indicadores operacionales y regulatorios | Producidos oportunamente; no reconstruidos después del evento |
+| `ACT-VER` | Verificador de emisiones | Reporte verificable ISO 14083 | `DATA-AN` / `CTX-EMIS`, entregado por `CH-PORTAL` autenticado | Historia, cálculo y verificación efectiva | Suficiencia de historia acordada tempranamente (`ESC-02`) |
+
+**Sobre la columna "Componente de canal":** la columna "Canal primario" describe el canal como lo vive el actor (el vocabulario del Caso 06); la columna siguiente lo traduce al componente del catálogo §3.1, que es el único vocabulario válido para el resto de la arquitectura. Sin esa traducción, expresiones como "Terminal dedicado", "Terminal gate + OCR" o "Terminal compartido" parecen componentes distintos cuando en realidad son usos de `CH-PORTAL`, `CH-CAB` y `CH-APP`. Dos observaciones que se derivan de hacer la traducción explícita:
+
+1. **`ACT-TI` es una brecha real del catálogo.** El canal declarado ("consola de administración") no corresponde a ningún componente de §3.1, y sin embargo el Maestro §4.3 exige que la plataforma sea operable por 5 personas de TI sin especialistas por módulo. La consola de administración es un canal de capa 1 que este catálogo aún no nombra; se declara aquí como brecha en lugar de asignarla forzadamente a `CH-PORTAL`, y se resuelve con D1/D3 (perfiles administrativos, PAM y grabación de sesión, `RT-12.06`). Registrada en [`DECISIONES_Y_ESCALAMIENTOS.md`](trazabilidad/DECISIONES_Y_ESCALAMIENTOS.md).
+2. **Cuatro actores no entran por la capa 1.** `ACT-NAV`, `ACT-AUT`, `ACT-FER` y `ACT-CON` acceden por `INT-HUB` mediante su sistema correspondiente, no por un canal de presentación. Es coherente con la regla 5 de §2.3 y explica por qué no aparecen colgando de la capa 1 en el diagrama de contexto.
 
 *Fuente: Maestro §5.1; Caso 06, Caps. 1, 2, 6, 7 y 14.*
 
@@ -140,8 +145,8 @@ La plataforma coexiste con 11 sistemas y activos que mantienen su autoridad sobr
 | `EXT-VMS` | CCTV/VMS | Se conserva; no crear portal de video | Eventos, metadatos y evidencia confirmados | No transportar video por red operacional sin justificación |
 | `EXT-VGM` | Básculas | Captura y trazabilidad de peso verificado | Lectura de VGM | No se opera ni certifica la báscula; tolerancia por confirmar |
 | `EXT-OCR` | Lectores OCR de gate | Eventos e imágenes de patente y contenedor | Eventos + imágenes al ingresar/egresar | OCR de código de contenedor ≥98 %; lectura ≤3 s |
-| `EXT-NAV` | Sistemas de navieras | Contratos y versiones por contraparte | EDIFACT bidireccional por naviera | Alianza 2029: exclusivo sin puente ni redigitación |
-| `EXT-AUT` | Sistemas de autoridades | API o archivo si existe; canal asistido si no | Variable por autoridad; fallback trazable | No se inventan APIs; `ESC-14` para plazo/interfaz |
+| `EXT-NAV` | Sistemas de navieras | Contratos y versiones por contraparte | EDIFACT bidireccional por naviera | Alianza 2029: exclusivo sin puente ni redigitación. A2 §2.1 desglosa esta familia en `CP-NAV-01`…`CP-NAV-14` para contar contrapartes y contratos; `EXT-NAV` sigue siendo el identificador canónico (Maestro §5.2) |
+| `EXT-AUT` | Sistemas de autoridades | API o archivo si existe; canal asistido si no | Variable por autoridad; fallback trazable | No se inventan APIs; `ESC-14` para plazo/interfaz. A2 §2.1 desglosa esta familia en `EXT-AUT-ADU`, `EXT-AUT-SAG` y `EXT-AUT-SAN` porque cada autoridad tiene interfaz y fallback propios; `EXT-AUT` sigue siendo el identificador canónico (Maestro §5.2) |
 | `EXT-FER` | Sistema/canal ferroviario | Contrato por levantar | Bidireccional por definir | Programación local y reenvío; `ESC-06` |
 | `EXT-RAD` | Radio operacional | Medio existente integrado | Adaptador al medio actual | No se inventa sistema de radio nuevo sin fundamento |
 
