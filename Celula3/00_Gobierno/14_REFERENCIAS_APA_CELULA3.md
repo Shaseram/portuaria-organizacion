@@ -76,7 +76,7 @@ Cada fila de `11_MATRIZ_ARTICULO4_MA6.md` queda anclada a la cita autor-año con
 | `STD-A4-27` | WCAG 2.2 | (W3C, 2023) |
 | `STD-A4-28` | EN 301 549 V3.2.1 | (ETSI, 2021) |
 | `STD-A4-29` | OpenAPI Specification 3.1.1 | (OpenAPI Initiative, s.f.) |
-| `STD-A4-30` | AsyncAPI Specification 3.0.0 | (AsyncAPI Initiative, 2023) |
+| `STD-A4-30` | AsyncAPI Specification 2.6.0 | (AsyncAPI Initiative, 2023) |
 | `STD-A4-31` | SMDG Recommendation 06 y directorios UN/EDIFACT | (SMDG, 2020; UNECE, s.f.) |
 | `STD-A4-32` | ISO 6346:2022 | (ISO, 2022) |
 | `STD-A4-33` | NIST AI 100-1 — AI RMF 1.0 | (NIST, 2023) |
@@ -114,7 +114,7 @@ Cada fila de `11_MATRIZ_ARTICULO4_MA6.md` queda anclada a la cita autor-año con
 
 Orden alfabético por autor, según APA 7. Los sufijos `a`, `b`, `c` distinguen obras del mismo autor y año, tal como exige la norma cuando la cita en texto sería ambigua.
 
-AsyncAPI Initiative. (2023). *AsyncAPI specification 3.0.0*. https://www.asyncapi.com/docs/reference/specification/v3.0.0
+AsyncAPI Initiative. (2023). *AsyncAPI specification 2.6.0*. https://www.asyncapi.com/docs/reference/specification/v2.6.0
 
 AXELOS. (2019). *ITIL foundation: ITIL 4 edition*. TSO.
 
@@ -264,6 +264,7 @@ Se dejan como **observaciones para el equipo**, no como cambios ejecutados. Ning
 | OWASP ASVS | la matriz fija **4.0 nivel 2**; OWASP publicó **5.0.0 en 2025** | es una decisión del equipo, no un error: 4.0 L2 sigue siendo verificable. Solo conviene que la oferta diga *4.0.3* y no *"ASVS"* a secas |
 | OWASP Top 10 | la versión publicada vigente es **2025** | la matriz lo cita genérico; al redactar conviene nombrar la edición |
 | SLSA | la especificación vigente es **v1.2 (nov-2025)**, que agregó el *Source track* | "nivel 3" ya no es inequívoco: conviene escribir **Build L3** |
+| AsyncAPI | la matriz fija **2.6 o superior**, que es el piso del Art. 4.3 de las BA y de `RT-05.16`; la AsyncAPI Initiative publicó la **3.0.0 en diciembre de 2023** | se cita la **2.6.0** porque es la versión que la matriz declara. Si un frente adopta una versión superior, debe nombrarla explícitamente: «superior» no es citable |
 | ISO 22301 e ISO/IEC 20000-1 | ambas tienen **Enmienda 1:2024** sobre acción climática | no altera los requisitos que usamos; se menciona por completitud |
 
 ## 8. Pendientes
