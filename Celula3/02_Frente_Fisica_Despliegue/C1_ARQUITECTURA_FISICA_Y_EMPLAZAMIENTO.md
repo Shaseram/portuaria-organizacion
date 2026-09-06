@@ -129,7 +129,7 @@ El Art. 16.2 de las BA exige justificar **componente por componente** con seis c
 | `PHY-CLD-08` | `DATA-AN` | nube | analítico | no crítico | derivado | indicadores del concedente | nulo | gestionado | El `RT-05.29` del caso exige consolidar los indicadores del concedente ≤1 h tras el cierre de turno; eso no compite con la operación. |
 | `PHY-CLD-09` | observabilidad y SIEM | nube | asíncrono | el borde almacena y reenvía | logs 12 meses en línea + 24 en archivo | log central inalterable | nulo | gestionado | `RT-03.16` exige que el monitoreo on-premise se integre a **la misma** plataforma que la nube, sin puntos ciegos. |
 | `PHY-CLD-10` | réplica de `DATA-CORE`, `DATA-DOC`, `DATA-TS` | nube, región secundaria | n/a | es el destino de la conmutación | réplica | BTT Cap. 7 | nulo | capacidad reducida en reposo | No hay segundo recinto del CLIENTE (CP, Cap. 3) y un secundario en el terminal compartiría las amenazas del principal (`RT-07.02`). |
-| `PHY-OPS-01` | `EDGE-RUN` + `CTX-OPS`, `CTX-GATE`, `CTX-YARD`, `CTX-REEFER`, `CTX-BILL`, `CTX-VESSEL` | on-premise, sala | **≤1 s determinista** | **debe continuar 72 h** | alto, generado localmente | zona operacional segregada, IEC 62443 | directo, vía borde | inversión local con operación acotada | `RT-09.01` del caso exige confirmar un movimiento en ≤1 s y ver la posición en ≤30 s; `RT-03.10` exige 72 h. Ninguna de las dos cosas se resuelve con un enlace de por medio. |
+| `PHY-OPS-01` | `EDGE-RUN` + `CTX-OPS`, `CTX-GATE`, `CTX-YARD`, `CTX-REEFER`, `CTX-BILL`, `CTX-VESSEL` *(subconjunto de muelle)* | on-premise, sala | **≤1 s determinista** | **debe continuar 72 h** | alto, generado localmente | zona operacional segregada, IEC 62443 | directo, vía borde | inversión local con operación acotada | `RT-09.01` del caso exige confirmar un movimiento en ≤1 s y ver la posición en ≤30 s; `RT-03.10` exige 72 h. Ninguna de las dos cosas se resuelve con un enlace de por medio. |
 | `PHY-OPS-02` | almacenamiento local | on-premise, sala | ≤1 s | buffer del corte, ≈13 GB + holgura | alto | cifrado en reposo | directo | RAID con tolerancia declarada | `RT-03.14` exige tolerar la falla de al menos un disco y declarar el nivel RAID con su justificación. Dimensionamiento en C4. |
 | `PHY-OPS-03` | `INT-TOS` | on-premise, sala | ≤1 s | debe seguir durante el corte | moderado | zona operacional | directo con `EXT-TOS12` | acotado a la coexistencia | El TOS 2012 está en el terminal. Traducir y conciliar a través del enlace agregaría un punto de falla a una integración que ya es la más frágil del proyecto. |
 | `PHY-OPS-04` | núcleo de red operacional | on-premise, sala | determinista | **sostiene el corte** | todo el tráfico operacional | segregación operacional / administrativa / protección | directo | equipamiento en HA | La Declaración Mandatoria exige segregar; hoy operación, terminales, cámaras y oficina comparten conmutación (CP, Cap. 6). `RT-08.03` exige HA sin punto único. |
@@ -145,7 +145,7 @@ El Art. 16.2 de las BA exige justificar **componente por componente** con seis c
 
 ### 5. Matriz lógico → físico
 
-| Componente lógico | Nodo primario | Nodo secundario | Criticidad | ¿Vive durante el corte? |
+| Componente lógico | Nodo primario | Nodo secundario | Criticidad *(valor de A1 §3.1)* | ¿Vive durante el corte? |
 |---|---|---|---|---|
 | `CH-PORTAL` | `PHY-CLD-01` | — | media | no; procedimiento manual declarado en A3 |
 | `CH-APP` | dispositivo + `PHY-CLD-01` | `PHY-OPS-01` para perfiles internos | alta | sí, en modo interno cifrado |
@@ -158,7 +158,7 @@ El Art. 16.2 de las BA exige justificar **componente por componente** con seis c
 | `CTX-REEFER` | `PHY-OPS-01` + `PHY-EDG-03` | `PHY-CLD-03` | **crítica** | **sí** |
 | `CTX-BILL` | `PHY-OPS-01` | `PHY-CLD-03` | **crítica** | **sí**, captura de hecho y evidencia |
 | `CTX-PLAN` | `PHY-CLD-03` | `PHY-OPS-01` en solo lectura | alta | plan vigente sí; replanificación no |
-| `CTX-VESSEL` | `PHY-OPS-01` | `PHY-CLD-03` | **crítica** | **sí**: plan de estiba vigente, movimientos y confirmaciones, localmente. La mensajería EDIFACT queda en cola en `INT-HUB` |
+| `CTX-VESSEL` | `PHY-OPS-01` *(subconjunto muelle)* | `PHY-CLD-03` *(mensajería)* | **crítica** (muelle) / alta (mensajería) | **sí**: órdenes STS, movimientos, ventana activa y productividad, localmente. La mensajería EDIFACT y los anuncios de naves futuras quedan en cola en `INT-HUB` |
 | `CTX-INSP` | `PHY-CLD-03` + `PHY-EDG-05` | — | alta | agenda vigente y acta sí; programar nuevas inspecciones no *(A3 §7)* |
 | `CTX-EMIS` | `PHY-CLD-03` | `PHY-EDG-02` captura | alta | captura sí; cálculo ISO 14083 y reporte no *(A3 §7)* |
 | `SRV-IAM` | `PHY-CLD-03` | `PHY-OPS-01` caché de sesión | alta *(A1)*; **este frente propone elevarla a crítica**, ver §5.1 | sí, con credenciales vigentes; alta de identidad nueva no *(A3 §7)* |
@@ -176,13 +176,15 @@ Las **nueve** filas marcadas como críticas —`CTX-OPS`, `CTX-GATE`, `CTX-YARD`
 
 #### 5.1 De dónde sale la criticidad, y las siete diferencias que detectó D2
 
-**La criticidad no la define este entregable.** Es un atributo del catálogo lógico: A1 §3.1 la declara componente por componente y publica su escala —*crítica* es «debe sobrevivir 72 h sin enlace exterior; incluida en `EDGE-RUN`»; *alta* es «degradación tolerable por horas; requiere fallback documentado»; *media* es «disponible solo con enlace exterior activo»—. C1 la **traduce a nodos**; no la reescribe. La versión anterior de esta matriz llevaba valores propios y ahí nació el problema.
+**La criticidad no la define este entregable, y la columna lleva ahora el nombre de su dueño.** Es un atributo del catálogo lógico: A1 §3.1 la declara componente por componente y publica su escala —*crítica* es «debe sobrevivir 72 h sin enlace exterior; incluida en `EDGE-RUN`»; *alta* es «degradación tolerable por horas; requiere fallback documentado»; *media* es «disponible solo con enlace exterior activo»—. C1 la **traduce a nodos**; no la reescribe. La versión anterior de esta matriz llevaba valores propios y ahí nació el problema.
+
+**Por qué no se hizo una tabla de correspondencia entre dos escalas.** Frente 1 propuso declarar que A1 mide un eje lógico y C1 uno físico, que ninguna está mal y que falta una equivalencia entre ambas. Se descartó de común acuerdo, y la razón está en esta misma tabla: **la escala de A1 mide continuidad ante el corte** —«debe sobrevivir 72 h; incluida en `EDGE-RUN`»—, que es exactamente lo que esta matriz ya media en su **última columna**. Había dos columnas midiendo lo mismo con nombres distintos, y por eso derivaron. Sostener dos escalas homónimas habría sido la **tercera colisión de término** de esta célula, después de los códigos `RT` y de los identificadores `SPOF`. Si en algún momento este entregable necesita expresar redundancia física, esa columna llevará su propio nombre —clase de alta disponibilidad—, no «criticidad». Registrado en A1 §3.1 y en `TRZ-A1-041`.
 
 El cruce `B6.3` de D2 comparó las dos tablas componente por componente y encontró **siete diferencias**. Todas eran reales. Se resuelven así:
 
 | Componente | A1 §3.1 | C1 antes | Resolución | Por qué |
 |---|---|---|---|---|
-| `CTX-VESSEL` | **Crítica** | alta, solo en `PHY-CLD-03` | **se adopta A1 y se corrige el nodo** | ver el párrafo siguiente: es una contradicción, no un matiz |
+| `CTX-VESSEL` | **Crítica**; A1 la precisa el 06-09 como **dual**: `Crítica` en el subconjunto de muelle, `Alta` en la mensajería | alta, solo en `PHY-CLD-03` | **se adopta la partición dual de A1 y se corrige el nodo** | ver el párrafo siguiente: era una contradicción, no un matiz |
 | `GW-EDGE` | Alta | media | se adopta A1 | el borde público no vive el corte, pero su caída **sí** deja al terminal sin canal externo; «media» decía que no importa |
 | `GW-API` | Alta | media | se adopta A1 | ídem: es el punto de identidad, cuotas y trazabilidad de 21 contrapartes |
 | `CTX-INSP` | Alta | media | se adopta A1 | el acta de inspección es evidencia con valor ante autoridad; su pérdida no es indolora |
