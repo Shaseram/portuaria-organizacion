@@ -6,6 +6,7 @@
 
 **Fuente contractual:** Bases Administrativas FEP01, Art. 4.1–4.3, páginas PDF 6–7.
 **Alcance:** baseline del Informe 1; no acredita controles ejecutados, certificaciones obtenidas ni aceptación del CLIENTE.
+**Referencias bibliográficas:** la ficha APA 7 de cada `STD-A4-*` y `NORM-A4-*` de esta matriz vive en [`14_REFERENCIAS_APA_CELULA3.md`](14_REFERENCIAS_APA_CELULA3.md), exigida por el Art. 40.4 de las BA. Esta matriz manda en el contenido; ese archivo manda en la cita, e incluye la tabla de anclaje `STD-ID` → cita autor-año y las observaciones de vigencia de edición.
 
 ## 1. Regla de cumplimiento aplicada
 
