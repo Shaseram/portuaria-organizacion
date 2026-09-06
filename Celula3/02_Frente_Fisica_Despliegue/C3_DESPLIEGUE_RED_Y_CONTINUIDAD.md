@@ -364,7 +364,7 @@ Un dato del caso que el plan debe incorporar y que no es nuestro: el respaldo el
 | `H3` — infraestructura híbrida y **los cinco ambientes** operativos | **6** | incluye DR operativo; ver `F2-ESC-010` |
 | Toda intervención invasiva instalada, migrada, probada, con retorno y capacitación | **14-dic-2027** | es el límite duro de la obra física; Maestro §13 |
 | Congelamiento | 15-dic a 30-abr | solo sombra de solo lectura si el CLIENTE la autoriza formalmente; hoy **no autorizada**, `ESC-03` |
-| Producción Etapa 1 | 16 | tras tres meses de marcha blanca con plan de reversión activo |
+| Producción Etapa 1 | **16** | `BA, Art. 17.1` sitúa la **marcha blanca de Etapa 1 en los meses 13-15**, y el `Art. 17.2` la hace coexistir con el desarrollo de Etapa 2. Esos meses caen dentro del congelamiento, y el calendario de Célula 2 —[Decisión 1 §8.1 y §8.2](../../Celula2/02_Decisiones_Reglas_Supuestos/01_decision_01_tos_2012_registro_final.md)— los resuelve como **validación paralela no invasiva, solo lectura y sin autoridad**, condicionada a respuesta formal del CLIENTE (`ESC-03`, hoy no autorizada). **Este frente adopta esa lectura sin modificarla**; coincide con la fila anterior de esta misma tabla y con `A3 §9` |
 
 **Retorno: los ocho campos.** El Maestro §12 exige que toda intervención de software, red, firmware, infraestructura, instrumentación o migración registre: objetivo y alcance; ejecutor y responsable de retorno; disparador; pasos y dependencias; **tiempo máximo**; prueba y evidencia; ventana y contraste con congelamiento y nave; y conciliación y cierre. Se adopta como formulario obligatorio de cada intervención, coherente con `RNF-DIS-12`, que exige que el plan de retorno exista **antes** de ejecutar.
 

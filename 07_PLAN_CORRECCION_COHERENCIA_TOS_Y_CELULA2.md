@@ -25,7 +25,7 @@ sed -n '295p' Celula3/01_Frente_Logica_Integracion/A3_PROCESOS_CRITICOS_Y_TOS.md
 
 | # | Incoherencia | Severidad | Dueño |
 |---|---|---|---|
-| 1 | La Etapa 1 pasa a producción **sin marcha blanca**; C3 llama marcha blanca a la sombra del congelamiento | **ALTO** | A3 + C3, con decisión de equipo |
+| 1 | ~~La Etapa 1 pasa a producción sin marcha blanca~~ → **reformulado y RESUELTO**: C3 era el único documento desalineado del calendario de Célula 2 | MEDIO | **cerrado** en C3 §12 |
 | 2 | Seis requisitos de tractocamiones —cuatro Críticos— no los cita nadie, y son la causa declarada de la brecha de productividad | **ALTO** | A1 + A2 |
 | 3 | A3 es el documento de convivencia y cita 3 de los 14 requisitos de convivencia | **ALTO** | A3 |
 | 4 | El TOS está en la sala, pero tres documentos postergan su conciliación «a la reconexión» | **ALTO** | A1 + C3 (C1 es el que está bien) |
@@ -34,64 +34,48 @@ sed -n '295p' Celula3/01_Frente_Logica_Integracion/A3_PROCESOS_CRITICOS_Y_TOS.md
 
 ---
 
-## Hallazgo 1 · La Etapa 1 entra a producción sin marcha blanca
+## Hallazgo 1 · Una sola línea de C3 se apartaba del calendario de Célula 2 — **CORREGIDO**
 
-**Severidad: ALTO.** Es el más importante de los seis.
+**Severidad: MEDIO.** Estado: **cerrado**. Se conserva el registro porque la primera versión de este documento contenía un diagnóstico equivocado que conviene no repetir.
 
-### En simple
+### Qué se creía y qué era en realidad
 
-Hay tres cosas distintas que se están confundiendo:
+La primera versión decía que la Etapa 1 pasaba a producción **sin marcha blanca** y proponía correr la fecha de producción. **Las dos cosas estaban mal**, y la causa fue no haber leído completo el `Artículo 17` de las Bases Administrativas:
 
-- **Congelamiento** — del 15 de diciembre al 30 de abril es la temporada de fruta. El caso prohíbe *intervenir sistemas* y prohíbe *pasar a producción*. No se puede tocar nada.
-- **Marcha blanca** — es hacer funcionar el sistema nuevo **en paralelo con la operación real**, escribiendo datos de verdad, conciliando los dos registros y pudiendo volver atrás. El caso la exige antes de cualquier paso a producción.
-- **Sombra** — es mirar sin tocar: el sistema nuevo lee y compara, pero no escribe ni decide nada.
+> `FEP01, Art. 17.1` — *«El cronograma que se establece a continuación es **obligatorio, indivisible y no negociable**. Toda oferta que proponga plazos distintos será **declarada inadmisible**.»*
+>
+> | **13 – 15** | Etapa 1 · **Marcha blanca** | *«Tres meses de operación supervisada con datos y usuarios reales, en convivencia con la operación vigente del CLIENTE, con plan de reversión activo y medición diaria de indicadores.»* |
+> | **16** | Etapa 1 · Producción | … |
 
-La diferencia importa: para conciliar «ambos registros» tiene que haber **dos registros**, o sea el sistema nuevo tiene que estar escribiendo. Y para «volver atrás» tiene que tener **autoridad** sobre algo. Una sombra no escribe y no tiene autoridad, así que no hay nada que conciliar ni nada que revertir. **Marcha blanca y sombra no son lo mismo.**
+Es decir: **la marcha blanca de Etapa 1 sí existe y está en los meses 13-15 por mandato contractual**, y mover la fecha de producción del mes 16 haría la oferta **inadmisible**. La propuesta de «correr la producción» quedó descartada por esa razón, no por criterio de diseño.
 
-Nuestro calendario pone tres meses de sombra dentro del congelamiento y luego pasa a producción. C3 llama a esos tres meses «marcha blanca». Con eso, la Etapa 1 —que es la sustitución del registro de todos los contenedores, lo que el caso llama el mayor riesgo del proyecto— **entraría a producción sin haber escrito nunca un dato real en convivencia**.
+### La tensión real, que Célula 2 ya había resuelto
 
-### Lo que dice cada lado
+Los meses 13-15, con el mes 1 anclado en febrero de 2027, caen dentro del congelamiento del 15 de diciembre al 30 de abril, donde el caso prohíbe intervenir. Es una colisión entre dos fuentes contractuales, y **Célula 2 la vio y la resolvió**: su Decisión 1 tiene una sección titulada literalmente «Resolución de la colisión con el congelamiento», y su calendario §8.1 registra esos meses así:
 
-**El caso, Cap. 13.3, condición 1:**
-> *«Nada entra en producción sin haber convivido con la forma actual de trabajar durante la marcha blanca correspondiente, **con conciliación entre ambas** y **con la posibilidad de volver atrás**.»*
+> `Celula2/02_Decisiones_Reglas_Supuestos/01_decision_01_tos_2012_registro_final.md:268`
+> *«| Validación paralela no invasiva, condicionada a consulta | 13–15 | 15-dic-2027 a 30-abr-2028 | **Solo lectura, sin autoridad — ver 8.2** |»*
 
-**El caso, Cap. 13.3, condición 5**, específica para el TOS:
-> *«La sustitución o el envolvimiento del sistema de operación de 2012 es el punto de mayor riesgo del proyecto: por él pasa todo el registro de la operación. **Su marcha blanca debe contemplar convivencia real, conciliación de ambos registros y un procedimiento de retorno probado.**»*
+La degradación queda condicionada a respuesta formal del CLIENTE, y está escalada como `ESC-03` en el Maestro: *«sombra en congelamiento — no autorizada hasta respuesta formal»*.
 
-**El caso, Cap. 13.3, condición 3:**
-> *«El paso a producción no puede ocurrir entre el 15 de diciembre y el 30 de abril.»*
+### Lo único que estaba desalineado
 
-**Nuestro Maestro, regla negativa 15** — `Celula3/00_Gobierno/00_MAESTRO_CONTEXTO_ARQUITECTURA.md:736`:
-> *«No llamar marcha blanca a una intervención durante el congelamiento.»*
+Se comparó fila por fila el calendario de Célula 2 contra `A3 §9` y `C3 §12`:
 
-**A3, calendario ejecutable** — `Celula3/01_Frente_Logica_Integracion/A3_PROCESOS_CRITICOS_Y_TOS.md`:
-> `:354` — *«Versión candidata Etapa 1 lista, instalada, con retorno probado | ≤12 | **14-dic-2027**»*
-> `:355` — *«Validación paralela no invasiva, **solo lectura/sombra, sin autoridad** | 13-15 | 15-dic-2027 a 30-abr-2028»*
-> `:356` — *«Producción Etapa 1 | 16 | **mayo 2028**»*
-> `:358` — *«**Marcha blanca Etapa 2** | 19-20 | ago-sep 2028 | No [dentro del congelamiento]»*
+| | Célula 2 §8.1 | A3 §9 | C3 §12 |
+|---|---|---|---|
+| Los nueve hitos del calendario | autoridad | **coincide en los nueve** | — |
+| Meses 13-15 | validación no invasiva, solo lectura, sin autoridad | igual | **decía «tres meses de marcha blanca con plan de reversión activo»** |
 
-**C3, calendario** — `Celula3/02_Frente_Fisica_Despliegue/C3_DESPLIEGUE_RED_Y_CONTINUIDAD.md:367`:
-> *«Producción Etapa 1 | 16 | **tras tres meses de marcha blanca con plan de reversión activo**»*
+**A3 estaba correcto.** C3 era el único documento desalineado, y además se contradecía consigo mismo: su propia fila de «Congelamiento», dos líneas más arriba, ya decía *«solo sombra de solo lectura si el CLIENTE la autoriza formalmente; hoy no autorizada, `ESC-03`»*.
 
-### Por qué es una incoherencia real
+### Qué se hizo
 
-Los «tres meses» previos al mes 16 son los meses 13, 14 y 15: exactamente el congelamiento. A3 dice que ahí solo cabe sombra **sin autoridad**; C3 los llama marcha blanca **con plan de reversión activo**. Una sombra sin autoridad no tiene plan de reversión porque no hay nada que revertir.
+Se alineó `C3 §12` al calendario de Célula 2, sin modificarlo ni tomar ninguna decisión nueva. La fila ahora cita el mandato del `Art. 17.1`, la resolución de Célula 2 y la condición pendiente del CLIENTE, y declara que este frente adopta esa lectura. Un cambio de una línea.
 
-Y lo que revela la contradicción es más serio que el nombre: **A3 tiene una fila explícita de «Marcha blanca Etapa 2» en los meses 19-20, y ninguna fila de marcha blanca para la Etapa 1.** A3 sabe cómo se ve una marcha blanca en su tabla; simplemente la Etapa 1 no tiene. Entre la versión instalada (mes 12) y producción (mes 16) solo existe la sombra.
+### Lo que queda visible, no resuelto
 
-No es un detalle de redacción. El caso cierra ese capítulo diciendo: *«La estrategia de puesta en producción pesa, en la evaluación de este caso, tanto como la arquitectura.»*
-
-### Qué proponemos
-
-Es una **decisión de equipo**, no una corrección de texto. Hay dos salidas y ambas son defendibles:
-
-**Opción A — correr la producción de Etapa 1.** A3 dice que mayo 2028 es lo más **temprano** posible, no lo obligatorio. Se abre una ventana real de marcha blanca en mayo-junio 2028, apenas termina el congelamiento, y producción pasa al mes 18 o 19. Coste: comprime la Etapa 2, que debe estar en producción antes de 2029 por la alianza naviera.
-
-**Opción B — marcha blanca antes del congelamiento.** Se adelanta la versión candidata y la marcha blanca ocurre entre septiembre y el 14 de diciembre de 2027, solapada con el final de la instalación. Coste: menos margen de desarrollo, y hay que declarar el riesgo de solapar instalación con convivencia.
-
-En cualquiera de las dos, **`C3:367` debe dejar de llamar marcha blanca a los meses 13-15**, y A3 debe tener una fila de marcha blanca de Etapa 1 tan explícita como la que ya tiene para la Etapa 2.
-
----
+Que la degradación a solo lectura es ella misma una desviación del `Art. 17.1`, condicionada a que el CLIENTE la autorice. Eso es de Célula 2 y ya está escalado en `ESC-03`. No lo tocamos.
 
 ## Hallazgo 2 · Seis requisitos de tractocamiones que no cita nadie
 
@@ -295,7 +279,9 @@ Corregir `Maestro:156` para que la lista sea la del caso —18 patio, 42 tractoc
 
 ## Lo que corrijo de una versión anterior de este análisis
 
-Por transparencia, dos afirmaciones que hice antes y que la verificación desmintió:
+Por transparencia, tres afirmaciones que hice antes y que la verificación desmintió:
+
+0. Dije que **la Etapa 1 no tenía marcha blanca** y propuse correr la fecha de producción. Falso en las dos mitades: el `BA, Art. 17.1` la sitúa en los meses 13-15, y mover el mes 16 haría la oferta **inadmisible**. Ver el hallazgo 1, reescrito.
 
 1. Dije que **«ningún documento declara un RPO del retorno»**. Es falso: Célula 2 lo declara en `RF-CON-03` y en el Supuesto T, en 60 segundos provisionales. El hallazgo correcto es que Célula 3 no lo llevó, y así quedó redactado arriba.
 2. Dije que la escritura dual era **«un compromiso sin respaldo»** porque A2 declara la interfaz del TOS «por levantar». Queda matizado: `RF-CON-03` ya trae la nota *«Valor provisional… se fija en la puerta de decisión del mes 4»*, y A3 sí tiene esa puerta en su calendario. La condición existe en los dos extremos; lo único que falta es que A3 la ate explícitamente a la frase «el TOS sigue al día». Va incluido en el hallazgo 3 y no se levanta como hallazgo aparte.
