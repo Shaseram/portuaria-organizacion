@@ -1,0 +1,75 @@
+flowchart LR
+    subgraph EXT["Contrapartes externas"]
+        direction TB
+        NAVIERAS["14 navieras<br/>mensajería estándar"]
+        AUTORIDADES["3 autoridades<br/>aduana · SAG · marítima"]
+        FERROVIARIO["Operador ferroviario"]
+        CLIENTES["Exportadores, importadores,<br/>agencias y transportistas"]
+    end
+
+    subgraph CONS["Sistemas conservados"]
+        direction TB
+        TOS["TOS 2012<br/>autoridad variable<br/>por zona y fase"]
+        GRUAS["Control de grúas de muelle<br/>solo lectura"]
+        VMS["Control de acceso y CCTV"]
+    end
+
+    INT["<b>DOM-INT</b><br/>Integración, autoridad<br/>y auditoría"]
+    ACC["<b>DOM-ACC</b><br/>Acceso e identidad"]
+
+    subgraph NUC["Núcleo de registro · un solo contexto acotado"]
+        direction TB
+        OPS["<b>DOM-OPS</b><br/>Contenedor y operación"]
+        PAT["<b>DOM-PAT</b><br/>Patio y posición"]
+        GAT["<b>DOM-GAT</b><br/>Gate y transporte"]
+    end
+
+    subgraph CAP["Capacidades nuevas"]
+        direction TB
+        REF["<b>DOM-REF</b><br/>Reefer y cadena de frío"]
+        NAV["<b>DOM-NAV</b><br/>Nave y planificación"]
+        INS["<b>DOM-INS</b><br/>Inspecciones"]
+        EMI["<b>DOM-EMI</b><br/>Energía y emisiones"]
+    end
+
+    FAC["<b>DOM-FAC</b><br/>Evidencia y facturación"]
+    ERP["Gestión empresarial<br/>único emisor tributario"]
+    CONCEDENTE["Concedente<br/>recibe indicadores"]
+
+    NAVIERAS --> INT
+    AUTORIDADES --> INT
+    FERROVIARIO --> INT
+    CLIENTES --> INT
+    TOS <--> INT
+    GRUAS -.->|"autorización del fabricante"| INT
+    VMS --> ACC
+
+    INT ==>|"autoridad del dato<br/>dominio × zona × fase"| OPS
+    ACC -.->|"identidad de<br/>toda operación"| OPS
+
+    OPS --> PAT
+    OPS --> GAT
+    PAT --> REF
+    PAT --> INS
+    OPS --> NAV
+    PAT --> EMI
+
+    GAT --> FAC
+    REF --> FAC
+    INS --> FAC
+    NAV --> FAC
+    EMI --> FAC
+
+    FAC --> ERP
+    FAC --> CONCEDENTE
+
+    classDef ext fill:#ECE6DF,stroke:#6B7B80,color:#1B1B1B
+    classDef cons fill:#D8D3C9,stroke:#6B7B80,color:#1B1B1B
+    classDef nuc fill:#0B2E36,stroke:#0B2E36,color:#FFFFFF
+    classDef cap fill:#3E6E7A,stroke:#0B2E36,color:#FFFFFF
+    classDef trans fill:#D18A5C,stroke:#BA7248,color:#1B1B1B
+    class NAVIERAS,AUTORIDADES,FERROVIARIO,CLIENTES,ERP,CONCEDENTE ext
+    class TOS,GRUAS,VMS cons
+    class OPS,PAT,GAT nuc
+    class REF,NAV,INS,EMI cap
+    class FAC,ACC,INT trans

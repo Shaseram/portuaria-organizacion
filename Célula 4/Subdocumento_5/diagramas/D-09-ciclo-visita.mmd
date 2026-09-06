@@ -1,0 +1,38 @@
+stateDiagram-v2
+    [*] --> Anunciada : anuncio de recalada o cita de camion
+    Anunciada --> EnPatio_Descargada : descarga desde nave
+    Anunciada --> EnPatio_Ingresada : ingreso por gate
+
+    state EnPatio {
+        EnPatio_Descargada --> Posicionada
+        EnPatio_Ingresada --> Posicionada
+        Posicionada --> Removida : remocion programada
+        Removida --> Posicionada : reubicacion
+        Posicionada --> EnInspeccion : cita de autoridad
+        EnInspeccion --> Posicionada : acta sin retencion
+        EnInspeccion --> Retenida : retencion de autoridad
+        Retenida --> Posicionada : levantamiento de la retencion
+    }
+
+    Posicionada --> Liberable : cinco condiciones de RN-06 cumplidas
+    Liberable --> Posicionada : cualquier condicion deja de cumplirse
+    Liberable --> Embarcada : carga a nave
+    Liberable --> Retirada : salida por gate
+    Embarcada --> [*]
+    Retirada --> [*]
+
+    note right of Liberable
+        RN-06 exige simultaneamente:
+        documentacion validada,
+        autorizacion aduanera,
+        sin retencion sanitaria,
+        sin deuda asociada y
+        VGM dentro de tolerancia.
+    end note
+
+    note left of EnPatio
+        Toda transicion dentro del patio
+        genera un MOVIMIENTO con instante
+        propio y fuente de registro
+        declarada (RF-PAT-05).
+    end note

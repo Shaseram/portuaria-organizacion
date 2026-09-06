@@ -1,0 +1,71 @@
+flowchart LR
+    subgraph CAPTURA["Captura en el borde"]
+        TEL["Telemetría de equipos<br/>posición e izaje"]
+        OCR["Lectura óptica<br/>gate y puntos de paso"]
+        REEFER["Instrumentación reefer<br/>tomas y tableros"]
+        BARRERA["Eventos de barrera<br/>entrada y salida"]
+        BASCULA["Báscula VGM"]
+    end
+
+    subgraph EVENTOS["Eventos de negocio inmutables"]
+        EV1["EVT-PAT-01<br/>Movimiento registrado"]
+        EV2["EVT-PAT-02<br/>Posición actualizada"]
+        EV3["EVT-GAT-01<br/>Camión en barrera"]
+        EV4["EVT-REF-01<br/>Muestra de temperatura"]
+        EV5["EVT-REF-02<br/>Alarma generada"]
+        EV6["EVT-FAC-01<br/>Hecho facturable generado"]
+    end
+
+    subgraph ALMACEN["Separación de almacenamiento"]
+        OLTP["Transaccional<br/>estado operacional"]
+        TS["Temporal<br/>series de telemetría"]
+        DOC["Documental<br/>imágenes, actas, firmas"]
+        AN["Analítico<br/>indicadores y KPI"]
+    end
+
+    subgraph SALIDAS["Explotación"]
+        KPI_CONC["Indicadores del concedente<br/>≤ 1 h tras cierre de turno"]
+        KPI_OPER["Productividad de grúa<br/>y estadía de camión<br/>tiempo real"]
+        PORTAL["Portal de clientes<br/>estado ≤ 60 s"]
+        EVID["Evidencia de cadena de frío<br/>y de hechos facturables"]
+        EMIS["Emisión por contenedor<br/>verificable por tercero"]
+    end
+
+    TEL --> EV1
+    TEL --> EV2
+    OCR --> EV2
+    BARRERA --> EV3
+    REEFER --> EV4
+    EV4 --> EV5
+    BASCULA --> EV6
+    EV1 --> EV6
+    EV3 --> EV6
+
+    EV1 --> OLTP
+    EV2 --> OLTP
+    EV3 --> OLTP
+    EV6 --> OLTP
+    EV4 --> TS
+    EV5 --> OLTP
+    OCR --> DOC
+
+    OLTP -->|"≤ 30 s posición<br/>≤ 60 s portal"| AN
+    TS -->|"agregación en el borde"| AN
+    DOC --> EVID
+
+    AN --> KPI_CONC
+    AN --> KPI_OPER
+    AN --> PORTAL
+    OLTP --> EVID
+    TS --> EVID
+    OLTP --> EMIS
+    TS --> EMIS
+
+    classDef cap fill:#ECE6DF,stroke:#6B7B80,color:#1B1B1B
+    classDef ev fill:#0B2E36,stroke:#0B2E36,color:#FFFFFF
+    classDef alm fill:#3E6E7A,stroke:#0B2E36,color:#FFFFFF
+    classDef sal fill:#D18A5C,stroke:#BA7248,color:#1B1B1B
+    class TEL,OCR,REEFER,BARRERA,BASCULA cap
+    class EV1,EV2,EV3,EV4,EV5,EV6 ev
+    class OLTP,TS,DOC,AN alm
+    class KPI_CONC,KPI_OPER,PORTAL,EVID,EMIS sal

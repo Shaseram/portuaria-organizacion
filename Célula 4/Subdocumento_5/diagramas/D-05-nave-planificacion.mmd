@@ -1,0 +1,82 @@
+erDiagram
+    NAVE ||--o{ RECALADA : "realiza"
+    RECALADA ||--o| PLAN_ESTIBA : "tiene"
+    RECALADA ||--o{ ASIGNACION_EQUIPO : "consume"
+    RECALADA ||--o{ VISITA : "agrupa"
+    PLAN_ESTIBA ||--o{ CORRECCION_PLAN : "acumula"
+    CORRECCION_PLAN }o--|| REGLA_PLANIFICADOR : "puede_originar"
+    RECALADA ||--o{ ORDEN_EMBARQUE : "recibe"
+    RECALADA ||--o{ INSTRUCCION_EMBARQUE : "recibe"
+    NAVIERA ||--o{ ORDEN_EMBARQUE : "emite"
+    EMBARCADOR ||--o{ INSTRUCCION_EMBARQUE : "presenta"
+    RECALADA ||--o{ MOVIMIENTO_MUELLE : "genera"
+
+    NAVE {
+        string id_nave PK
+        string nombre
+        string id_naviera FK
+    }
+    RECALADA {
+        string id_recalada PK
+        string id_nave FK
+        datetime ventana_confirmada "confirmacion con 72 h, RF-NAV-03"
+        datetime instante_atraque_real
+        datetime instante_zarpe_real
+        string sitio_asignado
+        decimal productividad_mov_hora "derivada, RF-NAV-12"
+    }
+    PLAN_ESTIBA {
+        string id_plan PK
+        string id_recalada FK
+        int version
+        string estado "propuesto, aprobado, corregido"
+        datetime instante
+        string origen "algoritmo o planificador"
+    }
+    CORRECCION_PLAN {
+        string id_correccion PK
+        string id_plan FK
+        string motivo_estructurado "RF-NAV-08, no texto libre"
+        string autor FK
+        datetime instante
+    }
+    REGLA_PLANIFICADOR {
+        string id_regla PK
+        string enunciado
+        string origen_correccion FK
+        datetime vigencia_desde
+        string estado "candidata, vigente, retirada"
+    }
+    ASIGNACION_EQUIPO {
+        string id_asignacion PK
+        string id_recalada FK
+        string id_equipo FK
+        string turno
+        datetime desde
+        datetime hasta
+    }
+    ORDEN_EMBARQUE {
+        string id_orden PK
+        string id_recalada FK
+        string id_naviera FK
+        string estandar_mensaje "orden de embarque, RF-INT-02"
+        string version_contrato
+        datetime instante_recepcion
+        string id_correlacion
+    }
+    INSTRUCCION_EMBARQUE {
+        string id_instruccion PK
+        string id_recalada FK
+        string id_embarcador FK
+        string canal "portal estructurado, RF-POR-09"
+        string estado_validacion
+        datetime instante_presentacion
+    }
+    MOVIMIENTO_MUELLE {
+        string id_movimiento PK
+        string id_recalada FK
+        string id_visita FK
+        string tipo "carga o descarga"
+        datetime instante
+        string origen_evento "VACIO DECLARADO, ver seccion 9"
+    }

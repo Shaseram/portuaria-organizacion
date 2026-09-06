@@ -1,0 +1,84 @@
+erDiagram
+    TRANSPORTISTA ||--o{ CAMION : "opera"
+    TRANSPORTISTA ||--o{ CONDUCTOR : "emplea"
+    TRANSPORTISTA ||--o{ CITA : "solicita"
+    CITA ||--o| TURNO_CAMION : "se_cumple_en"
+    CAMION ||--o{ TURNO_CAMION : "protagoniza"
+    CONDUCTOR ||--o{ TURNO_CAMION : "conduce"
+    TURNO_CAMION ||--|{ EVENTO_GATE : "delimita"
+    TURNO_CAMION ||--o{ VISITA : "mueve"
+    TURNO_CAMION ||--o| INSTRUCCION_DESTINO : "recibe"
+    TURNO_CAMION ||--o| EXCEPCION_GATE : "puede_derivar_a"
+    VISITA ||--o{ DOCUMENTO_TRANSPORTE : "requiere"
+    VISITA ||--o| PESAJE_VGM : "acredita"
+
+    TRANSPORTISTA {
+        string id_transportista PK
+        string razon_social
+    }
+    CAMION {
+        string patente PK
+        string id_transportista FK
+    }
+    CONDUCTOR {
+        string id_conductor PK
+        string documento_identidad "dato personal, cifrado de campo"
+        string id_transportista FK
+        bool habilitacion_vigente
+    }
+    CITA {
+        string id_cita PK
+        string id_transportista FK
+        datetime franja_asignada
+        string estado "confirmada, cumplida, fuera de ventana, no show"
+        string id_visita FK
+        datetime instante_solicitud
+    }
+    TURNO_CAMION {
+        string id_turno PK
+        string patente FK
+        string id_conductor FK
+        string id_cita FK "nulo si llega sin cita"
+        datetime instante_arribo_barrera
+        datetime instante_instruccion_emitida
+        datetime instante_salida
+        int estadia_minutos "derivado de los eventos, RF-GAT-12"
+    }
+    EVENTO_GATE {
+        string id_evento PK
+        string id_turno FK
+        string tipo "entrada o salida"
+        string puesto
+        datetime instante
+        string id_correlacion
+    }
+    DOCUMENTO_TRANSPORTE {
+        string id_documento PK
+        string id_visita FK
+        string tipo
+        string estado_validacion "validado, con discrepancia, pendiente"
+        datetime instante_validacion "anticipada, RF-GAT-03"
+    }
+    PESAJE_VGM {
+        string id_pesaje PK
+        string id_visita FK
+        decimal masa_declarada
+        decimal masa_verificada
+        decimal desviacion
+        bool dentro_de_tolerancia "RN-05"
+        datetime instante
+        string id_bascula
+    }
+    INSTRUCCION_DESTINO {
+        string id_instruccion PK
+        string id_turno FK
+        string celda_destino
+        datetime instante_emision
+    }
+    EXCEPCION_GATE {
+        string id_excepcion PK
+        string id_turno FK
+        string motivo
+        string estado
+        datetime instante
+    }

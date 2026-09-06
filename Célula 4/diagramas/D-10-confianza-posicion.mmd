@@ -1,0 +1,18 @@
+stateDiagram-v2
+    [*] --> Conocida : posicionamiento automatico y lectura optica coinciden
+    Conocida --> PorVerificar : discrepan las dos fuentes
+    Conocida --> PorVerificar : falta una de las dos fuentes
+    PorVerificar --> TareaAbierta : el sistema genera tarea dirigida
+    TareaAbierta --> Conocida : verificacion fisica confirma la posicion
+    TareaAbierta --> Conocida : verificacion fisica corrige la posicion
+    TareaAbierta --> NoResueltaAlCierre : el turno cierra sin resolver
+
+    note right of NoResueltaAlCierre
+        Meta comprometida: las posiciones
+        por verificar no resueltas al cierre
+        del turno no superan el 0,5 % del
+        inventario. Toda posicion declarada
+        conocida debe ser correcta.
+    end note
+
+    NoResueltaAlCierre --> TareaAbierta : se arrastra al turno siguiente

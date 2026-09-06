@@ -1,0 +1,123 @@
+erDiagram
+    VISITA ||--o{ HECHO_FACTURABLE : "genera"
+    HECHO_FACTURABLE ||--|{ EVIDENCIA : "se_respalda_en"
+    HECHO_FACTURABLE }o--|| REGLA_TARIFARIA : "se_valoriza_con"
+    HECHO_FACTURABLE ||--o{ OBJECION : "puede_recibir"
+    HECHO_FACTURABLE ||--o| ENTREGA_ERP : "se_entrega_en"
+    OBJECION ||--o| RESOLUCION_OBJECION : "se_cierra_con"
+    VISITA ||--o{ SOLICITUD_INSPECCION : "puede_recibir"
+    SOLICITUD_INSPECCION ||--o| CITA_INSPECCION : "agenda"
+    CITA_INSPECCION ||--o| REMOCION_PROGRAMADA : "requiere"
+    CITA_INSPECCION ||--o| ACTA_INSPECCION : "concluye_en"
+    ACTA_INSPECCION ||--o| RETENCION : "puede_imponer"
+    VISITA ||--o| EMISION_CONTENEDOR : "acumula"
+    EMISION_CONTENEDOR }o--|| FACTOR_EMISION : "aplica"
+    EQUIPO_PATIO ||--o{ CONSUMO_EQUIPO : "reporta"
+    CONSUMO_EQUIPO ||--o{ EMISION_CONTENEDOR : "se_atribuye_a"
+
+    HECHO_FACTURABLE {
+        string id_hecho PK
+        string id_visita FK
+        string tipo "transferencia, almacenaje, conexion, movimiento adicional, pesaje, inspeccion, zona peligrosa, servicio especial"
+        datetime instante_ocurrencia "propio del hecho, RF-FAC-01"
+        string id_regla_aplicada FK
+        int version_regla_aplicada "RF-FAC-02"
+        string estado "generado, entregado, objetado, compensado"
+    }
+    REGLA_TARIFARIA {
+        string id_regla PK
+        string tipo_hecho
+        int version PK
+        datetime vigencia_desde
+        datetime vigencia_hasta
+        string autor_cambio FK
+    }
+    EVIDENCIA {
+        string id_evidencia PK
+        string id_hecho FK
+        string tipo "evento, medicion, serie, lectura optica, firma"
+        string referencia_objeto_origen
+        string sello_integridad "inalterable, RT-16.07"
+        datetime instante_creacion
+    }
+    OBJECION {
+        string id_objecion PK
+        string id_hecho FK
+        string id_cliente FK
+        string motivo
+        string estado "abierta, en analisis, aceptada, rechazada"
+        datetime instante_presentacion
+    }
+    RESOLUCION_OBJECION {
+        string id_objecion PK
+        string resultado
+        string evidencia_invocada FK
+        string responsable FK
+        datetime instante
+    }
+    ENTREGA_ERP {
+        string id_hecho PK
+        string id_documento_tributario "emitido por el ERP, no por la solucion"
+        datetime instante_entrega
+        string estado_conciliacion
+    }
+    SOLICITUD_INSPECCION {
+        string id_solicitud PK
+        string id_visita FK
+        string autoridad "aduana, SAG, sanitaria"
+        datetime instante_recepcion
+        string canal "interfaz o canal asistido trazable"
+    }
+    CITA_INSPECCION {
+        string id_cita PK
+        string id_solicitud FK
+        datetime hora_acordada
+        datetime hora_real_atencion
+        bool cumplida_en_hora "RF-INS-07"
+    }
+    REMOCION_PROGRAMADA {
+        string id_remocion PK
+        string id_cita FK
+        datetime instante_programado
+        string estado
+    }
+    ACTA_INSPECCION {
+        string id_acta PK
+        string id_cita FK
+        string resultado
+        string id_firma FK "firma electronica, RT-16.14"
+        datetime instante
+    }
+    RETENCION {
+        string id_retencion PK
+        string id_acta FK
+        string autoridad
+        string motivo
+        datetime vigencia_desde
+        datetime vigencia_hasta
+    }
+    CONSUMO_EQUIPO {
+        string id_consumo PK
+        string id_equipo FK
+        string unidad "litros de diesel o kWh"
+        decimal valor
+        datetime instante
+        string origen_medicion "instrumentacion real por equipo"
+    }
+    FACTOR_EMISION {
+        string id_factor PK
+        string fuente "GLEC v3.2"
+        int alcance "1, 2 o 3"
+        decimal valor
+        datetime vigencia_desde
+        int version
+    }
+    EMISION_CONTENEDOR {
+        string id_emision PK
+        string id_visita FK
+        decimal consumo_atribuido
+        string id_factor FK
+        decimal valor_emision
+        string metodologia "ISO 14083 via GLEC v3.2"
+        datetime instante_calculo
+    }

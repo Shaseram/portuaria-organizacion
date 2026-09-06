@@ -1,0 +1,95 @@
+erDiagram
+    CONTRAPARTE ||--o{ CONTRATO_INTERFAZ : "acuerda"
+    CONTRATO_INTERFAZ ||--o{ MENSAJE : "gobierna"
+    ZONA_OPERATIVA ||--o{ ASIGNACION_AUTORIDAD : "acota"
+    DOMINIO_INFORMACION ||--o{ ASIGNACION_AUTORIDAD : "acota"
+    FASE_TRANSICION ||--o{ ASIGNACION_AUTORIDAD : "acota"
+    ASIGNACION_AUTORIDAD ||--o{ TRANSFERENCIA_AUTORIDAD : "regula"
+    VISITA ||--o{ TRANSFERENCIA_AUTORIDAD : "cruza_zona_en"
+    ASIGNACION_AUTORIDAD ||--o{ DIVERGENCIA_CONCILIACION : "delimita"
+    DIVERGENCIA_CONCILIACION ||--o| VERIFICACION_FISICA : "se_clasifica_con"
+    REGISTRO_AUDITORIA }o--|| PERSONA : "atribuye_a"
+
+    CONTRAPARTE {
+        string id_contraparte PK
+        string tipo "naviera, autoridad, ferroviario, concedente, TOS, ERP, periferia"
+        string nombre
+        string estado_contrato "confirmado o POR LEVANTAR"
+    }
+    CONTRATO_INTERFAZ {
+        string id_contrato PK
+        string id_contraparte FK
+        string estandar
+        string version_semantica "RT-05.17"
+        string modo "sincrono o asincrono"
+        datetime vigencia_desde
+        datetime obsolescencia_anunciada "preaviso de 6 meses"
+    }
+    MENSAJE {
+        string id_mensaje PK
+        string id_contrato FK
+        string direccion "entrada o salida"
+        datetime instante
+        string id_correlacion "comun de extremo a extremo, RT-05.19"
+        string clave_idempotencia
+        string estado "recibido, procesado, en cola, en DLQ"
+        int reintentos
+    }
+    DOMINIO_INFORMACION {
+        string id_dominio PK
+        string nombre
+    }
+    ZONA_OPERATIVA {
+        string id_zona PK
+        string nombre "POR NOMBRAR con Celula 3"
+    }
+    FASE_TRANSICION {
+        string id_fase PK
+        string nombre "previo al corte, validacion paralela, posterior al corte"
+    }
+    ASIGNACION_AUTORIDAD {
+        string id_asignacion PK
+        string id_dominio FK
+        string id_zona FK
+        string id_fase FK
+        string sistema_autoritativo "TOS 2012 o solucion"
+        datetime vigencia_desde
+        datetime vigencia_hasta
+    }
+    TRANSFERENCIA_AUTORIDAD {
+        string id_transferencia PK
+        string id_visita FK
+        string zona_origen FK
+        string zona_destino FK
+        string clave_idempotencia
+        int numero_secuencia
+        string estado "emitido, confirmado, fallido"
+        datetime instante
+    }
+    DIVERGENCIA_CONCILIACION {
+        string id_divergencia PK
+        string universo "inventario, movimientos, gate, hechos"
+        string id_turno FK
+        string clasificacion "desfase, nuevo correcto, nuevo incorrecto, no explicada"
+        int ventana_horas "48 para posicion, 24 para gate"
+        string estado
+        datetime instante_deteccion
+    }
+    VERIFICACION_FISICA {
+        string id_verificacion PK
+        string id_bloque FK
+        string id_turno FK
+        string resultado
+        datetime instante
+    }
+    REGISTRO_AUDITORIA {
+        string id_registro PK
+        string entidad_afectada
+        string operacion
+        string id_persona FK
+        datetime instante
+        string dispositivo
+        string valores_anteriores
+        string valores_posteriores
+        string sello_inalterabilidad "RT-16.07"
+    }

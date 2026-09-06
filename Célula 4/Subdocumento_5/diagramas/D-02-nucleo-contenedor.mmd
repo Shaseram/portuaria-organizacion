@@ -1,0 +1,129 @@
+erDiagram
+    CONTENEDOR ||--o{ VISITA : "tiene"
+    VISITA ||--o{ MOVIMIENTO : "registra"
+    VISITA ||--o| POSICION_VIGENTE : "ocupa"
+    VISITA ||--o{ CUSTODIA : "transfiere"
+    VISITA ||--o| CONDICION_LIBERACION : "evalua"
+    BLOQUE ||--o{ CELDA : "contiene"
+    CELDA ||--o{ POSICION_VIGENTE : "aloja"
+    CELDA ||--o{ ASIGNACION_POSICION : "es_destino_de"
+    VISITA ||--o{ ASIGNACION_POSICION : "recibe"
+    ASIGNACION_POSICION ||--o| CONDICION_DINAMICA : "considera"
+    POSICION_VIGENTE ||--o{ TAREA_VERIFICACION : "origina"
+    EQUIPO_PATIO ||--o{ MOVIMIENTO : "ejecuta"
+    PUNTO_DE_PASO ||--o{ LECTURA_OPTICA : "produce"
+    LECTURA_OPTICA }o--|| VISITA : "verifica"
+
+    CONTENEDOR {
+        string codigo_iso6346 PK "identificador normalizado, RF-INT-08"
+        string tipo "dry, reefer, tanque, open top"
+        string tamano "20 o 40 pies"
+        decimal tara
+        string clase_imdg "nulo si no es carga peligrosa, RN-02"
+        bool requiere_frio
+        bool dimension_especial
+        string naviera_operadora FK
+    }
+    VISITA {
+        string id_visita PK
+        string codigo_iso6346 FK
+        string flujo "importacion, exportacion, transbordo"
+        datetime instante_ingreso
+        datetime instante_salida
+        string estado_visita "ver diagrama D-09"
+        string id_recalada FK "nulo mientras no se asigna"
+        string cliente FK
+    }
+    MOVIMIENTO {
+        string id_movimiento PK
+        string id_visita FK
+        string tipo "descarga, carga, remocion, reubicacion, ingreso, salida"
+        datetime instante "instante real, no de digitacion"
+        string id_equipo FK
+        string celda_origen
+        string celda_destino
+        string fuente_registro "telemetria, optica, manual excepcional"
+        string id_correlacion "RT-05.19"
+    }
+    POSICION_VIGENTE {
+        string id_visita PK
+        string id_celda FK
+        datetime vigente_desde
+        string estado_confianza "conocida o por verificar, RF-PAT-03"
+        datetime instante_ultima_verificacion
+    }
+    ASIGNACION_POSICION {
+        string id_asignacion PK
+        string id_visita FK
+        string celda_propuesta FK
+        int nivel_rn01_determinante "1 a 4, RN-01"
+        string restriccion_cedida "declarada cuando hay conflicto"
+        string motivo
+        datetime instante
+        string version_algoritmo
+    }
+    CONDICION_DINAMICA {
+        string id_condicion PK
+        string tipo "equipo no disponible, bloque restringido, cliente"
+        string alcance
+        string autor FK
+        string motivo
+        datetime vigencia_desde
+        datetime vigencia_hasta
+    }
+    TAREA_VERIFICACION {
+        string id_tarea PK
+        string id_visita FK
+        string posicion_candidata
+        string asignado_a FK
+        string estado "abierta, en curso, cerrada"
+        datetime instante_creacion
+        datetime instante_cierre
+    }
+    CUSTODIA {
+        string id_custodia PK
+        string id_visita FK
+        string responsable "terminal, transportista, naviera"
+        datetime desde
+        datetime hasta
+        string id_firma FK "conformidad de recepcion o entrega"
+    }
+    CONDICION_LIBERACION {
+        string id_visita PK
+        bool documentacion_validada
+        bool autorizacion_aduanera
+        bool sin_retencion_fitosanitaria
+        bool sin_deuda_asociada
+        bool vgm_dentro_de_tolerancia
+        bool liberado "conjuncion de las cinco, RN-06"
+    }
+    BLOQUE {
+        string id_bloque PK
+        string zona_operativa FK
+        bool habilitado_imdg
+    }
+    CELDA {
+        string id_celda PK
+        string id_bloque FK
+        int bahia
+        int fila
+        int altura
+        bool tiene_toma_reefer
+    }
+    EQUIPO_PATIO {
+        string id_equipo PK
+        string tipo "grua de patio, tractocamion, equipo pesado"
+        string fuente_energia "diesel o electrico"
+        bool instrumentado
+    }
+    PUNTO_DE_PASO {
+        string id_punto PK
+        string ubicacion
+    }
+    LECTURA_OPTICA {
+        string id_lectura PK
+        string id_punto FK
+        datetime instante
+        string codigo_leido
+        decimal confianza_lectura
+    }

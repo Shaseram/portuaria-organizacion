@@ -1,0 +1,69 @@
+erDiagram
+    TABLERO ||--|{ TOMA_REEFER : "alimenta"
+    CELDA ||--o| TOMA_REEFER : "dispone_de"
+    TOMA_REEFER ||--o{ CONEXION_REEFER : "sirve"
+    VISITA ||--o{ CONEXION_REEFER : "mantiene"
+    CONEXION_REEFER ||--|{ MUESTRA_TEMPERATURA : "produce"
+    CONEXION_REEFER ||--o{ ALARMA : "origina"
+    TOMA_REEFER ||--o{ ALARMA : "origina"
+    TABLERO ||--o{ ALARMA : "origina"
+    ALARMA ||--o{ CONFIRMACION_ALARMA : "exige"
+    PARAMETRO_DESVIACION ||--o{ ALARMA : "define_umbral_de"
+
+    TABLERO {
+        string id_tablero PK
+        string id_bloque FK
+        string estado "operativo, en falla, sin comunicacion"
+    }
+    TOMA_REEFER {
+        string id_toma PK
+        string id_tablero FK
+        string id_celda FK
+        string estado "libre, ocupada, fuera de servicio"
+        bool instrumentada
+    }
+    CONEXION_REEFER {
+        string id_conexion PK
+        string id_visita FK
+        string id_toma FK
+        datetime instante_conexion
+        datetime instante_desconexion
+        decimal consigna_temperatura
+        int minutos_desconectado_acumulados "RN-10"
+    }
+    MUESTRA_TEMPERATURA {
+        string id_conexion PK "clave compuesta con el instante"
+        datetime instante PK
+        decimal temperatura
+        bool estado_conexion
+        decimal consumo_kwh
+        string origen "borde local o agregado reportado"
+        string calidad_dato "valida, interpolada, ausente"
+    }
+    PARAMETRO_DESVIACION {
+        string id_parametro PK
+        decimal banda_superior "sin valor fijado por el caso, RN-11"
+        decimal banda_inferior "sin valor fijado por el caso, RN-11"
+        int duracion_minima_minutos "acotada para no exceder 5 min"
+        datetime vigencia_desde
+        datetime vigencia_hasta
+        string autor FK
+    }
+    ALARMA {
+        string id_alarma PK
+        string tipo "desviacion, desconexion, falla de tablero, ausencia de dato"
+        string severidad
+        datetime instante_evento_fisico
+        datetime instante_generacion "diferencia menor o igual a 5 min"
+        string id_conexion FK
+        string id_parametro_aplicado FK
+        string estado "abierta, confirmada, escalada, cerrada"
+    }
+    CONFIRMACION_ALARMA {
+        string id_confirmacion PK
+        string id_alarma PK
+        string id_persona FK
+        datetime instante
+        string canal
+        int nivel_escalamiento "RN-08"
+    }

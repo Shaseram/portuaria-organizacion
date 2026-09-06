@@ -1,0 +1,70 @@
+erDiagram
+    PERSONA ||--o{ HABILITACION : "acredita"
+    PERSONA ||--o{ CREDENCIAL_TEMPORAL : "porta"
+    NOMBRADA ||--|{ CREDENCIAL_TEMPORAL : "origina"
+    NOMBRADA }o--|| TURNO_OPERACIONAL : "corresponde_a"
+    CREDENCIAL_TEMPORAL ||--o{ ZONA_HABILITADA : "autoriza"
+    ZONA_RECINTO ||--o{ ZONA_HABILITADA : "es_alcance_de"
+    PERSONA ||--o{ EVENTO_ACCESO : "protagoniza"
+    ZONA_RECINTO ||--o{ EVENTO_ACCESO : "delimita"
+    PERSONA ||--o{ CONSULTA_SENSIBLE : "realiza"
+
+    PERSONA {
+        string id_persona PK
+        string tipo "propio, eventual, conductor, visita, inspector"
+        string documento_identidad "dato personal, cifrado de campo, RT-11.10"
+        string organizacion
+    }
+    HABILITACION {
+        string id_habilitacion PK
+        string id_persona FK
+        string tipo
+        datetime vigencia_desde
+        datetime vigencia_hasta
+        bool vigente "verificada al ingreso, RF-ACC-05"
+    }
+    TURNO_OPERACIONAL {
+        string id_turno PK
+        date fecha
+        string jornada "tres turnos 24x7"
+    }
+    NOMBRADA {
+        string id_nombrada PK
+        string id_turno FK
+        datetime instante_publicacion
+        int personas_asignadas "hasta 380 eventuales por turno"
+    }
+    CREDENCIAL_TEMPORAL {
+        string id_credencial PK
+        string id_persona FK
+        string id_nombrada FK
+        datetime vigencia_desde
+        datetime vigencia_hasta "expiracion automatica, RF-ACC-02"
+        string medio "sin biometria obligatoria, RF-ACC-04"
+    }
+    ZONA_RECINTO {
+        string id_zona PK
+        string nombre
+        string nivel_proteccion "plan de proteccion de la instalacion"
+    }
+    ZONA_HABILITADA {
+        string id_credencial PK
+        string id_zona PK
+    }
+    EVENTO_ACCESO {
+        string id_evento PK
+        string id_persona FK
+        string id_zona FK
+        string tipo "ingreso o egreso"
+        datetime instante
+        string medio_verificacion
+        bool registrado_sin_conectividad "RF-ACC-08"
+    }
+    CONSULTA_SENSIBLE {
+        string id_consulta PK
+        string id_persona FK
+        string tipo_dato "ubicacion de contenedor, informacion comercial, dato personal"
+        string objeto_consultado
+        datetime instante
+        string dispositivo "RT-16.09 y RT-05.03"
+    }
