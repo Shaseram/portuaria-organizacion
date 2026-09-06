@@ -26,11 +26,11 @@ sed -n '295p' Celula3/01_Frente_Logica_Integracion/A3_PROCESOS_CRITICOS_Y_TOS.md
 | # | Incoherencia | Severidad | Dueño |
 |---|---|---|---|
 | 1 | ~~La Etapa 1 pasa a producción sin marcha blanca~~ → **reformulado y RESUELTO**: C3 era el único documento desalineado del calendario de Célula 2 | MEDIO | **cerrado** en C3 §12 |
-| 2 | Seis requisitos de tractocamiones —cuatro Críticos— no los cita nadie, y son la causa declarada de la brecha de productividad | **ALTO** | A1 + A2 |
-| 3 | A3 es el documento de convivencia y cita 3 de los 14 requisitos de convivencia | **ALTO** | A3 |
-| 4 | El TOS está en la sala, pero tres documentos postergan su conciliación «a la reconexión» | **ALTO** | A1 + C3 (C1 es el que está bien) |
-| 5 | La unidad del traspaso no es la misma en A3 y en C3 | **ALTO** | A3 + C3 |
-| 6 | El Maestro cuenta 80 equipos a instrumentar donde el caso cuenta 74 | **MEDIO** | Maestro (integrador) |
+| 2 | Seis requisitos de tractocamiones —cuatro Críticos— no los citaba nadie, y son la causa declarada de la brecha de productividad | ALTO | **CERRADO** en A1 |
+| 3 | A3 afirmaba que «el TOS sigue al día» sin la cifra que lo hace verificable | ALTO | **CERRADO** en A3 §5 |
+| 4 | Dos conciliaciones distintas se llamaban igual; al separarlas apareció que las ventanas de 24-48 h son más cortas que el corte de 72 h | ALTO | **CERRADO** en A3, A1 y C3 |
+| 5 | ~~La unidad del traspaso no es la misma en A3 y en C3~~ | — | **RETIRADO**: no era contradicción |
+| 6 | El Maestro contaba 80 equipos a instrumentar donde el caso cuenta 74 | MEDIO | **CERRADO** en el Maestro §4.1 |
 
 ---
 
@@ -118,6 +118,8 @@ La consecuencia práctica: si un evaluador pregunta *«¿cómo van a subir de 24
 
 1. **A1** asigna el dominio a un componente y lo cita. La ubicación natural es `CTX-YARD` para posición y asignación de tractocamiones —A2 ya los mapea ahí— y `CTX-OPS` para el evento de detención, que es un hecho operacional. Basta una línea en la responsabilidad de cada uno y las citas `RF-TRA-01..06`.
 2. **A1 o A3** declara de dónde sale el evento de `RF-TRA-04`: es un hecho derivado de cruzar el estado de la grúa con la disponibilidad del tractocamión asignado, no un sensor nuevo.
+**CERRADO el 2026-09-06.** `CTX-YARD` asume posicionamiento, asignación, tiempo estimado de arribo y reasignación (`RF-TRA-01`, `RF-TRA-02`, `RF-TRA-03`, `RF-TRA-05`, `RF-TRA-06`); `CTX-OPS` registra la detención de grúa por espera de equipo como hecho operacional derivado (`RF-TRA-04`), declarado como el insumo que hace calculable la productividad que `CTX-VESSEL` reporta. Los seis quedan citados en A1.
+
 3. **C4** verifica si los 42 tractocamiones instrumentados ya están dentro de los 74 equipos que dimensiona. Según el caso, línea 750, sí lo están (18+42+14 = 74). No debería cambiar el dimensionamiento, pero conviene dejarlo verificado y escrito.
 
 ---
@@ -159,7 +161,9 @@ Es exactamente el tipo de rotura de cadena que la Matriz Global intenta evitar: 
 
 1. **A3** cita `RF-CON-03` donde afirma que el TOS sigue al día, e incorpora la ventana de **60 segundos** y su carácter provisional, atada a la puerta del mes 4 que A3 ya tiene en su calendario (`:353`).
 2. **A3** cita `RF-CON-04` en el párrafo del apagado bajo doble control.
-3. **A3** revisa los once `RF-CON` no citados y, para cada uno, o lo cita donde corresponda o declara por qué queda fuera del alcance de este entregable. No hace falta citarlos todos: hace falta que ninguno quede sin respuesta.
+**CERRADO el 2026-09-06** en lo sustantivo: `A3 §5` cita ahora `RF-CON-03` con su ventana de **60 segundos**, su criterio del 100 % sobre un turno y su carácter provisional hasta la puerta del mes 4, declarándola como el RPO efectivo del retorno; y cita `RF-CON-04` en el párrafo del apagado.
+
+3. **Queda abierto, menor:** A3 revisa los once `RF-CON` restantes y, para cada uno, o lo cita o declara por qué queda fuera del alcance. No hace falta citarlos todos: hace falta que ninguno quede sin respuesta.
 
 ---
 
@@ -204,43 +208,23 @@ Decidir cuál de las dos es cierta y alinear las tres:
 - **Si la conciliación es local** —que es lo que sostiene C1 y lo que la topología sugiere—: se retira la postergación de `A1:426` y de `C3:253/273`, y se declara que la conciliación con el TOS continúa durante el corte porque ambos sistemas están en la sala. Lo que espera al enlace es otra cosa: el reporte agregado hacia la nube.
 - **Si alguna parte necesita nube** —por ejemplo un servicio de reglas o un almacén de referencia—: hay que nombrar ese componente, y entonces C1 debe reflejarlo y D2 debe tratarlo como dependencia del corte.
 
-Dueño: **A1 y C3** hacen el cambio; **C1** ya está correcto y sirve de referencia.
+**CERRADO el 2026-09-06, y el hallazgo creció.** Se separaron las dos conciliaciones que se llamaban igual: la de `A3 §4` —plataforma contra TOS 2012, por turno— **continúa localmente durante el corte**, porque ambos sistemas están en la sala (`INT-TOS` sobre `PHY-OPS-03`); lo que espera al enlace es la consolidación hacia la nube y la conciliación con contrapartes externas. Corregido en `A3 §7`, `A1 §2.4` y `C3 §7`/`§7.1`; C1 no se tocó porque ya estaba bien.
+
+**Y al separarlas apareció lo que nadie había cruzado.** Las ventanas de investigación de `A3 §4` son de **24 h para gate y hechos facturables** y **48 h para posición y movimientos** — más cortas que el corte de **72 h**. Si la conciliación se detuviera durante una desconexión, las divergencias de gate superarían su ventana antes de que vuelva el enlace y, por la regla del propio A3, computarían como **no explicadas**, deteniendo el avance sin que nadie hubiera hecho nada mal. De ahí sale un requisito de emplazamiento que ahora queda escrito en `A3 §4`: **el motor de conciliación y su bitácora son locales, no un informe que se calcula en `DATA-AN`.**
 
 ---
 
-## Hallazgo 5 · La unidad del traspaso no es la misma en A3 y en C3
+## Hallazgo 5 · **RETIRADO** — no era una contradicción
 
-**Severidad: ALTO.**
+Se afirmaba que `A3:239` —*«el núcleo de registro… se sustituye completo… **nunca por función**»*— contradecía a `C3:153`, que da por cumplida la condición 4 del caso desplegando por zona.
 
-### En simple
+**Al releer la condición completa, se cae:**
 
-El caso exige que el despliegue se pueda hacer «por proceso o por zona», y da ejemplos: gate, patio, patio refrigerado, muelle, planificación, facturación, portal.
+> `CP, Cap. 13.3`, condición 4: *«El despliegue debe poder hacerse **por proceso o por zona** —gate, patio, patio refrigerado, muelle, planificación, facturación, portal de clientes— y no como un único evento que afecte simultáneamente a toda la operación.»*
 
-A3 dice que el núcleo de registro —gate, posición, movimientos y salida— es **una sola pieza que se sustituye completa**, y que separarla por función está prohibido, porque dejar la posición en el TOS mientras el gate ya migró crearía **dos fuentes de verdad sobre el mismo contenedor**. Lo que sí se puede es desplegarlo **bloque de patio por bloque de patio**.
+Es una **disyunción**. Desplegar por zona satisface la condición, de modo que A3 puede prohibir la separación por función del núcleo sin que C3 deje de cumplirla. Las dos afirmaciones son compatibles y ninguna necesita cambio.
 
-C3 toma la lista del caso —donde gate y facturación aparecen como procesos separables— y declara que su estrategia cumple esa condición. Pero para el núcleo no puede cumplirla: gate y posición van juntos o no van.
-
-### Lo que dice cada lado
-
-**A3** — `Celula3/01_Frente_Logica_Integracion/A3_PROCESOS_CRITICOS_Y_TOS.md:239`:
-> *«el núcleo de registro es **un solo contexto acotado** (gate+posición+movimientos+salida) que se sustituye completo, pero se despliega por zona del patio, **nunca por función** — dejar la posición en el TOS mientras el gate ya migró generaría dos fuentes de verdad sobre el mismo objeto.»*
-
-**C3** — `Celula3/02_Frente_Fisica_Despliegue/C3_DESPLIEGUE_RED_Y_CONTINUIDAD.md:153`:
-> *«El `CP, Cap. 13.3`, condición 4, exige que «el despliegue debe poder hacerse **por proceso o por zona** —gate, patio, patio refrigerado, muelle, planificación, facturación, portal de clientes—…». Azul-verde conmuta todo el tráfico a la vez y no respeta esa partición. **El progresivo por zona sí**.»*
-
-### Por qué es una incoherencia real
-
-C3 usa la lista del caso para dar por cumplida la condición 4, y esa lista incluye separaciones que A3 prohíbe expresamente para el núcleo. No es un matiz de palabras: el caso pide poder desplegar «gate» como unidad, y nuestra arquitectura no puede hacerlo para el registro. Eso hay que **declararlo y justificarlo**, no darlo por cumplido.
-
-Lo bueno es que la justificación de A3 es sólida —evitar dos fuentes de verdad sobre el mismo contenedor es exactamente lo que el caso quiere evitar— y un evaluador la aceptaría. Lo que no se sostiene es afirmar que se cumple la condición tal como está escrita.
-
-### Qué proponemos
-
-1. **C3 §4** declara abiertamente que, para el núcleo de registro, la condición 4 se satisface **por bloque de patio y por etapa**, no por proceso, y cita la razón de A3.
-2. Fijar un vocabulario único entre los dos documentos: **«zona de despliegue»** para el artefacto de software y **«zona de autoridad»** para el bloque de patio. Hoy la palabra «zona» significa dos cosas distintas.
-3. Nota: C3 ya reconoce esto en su §7.2 —*«se sustituye como un solo contexto acotado pero se despliega bloque por bloque del patio»*—, o sea que el propio documento se contradice entre su §4 y su §7.2. Alinear los dos.
-
----
+El error fue leer una conjunción donde el texto dice «o». Se deja registrado para que nadie lo vuelva a levantar.
 
 ## Hallazgo 6 · El Maestro cuenta 80 equipos donde el caso cuenta 74
 
@@ -273,7 +257,7 @@ El caso no incluye las grúas de muelle entre los equipos a instrumentar, y tien
 
 ### Qué proponemos
 
-Corregir `Maestro:156` para que la lista sea la del caso —18 patio, 42 tractocamiones, 14 pesados, 74 equipos— y, si se quiere conservar la mención de las 6 grúas de muelle, ponerla en una columna aparte marcada como **lectura de telemetría, no instrumentación**. Dueño: integrador.
+**CERRADO el 2026-09-06.** Corregido `Maestro:156` para que la lista sea la del caso —18 patio, 42 tractocamiones, 14 pesados, 74 equipos— y, si se quiere conservar la mención de las 6 grúas de muelle, ponerla en una columna aparte marcada como **lectura de telemetría, no instrumentación**. Dueño: integrador.
 
 ---
 
