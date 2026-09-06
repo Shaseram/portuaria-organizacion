@@ -10,7 +10,7 @@
 
 | ADR | Decisión | Autor primario | Insumos | Estado | Destino |
 |---|---|---|---|---|---|
-| `ADR-001` | estilo: núcleo modular vs. servicios distribuidos | A1 | volumen, 72 h, TI=5 | CANDIDATO | lógica/físico |
+| `ADR-001` | estilo: núcleo modular vs. servicios distribuidos | A1 | volumen, 72 h, TI=5 | PROPUESTO | lógica/físico |
 | `ADR-002` | frontera del runtime local y sincronización | A3/C1 | cinco funciones críticas | CANDIDATO | lógico/físico |
 | `ADR-003` | mecanismo de integración/eventos | A2 | 21+7, desconexión | CANDIDATO | integración |
 | `ADR-004` | convivencia/autoridad del TOS | A3 | Decisión 1, RF-CON-13/14 | CANDIDATO | procesos |

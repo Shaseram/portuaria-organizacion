@@ -1,10 +1,60 @@
 # TRZ-C4 — Dimensionamiento y T-11
 
-| ID | Fuente | Dimensión | Valor/supuesto | Fórmula | Componente físico | Cantidad | Fila T-11 | Estado |
+**Regla.** Una fila por afirmación verificable. Cita con documento + capítulo/numeral + código + materia (Maestro §1.1). `[caso]` = valor del `CP, Cap. 14.1`; `[derivado]` = calculado; `[supuesto]` = propio y declarado.
+
+## 1. Trazas del entregable
+
+| ID | Fuente | Dimensión | Valor y supuesto | Fórmula o método | Componente físico | Cantidad | Fila T-11 | Estado |
 |---|---|---|---|---|---|---|---|---|
-| `TRZ-C4-001` | Volumetría C2 fila 1/2 | TPS | 0,11/0,13; peak 0,23/0,27 | revalidar | POR DEFINIR | POR CALCULAR | POR DEFINIR | PENDIENTE |
-| `TRZ-C4-002` | Volumetría C2 filas 3/4/9 | reefer/series | 7,2–43,3 ev/s; 68–82 GB/año | revalidar | POR DEFINIR | POR CALCULAR | POR DEFINIR | PENDIENTE |
-| `TRZ-C4-003` | Volumetría C2 fila 15/16 | 72 h/sync | ≈13 GB; ≤90 min; ≈19,3 Mbps útiles | 13 GB × 8 / 5.400 s; revalidar peak, tráfico concurrente y holgura | EDGE-RUN | POR CALCULAR | POR DEFINIR | PENDIENTE |
-| `TRZ-C4-004` | T-11 | formulario | sin precios | 1:1 físico/cálculo | todos | todos | consolidar | PENDIENTE |
-| `TRZ-C4-005` | Volumetría C2 «Factor estacional»; Caso 06 §14.2 | estacionalidad por dimensión | camiones ×1,79; volumen refrigerado mensual ×2,48 | justificar factores sin duplicar peak incluido | POR DEFINIR | POR CALCULAR | POR DEFINIR | PENDIENTE |
-| `TRZ-C4-006` | C2 RNF-DES-09..12; FEP02 §9.1 y RT-09.06/07 | desempeño bajo carga | umbrales p95 y 1,5× peak | prueba E2E con controles activos | POR DEFINIR | POR CALCULAR | POR DEFINIR | PENDIENTE |
+| `TRZ-C4-001` | BTT, Cap. 9, `RT-09.01` — cálculo de capacidad con supuestos *(colisión con el `RT-09.01` del Cap. 15 del caso, ver `F2-ESC-006`)* · Checklist Cap. C, N° 11 | método | convenciones, unidades decimales y marca de origen por cifra | — | todos | — | — | PARA REVISIÓN |
+| `TRZ-C4-002` | `CP, Cap. 14.2` — 18 dimensiones a estimar · `Celula2/plantilla_volumetria_caso_portuaria.md` | revalidación | 15 confirmadas, 3 corregidas, 0 descartadas | recálculo desde `CP, Cap. 14.1` | — | — | — | PARA REVISIÓN |
+| `TRZ-C4-003` | `CP, Cap. 14.1` — 972.000 movimientos de muelle, 1.290.000 de patio, 1.450 camiones/día, 9.600 documentos/mes | `DIM-01` | 3.435.700 tx/año ⇒ **0,109 TPS** `[derivado]` | suma ÷ 31.536.000 s | `PHY-OPS-01` | 3 nodos | `T11-C2-01` | **confirmado** |
+| `TRZ-C4-004` | `CP, Cap. 14.1` — 14 puestos de gate · `CP, Cap. 18` — 30 mov/h por grúa · `RNF-DES-01` — camión ≤120 s | `DIM-02` | **0,233 TPS** en peak de coincidencia `[derivado]` | muelle + gate + patio | `PHY-OPS-01` | — | — | **confirmado** |
+| `TRZ-C4-005` | `CP, Cap. 14.1` — 2.150 tomas conectadas en peak · Decisión N° 8 — muestreo 1–5 min local, 5–15 reporte | `DIM-03` | **7,17 ev/s** al núcleo; **35,8 ev/s** local `[derivado]` | tomas ÷ intervalo | `PHY-EDG-03`, `PHY-OPS-01` | 26 → 32 concentradores | `T11-C2-16` | **confirmado** |
+| `TRZ-C4-006` | `CP, Cap. 14.1` — 74 equipos a instrumentar · Decisión N° 2 — DGPS/RTLS | `DIM-05` | **37 ev/s** `[derivado]`; los **2 s de reporte son `[supuesto]` propio**, no fijados por la Decisión N° 2 | 74 ÷ 2 s | terminales de equipo | 74 → 88 | `T11-C2-15` | **confirmado** con supuesto marcado |
+| `TRZ-C4-007` | `CP, Cap. 14.2` — primera particularidad: la telemetría domina sobre las transacciones | carga | telemetría **≈300×** las transacciones de negocio | 73 ev/s frente a 0,23 TPS | `PHY-OPS-01` | 3 nodos **por disponibilidad, no por carga** | `T11-C2-01` | PARA REVISIÓN |
+| `TRZ-C4-008` | BTT, Cap. 15, `RT-15.01` — declarar el factor de utilización y evitar capacidad ociosa · BTT, numeral 6.1 — sobredimensionar se penaliza igual que subdimensionar | utilización | se declara utilización de cómputo baja, justificada por disponibilidad y autonomía | — | `PHY-OPS-01` | — | — | PARA REVISIÓN |
+| `TRZ-C4-009` | `CP, Cap. 14.2` — tercera particularidad: el peak estacional del 15-dic al 30-abr · `CP, Cap. 14.1` — hasta 2.600 camiones/día | factor estacional | **×1,79** sobre el flujo de camiones y con él sobre las imágenes | 2.600 ÷ 1.450 | buffer y enlace | — | — | PARA REVISIÓN |
+| `TRZ-C4-010` | `CP, Cap. 15, RT-03.10` — 72 h sin enlace · `RNF-DIS-02` | `DIM-15` | **21,9 GB a peak estacional**, no 13,7 a tasa promedio | suma por componente; imágenes son el 91 % | `PHY-OPS-02` | — | `T11-C2-02` | **corregido** |
+| `TRZ-C4-011` | `CP, Cap. 15, RT-03.13` — sincronización ≤90 min *(colisión, ver `F2-ESC-006`)* · `RNF-DIS-04` | `DIM-16` | **32,5 Mbps sostenidos** a peak estacional | 21,9 GB × 8 ÷ 5.400 s | enlace | ≥35 Mbps disponibles | `T11-C3-01` | **corregido** |
+| `TRZ-C4-012` | BTT, Cap. 3, `RT-03.20` — dimensionar ancho de banda por sitio en régimen y peak, con cálculo · `CP, Cap. 6` — respaldo por radioenlace «de menor capacidad» | ancho de banda | operación **369 kbps**; reposición **32,5 Mbps**. El enlace lo dimensiona la reposición, no el régimen | por componente | enlace del terminal | dos caminos | `T11-C3-01` | **BLOQUEADO EXTERNO** `F2-ESC-012` |
+| `TRZ-C4-013` | `Celula2/plantilla_volumetria`, fila 13 — 375–500 kbps, declarada como la de mayor incertidumbre | `DIM-13` | **62 kbps** en régimen, **88 kbps** en peak | se descuentan las imágenes de gate, que no cursan por la red inalámbrica | `PHY-EDG-02` | 6–8, por cobertura | `T11-C3-03` | **corregido** |
+| `TRZ-C4-014` | BTT, Cap. 3, `RT-03.23` — cobertura verificada por estudio de sitio · Decisión N° 9 | `DIM-14`, `ADR-006` | la red del patio **no está limitada por ancho de banda sino por cobertura y handover**; `ADR-006` no se decide por rendimiento | — | `PHY-EDG-02` | rango 6–8 | `T11-C3-03` | **BLOQUEADO EXTERNO** `F2-ESC-001` |
+| `TRZ-C4-015` | `CP, Cap. 14.1` — 1.058.500 eventos de gate/año · `[supuesto]` 500 KB/imagen y 20 % de cobertura óptica en patio | `DIM-10` | 1,43 TB/año; proyección **1,67 TB**, no 1,6 | imágenes × 500 KB × 1,2 | `DATA-DOC` | — | `T11-C2-17` | **corregido** |
+| `TRZ-C4-016` | `[supuesto]` 500 KB por imagen | sensibilidad | gobierna el **91 % del buffer** y el 100 % del almacenamiento documental; a 1 MB el buffer sube a 40 GB y la reposición a 58 Mbps | análisis de sensibilidad | `PHY-OPS-02`, enlace | — | — | **BLOQUEADO EXTERNO** `F2-ESC-011` |
+| `TRZ-C4-017` | Maestro §16.1 — siete retenciones · `RT-05.10` — imágenes 12 meses | nube | ≈2,5 TB en línea; la retención de 12 meses es lo que impide el crecimiento sin techo | acumulación por conjunto | `DATA-CORE`, `TS`, `DOC` | elástica | `T11-C2-17` | PARA REVISIÓN |
+| `TRZ-C4-018` | BTT, Cap. 3, `RT-03.14` y Cap. 8, `RT-08.02`/`RT-08.03` — redundancia, tolerancia a un disco y HA sin punto único | `PHY-OPS-01`, `02`, `04` | 3 nodos; arreglo con tolerancia ≥1 disco; par de conmutadores y de cortafuegos | disponibilidad, no carga | sala técnica | 3 · 1 arreglo · 2+2 | `T11-C2-01`..`04` | PARA REVISIÓN |
+| `TRZ-C4-019` | almacenamiento local: buffer + ventana caliente + réplica + trabajo | capacidad local | **≈183 GB útiles** con 30 % de holgura | suma de §6.1 | `PHY-OPS-02` | — | `T11-C2-02` | PARA REVISIÓN |
+| `TRZ-C4-020` | BTT, Cap. 8, `RT-08.05` — margen como porcentaje sobre la carga proyectada y procedimiento de ampliación | crecimiento | **30 %** sobre la proyección a tres años del `CP, Cap. 14.1` | crecimientos de 16 a 21 % más error de supuestos | todos | — | — | PARA REVISIÓN |
+| `TRZ-C4-021` | `CP, Cap. 10`, restricción 9 — congelamiento del 15-dic al 30-abr · `CP, Cap. 14.2` — el peak estacional coincide con el congelamiento | ampliación | **toda holgura instalada y verificada antes del 15 de diciembre**; una necesidad detectada en enero espera a mayo | calendario | todos | — | — | PARA REVISIÓN |
+| `TRZ-C4-022` | BTT, Cap. 2, `RT-02.12` — replicación a nuevas unidades por parametrización, sin rediseño · `CP, Cap. 13.2` — posible cuarto sitio 2030–2032 | crecimiento | la capacidad se amplía por incorporación, no por rearquitectura | — | todos | — | — | PARA REVISIÓN |
+| `TRZ-C4-023` | `CP, Cap. 14.1` — 14 puestos de gate, 26 tableros, 74 equipos | cantidades | cantidades **del caso**, no estimadas: 14→18 gabinetes de gate, 26→32 concentradores, 74→88 terminales | conteo directo | `PHY-EDG-01`, `03`, terminales | — | `T11-C2-14`, `16`, `15` | PARA REVISIÓN |
+| `TRZ-C4-024` | `BA, Art. 24` · `RNF-DES-12` — carga y estrés a 1,5× el peak con punto de quiebre | prueba | criterio de aceptación de la capacidad dimensionada | — | todos | — | — | PENDIENTE prueba |
+| `TRZ-C4-029` | BTT, Cap. 9, numeral 9.1 — umbrales exigibles **medidos en el percentil 95** sobre la experiencia real y bajo la carga de peak del caso · `RT-09.06` — carga a 1,5× el peak y estrés **hasta identificar el punto de quiebre** · `RT-09.07` — el informe incluye **curva de tiempo de respuesta frente a carga, punto de saturación, consumo de recursos y comportamiento durante y después del peak** | criterio de la prueba | los umbrales se miden en p95, no en promedio, y con los controles de seguridad activos; el informe tiene contenido obligatorio propio | `RNF-DES-09`..`12` | todos | — | — | PARA REVISIÓN — *traza incorporada al consolidar con `main`; `RT-09.06`/`RT-09.07` y el p95 del numeral 9.1 no estaban anclados en esta trazabilidad* |
+| `TRZ-C4-025` | Maestro §2.1 y regla negativa 18 · `BA, Art. 16` — sin precios en el Informe 1 | T-11 | cinco columnas oficiales; matriz de trabajo con doce | — | — | — | todas | PARA REVISIÓN |
+| `TRZ-C4-026` | `BA, Art. 14.2` — la especificación del hardware de terreno es del PROPONENTE aunque la compra sea del CLIENTE · `CP, Cap. 11` | T-11 | se declara en la justificación de la fila, para que la exclusión de la compra no parezca omisión | — | equipamiento de terreno | — | `T11-C2-15` | PARA REVISIÓN |
+| `TRZ-C4-027` | `DIM-18` — dotación con AHT `[supuesto]` de 8 min · `RT-08.07` — estaciones con monitores duales | puestos | no se fija sin el AHT real; `DIM-18` estima 2 diurnos + 1 de guardia | Erlang C | `PHY-OPS-06` | por confirmar | `T11-C2-13` | PENDIENTE dato externo |
+| `TRZ-C4-028` | `DIM-11` — histórico del TOS estimado en ≈480 GB con proxy de la tasa actual | migración | se mantiene la sobreestimación deliberada; el dato real está solicitado | — | repositorio histórico | — | `T11-C2-17` | **BLOQUEADO EXTERNO** |
+
+| `TRZ-C4-030` | D1, `SEC-PHYS-v0.1` y `F3-DEC-005` — asignar ID T-11 solo con producto ofertado; capacidades incluidas se referencian, no se duplican | T-11 de seguridad | 17 grupos: **7 con fila propia, 10 referenciados** desde filas existentes | clasificación de D1 aplicada literalmente | todos | 7 filas | `T11-SEC-01`..`07` | PARA REVISIÓN |
+| `TRZ-C4-031` | D1, `SEC-LOG-01` · `RT-11` — 12 meses en línea + 24 en archivo · Maestro §16.1 — accesos 5 años · `RT-09.01` — cálculo con supuestos | ingesta de registro | **piso derivable ≈21.700 ev/día ⇒ ≈8 GB/año en línea** a 1 KB por registro, con sensibilidad de 4 a 16 GB `[supuesto]`; buffer local de 72 h ≈0,07 GB | derivación en §9.ter desde el `CP, Cap. 14.1`; **no incluye registros de plataforma, red y borde**, que suelen dominar | `PHY-OPS-01`, `PHY-CLD-09` | unidad: ingesta diaria y retención | `T11-SEC-04` | **PARA REVISIÓN**; el total depende de `F3-DEP-004` (`F2-ESC-013`) |
+
+## 2. Cobertura declarada
+
+| Obligación | Cómo la cubre C4 | Sección |
+|---|---|---|
+| `SD4-06` volumen, concurrencia, crecimiento y capacidad | revalidación de las 18 dimensiones y capacidad por nodo | §2, §6, §7 |
+| `SD4-02` parte de cantidades del emplazamiento | conversión a cantidad con criterio por fila | §9 |
+| `SD4-08` arquitectura propia del caso | telemetría dominante, peak estacional coincidente con el congelamiento, cobertura del patio como cuello | §3, §4, §8 |
+| `T21-4.2` dimensionamiento y plan de capacidad | sección 4.2.11 del consolidado | todo |
+| `T11` formulario | matriz de trabajo y control 1:1 | §10 |
+| Checklist BTT, Cap. C, N° 11 | cálculo de capacidad y dimensionamiento con supuestos | §1, §2 |
+| `RT-15.01` factor de utilización | declarado y justificado en vez de inflar la carga | §3 |
+| `RT-08.05` margen y ampliación | 30 % con procedimiento y restricción de calendario | §7 |
+
+## 3. Pendientes de esta traza
+
+- `TRZ-C4-012`, `014`, `016`, `027` y `028` dependen de dato externo: capacidad de enlaces, site survey, tamaño de imagen, AHT y tamaño de la base del TOS.
+- ~~El control 1:1 de seguridad requiere `SEC-PHYS-v0.1`~~ — **hecho** en §9.bis y §9.ter; ver `TRZ-C4-030`. Queda consolidar con A1, A2, A3 y D2 en la Puerta 2.
+- Cerrar `TRZ-C4-024` y `TRZ-C4-029` con el informe de la prueba de carga a 1,5×, que debe traer curva, punto de saturación, consumo de recursos y comportamiento posterior al peak.
+- Llevar el perfil de escritura de telemetría a `ADR-007` para justificar el nivel de arreglo frente a las alternativas.
