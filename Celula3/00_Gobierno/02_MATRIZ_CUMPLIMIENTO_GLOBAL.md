@@ -10,10 +10,10 @@
 | `SD4-01` | capas, módulos, contextos, responsabilidades e interfaces | A1 | A2, A3, D1 | esquemas + catálogo | PENDIENTE |
 | `SD4-02` | físico híbrido y Art. 16 por componente | C1 | C2, C4, D1 | físico + tabla emplazamiento | PENDIENTE |
 | `SD4-03` | servicios, contratos, mensajería, versionado y gobierno | A2 | A3, D1 | matriz/diagrama integración | PENDIENTE |
-| `SD4-04` | Zero Trust, exposición, identidad, cifrado y controles | D1 | D2, A1, C3 | D1 B1–B7 y matriz SEC-*; diagramas, amenazas, cruce físico y pruebas pendientes | EN CURSO |
+| `SD4-04` | Zero Trust, exposición, identidad, cifrado y controles | D1 | D2, A1, C3 | D1 B7-R: 31/31 controles asociados a amenazas y 17/17 grupos SEC-PHYS tratados por C1–C4; D2 v0.5; diagramas, pruebas y aprobaciones pendientes | EN CURSO |
 | `SD4-05` | ambientes, redes, HA, DR y respaldos | C3 | A3, C1, D1 | despliegue/continuidad | PENDIENTE |
 | `SD4-06` | volumen, concurrencia, crecimiento y capacidad | C4 | A2, C2 | cálculos reproducibles | PENDIENTE |
-| `SD4-07` | ADR con alternativas y selección | D2 | todos | registro ADR | PENDIENTE |
+| `SD4-07` | ADR con alternativas y selección | D2 | todos | D2 B5/B6 y registro global: 11 ADR revisados; **B7 verifica que los 11 tienen alternativas, consecuencias, condición de revisión, efecto T-11 y vínculo amenaza/SPOF**; propuestas y candidatos sin aprobación | EN CURSO |
 | `SD4-08` | arquitectura específica del Caso 06 | D3 | todos | auditoría de especificidad | PENDIENTE |
 
 ## 2. Cobertura formal 4.1 y 4.2
@@ -53,6 +53,9 @@ Agregar una fila por afirmación verificable o agrupación homogénea. No usar u
 | `GTR-014` | FEP02 Cap. 11 RT-11.17; Caso 06 Cap. 10 restricción 11 | obligación directa de Bases | RNF-OPE-08 apoyo | SD4-04/05 | D1/C3/C4 | SEC-SOC-01 / SEC-IR-01 | servicio gestionado; ubicación POR VALIDAR | D1 B5.4/B5.8 ADR-010 C propuesta; dotación/procedimientos pendientes | POR CREAR B8 | SEC-PHYS-v0.1; fila/cantidad C4 pendientes | EN CURSO |
 | `GTR-015` | Caso 06 Cap. 8 y §17.1; registro C2 §C.1/C.2 y narrativa §3.11 | C2 B6/B7/B8 | supuestos S1..S5 y A..L; sin RF nuevo | SD4-07/08 | A1/A3/C3/D1/D3 | ACT-GATE/ACT-MANT/ACT-AGE | n/a | actores, seis tensiones y supuestos con fundamento; tensión 1 abierta | POR DEFINIR | n/a | PENDIENTE |
 | `GTR-016` | Caso 06 Cap. 18 criterios 8/10; trazabilidad C2 parte 2 | C2 B10 | RF-PAT-10 | SD4-08 | A3/C4/D3 | CTX-YARD | POR DEFINIR | remociones anticipadas y relación con inspecciones | POR DEFINIR | POR DEFINIR | PENDIENTE |
+| `GTR-017` | FEP02 Cap. 11 RT-11.02/05; RNF-SEG-02 | MC-02/04/07/08/09/10/11/12/30 | modelado STRIDE por componente e integración | SD4-04/07/08 | D2 B1–B7; TRZ-D2-002/014 | 24/24 componentes A1; 11/11 sistemas canónicos | 21/21 nodos C1 | `THR-001..073`, `SPOF-01..22`, ADR-001..011; controles D1 enlazados | DIFERIDO B8 | impacto identificado; cantidades/precios no alterados | EN CURSO — cobertura auditada; modelo D2 `CONFORME PARA v0.5 CON PENDIENTE ADR`; `RT-11.02` cubierto documentalmente con regla de cinco disparadores; `ADR-011`, pruebas, revisión cruzada y aceptación pendientes |
+| `GTR-018` | Contrato D1; FEP02 Cap. 11/12; D2 B7 | F3-DEP-001..004; F3-DEC-005 | integración control→amenaza→nodo→T-11 | SD4-02/04/05/06 | D1 B7-R; TRZ-D1-013; C1 §6.bis; C4 §9.bis/ter | 31 controles sobre 24 componentes | 17/17 grupos emplazados o justificados | 31/31 con amenaza D2; IAM/claves/logs con capacidad local | DIFERIDO B8 | 7 candidatos T11-SEC + 10 incluidos/condicionales; sin doble conteo | EN CURSO — integración documental completa; Subdoc. 5, observaciones de autor, productos, pruebas y aprobación pendientes |
+| `GTR-019` | D1/D2 B7-C; trazas y gobierno | puerta conjunta previa a auditoría general | revisión de coherencia e integridad del paquete de seguridad | SD4-04/07/08 | D1 B7-C; D2 B7.9; TRZ-D1-014; TRZ-D2-015 | 31 controles D1 / 24 componentes A1 | 21 nodos C1 / 17 grupos SEC-PHYS | 73 amenazas, 22 SPOF y 11 ADR revisados; sin referencias huérfanas | DIFERIDO B8 | sin cambio de filas ni cantidades | EN CURSO — BLOQUE 5 COMPLETO; listo para auditoría independiente, no aprobado |
 
 ## 4. Estándares, marcos y certificaciones exigidos
 
@@ -62,7 +65,7 @@ Agregar una fila por afirmación verificable o agrupación homogénea. No usar u
 |---|---|---|---|---|---|
 | `STD-01` | ISO/IEC 27001 e ISO 9001 | certificación institucional | D3 coordina; evidencia Célula 1/equipo | certificado o vía admitida por Bases; alcance y vigencia | BLOQUEADO EXTERNO |
 | `STD-02` | ISO/IEC 27002, 27017 y 27018 | controles de seguridad, nube y datos personales | D1/D2 | D1 matriz SEC-* y B7.3 SEC-GOV-01 / SEC-CLOUD-01; mapeo/evidencia final pendientes | EN CURSO |
-| `STD-03` | NIST CSF 2.0 y NIST SP 800-207 | gobierno de ciberseguridad y Zero Trust | D1/D2 | D1 B1–B3/B7.3; funciones CSF completas, amenazas y vista pendientes | EN CURSO |
+| `STD-03` | NIST CSF 2.0 y NIST SP 800-207 | gobierno de ciberseguridad y Zero Trust | D1/D2 | D1 B1–B3/B7.3; D2 B6 refina amenazas por componente/nodo; vista y pruebas pendientes | EN CURSO |
 | `STD-04` | OWASP ASVS 4.0 L2, Top 10, API Security Top 10 y SAMM | software, APIs y proceso seguro | D1/C3 | D1 B3.3/B6.2/B6.7; herramientas/configuración/pruebas pendientes | EN CURSO |
 | `STD-05` | CIS Benchmarks | nube, servidores, edge y endpoints | D1/C2/C3 | D1 B7.3 SEC-HARD-01; productos/versiones/baselines/pruebas pendientes | EN CURSO |
 | `STD-06` | SLSA 3+, CycloneDX o SPDX y firma de artefactos | cadena de suministro de software | D1/C3 | D1 B6.3/B6.7; plataforma, procedencia, SBOM/firma ejecutadas pendientes | EN CURSO |
@@ -72,7 +75,7 @@ Agregar una fila por afirmación verificable o agrupación homogénea. No usar u
 | `STD-10` | ISO/IEC/IEEE 42010 y TOGAF o equivalente declarado | descripción y gobierno de arquitectura | A1/D2/D3 | cinco vistas, interesados, decisiones y gobierno ADR | PENDIENTE |
 | `STD-11` | WCAG 2.2 AA y EN 301 549 | portal, app y terminales | A1/D1; cruce UX | D1 B3.4 preserva accesibilidad ante bots; diseño/informe UX completos pendientes | EN CURSO |
 | `STD-12` | OpenAPI 3.1, AsyncAPI 2.6+ y estándares marítimos | contratos síncronos, eventos y navieras | A2 | contratos versionados; BAPLIE/COPRAR/COARRI/CODECO | PENDIENTE |
-| `STD-13` | OpenTelemetry, STRIDE e ISO 31000 | observabilidad, amenazas y riesgo | D1/D2 | D1 B5 correlación; STRIDE/riesgo D2 y evidencia pendientes | EN CURSO |
+| `STD-13` | OpenTelemetry, STRIDE e ISO 31000 | observabilidad, amenazas y riesgo | D1/D2 | D1 B5 correlación; D2 B2–B6 deja 73 amenazas y 22 SPOF con evidencia prevista; auditoría/pruebas pendientes | EN CURSO |
 | `STD-14` | OIDC, OAuth 2.1, SAML 2.0, LDAP y FIDO2 cuando corresponda | identidad e interoperabilidad IAM | D1 | D1 B2.2/B2.3/B2.7; directorio/producto/federación/pruebas pendientes | EN CURSO |
 | `STD-15` | TLS 1.3 y respaldo 3-2-1-1-0 | comunicaciones y continuidad | D1/C3 | D1 B3.4/B4.5/B4.7; configuración/ubicación/restauración pendientes | EN CURSO |
 | `STD-16` | NCh Elec. 2777 y NCh 2527 | sala/equipos eléctricos y ergonomía de puestos | C2 | memoria eléctrica y checklist ergonómico | PENDIENTE |

@@ -36,12 +36,12 @@ La [traza D1, §2](trazabilidad/TRZ_D1.md) desglosa **FEP02 RT-11.01 a RT-11.28*
 - [x] Definir logs inalterables, SIEM, EDR y alertas portuarias, con SOC 24x7; ubicación/dotación/proveedor siguen pendientes.
 - [x] Definir respuesta, plazos de vulnerabilidad e incidentes.
 - [x] Definir SAST/SCA/DAST, imágenes, SBOM, firma/SLSA y datos no productivos.
-- [x] Mapear control→capa→tipo de componente→evidencia; nodos físicos y amenazas se completan con C1–C4/D2.
-- [x] Preparar componentes/licencias/servicios candidatos a T-11 en `SEC-PHYS-v0.1`; intercambio y cantidades siguen pendientes.
+- [x] Mapear control→capa→componente→nodo→amenaza→evidencia; B7-R cruza 31/31 controles con D2 y los 21 nodos declarados por C1.
+- [x] Preparar componentes/licencias/servicios candidatos a T-11 en `SEC-PHYS-v0.1`; C1–C4 ya incorporan los 17 grupos y conservan productos, cantidades finales y pruebas como pendientes.
 
 ### Entrega temprana `SEC-PHYS-v0.1`
 
-**Estado tras B7:** `CONSOLIDADO LOCALMENTE — LISTO PARA INTERCAMBIO INTERNO`, pero aún no entregado a C1–C4 ni incorporado a T-11. La última columna evita duplicar compras: una capacidad puede requerir fila propia, venir incluida en otra plataforma o ser solo una condición de selección/configuración.
+**Estado tras B7-C:** `INTEGRADO Y REVISADO DOCUMENTALMENTE`. C1 emplaza los 17 grupos, C2 declara su tratamiento tecnológico y C4 registra 7 candidatos de fila propia más 10 grupos incluidos/condicionales. El bloque 5/B7-C verificó el cruce conjunto con D2 y gobierno sin observaciones internas nuevas. Esto no acredita compra, producto final, cantidad contractual ni prueba. La última columna evita duplicar compras.
 
 | ID control | Capacidad requerida | Componente/servicio candidato | Ubicación/restricción | HA/continuidad | Evidencia | Entrada para T-11 |
 |---|---|---|---|---|---|---|
@@ -64,6 +64,8 @@ La [traza D1, §2](trazabilidad/TRZ_D1.md) desglosa **FEP02 RT-11.01 a RT-11.28*
 | `SEC-GOV-01 / SEC-CLOUD-01 / SEC-HARD-01 / SEC-SAMM-01` | gobierno, responsabilidad nube, hardening y madurez de desarrollo seguro | matrices/procedimientos y, si aplica, servicio/herramienta de configuración/evaluación | transversal por servicio y producto/versionado | evidencia exportable y revisión ante cambios | mapeo ISO/NIST, responsabilidad, baseline/excepciones y SAMM B6.7/B7.3 | **Normalmente incluido** en implementación/servicios; fila solo si se oferta capacidad separada |
 
 ### Matriz de controles obligatoria
+
+**Lectura vigente:** esta matriz conserva el corte detallado de B7. Las columnas «Nodo físico» y «Amenaza» que aún dicen `POR VALIDAR` o “D2 pendiente” fueron superadas por el cruce B7-R.2/B7-R.3: 31/31 controles tienen amenaza asociada y los 17 grupos físicos tienen nodo, servicio o proceso identificado. Se mantiene el texto histórico para no simular que producto, responsable o prueba quedaron resueltos.
 
 | Control | Fuente | Actor/dato | Capa | Comp. lógico | Nodo físico | Amenaza | Implementación | Evidencia | Responsable operativo | Estado |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -128,7 +130,7 @@ Puede definir patrones y controles mínimos. Debe escalar identidad federada no 
 
 ## Plan de desarrollo acordado
 
-**Estado:** desarrollo técnico `EN CURSO`; bloques B1–B7 completados como propuestas/auditoría desde 2026-09-05; siguiente bloque B8. `SEC-PHYS-v0.1` quedó consolidado localmente y listo para intercambio interno, pero todavía no fue entregado ni incorporado por C1–C4/T-11. Los diagramas se elaboran en B8, cuando el contenido y las relaciones puedan contrastarse; siguen siendo obligatorios para aprobar D1. Esta secuencia no modifica el trabajo de los otros frentes.
+**Estado:** desarrollo técnico `EN CURSO`; bloques B1–B7, reapertura B7-R y revisión conjunta B7-C completados como diseño/auditoría documental. `SEC-PHYS-v0.1` fue consumido por C1–C4, D2 B7 quedó auditado y el paquete conjunto quedó preparado para auditoría independiente. Los diagramas permanecen diferidos por decisión de secuencia y siguen siendo obligatorios para aprobar D1.
 
 ### Uso de los archivos
 
@@ -171,10 +173,12 @@ La matriz de identidad se desarrollará con: actor del Maestro, rol propuesto, a
 | B4 — Datos, claves y secretos | Clasificación inicial y protección por sensibilidad; cifrado de tránsito/reposo/campo, custodia, rotación, recuperación y continuidad local; propuesta ADR-009 | **Propuesta redactada**, no aprobada: B4.1–B4.8. Subdoc. 5 valida catálogo/campos; C1–C4 ubicación, producto, HA/capacidad y T-11; periodicidades y custodios por acordar |
 | B5 — Detección y respuesta | Auditoría inalterable y retenciones; SIEM, EDR, SOC 24x7, casos portuarios, incidentes, vulnerabilidades y pentest; propuesta ADR-010 | **Propuesta redactada**, no aprobada: B5.1–B5.8. Plazos obligatorios incorporados; modelo SOC/detección, productos, cobertura, dotación, capacidad y responsables por validar |
 | B6 — Desarrollo y operación seguros | SAST/SCA/DAST/imágenes, SBOM, firma/SLSA, aprobación de dependencias, datos no productivos y marco SAMM; completar controles de acceso a producción con B2 | **Propuesta redactada**, no aprobada: B6.1–B6.9. Puertas automáticas, artefacto único, cadena de suministro, separación de ambientes/producción y glosario; herramientas, responsables y pruebas por validar con C3 |
-| B7 — Cobertura y paquete temprano | Completar matriz control–componente–evidencia, traza de capítulos 11/12 y demás fuentes aplicables; consolidar SEC-PHYS-v0.1, candidatos T-11 y propuestas ADR | **Auditoría ejecutada y paquete consolidado localmente**, no aprobado ni intercambiado: B7.1–B7.8. Cobertura técnica 11/11 materias; FEP02 Cap. 11: 27/28 en diseño, RT-11.02 pendiente de D2; Cap. 12: 13/13 en diseño. Sin montos ni cantidades inventadas |
-| B8 — Integración, diagramas y cierre | Resolver cruces A1/A2/A3/C1–C4/D2/Subdoc. 5; actualizar contenido; después producir diagramas coherentes, auditar y preparar narrativa aprobada | **SIGUIENTE — PENDIENTE.** No aprobar con brechas de viabilidad o dependencias internas sin resolver; externos tratados explícitamente |
+| B7 — Cobertura y paquete temprano | Completar matriz control–componente–evidencia, traza de capítulos 11/12 y demás fuentes aplicables; consolidar SEC-PHYS-v0.1, candidatos T-11 y propuestas ADR | **Auditoría histórica ejecutada:** paquete v0.1 consolidado. Sus pendientes de entradas fueron revaluados en B7-R con los catálogos reales |
+| B7-R — Integración documental D1–D2 | Cruzar actores, contratos, nodos, amenazas, controles y SEC-PHYS/T-11; clasificar dependencias | **COMPLETADO COMO DISEÑO, no aprobado:** 31/31 controles enlazados a amenazas; 17/17 grupos emplazados/tratados por C1–C4; dependencias internas cruzadas con observaciones |
+| B7-C — Revisión conjunta (bloque 5) | Auditar D1, D2, trazas, ADR, matriz global y registro de pendientes como un solo paquete | **COMPLETADO DOCUMENTALMENTE, no aprobado:** referencias e inventarios coherentes; pendientes separados por propietario; listo para auditoría independiente |
+| B8 — Integración visual y cierre | Producir diagramas coherentes y preparar narrativa final después de la revisión conjunta | **DIFERIDO.** No iniciar antes del cierre documental conjunto/auditoría; no aprobar con brechas externas o de prueba |
 
-**Retomar exactamente aquí:** antes de B8, publicar/intercambiar el avance local con los otros frentes y contrastarlo con aportes reales de A1/A2/A3/C1–C4, D2 y Subdocumento 5; resolver o mantener explícitas las dependencias; ajustar contenido y recién entonces producir los diagramas y la narrativa de informe. B8 no puede aprobar D1 mientras falten catálogos, productos, cantidades, responsables, pruebas o decisiones externas. ADR-008/009/010 están `PROPUESTO`, ninguno `APROBADO`; ADR-008 conserva la condición expresa de `F3-ESC-001/002`.
+**Retomar exactamente aquí:** entregar el paquete B7-C a auditoría independiente/general y aplicar sus hallazgos antes de B8. No reabrir B1–B7 salvo evidencia nueva o uno de los disparadores de actualización. Permanecen observaciones de autor, Subdocumento 5, productos/contratos finales, responsables, pruebas y decisiones externas. `ADR-008/009/010` están `PROPUESTO`; `ADR-011` sigue `CANDIDATO` sin alternativas concretas ni selección. No producir diagramas todavía.
 
 **Lectura mínima para continuar:** este D1 (contrato, plan y B1–B7); Maestro vigente (completo si el agente no conoce el proyecto); índice del Frente 3; reglas comunes y Frente 3 del Plan de entregables; TRZ_D1, DECISIONES_Y_ESCALAMIENTOS y auditoría intermedia. Consultar A1/A2/A3 y C1–C4 para identificar aportes nuevos; Célula 2 es la fuente de detalle cuando una decisión lo requiera. La línea base utilizada es Maestro v1.1 / Célula 2 `c4756df`: comprobar si cambió antes de asumirla vigente. Preferir Markdown; usar PDF si falta información o aparece inconsistencia.
 
@@ -190,7 +194,7 @@ La matriz de identidad se desarrollará con: actor del Maestro, rol propuesto, a
 - Mantener F3-DEP-001..004 y F3-ESC-001/002. En particular: actores/roles con A1; nuevas nombradas y acreditaciones durante aislamiento; revocación inmediata frente a terminal aislada; compatibilidad de IAM/directorio y servicios conservados.
 - Las 72 h son autonomía local ante pérdida de enlace exterior, las 8 h son aislamiento de terminal de patio y los ≤90 min son sincronización posterior. Energía, falla de red interna, servidor y desastre requieren medidas propias de Física; no son equivalentes a esos plazos.
 - El portal nube puede seguir disponible, pero recibir una solicitud no equivale a confirmar una operación dependiente del terminal. El tratamiento de citas/autoridad en B2.1 es propuesta por validar con A2/A3/C3.
-- No declarar cumplimiento por mencionar una norma ni confundir diseño con certificación institucional. Pruebas previstas no son ejecutadas; SEC-PHYS-v0.1 está completo para v0.1 pero aún no entregado. D2 inició P0/B1 sin completar todavía STRIDE; D3 no se ha iniciado.
+- No declarar cumplimiento por mencionar una norma ni confundir diseño con certificación institucional. Pruebas previstas no son ejecutadas. `SEC-PHYS-v0.1` ya fue incorporado documentalmente por C1–C4 y D2 está auditado para v0.5 con pendiente ADR; D3 no se ha iniciado.
 - Los avances actuales están guardados localmente, sin commit/push de estos bloques. Este pedido de continuidad no autoriza publicar cambios. Conservar archivos locales ajenos y la guía de arranque excluida del repositorio.
 
 ### Dependencias que impiden el cierre, pero no el avance independiente
@@ -934,6 +938,104 @@ El paquete permite que C1–C4 comiencen ubicación, compatibilidad, dimensionam
 | Puerta de integración | Momento de control donde se revisa si un paquete puede pasar a la siguiente fase. |
 
 **Retomar en B8 solo después de decidir el intercambio/commit:** incorporar aportes reales de los otros frentes, resolver diferencias, producir diagramas y sintetizar el contenido en formato de informe. B7 queda guardado localmente; no se ha hecho commit, push ni transferencia al T-11 central.
+
+### B7-R. Reapertura de integración documental D1–D2
+
+**Fecha: 2026-09-06. Estado: COMPLETADO COMO DISEÑO; no aprobado.** Este corte sustituye las premisas de B7 que decían que A1–A3, C1–C4 y D2 no estaban desarrollados. Conserva B7 como historial, cruza las entradas reales y mantiene B8 exclusivamente para la representación visual y el cierre posterior a la revisión conjunta.
+
+#### B7-R.1 Entradas recibidas y efecto
+
+| Entrada | Evidencia recibida | Efecto en D1 | Límite que permanece |
+|---|---|---|---|
+| A1 | 16 actores, 24 componentes, criticidad y continuidad | valida el universo de la matriz de identidad y los componentes protegidos | `ACT-TI` conserva la brecha de consola administrativa; roles/permisos no están aprobados |
+| A2/A3 | contratos lógicos, autoridad TOS, degradación y respaldo manual | valida tipos de flujo, continuidad y acumulación/reconciliación | contratos/protocolos efectivos y aprobadores siguen externos |
+| C1/C2/C3/C4 | 21 nodos, zonas, emplazamiento de 17 grupos, tecnologías de referencia y candidatos T-11 | reemplaza `POR DEFINIR` por correspondencia documental; confirma capacidad local para IAM, claves, logs y evidencia | site survey, producto final, compatibilidad, cantidades contractuales y pruebas |
+| D2 B7 | 73 amenazas, 22 SPOF, 11 ADR revisados y regla de actualización | permite cerrar la relación control↔amenaza y cubrir `RT-11.02` documentalmente | `ADR-011` incompleto; residuales, pruebas y aprobación pendientes |
+| Subdocumento 5 | catálogo de campos no disponible | no cambia la taxonomía provisional `PUB/INT/CONF/RES` | campo→propietario→sensibilidad→retención→licitud continúa abierto |
+
+#### B7-R.2 Cruce bidireccional control–amenaza
+
+D2 B7.8 registra el detalle de los siete controles de gobierno/aseguramiento que no aparecían dentro de las filas técnicas de amenazas. El resultado conjunto es:
+
+| Comprobación | Resultado | Estado |
+|---|---|---|
+| controles D1 invocados o asociados a amenaza D2 | 31/31 | CONFORME DOCUMENTAL |
+| controles citados por D2 con desarrollo en D1 | 24/24 citados directamente; 0 inexistentes | CONFORME |
+| controles de gobierno/aseguramiento asociados en el corte | `SEC-GOV/CLOUD/IR/VULN/PENTEST/SDLC/SAMM-01` → amenazas existentes | CONFORME; no crea amenazas duplicadas |
+| valoración o aceptación modificada por el cruce | ninguna | CONFORME |
+
+Relaciones nuevas relevantes: `SEC-CLOUD-01` gobierna `THR-049/060/072/073`; `SEC-IR-01`, `THR-038/047/062/070`; y los controles de vulnerabilidad, pentest, SDLC y SAMM verifican `THR-023/030/034/043/050/053/062/065` según su alcance. La matriz principal conserva su corte histórico; esta tabla es la actualización vigente.
+
+#### B7-R.3 Emplazamiento y tratamiento T-11 de `SEC-PHYS-v0.1`
+
+| Grupo | Emplazamiento confirmado por C1 | Tratamiento C4 | Estado de integración |
+|---|---|---|---|
+| borde y API | `PHY-CLD-01/02` | `T11-SEC-01` | INCORPORADO; producto/capacidad final pendientes |
+| IAM, PAM y producción | `PHY-CLD-03` + capacidad local `PHY-OPS-01` | `T11-SEC-02` | INCORPORADO; `ADR-008` y directorio/revocación condicionan cierre |
+| red, exposición y sincronización | `PHY-OPS-04` + controles cloud/enlace | `T11-C2-03/04`, `T11-C3-01`, `T11-C2-17` | INCLUIDO; site survey e independencia por probar |
+| datos y cifrado | `PHY-CLD-05..08` + `PHY-OPS-02` | `T11-C2-17` y `T11-C2-02` | INCLUIDO; catálogo de campos pendiente |
+| claves y secretos | gestión cloud + capacidad local protegida `PHY-OPS-01` | `T11-SEC-03` | INCORPORADO; custodios/producto/prueba pendientes |
+| respaldo | `PHY-CLD-10` + `PHY-OPS-05` | condición de `T11-C2-12/18` | INCLUIDO SIN DUPLICAR; distinguir `SPOF-13` de `SPOF-22` |
+| logging y SIEM | `PHY-CLD-09` + colector/buffer `PHY-OPS-01` | `T11-SEC-04` | INCORPORADO; ingesta dominante y posible solape `T11-C2-19` pendientes |
+| EDR | `PHY-OPS-01`, `PHY-CLD-03`, `PHY-OPS-06` compatibles | `T11-SEC-05` | INCORPORADO; excluye terreno sin agente compatible |
+| SOC e incidentes | servicio, sin nodo | `T11-SEC-06` | INCORPORADO; no se asigna a TI=5 |
+| vulnerabilidades y pentest | servicio, sin nodo | `T11-SEC-07` | INCORPORADO; alcance/tercero/pruebas pendientes |
+| SDLC, pipeline, suministro y datos no productivos | DEV/QA/PREPROD fuera de operación | plataforma CI/CD o proceso | INCLUIDO/CONDICIONAL; herramientas y ejecución pendientes |
+| gobierno, nube, hardening y SAMM | transversal, sin nodo propio | implementación/servicios | INCLUIDO; evidencia por producto/servicio pendiente |
+
+Los 17/17 grupos quedan ubicados o justificados como servicio/proceso. C4 materializa siete candidatos `T11-SEC-01..07` y referencia los diez restantes desde filas existentes o procesos. Se conserva `F3-DEC-005`: control no equivale a compra. D1 no modifica cantidades ni el formulario T-11.
+
+#### B7-R.4 Identidad y continuidad
+
+| Materia | Resultado del cruce | Estado |
+|---|---|---|
+| 16 actores A1 | todos pertenecen al universo D1; no se crea catálogo paralelo | CRUZADO |
+| `ACT-TI` | existe como actor, pero su consola administrativa no tiene componente A1 propio | OBSERVACIÓN A1; D1 la protege mediante PAM/administración sin inventar `CH-*` |
+| IAM durante 72 h | C1 ubica `SRV-IAM` en `PHY-CLD-03` con caché/capacidad local en `PHY-OPS-01` | COHERENTE CON `ADR-008`, condicionado a producto y prueba |
+| claves/secretos durante 72 h | C1/C2 exigen material local protegido en `PHY-OPS-01` | COHERENTE CON `ADR-009`, custodios y recuperación pendientes |
+| logs/evidencia durante 72 h | `PHY-OPS-01` conserva colector, buffer y sello local; `PHY-CLD-09` centraliza al reconectar | COHERENTE CON `ADR-010`, capacidad/prueba pendientes |
+| funciones degradadas | A3 §7 declara qué no está disponible y el respaldo manual | RESUELTO DOCUMENTALMENTE |
+| `CTX-VESSEL` | A1/A3 lo incluyen crítico/local; C1 lo deja alta/solo nube | NO CONCILIADO; condiciona `ADR-002`, no se corrige desde D1 |
+| revocación aislada | `F3-ESC-002` continúa sin procedimiento aprobado del CLIENTE | BLOQUEADO EXTERNO |
+
+#### B7-R.5 Dependencias y observaciones vigentes
+
+| Dependencia | Estado tras integración | Qué permanece |
+|---|---|---|
+| `F3-DEP-001` A1 | **CRUZADA CON OBSERVACIÓN** | `ACT-TI`/consola, funciones técnicas externas y aprobación final de roles |
+| `F3-DEP-002` A2/A3 | **RESUELTA PARA DISEÑO DOCUMENTAL** | contratos/protocolos efectivos, nombradas y aprobadores externos |
+| `F3-DEP-003` C1–C4 | **CRUZADA CON OBSERVACIONES** | `CTX-VESSEL`, criticidades, `CH-CAB`, site survey, producto/cantidad final y pruebas |
+| `F3-DEP-004` D2/Subdocumento 5 | **PARCIAL** | D2 resuelto para modelo; falta catálogo de campos y tratamiento de privacidad |
+
+Además permanecen: seis diferencias de criticidad entre A1/C1 aparte de `CTX-VESSEL`; ubicación de `CH-CAB`; posible doble conteo `T11-C2-19`/`T11-SEC-04`; distinción `SPOF-13`/`SPOF-22`; y `ADR-011` sin comparación concreta ni selección. Son salidas a sus autores, no fallos que D1 deba resolver silenciosamente.
+
+#### B7-R.6 Veredicto y continuación
+
+| Comprobación | Resultado | Estado |
+|---|---|---|
+| 31 controles con amenaza | 31/31 | CONFORME DOCUMENTAL |
+| 17 grupos SEC-PHYS integrados | 17/17 con nodo, servicio o proceso y tratamiento T-11 | CONFORME DOCUMENTAL |
+| `RT-11.02` | modelo D2 auditado y regla de cinco disparadores | CUBIERTO EN DISEÑO; `EN CURSO` por pruebas/revisión/aprobación |
+| dependencias internas | entradas recibidas y cruzadas | CONFORME CON OBSERVACIONES |
+| pruebas ejecutadas / riesgos aceptados / ADR aprobados | 0 / 0 / 0 | NO SE DECLARA CIERRE |
+| diagramas | no producidos | DIFERIDOS A B8 |
+
+**Punto exacto de continuación:** realizar la revisión documental conjunta de D1, D2, trazas, registro ADR, matriz global y auditoría del frente. D1 queda integrado y listo para esa revisión, no para aprobación. No ejecutar B8 ni D3 y no dibujar diagramas antes de estabilizar el cierre documental.
+
+### B7-C. Revisión documental conjunta — bloque 5
+
+**Fecha: 2026-09-06. Estado: COMPLETADO DOCUMENTALMENTE; no aprobado.** Se revisaron como un solo paquete D1, D2, sus trazas, el registro ADR global, la matriz global, las decisiones/escalamientos y la auditoría del frente. La revisión no encontró una inconsistencia interna nueva que obligue a reabrir el diseño.
+
+| Puerta conjunta | Resultado verificable | Estado |
+|---|---|---|
+| inventarios e identificadores | 31 controles D1, 73 amenazas y 22 SPOF definidos; sin referencias huérfanas en el paquete revisado | CONFORME DOCUMENTAL |
+| control ↔ amenaza ↔ físico/T-11 | 31/31 controles con amenaza; 17/17 grupos físicos emplazados o justificados; tratamiento T-11 explícito | CONFORME DOCUMENTAL CON PENDIENTES DE PRODUCTO/CANTIDAD |
+| ADR y aceptación | 11 ADR registrados; `ADR-011` incompleto; 0 ADR aprobados, 0 riesgos aceptados y 0 SPOF cerrados | PENDIENTE DE AUTORES/CLIENTE |
+| continuidad local | IAM, claves y evidencia cuentan con capacidad local propuesta; `CTX-VESSEL` sigue sin conciliar | CONFORME DE DISEÑO CON OBSERVACIÓN EXTERNA |
+| trazabilidad y gobierno | D1/D2, trazas, matriz global y registro de decisiones conservan estados compatibles | CONFORME DOCUMENTAL |
+| evidencia de implementación | productos, contratos, responsables nominales, capacidad, site survey y pruebas no acreditados | PENDIENTE; NO IMPIDE AUDITAR EL DISEÑO |
+
+**Veredicto del bloque 5:** el paquete D1–D2 queda **listo para auditoría independiente/general**, no para aprobación contractual. Los pendientes transferidos están consolidados en `trazabilidad/AUDITORIA_CIERRE.md`; no se crean nuevas decisiones ni dependencias. B8, diagramas y D3 permanecen diferidos.
 
 ## Contenido listo para integrar
 

@@ -21,11 +21,11 @@ Modelar amenazas y fallos del caso, y consolidar decisiones con alternativas rea
 ### Trabajo requerido
 
 - [x] Identificar activos y fronteras de confianza en versión provisional B1; A1/A2/C1/C3 deben refinar la correspondencia.
-- [x] Aplicar STRIDE a canal, gateway, servicio, broker, datos, edge y tercero en versión provisional B2; `CLS-DAT`/S queda declarada abierta y B6 debe cerrarla con componentes reales.
-- [ ] Refinar después por componente e integración real.
+- [x] Aplicar STRIDE a canal, gateway, servicio, broker, datos, edge y tercero. B2 dejó `CLS-DAT`/S abierta y **B6 la cerró con `THR-072`**: las siete clases tienen las seis categorías. Cobertura de modelo, no control probado.
+- [x] Refinar por componente e integración real en B6, conservando como observación las diferencias que deben corregir sus autores.
 - [x] Cubrir TOS, gate/OCR, reefer, app offline, VMS, radio, ERP/autoridades y sincronización en versión provisional B3 (`SCN-01..12`); la lista de funciones no disponibles durante la desconexión sigue abierta por dependencia de A3 y C1–C4.
-- [x] Definir amenaza, condición, impacto, control preventivo/detectivo/correctivo y evidencia en versión provisional B2/B3 (`THR-001..070`); toda evidencia es prevista, ninguna ejecutada.
-- [x] Consolidar todos los SPOF y su aceptabilidad en versión provisional B4 (`SPOF-01..21`); ninguno aceptado, 11 escalados fuera del alcance de los frentes.
+- [x] Definir amenaza, condición, impacto, control preventivo/detectivo/correctivo y evidencia (`THR-001..073`, incluidas dos agregadas por el cruce B6); toda evidencia es prevista, ninguna ejecutada.
+- [x] Consolidar todos los SPOF y su aceptabilidad (`SPOF-01..22`, incluido uno agregado por B6); ninguno aceptado, 11 escalados fuera del alcance de los frentes.
 - [x] Revisar ADR de estilo, runtime, integración, TOS, sala, red, datos e identidad en versión provisional B5; `ADR-001..007` en revisión de suficiencia porque aún no tienen contenido.
 - [x] Registrar consecuencias negativas y disparadores de revisión para los diez ADR en B5.2/B5.3; D2 no promovió ni aprobó ninguno en su corte. El ajuste posterior del autor deja `ADR-008` `PROPUESTO` condicionado.
 
@@ -71,14 +71,14 @@ Valida que los controles físicos/licencias tengan respaldo en riesgo real y que
 
 ## Plan de desarrollo acordado
 
-**Estado:** desarrollo técnico `EN CURSO` desde 2026-09-05. Los bloques B1 a B5 están redactados como línea base provisional. **B5 cierra el desarrollo independiente de D2:** B6 requiere los catálogos reales de A1/A2/C1/C3 y B7 depende de B6. Por decisión de secuencia, **B8 completo —diagramas y resumen residual— queda diferido hasta integrar esos insumos y auditar la cobertura**; no se producirá una versión parcial. Desde B4 el desarrollo pasa a **modo registro**: el contenido restante se escribe en tablas compactas, porque el destino en el Subdocumento 4 son las subsecciones 4.1.8, 4.2.12 y 4.3, no un documento extenso. D2 comienza por clases e IDs del Maestro porque A1/A2/C1/C3 siguen en plantilla; esa dependencia impide el cierre, no el avance independiente. Las tablas se completan antes de producir la vista diagramada final. Ningún riesgo queda aceptado por el solo hecho de estar descrito.
+**Estado:** desarrollo técnico `EN CURSO` desde 2026-09-05. Los bloques B1 a B6 están redactados; B5 fue revalidado y B6 cruzó los paquetes reales de A1–A3 y C1–C4 sin corregir silenciosamente sus diferencias. B7 es el siguiente bloque y debe auditar la cobertura y las observaciones de ese cruce. Por decisión de secuencia, **B8 completo —diagramas y resumen residual— queda diferido hasta integrar y auditar la cobertura**; no se producirá una versión parcial. Desde B4 el desarrollo usa **modo registro**. Ningún riesgo queda aceptado por el solo hecho de estar descrito.
 
 ### Uso de los archivos
 
 - **Este D2:** contrato, plan, activos, fronteras, amenazas, SPOF, revisión de ADR y resumen de riesgo. Solo contenido aprobado pasa a «Contenido listo para integrar».
 - **TRZ_D2:** cadena fuente → activo/frontera → amenaza o fallo → control/decisión → evidencia. No duplica la narrativa ni convierte una prueba prevista en prueba ejecutada.
 - **DECISIONES_Y_ESCALAMIENTOS:** dependencias, decisiones abiertas y asuntos que requieren autoridad externa. La aceptación de riesgo exige responsable y no se infiere documentalmente.
-- **Registro ADR global:** índice y estado común de ADR-001..010. D2 revisa; no aprueba decisiones cuyo autor o insumo aún esté pendiente.
+- **Registro ADR global:** índice y estado común de ADR-001..011. D2 revisa; no aprueba decisiones cuyo autor, insumo o riesgo residual aún esté pendiente.
 - **Índice y auditoría del frente:** muestran avance y control de cierre. La matriz global se modifica solo cuando exista cobertura material enlazada.
 
 ### Método y reglas de estado
@@ -89,7 +89,13 @@ Valida que los controles físicos/licencias tengan respaldo en riesgo real y que
 4. Distinguir control preventivo, detectivo y correctivo. Citar controles `SEC-*` de D1 cuando existan; una referencia no prueba implementación.
 5. Registrar todos los SPOF subsistentes aunque tengan mitigación. `ACEPTADO` requiere aprobador, fundamento, plazo/revisión y evidencia; mientras falte, usar `POR ACEPTAR` o `ESCALADO`.
 6. Asignar probabilidad e impacto recién en B2 sobre escenarios concretos. La escala y umbrales serán explícitos y no sustituirán la aceptación del CLIENTE.
-7. Refinar IDs y flujos en B6 con catálogos reales. Si cambia un componente o una integración, revisar amenazas afectadas conforme RT-11.02.
+7. Refinar IDs y flujos en B6 con catálogos reales. **Regla de actualización del modelo (`RT-11.02`), obligatoria y permanente:** cualquiera de estos cinco cambios obliga a revisar y versionar las amenazas, los SPOF y las trazas afectadas antes de dar el modelo por vigente —
+   (a) alta, baja o cambio de responsabilidad de un **componente lógico** `A1`;
+   (b) alta, baja o cambio de contrato, versión, iniciador o campos de una **integración** `A2/A3`, incluidas las contrapartes externas;
+   (c) alta, baja o cambio de emplazamiento, criticidad o dominio de fallo de un **nodo físico** `C1–C4`;
+   (d) alta, baja o cambio de alcance de un **control `SEC-*`** de D1;
+   (e) cambio de estado, alternativa seleccionada o condición de revisión de un **ADR**.
+   El cambio se registra en `TRZ_D2.md` con su corte fechado; no se corrige el historial de un bloque ya cerrado, se emite un corte nuevo.
 8. Elaborar el diagrama final en B8, después de estabilizar contenido, relaciones y revisión cruzada.
 
 ### Plan de bloques y punto de continuación
@@ -102,23 +108,36 @@ Valida que los controles físicos/licencias tengan respaldo en riesgo real y que
 | B1 — Activos y fronteras | Inventario `AST-*`, clases, flujos y fronteras `TB-*`; alcance provisional verificable | **BORRADOR REDACTADO**, no aprobado: B1.1–B1.7. A1/A2/C1/C3 y Subdocumento 5 refinan correspondencia, contratos, nodos y campos |
 | B2 — STRIDE por clases | Amenazas para canal, gateway, servicio, broker, dato, edge y tercero; probabilidad, impacto, controles y evidencia | **BORRADOR REDACTADO**, no aprobado: B2.1–B2.8. Escala `P1..P4`/`I1..I4`, 66 amenazas `THR-001..066`, fronteras `TB-04`/`TB-06`/`TB-05` y las siete clases `CLS-*`. `CLS-DAT`/S queda declarada abierta; ningún riesgo aceptado |
 | B3 — Escenarios portuarios | TOS, gate/OCR, reefer, app offline, VMS, radio, ERP/autoridades y sincronización | **BORRADOR REDACTADO**, no aprobado: B3.1–B3.18. 12 escenarios `SCN-01..12` cubren las 8 materias del contrato y los 9 recorridos de `B1.5`; `THR-067..070` agregadas; 16 `SPOF-CAND-*` entregados a B4 |
-| B4 — SPOF | Registro consolidado de fallos, mitigación, prueba, aceptabilidad, dueño y escalamiento | **BORRADOR REDACTADO**, no aprobado: B4.1–B4.8. `SPOF-01..21` en las cinco familias; 0 aceptados, 10 `POR ACEPTAR`, 11 `ESCALADO`; `THR-071` agregada |
-| B5 — ADR | Revisar ADR-001..010, alternativas, criterios, consecuencias negativas, riesgo residual y efecto T-11 | **BORRADOR REDACTADO**, no aprobado: B5.1–B5.4. Suficiencia de `ADR-001..007` y revisión completa de `ADR-008..010`; D2 no promovió ninguno. Ajuste posterior del autor D1: `ADR-008` queda `PROPUESTO`, condicionado y no aprobado |
-| B6 — Cruce y refinamiento | Sustituir clases por IDs reales A1/A2/C1/C3; cruzar D1, capacidad, retorno y Subdocumento 5 | **BLOQUEADO.** `D2-DEP-001/002/003` no entregadas: los catálogos a los que habría que mapear no existen. No inventar el trabajo de otro frente |
-| B7 — Auditoría v0.5 | Cobertura 100 % inventario/integraciones, trazabilidad, contradicciones, vacíos y salidas accionables | **BLOQUEADO en cascada** por B6: audita el inventario refinado, que aún no existe |
+| B4 — SPOF | Registro consolidado de fallos, mitigación, prueba, aceptabilidad, dueño y escalamiento | **BORRADOR REDACTADO**, no aprobado: B4.1–B4.8. Cifra de corte de B4: `SPOF-01..21`; **vigente tras B6: `SPOF-01..22`**, 0 aceptados, 11 `POR ACEPTAR` y 11 `ESCALADO`; `THR-071` agregada |
+| B5 — ADR | Revisar ADR-001..011, alternativas, criterios, consecuencias negativas, riesgo residual y efecto T-11 | **REVALIDADO CON INSUMOS REALES**, no aprobado: B5.1–B5.5. `ADR-001..004` tienen decisión propuesta por sus autores; `ADR-005..007` conservan desarrollo parcial/candidato; `ADR-008..010` mantienen revisión completa y `ADR-011` se registra como candidato transversal |
+| B6 — Cruce y refinamiento | Sustituir clases por IDs reales A1/A2/C1/C3; cruzar D1, capacidad, retorno y Subdocumento 5 | **BORRADOR REDACTADO**, no aprobado: B6.1–B6.8. Cobertura 24/24 componentes, 11/11 sistemas canónicos, 21/21 nodos y dos amenazas nuevas `THR-072/073`; diferencias A1↔C1 conservadas como hallazgos |
+| B7 — Auditoría v0.5 | Cobertura 100 % inventario/integraciones, trazabilidad, contradicciones, vacíos y salidas accionables | **EJECUTADA: `CONFORME PARA v0.5 CON PENDIENTE ADR`.** B7.1–B7.7. Doce comprobaciones: 9 conformes —2 con observación—, 2 no conformes corregidas dentro de D2 (`B7-F01..F06`) y 1 pendiente de autor (`ADR-011`). `RT-11.02` cubierto a nivel de diseño documental; sigue `EN CURSO` por pruebas, revisión cruzada y aprobación. Cifras vigentes en `B7.3` |
 | B8 — Vista y cierre | Diagrama de fronteras estable, resumen de riesgo residual y contenido aprobado para §4.3 | **DIFERIDO POR SECUENCIA.** Se ejecutará completo después de B6/B7, con catálogos integrados y cobertura auditada; no producir versión parcial |
 
-**Retomar exactamente aquí:** B5 está redactado y **cierra el desarrollo independiente de D2**. El detalle está en el cierre de `B5.4`. B6 y B7 quedan bloqueados por falta de los catálogos de A1/A2/C1/C3; cuando lleguen, ejecutar B6, luego B7 y finalmente B8 completo. No iniciar diagramas ni resumen residual parcial antes de la integración y auditoría. Regla de estilo vigente: modo registro, tablas compactas.
+**Retomar exactamente aquí:** B7, la integración B7-R y la revisión conjunta B7-C están ejecutadas. El modelo D2 conserva el veredicto `CONFORME PARA v0.5 CON PENDIENTE ADR`; `ADR-011` mantiene alternativas/selección pendientes. El siguiente paso es la auditoría independiente/general del paquete D1–D2, no B8 ni D3. Las cifras vigentes son las de `B7.3`; no se producen diagramas todavía.
 
 ### Dependencias de cierre, no de inicio
 
-| ID | Entrada requerida | Qué puede adelantarse | Qué no puede darse por cerrado |
+| ID | Entrada requerida | Estado de la entrada | Qué no puede darse por cerrado |
 |---|---|---|---|
-| `D2-DEP-001` | A1: catálogo lógico, criticidad y responsables `v0.1` | Modelar clases y usar IDs provisionales del Maestro | Cobertura 100 % de componentes, propietarios y relaciones |
-| `D2-DEP-002` | A2/A3: interfaces, contratos, autoridad TOS y degradación real | Amenazas por patrón, TOS y sincronización | Iniciador, protocolo, campos, timeout, fallback y conciliación por interfaz real |
-| `D2-DEP-003` | C1/C2/C3/C4: nodos, red, sala, productos, HA/DR y capacidad | Fronteras físicas lógicas y familias de SPOF | Fallos por nodo/ruta, independencia real, capacidad, licencias y T-11 |
-| `D2-DEP-004` | D1/Subdocumento 5: controles y catálogo campo→sensibilidad→retención | Vincular controles SEC-* y activos por conjunto de datos | Cobertura de campos, privacidad, custodios y riesgo residual final |
-| `D2-DEP-005` | CLIENTE/terceros: contratos, SLA, directorio, site survey y aceptadores | Diseñar amenaza/fallo conservador y criterio de evidencia | Probabilidad basada en historia, viabilidad de mitigación y aceptación de riesgo |
+| `D2-DEP-001` | A1: catálogo lógico, criticidad y responsables `v0.1` | **RESUELTA A NIVEL DOCUMENTAL EN B6.** A1 declara 16 actores y 24 componentes; todos quedaron asociados a amenazas y nodos | Aprobación de propietarios y corrección de `ACT-TI` siguen fuera de D2; no impiden el cruce documental |
+| `D2-DEP-002` | A2/A3: interfaces, contratos, autoridad TOS y degradación real | **RESUELTA A NIVEL DE DISEÑO EN B6.** Los 11 sistemas canónicos y la contraparte `EXT-CON` quedaron cruzados; A3 aporta autoridad, degradación y respaldo manual | Protocolos/campos efectivos, validación del CLIENTE y pruebas por interfaz continúan en `D2-DEP-005` |
+| `D2-DEP-003` | C1/C2/C3/C4: nodos, red, sala, productos, HA/DR y capacidad | **CRUZADA CON OBSERVACIONES EN B6.** Los 21 nodos tienen amenazas aplicables; se registran diferencias de criticidad, continuidad y ubicación sin alterarlas | Corrección por Frente 2, independencia real, site survey, compatibilidad y pruebas |
+| `D2-DEP-004` | D1/Subdocumento 5: controles y catálogo campo→sensibilidad→retención | **PARCIAL.** D1 aporta controles `SEC-*` y política de eventos; falta el catálogo de campos del Subdocumento 5 | Cobertura campo→sensibilidad→retención→custodia y riesgo residual de privacidad |
+| `D2-DEP-005` | CLIENTE/terceros: contratos, SLA, directorio, site survey y aceptadores | **BLOQUEADO EXTERNO.** No depende de integrar ramas | Probabilidad basada en historia, viabilidad demostrada y aceptación formal de riesgo |
+
+### B0-R. Reapertura de integración — línea base recibida
+
+**Estado: COMPLETADO.** Esta reapertura no modifica los entregables de Frente 1 o Frente 2; los consume como evidencia y registra sus diferencias para que las resuelva su propietario.
+
+| Entrada | Evidencia disponible | Resultado para D2 |
+|---|---|---|
+| A1 | 16 actores, 24 componentes lógicos, criticidad, propietarios y continuidad | habilita mapeo de `CLS-*`/`AST-*` en B6 |
+| A2/A3 | 21 contrapartes, 7 familias técnicas, contratos lógicos, secuencias críticas, autoridad TOS y tabla de degradación/respaldo manual | habilita refinamiento de `TB-*`; los protocolos y contratos efectivos siguen externos |
+| C1–C4 | 21 nodos físicos, matriz lógica→física 24/24, zonas, red, HA/DR, tecnologías y cálculos de capacidad/T-11 | habilita cruce físico; no demuestra pruebas ni resuelve site survey |
+| D1 | controles `SEC-*`, ADR-008..010 y política de admisión de eventos | habilita amenaza→control; Subdocumento 5 aún debe entregar campo→sensibilidad→retención |
+
+**Observaciones que B6 debe conservar:** `CTX-VESSEL` es crítico y local en A1/A3, pero C1 lo ubica solo en nube; existen otras diferencias de criticidad entre A1 y C1; C2/C4 pueden duplicar observabilidad/SIEM entre `T11-C2-19` y `T11-SEC-04`. Son entradas recibidas con observación, no motivos para volver a declarar ausentes los catálogos.
 
 ## Contenido técnico en elaboración
 
@@ -587,15 +606,15 @@ Cobertura del **método**, no del inventario final de componentes. Las casillas 
 | `CLS-GWY` | THR-065 | THR-031 | THR-063 | THR-033 | THR-032 | THR-030, THR-034 |
 | `CLS-SVC` | THR-039 | THR-036 | THR-038 | THR-066 | THR-037 | THR-035 |
 | `CLS-BRK` | THR-009, THR-044 | THR-010, THR-012, THR-016, THR-041 | THR-011 | THR-014, THR-042 | THR-013, THR-040 | THR-015, THR-043 |
-| `CLS-DAT` | THR-043, THR-044 (en el productor) | THR-046, THR-051 | THR-047, THR-070 | THR-045, THR-050, THR-055 | THR-049 | THR-048 |
+| `CLS-DAT` | THR-072 | THR-046, THR-051 | THR-047, THR-070 | THR-045, THR-050, THR-055 | THR-049 | THR-048 |
 | `CLS-EDG` | THR-001, THR-017, THR-069 | THR-002, THR-008, THR-018, THR-020, THR-023, THR-053 | THR-003 | THR-004, THR-052 | THR-005, THR-006, THR-019, THR-054, THR-068 | THR-007, THR-021, THR-069 |
-| `CLS-EXT` | THR-056, THR-069 | THR-057 | THR-059, THR-070 | THR-022, THR-060 | THR-058, THR-061 | THR-062, THR-069 |
+| `CLS-EXT` | THR-056, THR-069 | THR-057 | THR-059, THR-070 | THR-022, THR-060 | THR-058, THR-061, THR-073 | THR-062, THR-069 |
 
-**Nota de actualización.** Esta tabla incorpora `THR-067`..`THR-070`, agregadas en `B3.14`. La distribución de riesgo actualizada está en `B3.15`; `B2.6` conserva la del cierre de B2.
+**Nota de actualización.** Esta tabla incorpora `THR-067`..`THR-070`, agregadas en `B3.14`, y `THR-072/073`, agregadas en B6. `B2.6` conserva la distribución histórica del cierre de B2; el corte vigente queda en B6.8.
 
 **Lecturas obligatorias de esta tabla**
 
-- `CLS-DAT` / S no tiene amenaza propia: la suplantación que corrompe el dato ocurre en el productor (`THR-044`) o en el acceso directo al almacén (`THR-043`). B6 debe confirmar si con componentes reales aparece un caso propio del almacén; hasta entonces la casilla queda **marcada**, no cerrada.
+- `CLS-DAT` / S queda cerrada a nivel de modelo por `THR-072`: la identidad falsa de un almacén o réplica es distinta de suplantar al productor (`THR-044`) o elevar privilegios sobre el almacén legítimo (`THR-043`). La implementación y prueba siguen pendientes.
 - Tres amenazas registran dos categorías: `THR-048` (`I`+`E`), `THR-052` (`E`+`I`) y `THR-069` (`S`+`E`, agregada en B3). Se conservan unidas porque comparten activo, condición y control; separarlas produciría dos filas con la misma evidencia.
 - Varias amenazas aparecen en más de una clase porque la frontera las cruza. La clase no reemplaza el inventario: `THR-013` contra el TOS y `THR-058` contra una autoridad comparten patrón de indisponibilidad, pero conservan contraparte, fallback y evidencia distintos.
 
@@ -654,7 +673,7 @@ Esta sección es autosuficiente: permite continuar sin la conversación que orig
 
 **Qué queda cubierto y qué no**
 
-- Cubierto: las seis categorías STRIDE en las siete clases, salvo `CLS-DAT`/S, que queda **marcada como abierta** y debe resolverse en B6 con componentes reales.
+- Cubierto: las seis categorías STRIDE en las siete clases, salvo `CLS-DAT`/S, que queda **marcada como abierta** y debe resolverse en B6 con componentes reales. *(Cifra de corte de B2. `B6` cerró esa casilla con `THR-072`; ver `B6.2` y `B7.3`.)*
 - Cubierto parcialmente: los nueve recorridos críticos de `B1.5` están representados por amenazas, pero **sin la secuencia operacional completa**. Ese es el trabajo de B3.
 - No cubierto por diseño: SPOF (B4), revisión de ADR (B5), sustitución de clases por IDs reales (B6), auditoría de cobertura total (B7) y diagrama de fronteras (B8).
 
@@ -1041,7 +1060,7 @@ Los escenarios revelaron cuatro condiciones que B2 no tenía. Se numeran desde `
 | `CLS-EXT` | `S` y `E` incorporan `THR-069`; `R` incorpora `THR-070` |
 | `CLS-DAT` | `R` incorpora `THR-070` |
 
-`CLS-DAT`/S sigue **abierta**: ningún escenario reveló una suplantación propia del almacén distinta de la del productor (`THR-044`) o del acceso directo (`THR-043`). Se mantiene marcada para B6, cuando existan componentes reales.
+`CLS-DAT`/S sigue **abierta**: ningún escenario reveló una suplantación propia del almacén distinta de la del productor (`THR-044`) o del acceso directo (`THR-043`). Se mantiene marcada para B6, cuando existan componentes reales. *(Cifra de corte de B3. `B6` la cerró con `THR-072`, que sí es una suplantación propia del almacén o de su réplica; ver `B7.3`.)*
 
 **Distribución de riesgo actualizada**
 
@@ -1233,34 +1252,36 @@ Familia exigida por el contrato que ningún escenario había aislado. Se apoya e
 
 **Hallazgo `B4-F02`:** 11 de 21 puntos están `ESCALADO`, es decir, su resolución no depende de ningún frente sino del CLIENTE, de un fabricante o del levantamiento. B5 no puede aprobar un ADR cuyo riesgo residual dependa de uno de ellos.
 
-**Retomar en B5.** Revisar `ADR-001..010` con las materias de la plantilla global: alternativas reales, criterio de selección, consecuencias negativas, disparador de revisión, riesgo residual y efecto en T-11. Entradas: este registro, `B2.1` (escala), `B2.6` (no aceptación) y el Registro ADR global. D2 **recomienda** estados; cada autor conserva la aprobación. `ADR-008` sigue `EN ANÁLISIS`; `ADR-009` y `ADR-010`, `PROPUESTO`. Lo nuevo se numera desde `THR-072`. Conservar `SPOF-01..21`, `SCN-01..12`, `THR-001..071`, `D2-DEP-001..005` y los escalamientos `ESC-01/04/05/06/07/09/10/14`, `F3-ESC-001/002/003`.
+**Punto de continuación histórico al cerrar B4:** revisar `ADR-001..010` con las materias de la plantilla global. Este punto fue ejecutado en B5 y posteriormente revalidado con `ADR-011` tras integrar A1–A3/C1–C4. Se conserva para explicar la secuencia, no como instrucción vigente.
 
-### B5. Revisión de ADR-001..010 — borrador inicial
+### B5. Revisión de ADR-001..011 — revalidada con insumos integrados
 
-**Estado del bloque: BORRADOR REDACTADO; propuesta no aprobada.** D2 **revisa y recomienda**; la aprobación la conserva el autor de cada decisión. Modo registro, igual que B4.
+**Estado del bloque: REVALIDADO CON INSUMOS REALES; propuesta no aprobada.** El corte inicial de B5 se hizo cuando A1–A3/C1–C4 no estaban integrados en esta rama. La reapertura B0/B1 contrasta ahora su contenido efectivo. D2 **revisa y recomienda**; la aprobación la conserva el autor de cada decisión. Modo registro, igual que B4.
 
 #### B5.1 Método y límite real de esta revisión
 
-En el Registro ADR global, **`ADR-001` a `ADR-007` están en `CANDIDATO` y todavía no tienen contenido**: sus autores son A1, A2, A3 y C1–C4, que siguen en plantilla. Solo `ADR-008`, `ADR-009` y `ADR-010` tienen materia redactada, en D1 B2.7, B4.8 y B5.8.
+La integración cambia la premisa anterior. `ADR-001` está redactado en A1 §6.2; `ADR-002` y `ADR-004`, en A3 §10; `ADR-003`, en A2 §7. Los cuatro tienen alternativa seleccionada y estado `PROPUESTO` declarado por su autor. `ADR-005` tiene alternativas y recomendación preliminar en C1 §7; `ADR-006` tiene alternativas y criterios en C3 §13, pero depende del site survey; `ADR-007` reúne criterios de almacenamiento/HA/DR en C3 §13 y C4 §6.1, sin cerrar aún la selección. `ADR-011` surge en C2 §4 como decisión transversal que debe abrirse, todavía sin alternativa seleccionada. `ADR-008..010` conservan la materia de D1.
 
-Por eso la revisión sale en dos formas distintas, y se dice cuál es cuál:
+Por eso la revisión vigente distingue tres grados:
 
-- **`ADR-001..007` — revisión de suficiencia.** D2 fija qué alternativas debe comparar cada decisión como mínimo, qué consecuencia negativa no puede omitir, con qué SPOF y amenaza queda amarrada, cuál es su disparador de revisión y su efecto en T-11. **No se evalúan alternativas que nadie ha escrito**; hacerlo sería inventar el trabajo de otro frente.
-- **`ADR-008..010` — revisión completa**, contrastada contra la regla de aprobación del Registro global: dos alternativas reales, criterios vinculados al caso, consecuencias negativas, trazabilidad y efecto en las demás vistas.
+- **Decisión propuesta con materia real:** `ADR-001..004` y `ADR-008..010`. Se revisa lo efectivamente escrito; `PROPUESTO` no equivale a aprobado.
+- **Candidato desarrollado parcialmente:** `ADR-005..007`. Se conserva lo útil y se identifica exactamente la condición que impide seleccionar o aprobar.
+- **Candidato nuevo:** `ADR-011`. Se registra para evitar una decisión cloud sin ADR; D2 no escoge proveedor ni región.
 
 Regla heredada de `B4-F02` que gobierna todo el bloque: **un ADR no puede aprobarse si su riesgo residual depende de un SPOF `ESCALADO`**, porque su resolución no está en manos de ningún frente.
 
-#### B5.2 `ADR-001..007` — revisión de suficiencia
+#### B5.2 `ADR-001..007` y `ADR-011` — revisión sobre evidencia real
 
-| ADR | Autor | Alternativas que debe comparar como mínimo | Consecuencia negativa que no puede omitir | SPOF y amenazas amarradas | Disparador de revisión | Efecto en T-11 | Estado recomendado |
+| ADR | Autor | Evidencia y alternativas observadas | Consecuencia/riesgo que permanece | SPOF y amenazas amarradas | Disparador de revisión | Efecto en T-11 | Estado recomendado |
 |---|---|---|---|---|---|---|---|
-| `ADR-001` estilo | A1 | núcleo modular desplegable como unidad; servicios distribuidos por contexto; híbrido con componentes críticos separables según frontera justificada | carga de operación con TI=5; la regla negativa 3 prohíbe un microservicio por RF, canal, equipo o mensaje | `SPOF-01`; `THR-035`, `THR-037` | si el estilo exige más operación de la que TI=5 sostiene | número de nodos y licencias de ejecución | CANDIDATO — sin contenido |
-| `ADR-002` frontera del runtime local | A3/C1 | edge mínimo con solo buffer; las cinco funciones críticas completas en local; réplica ampliada | **qué funciones NO estarán disponibles y su reemplazo manual**; omitirlo viola la regla negativa 13 | `SPOF-01`, `SPOF-02`, `SPOF-04`; `THR-005`, `THR-064`, `THR-008` | buffer insuficiente ante peak coincidente, o sincronización por sobre 90 min | capacidad de cómputo y almacenamiento local | CANDIDATO — sin contenido; **bloqueado por `B3-F03`** |
-| `ADR-003` integración y eventos | A2 | broker persistente con colas durables; integración punto a punto por adaptador; híbrido por familia | aislamiento entre 21 contrapartes y 7 familias; comportamiento de DLQ y del reproceso | `SPOF-08`; `THR-040`, `THR-041`, `THR-044` | una familia bloquea a otra, o el reproceso duplica un hecho | licencias de broker, conectores y adaptadores | CANDIDATO — sin contenido |
-| `ADR-004` convivencia y autoridad del TOS | A3 | envolver con capa anticorrupción y sustituir progresivamente (Decisión 1); reemplazo integral controlado tras la puerta de viabilidad | doble fuente de verdad, escritura parcial y retorno sin doble control | `SPOF-07`, `SPOF-17`; `THR-011`, `THR-015`, `THR-016` | la puerta H2/mes 4 si lectura, escritura o conciliación no son confiables | adaptadores y licencias de integración | CANDIDATO — residual atado a `SPOF-17` `ESCALADO` |
-| `ADR-005` sala técnica | C1/C2 | remediar y endurecer la sala actual; reemplazarla dentro del terminal; edge local mínimo más nube (Decisión 20) | ninguna alternativa puede eliminar la autonomía de 72 h ni presumir instalación fuera del ambiente marino | `SPOF-06`, `SPOF-01`; `THR-052`, `THR-054` | `ESC-09`; y si hay cómputo sustantivo en sala, aplican íntegros RT-06.01 a RT-06.24 | UPS, generación, racks, carga kW y protección marina | CANDIDATO — residual atado a `SPOF-06` `ESCALADO` |
-| `ADR-006` red de patio | C3 | celular privada LTE/5G como alternativa primaria (Decisión 9); alternativa inalámbrica industrial; esquema mixto por zona | dependencia simultánea de posición, gate, reefer y cabina del mismo medio | `SPOF-03`; `THR-068`, `THR-069`, `THR-019` | `ESC-10`: el site survey puede invalidar la alternativa primaria | cantidad y ubicación expresadas como rango, nunca como plano ficticio | CANDIDATO — residual atado a `SPOF-03` `ESCALADO` (`F3-ESC-003`) |
-| `ADR-007` almacenamiento, HA y DR | C2/C3/C4 | almacenamiento gestionado en nube; on-premise con RAID justificado; híbrido por criticidad | respaldo alcanzable por la misma autoridad que puede borrarlo; restauración no probada | `SPOF-13`, `SPOF-12`; `THR-046`, `THR-049` | RTO ≤4 h o RPO ≤15 min no alcanzables con la alternativa elegida | almacenamiento, réplica, licencias y servicio de respaldo | CANDIDATO — residual atado a `SPOF-12` `ESCALADO` |
+| `ADR-001` estilo | A1 | A1 §6.2 compara monolito, microservicios distribuidos y núcleo modular híbrido con runtime de borde; selecciona el tercero | carga operacional con TI=5 y coherencia del runtime local; falta demostrar el despliegue físico sin romper la decisión | `SPOF-01`; `THR-035`, `THR-037` | si el estilo exige más operación de la que TI=5 sostiene o B6 revela un componente crítico sin capacidad local | nodos y licencias de ejecución | **PROPUESTO — mantener; no aprobado** |
+| `ADR-002` frontera del runtime local | A3/C1 | A3 §7/§10 selecciona las cinco funciones críticas en `EDGE-RUN`, declara lo degradado y el respaldo manual; descarta replicar todo o nada | C1 ubica `CTX-VESSEL` solo en nube aunque A1 lo declara crítico; la capacidad/prueba de 72 h sigue pendiente | `SPOF-01`, `SPOF-02`, `SPOF-04`; `THR-005`, `THR-064`, `THR-008` | contradicción A1↔C1 no resuelta, buffer insuficiente o sincronización sobre 90 min | cómputo y almacenamiento local | **PROPUESTO CONDICIONADO** a conciliación física y prueba |
+| `ADR-003` integración y eventos | A2 | A2 §7 compara bus persistente, punto a punto y ESB pesado; selecciona `INT-HUB` con adaptadores por contraparte | `INT-HUB` concentra coordinación; contratos/protocolos reales de terceros siguen sin levantarse | `SPOF-08`; `THR-040`, `THR-041`, `THR-044` | una familia bloquea a otra, el reproceso duplica un hecho o el contrato real invalida el adaptador | broker, conectores y adaptadores | **PROPUESTO — mantener; no aprobado** |
+| `ADR-004` convivencia y autoridad del TOS | A3 | A3 §10 selecciona autoridad única por dominio×zona×fase y envolver+sustitución progresiva; descarta permanencia indefinida y big bang | doble fuente de verdad, escritura parcial y retorno; privilegios/contrato del TOS dependen del fabricante | `SPOF-07`, `SPOF-17`; `THR-011`, `THR-015`, `THR-016` | puerta H2/mes 4 si lectura, escritura o conciliación no son confiables | adaptadores y licencias de integración | **PROPUESTO CONDICIONADO** a `SPOF-17`/`ESC-04/06` |
+| `ADR-005` sala técnica | C1/C2 | C1 §7 compara habilitar la sala actual y reemplazarla; la variante “edge mínimo+nube” solo es admisible como sala principal nueva/acotada, no como ausencia de sala | rutas físicas separadas y cumplimiento de la sala actual no están levantados; ambiente marino no desaparece | `SPOF-06`, `SPOF-01`; `THR-052`, `THR-054` | `F2-ESC-008/ESC-09` o incumplimiento de requisitos completos de sala principal | UPS, generación, racks, carga y protección marina | **CANDIDATO — mantener** |
+| `ADR-006` red de patio | C3 | C3 §13 compara inalámbrica empresarial redensificada, celular privada LTE/5G y esquema mixto; LTE/5G es alternativa primaria condicionada | dependencia simultánea del medio y ausencia de site survey | `SPOF-03`; `THR-068`, `THR-069`, `THR-019` | el site survey invalida cobertura/handover o revela falta de independencia | cantidad y ubicación por rango validado | **CANDIDATO — mantener** |
+| `ADR-007` almacenamiento, HA y DR | C2/C3/C4 | C3/C4 aportan activo-pasivo, RTO/RPO, 3 nodos y comparación de paridad doble vs espejo distribuido; falta consolidar una selección formal | autoridad de borrado, restauración y nivel exacto no probados | `SPOF-13`, `SPOF-12`; `THR-046`, `THR-049` | RTO 4 h/RPO 15 min o tolerancia de disco no alcanzables | almacenamiento, réplica, licencias y respaldo | **CANDIDATO — mantener** |
+| `ADR-011` proveedor/regiones cloud | C2; transversal | C2 §4 identifica criterios: presencia regional/AZ, latencia, carbono, servicios, certificaciones/residencia y reversibilidad; todavía no compara proveedores concretos | elegir proveedor sin comparación afectaría físico, seguridad, residencia y T-11 | `SPOF-13`, `SPOF-22`; `THR-049`, `THR-073` | disponibilidad de ofertas/regiones y medición de latencia/carbono; independencia de fallos y salida demostrable | servicios cloud, conectividad y salida | **CANDIDATO — abrir, no seleccionar** |
 
 #### B5.3 `ADR-008..010` — revisión completa
 
@@ -1274,24 +1295,284 @@ Regla heredada de `B4-F02` que gobierna todo el bloque: **un ADR no puede aproba
 
 | Comprobación | Resultado | Estado |
 |---|---|---|
-| ADR revisados | 10/10: siete en suficiencia, tres en revisión completa | CONFORME |
-| ADR promovidos o aprobados por D2 | D2 no promovió ni aprobó ninguno en el corte B5. Ajuste posterior del autor: `ADR-008` pasa a `PROPUESTO` condicionado; `ADR-009/010` siguen `PROPUESTO` y `ADR-001..007`, `CANDIDATO` | CONFORME |
-| alternativas inventadas para decisiones ajenas | ninguna; en `ADR-001..007` se declara **qué debe compararse**, no qué se decidió | CONFORME |
-| vínculo decisión → SPOF → amenaza | 10/10 con SPOF y amenazas amarradas | CONFORME |
-| efecto en T-11 | 10/10 declarado como materia, sin cantidades ni precios | CONFORME |
+| ADR revisados | 11/11: siete propuestas con materia (`ADR-001..004`, `ADR-008..010`), tres candidatos parciales (`ADR-005..007`) y un candidato nuevo (`ADR-011`) | CONFORME |
+| ADR promovidos o aprobados por D2 | D2 no aprueba ninguno. Sincroniza `ADR-002/003/004` a `PROPUESTO` porque sus autores ya los declaran así; registra `ADR-011` como `CANDIDATO` | CONFORME |
+| alternativas inventadas para decisiones ajenas | ninguna; la revisión cita alternativas y selecciones escritas por cada autor y conserva como candidato lo incompleto | CONFORME |
+| vínculo decisión → SPOF → amenaza | 11/11 con SPOF y amenazas amarradas | CONFORME |
+| efecto en T-11 | 11/11 declarado como materia, sin cantidades ni precios | CONFORME |
 | amenazas nuevas | ninguna; el total se mantiene en `THR-001..071` | CONFORME |
 
-**Hallazgo `B5-F01`:** siete de los diez ADR no tienen contenido. Como §4.3 del Subdocumento 4 se alimenta precisamente del registro de decisiones con alternativas y criterio de selección, hoy esa sección solo tiene material para tres decisiones, y las tres son de seguridad. Es una brecha de entrega, no de D2: la revisión de suficiencia deja a cada autor el trabajo acotado, pero no lo reemplaza.
+**Hallazgo `B5-F01`, corregido por integración:** la afirmación “siete ADR sin contenido” quedó superada. `ADR-001..004` sí tienen decisión propuesta; `ADR-005/006` tienen alternativas y criterios sin selección firme; `ADR-007` tiene aportes técnicos todavía dispersos. La brecha actual ya no es ausencia general de contenido, sino completar y aprobar `ADR-005..007` cuando lleguen sus validaciones.
 
-**Hallazgo `B5-F02`:** **ninguno de los diez puede aprobarse hoy**, por dos razones distintas y complementarias. `ADR-001`, `ADR-002` y `ADR-003` porque no tienen contenido que evaluar. `ADR-004` a `ADR-010` porque su riesgo residual queda amarrado a un SPOF `ESCALADO`, cuya resolución depende del CLIENTE, de un fabricante o del levantamiento.
+**Hallazgo `B5-F02`, vigente:** **ninguno de los once se aprueba desde D2**. `ADR-005..007/011` no tienen selección completa; los demás son propuestas de sus autores y conservan riesgos, pruebas o escalamientos abiertos. Propuesta documentada no equivale a aceptación del riesgo.
 
-**Hallazgo `B5-F03`:** la lista de funciones no disponibles durante la desconexión aparece por tercera vez como bloqueo — en `SCN-01`, en `B3-F03` y ahora impidiendo cerrar `ADR-002`. Es la brecha más persistente del entregable y depende de A3 y C1–C4.
+**Hallazgo `B5-F03`, parcialmente corregido:** A3 §7 ya declara las funciones no disponibles y su respaldo manual. Lo que permanece abierto para `ADR-002` es la correspondencia física: A1 incluye `CTX-VESSEL` en la continuidad crítica, mientras C1 lo ubica solo en nube y lo clasifica como alta. Frente 2 debe conciliarlo; D2 lo conserva como observación de entrada para B6.
 
 #### B5.5 Ajuste posterior de coordinación con D1
 
 El autor D1 promueve `ADR-008` a **`PROPUESTO`** como línea base condicionada para que A1–A3/C1–C4 puedan integrar y dimensionar una capacidad IAM local. Este cambio no contradice el corte B5 —D2 no promovió ningún ADR— ni convierte la decisión en aprobada: `F3-ESC-001/002`, `SPOF-10` y las validaciones de producto, capacidad y operación siguen abiertos. D1 B5.2.1 también delimita la admisión de eventos de seguridad para el dimensionamiento de `T11-SEC-04`; C4 debe medir el volumen dominante y no asumir la ingestión completa de telemetría operacional.
 
-**Retomar aquí.** B5 cierra el desarrollo que D2 puede hacer de forma independiente. **`B6` está bloqueado de verdad**: su trabajo es sustituir `CLS-*` por los IDs reales de A1/A2/C1/C3, y esos catálogos no existen. **`B7` depende de B6**, porque audita cobertura del inventario refinado. Por decisión de secuencia, **`B8` queda completo y diferido** hasta terminar la integración y auditoría; no se producirán diagramas ni resumen residual parcial. Conservar `AST-001..016`, `TB-01..14`, `CLS-*`, `THR-001..071`, `SCN-01..12`, `SPOF-01..21`, `D2-DEP-001..005` y los escalamientos `ESC-01/04/05/06/07/09/10/14`, `F3-ESC-001/002/003`.
+**Punto histórico de continuación:** B0/B1 habilitaron el cruce que se ejecuta a continuación. Se conserva para explicar la secuencia; ya no es la instrucción vigente.
+
+### B6. Cruce y refinamiento contra catálogos reales
+
+**Estado del bloque: BORRADOR REDACTADO; no aprobado.** B6 no reemplaza ni renumera las clases y amenazas históricas: agrega una capa verificable `amenaza → componente A1 → contrato A2/A3 → nodo C1–C4`, incorpora los huecos revelados por ese cruce y deja toda contradicción en manos del frente autor. No demuestra implementación ni acepta residuales.
+
+#### B6.1 Universo y reglas del cruce
+
+| Universo recibido | Total cruzado | Regla aplicada | Resultado |
+|---|---:|---|---|
+| actores A1 | 16 | usados como responsables o contrapartes; no se inventan personas | 16/16 disponibles; `ACT-TI` conserva brecha de consola administrativa |
+| componentes lógicos A1 | 24 | cada ID debe tener clase, amenazas aplicables y correspondencia física | 24/24 |
+| sistemas canónicos conservados/externos A1 | 11 | variantes contractuales A2 vuelven al ID canónico | 11/11 |
+| contraparte concedente A2 | 1 | `EXT-CON` se registra como contraparte, no como duodécimo sistema canónico | 1/1 |
+| nodos físicos C1 | 21 | cada nodo debe quedar cubierto directamente o por su función de infraestructura | 21/21 |
+| amenazas previas | 71 | se conservan IDs, valoración y estado | 71/71 cruzadas por grupo |
+
+Las clases `CLS-*` permanecen como agrupación STRIDE y los `AST-*` como activos protegidos. “Cubierto” significa que existe una amenaza aplicable y una evidencia prevista; **no** significa que el control esté implementado, probado o que el riesgo esté aceptado.
+
+#### B6.2 Amenazas nuevas reveladas por el cruce
+
+**Tabla A — identificación y valoración**
+
+| ID | Activos | Componente/clase | Frontera | STRIDE | Condición y escenario portuario | Prob. | Impacto | Riesgo inherente |
+|---|---|---|---|---|---|---:|---:|---|
+| `THR-072` | AST-001/002/005/010/014 | `DATA-CORE`, `DATA-TS`, `DATA-DOC`, `DATA-AN` / `CLS-DAT` | TB-11 + TB-14 | S | Una configuración, descubrimiento de servicio o identidad de réplica alterados hacen que un servicio se conecte a un almacén falso; consume estado fabricado o escribe datos autoritativos en un extremo controlado por un tercero | P2 | I4 | ALTO |
+| `THR-073` | AST-007/008/013/014 | `PHY-CLD-01..10`, servicios cloud / `CLS-EXT` | TB-04 + TB-14 | D | La región primaria y la recuperación comparten proveedor, plano de control, identidad, facturación o capacidad no independiente; un fallo común o suspensión impide ambos caminos cloud y deja solo la autonomía local declarada | P2 | I4 | ALTO |
+
+**Tabla B — controles, evidencia esperada y estado**
+
+| ID | Control preventivo | Control detectivo | Respuesta correctiva y evidencia esperada | Residual proyectado | Estado | Validación pendiente |
+|---|---|---|---|---|---|---|
+| `THR-072` | autenticación mutua por endpoint; validación de identidad/certificado del servidor; destinos privados permitidos; configuración de conexión firmada y versionada; credencial separada por almacén con `SEC-KEY-01`/`SEC-SECRET-01` | alerta por cambio de endpoint, certificado, topología o identidad de réplica; detección de lector/escritor no inventariado | aislar el extremo, revocar/rotar identidad, contrastar con el almacén autoritativo y reconciliar operaciones; **evidencia esperada:** prueba en que un endpoint o réplica falsa es rechazada y registrada | ALTO | POR VALIDAR | `D2-DEP-003` y `ADR-011`: producto, descubrimiento, réplica, certificados y topología real aún no están seleccionados |
+| `THR-073` | regiones y recuperación con dominios de fallo explícitos; autonomía local de 72 h; credenciales de emergencia separadas; exportación y redespliegue probados; plan de salida coherente con RT-03.07 | sondas independientes del proveedor; alerta por degradación simultánea de región, plano de control, identidad o cuenta | declarar modo local, conmutar solo si el destino es independiente e invocar recuperación/salida; **evidencia esperada:** ejercicio regional y de portabilidad que identifique dependencias comunes y mida RTO/RPO | ALTO | POR VALIDAR | `ADR-011` y `D2-DEP-005`: proveedor, regiones, términos, cuenta y mecanismo de salida requieren decisión y acuerdo externos |
+
+`THR-072` cierra la casilla `CLS-DAT`/S a nivel de modelo. `THR-073` no impone multicloud: exige declarar y probar el dominio de fallo y la salida de la opción elegida.
+
+#### B6.3 Cobertura por componente lógico A1
+
+Para mantener compactas las tablas B6.3–B6.6, los números de la columna «Amenazas» conservan el prefijo implícito `THR-`: por ejemplo, `024` significa `THR-024` y `030–034` significa `THR-030..034`.
+
+| Componente | Clase | Amenazas aplicables | Correspondencia C1 | Observación de cruce |
+|---|---|---|---|---|
+| `CH-PORTAL` | CLS-CAN | 024, 027, 028, 067 | `PHY-CLD-01` | sin contradicción material |
+| `CH-APP` | CLS-CAN | 026, 027, 029, 064, 067 | dispositivo + `PHY-CLD-01`/`PHY-OPS-01` | capacidad local acotada por A3 |
+| `CH-CAB` | CLS-CAN | 025, 029, 067, 068 | `PHY-EDG-04` | C1 lo ubica en muelle; A1 lo usa como canal de cabina/campo: revisar ubicación en F2 |
+| `GW-EDGE` | CLS-GWY | 028, 032, 033, 034, 065 | `PHY-CLD-01` | criticidad A1 alta/C1 media |
+| `GW-API` | CLS-GWY | 027, 030–034, 063 | `PHY-CLD-02` | criticidad A1 alta/C1 media |
+| `CTX-OPS` | CLS-SVC | 011, 012, 035, 037, 044, 051 | `PHY-OPS-01`/`PHY-CLD-03` | autoridad se rige por A3 |
+| `CTX-GATE` | CLS-SVC | 018, 027, 030, 035–037, 044, 067 | `PHY-OPS-01`+`PHY-EDG-01`/`PHY-CLD-03` | fallback manual declarado en A3 |
+| `CTX-YARD` | CLS-SVC | 011, 017, 035–037, 044, 051, 068, 069 | `PHY-OPS-01`+`PHY-EDG-02`/`PHY-CLD-03` | sin contradicción material |
+| `CTX-REEFER` | CLS-SVC | 019–021, 035–039, 044, 068 | `PHY-OPS-01`+`PHY-EDG-03`/`PHY-CLD-03` | alarma depende de cobertura/capacidad probada |
+| `CTX-PLAN` | CLS-SVC | 036, 037, 071 | `PHY-CLD-03`/`PHY-OPS-01` lectura | respaldo impreso/radio declarado; persona única sigue como SPOF |
+| `CTX-VESSEL` | CLS-SVC | 035, 037, 056, 057, 067 | `PHY-CLD-03` solamente | **contradicción:** A1 crítico/local y A3 incluye operación de nave; C1 alta/solo nube |
+| `CTX-BILL` | CLS-SVC | 029, 035, 037, 041, 051, 059 | `PHY-OPS-01`/`PHY-CLD-03` | contrato ERP aún externo |
+| `CTX-INSP` | CLS-SVC | 036, 037, 058, 060, 067 | `PHY-CLD-03`+`PHY-EDG-05` | criticidad A1 alta/C1 media |
+| `CTX-EMIS` | CLS-SVC | 035, 037, 045, 060 | `PHY-CLD-03`/`PHY-EDG-02` captura | criticidad A1 alta/C1 media |
+| `SRV-IAM` | CLS-SVC | 024, 025, 027, 030, 034, 035, 064, 071 | `PHY-CLD-03`/`PHY-OPS-01` caché | criticidad A1 alta/C1 crítica; alcance local condicionado por ADR-008 |
+| `SRV-NOTIF` | CLS-SVC | 019, 037, 039 | `PHY-CLD-03`/`PHY-OPS-01` canal local | canal y escalamiento deben probarse |
+| `SRV-EVID` | CLS-SVC | 029, 046, 059 | `PHY-CLD-03`/`PHY-OPS-01` sello local | evidencia prevista, no custodia demostrada |
+| `INT-HUB` | CLS-BRK | 001, 002, 006, 008, 040–044, 056–060, 065 | `PHY-CLD-04`/`PHY-OPS-01` cola | bulkhead y capacidad pendientes de prueba |
+| `INT-TOS` | CLS-BRK | 009–016 | `PHY-OPS-03` | contrato y soporte reales permanecen externos |
+| `EDGE-RUN` | CLS-EDG | 001–008, 018–021, 052–055, 064, 067, 068 | `PHY-OPS-01` | frontera funcional de ADR-002 condicionada por `CTX-VESSEL` |
+| `DATA-CORE` | CLS-DAT | 002, 008, 010–014, 043–045, 049, 051, 055, 072 | `PHY-CLD-05`/`PHY-OPS-01`+`PHY-OPS-02` | `THR-072` agrega identidad del almacén |
+| `DATA-TS` | CLS-DAT | 019, 020, 042, 043, 046, 049, 055, 072 | `PHY-CLD-06`/`PHY-OPS-02` | sin contradicción material |
+| `DATA-DOC` | CLS-DAT | 029, 042, 043, 045, 049, 050, 055, 060, 070, 072 | `PHY-CLD-07`/`PHY-OPS-02` | criticidad A1 alta/C1 media |
+| `DATA-AN` | CLS-DAT | 042, 043, 045, 050, 060, 066, 072 | `PHY-CLD-08` | salida depende del catálogo de campos |
+
+Los rangos representan amenazas aplicables ya definidas; no crean una amenaza por combinación. Las siete diferencias de criticidad observadas son `CTX-EMIS`, `CTX-INSP`, `CTX-VESSEL`, `DATA-DOC`, `GW-API`, `GW-EDGE` y `SRV-IAM`. B6 no decide cuál catálogo prevalece.
+
+#### B6.4 Cobertura de sistemas, contrapartes y contratos A2/A3
+
+| ID canónico o contraparte | Variantes A2 agrupadas | Amenazas aplicables | Paso físico principal | Resultado |
+|---|---|---|---|---|
+| `EXT-TOS12` | contrato TOS 2012 | 009–016 | `INT-TOS`/`PHY-OPS-03` | cubierto; contrato, versión y soporte externos |
+| `EXT-ERP` | contrato ERP | 041, 059, 060 | `INT-HUB`/`PHY-CLD-04` | cubierto; regla de objeción externa |
+| `EXT-GRU` | familia técnica grúas | 017, 021, 023, 062 | `PHY-EDG-04`/conducto de solo lectura | cubierto sin asumir control remoto |
+| `EXT-ACC` | familia control de acceso | 017, 021, 025, 062 | `PHY-EDG-01`/red de protección | cubierto; no se reemplaza el sistema |
+| `EXT-VMS` | VMS conservado | 022, 061, 062, 070 | TB-09/red de protección | cubierto sin transportar video por defecto |
+| `EXT-VGM` | báscula/VGM | 017, 018, 021, 023 | `PHY-EDG-01` | cubierto sin inventar protocolo |
+| `EXT-OCR` | lectura óptica | 017, 018, 021, 023 | `PHY-EDG-01` | cubierto; cantidad/equipo queda en F2 |
+| `EXT-NAV` | `CP-NAV-01..14` | 056, 057, 065 | `INT-HUB`/`PHY-CLD-04` | cubierto por contrato/versionado por naviera |
+| `EXT-AUT` | `EXT-AUT-ADU/SAG/SAN` | 058, 060, 065 | `INT-HUB`/`PHY-CLD-04` | cubierto; fallback asistido declarado |
+| `EXT-FER` | ferrocarril | 058, 060, 065 | `INT-HUB`/`PHY-CLD-04` | cubierto; interfaz/plazo externo |
+| `EXT-RAD` | radio/periferia de patio | 017, 019, 021, 068, 069 | `PHY-EDG-02/03` + red operacional | cubierto; independencia depende del site survey |
+| `EXT-CON` contraparte | concedente/reportes | 058, 060, 065 | INT-HUB/DATA-AN | cubierta como contraparte; no suma sistema canónico |
+
+Las 7 familias técnicas de A2 se absorben en los IDs conservados y nodos de periferia; “POR LEVANTAR” en protocolo o SLA se conserva en `D2-DEP-005`, no se interpreta como falta de amenaza.
+
+#### B6.5 Cobertura de nodos de infraestructura C1
+
+Los componentes anteriores cubren `PHY-CLD-01..08`, `PHY-OPS-01..03` y `PHY-EDG-01..05`. Los nodos que cumplen una función transversal, sin componente lógico exclusivo, se cruzan así:
+
+| Nodos | Función C1 | Amenazas aplicables | Observación |
+|---|---|---|---|
+| `PHY-CLD-09` | observabilidad/SIEM | 003, 038, 047, 063 | revisar posible solape de capacidad `T11-C2-19`/`T11-SEC-04` |
+| `PHY-CLD-10` | réplicas/DR | 049, 072, 073 | independencia real depende de ADR-011 y prueba de restauración/conmutación |
+| `PHY-OPS-04` | núcleo de red operacional | 001, 006, 017, 021, 022, 068, 069 | rutas e independencia sujetas a site survey |
+| `PHY-OPS-05` | custodia de medios | 048, 049 | custodios, separación e inventario pendientes |
+| `PHY-OPS-06` | operación del personal | 025, 034, 052, 062, 071 | `ACT-TI`, suplencias y accesos privilegiados siguen observados |
+
+Con esta tabla, los 21 nodos tienen al menos una amenaza y evidencia prevista. B7 debe auditar que el detalle físico no haya ocultado un subnodo o dominio de fallo adicional.
+
+#### B6.6 Cruce completo por grupos de amenazas
+
+| Amenazas | Dominio real refinado | Contratos/fronteras | Nodos principales | Estado del cruce |
+|---|---|---|---|---|
+| 001–008 | EDGE-RUN, INT-HUB, DATA-CORE | TB-04 | `PHY-OPS-01/02/04` + `PHY-CLD-04/05` | cerrado a nivel documental |
+| 009–016 | INT-TOS, CTX-OPS/BILL, TOS 2012 | TB-06, EXT-TOS12 | `PHY-OPS-03` + `PHY-OPS-01` | externos visibles |
+| 017–023 | gate, yard, reefer y periferia | TB-05/09/12 | `PHY-EDG-01..05` + `PHY-OPS-04` | site survey/protocolos pendientes |
+| 024–029 | CH-PORTAL/APP/CAB, IAM/EVID | TB-01/03 | `PHY-CLD-01/03` + `PHY-OPS-01` + `PHY-EDG-04` | ubicación CH-CAB observada |
+| 030–034 | GW-EDGE/GW-API | TB-01/02/10 | `PHY-CLD-01/02` | criticidad observada |
+| 035–039 | CTX-* y servicios comunes | TB-02/03/11 | `PHY-CLD-03` + `PHY-OPS-01` | CTX-VESSEL observado |
+| 040–044 | INT-HUB y contratos externos | TB-07/08/11 | `PHY-CLD-04` + `PHY-OPS-01` | contratos efectivos externos |
+| 045–051 | DATA-* y evidencia | TB-11/14 | `PHY-CLD-05..08/10` + `PHY-OPS-02/05` | catálogo de campos pendiente |
+| 052–055 | runtime/administración local | TB-05/10/14 | `PHY-OPS-01/04/06` | pruebas físicas pendientes |
+| 056–062 | terceros y sistemas conservados | TB-07/08/09/10 | `PHY-CLD-04` + `PHY-OPS-04/06` + `PHY-EDG-*` | contratos/SLA externos |
+| 063–066 | autorización, offline, identidad externa y minimización | TB-02/03/08/11 | `PHY-CLD-02/03/04/08/09` + `PHY-OPS-01` | campos y aprobadores pendientes |
+| 067–070 | frescura, radio, alcance y evidencia VMS | TB-04/05/09 | `PHY-OPS-01/04` + `PHY-EDG-01..04` | site survey/retención externos |
+| 071 | titulares y suplencias | TB-03/10 | `PHY-OPS-06` | aceptación CLIENTE pendiente |
+| 072–073 | identidad de datos y fallo común cloud | TB-11/14/04 | `PHY-CLD-05..10` + `PHY-OPS-01/02` | amenazas nuevas condicionadas |
+
+#### B6.7 SPOF y hallazgos del refinamiento
+
+| SPOF | Vista/componente | Escenario | Impacto | Mitigación propuesta | Por qué subsiste | Aceptación | Prueba | Estado |
+|---|---|---|---|---|---|---|---|---|
+| `SPOF-22` | proveedor, regiones y plano de control cloud | recuperación cloud y `THR-073` | un fallo común impide producción y DR cloud; quedan solo funciones locales | dominios de fallo explícitos, credenciales separadas, portabilidad y salida probadas | `ADR-011` no tiene selección; independencia y reversibilidad no demostradas | C1–C4 + CLIENTE | ejercicio regional y de salida que mida RTO/RPO y dependencias comunes | POR ACEPTAR |
+
+| Hallazgo | Resultado | Tratamiento |
+|---|---|---|
+| `B6-F01` | 24/24 componentes, 11/11 sistemas canónicos y 21/21 nodos tienen amenazas aplicables | llevar a auditoría B7; no equivale a control probado |
+| `B6-F02` | `CLS-DAT`/S no estaba cubierta por amenaza propia | agregada `THR-072`; casilla cerrada a nivel de modelo |
+| `B6-F03` | C1 no refleja la continuidad local crítica de `CTX-VESSEL` declarada por A1/A3 | corrección requerida a Frente 2; condiciona ADR-002 y cierre físico |
+| `B6-F04` | hay seis diferencias adicionales de criticidad —las siete observadas en `B6.3` menos `CTX-VESSEL`, tratada aparte en `B6-F03`—, ubicación discutible de `CH-CAB` y brecha de actor `ACT-TI` | registrar para sus autores; D2 no altera A1/C1 |
+| `B6-F05` | observabilidad/SIEM puede estar dimensionada dos veces como `T11-C2-19` y `T11-SEC-04` | C2/C4 deben aclarar alcance y evitar doble conteo |
+| `B6-F06` | ADR-011 no tenía amenaza ni SPOF propios de fallo común/salida cloud | agregados `THR-073` y `SPOF-22`; no se prescribe proveedor ni multicloud |
+
+#### B6.8 Cierre y transición de dependencias
+
+| Comprobación | Resultado | Estado |
+|---|---|---|
+| componentes A1 | 24/24 con clase, amenaza y correspondencia física | CONFORME DOCUMENTAL |
+| sistemas/contrapartes A2 | 11/11 canónicos + `EXT-CON`; variantes agrupadas sin inflar el catálogo | CONFORME DOCUMENTAL |
+| nodos C1 | 21/21 con amenaza aplicable | CONFORME DOCUMENTAL CON OBSERVACIONES |
+| cobertura STRIDE | `CLS-DAT`/S cerrada por `THR-072`; las siete clases tienen S/T/R/I/D/E | CONFORME DE MODELO |
+| amenazas vigentes | 73: 6 CRÍTICO, 64 ALTO, 3 MEDIO; ninguna BAJO ni aceptada | CONFORME |
+| SPOF vigentes | 22: 0 `ACEPTADO`, 11 `POR ACEPTAR`, 11 `ESCALADO` | CONFORME |
+| entradas A1/A2/A3/C1–C4 | `D2-DEP-001/002` resueltas para diseño; `D2-DEP-003` cruzada con observaciones | CONFORME CON SALIDAS |
+| controles/campos | D1 disponible; catálogo campo→sensibilidad→retención del Subdocumento 5 ausente | `D2-DEP-004` PARCIAL |
+| contratos, site survey, pruebas y aceptadores | continúan fuera de los frentes | `D2-DEP-005` BLOQUEADO EXTERNO |
+| `RT-11.02` | existe modelo refinado y regla de actualización; falta auditar cobertura/cambios en B7 | EN CURSO |
+
+**Retomar exactamente aquí:** ejecutar B7 como auditoría documental del inventario, integraciones, trazabilidad, contradicciones y salidas accionables. No corregir documentos de Frente 1/2 desde D2 y no cerrar riesgos que dependan del CLIENTE o de pruebas. **B8 continúa diferido**: sin diagramas ni resumen residual final hasta terminar la auditoría.
+
+### B7. Auditoría documental v0.5
+
+**Veredicto: `CONFORME PARA v0.5 CON PENDIENTE ADR`, con seis correcciones aplicadas dentro de D2 y hallazgos dirigidos a sus autores.** Conforme significa que el modelo de amenazas es coherente, trazable y auditable como **diseño documental**. No significa que los once ADR estén completos: `ADR-011` conserva una brecha de alternativas/selección. Tampoco significa control implementado, prueba ejecutada, riesgo aceptado ni ADR aprobado. Modo registro.
+
+#### B7.1 Alcance y método de la auditoría
+
+Se auditó contra evidencia primaria —A1, A2, A3, C1–C4, D1, Maestro, Plan, Matriz global y Registro ADR—, no contra lo que B6 declara de sí mismo. Las comprobaciones de conteo, unicidad, saltos, referencias rotas y coherencia de valoración se ejecutaron de forma mecánica sobre el texto de D2; las de contenido, por lectura contrastada. D2 corrige solo lo suyo: **ningún documento de Frente 1 o Frente 2 fue modificado**; sus problemas quedan como hallazgo dirigido.
+
+#### B7.2 Resultado de las doce comprobaciones exigidas
+
+| # | Comprobación | Resultado verificado | Estado |
+|---:|---|---|---|
+| 1 | 24 componentes A1 cubiertos sin clase genérica como sustituto | 24/24 con amenazas nominadas propias y correspondencia física; la clase `CLS-*` acompaña pero nunca reemplaza al ID. Ningún componente citado en D2 es inexistente en A1, y ninguno de A1 falta en D2 | CONFORME |
+| 2 | 11 canónicos, `EXT-CON` y variantes A2 correctamente agrupados | 11 canónicos (`EXT-ACC/AUT/ERP/FER/GRU/NAV/OCR/RAD/TOS12/VGM/VMS`), los once presentes en A1/A2/A3 y en el Maestro §5.2; `EXT-CON` registrado como contraparte y **no** como duodécimo sistema; variantes `CP-NAV-01..14` y `EXT-AUT-ADU/SAG/SAN` agrupadas en su ID canónico sin inflar el catálogo | CONFORME |
+| 3 | 21 nodos C1 con amenazas aplicables | 21/21 `PHY-CLD-01..10`, `PHY-OPS-01..06`, `PHY-EDG-01..05` con al menos una amenaza y evidencia prevista. Ningún `PHY-*` citado en D2 es inexistente en C1–C4 | CONFORME CON OBSERVACIÓN |
+| 4 | `THR-001..073` sin saltos, duplicaciones ni referencias rotas | 73 filas de identificación y 73 de control, correspondencia 1:1, cero duplicados, cero saltos, cero amenazas citadas sin definir. Valoración coherente con la matriz de `B2.1` en 73/73 y residual proyectado igual al inherente en 73/73 | CONFORME |
+| 5 | `THR-072`, `THR-073` y `SPOF-22` independientes | Independientes. `THR-072` es suplantación **del almacén o su réplica** ante un consumidor legítimo, distinta de `THR-044` (productor no autorizado en el bus) y de `THR-043` (componente legítimo que puentea al servicio propietario). `THR-073` es pérdida **simultánea** de producción y recuperación cloud por fallo común, distinta de `THR-006` (saturación del enlace) y de `THR-049` (respaldo no restaurable) | CONFORME CON OBSERVACIÓN |
+| 6 | Siete clases con las seis categorías STRIDE; cierre de `CLS-DAT`/S | Matriz 7 × 6 sin casilla vacía. `CLS-DAT`/S queda cerrada por `THR-072`, que es una suplantación propia del almacén y no una reasignación de `THR-043`/`THR-044` | CONFORME |
+| 7 | 22 SPOF con mitigación, aceptación, prueba y estado, ninguno aceptado | 22/22 con las nueve columnas completas, sin celda vacía. **0 `ACEPTADO`**; 11 `POR ACEPTAR` y 11 `ESCALADO` | CONFORME |
+| 8 | 11 ADR con alternativas, consecuencias, condición de revisión, efecto T-11 y vínculo amenaza/SPOF | 11/11 revisados y enlazados; 10 tienen alternativas suficientemente identificadas para este corte. `ADR-011` solo declara criterios y el riesgo `THR-073`/`SPOF-22`: falta comparar alternativas concretas y seleccionar una | PENDIENTE — autor C2/integrador |
+| 9 | Las cinco observaciones no fueron corregidas en silencio | Las cinco persisten visibles y nominadas: contradicción `CTX-VESSEL`, seis diferencias adicionales de criticidad, ubicación de `CH-CAB`, brecha de `ACT-TI` y posible doble conteo `T11-C2-19`/`T11-SEC-04`. Ninguna fue resuelta desde D2 ni silenciada | CONFORME |
+| 10 | Estados históricos y estado vigente no se contradicen | **No conforme al auditar**: cuatro lugares afirmaban en presente cifras de corte ya superadas. Corregido en `B7.4`; ver `B7-F01` a `B7-F04` | CORREGIDO |
+| 11 | `RT-11.02` con modelo refinado y regla explícita de actualización | Modelo refinado: sí. Regla de actualización: **incompleta al auditar** —cubría solo componente e integración—. Ampliada a los cinco disparadores exigidos; ver `B7-F05` | CORREGIDO |
+| 12 | Sin cantidades, productos, contratos, pruebas ni aceptaciones inventadas | El barrido y la revisión contextual encontraron cifras y capacidades trazadas a fuentes, pero ningún precio, producto seleccionado, contrato efectivo, prueba ejecutada ni aceptación presentada sin respaldo | CONFORME |
+
+#### B7.3 Cifras vigentes al cierre de B7
+
+Esta tabla es la **única fuente de cifras vigentes** de D2. Las cifras que aparecen dentro de B2, B3 y B4 son cortes fechados de esos bloques y así quedan marcadas.
+
+| Universo | Cifra vigente | Nota |
+|---|---|---|
+| amenazas `THR-001..073` | 73 | 6 CRÍTICO, 64 ALTO, 3 MEDIO, 0 BAJO; 68 `POR VALIDAR` y 5 `ESCALADO`; ninguna aceptada |
+| puntos únicos `SPOF-01..22` | 22 | 11 `POR ACEPTAR`, 11 `ESCALADO`, **0 `ACEPTADO`** |
+| clases `CLS-*` × STRIDE | 7 × 6 completas | `CLS-DAT`/S cerrada por `THR-072` |
+| componentes A1 cruzados | 24/24 | correspondencia física declarada |
+| sistemas canónicos + contraparte | 11 + `EXT-CON` | variantes contractuales agrupadas |
+| nodos C1 cruzados | 21/21 | con observación de subnodos y dominios de fallo |
+| escenarios `SCN-01..12` | 12 | 8/8 materias del contrato |
+| ADR revisados | 11/11 | 0 aprobados por D2 |
+| activos `AST-001..016` y fronteras `TB-01..14` | 16 y 14 | sin cambios desde B1 |
+
+#### B7.4 Hallazgos corregidos dentro de D2
+
+| Hallazgo | Problema detectado | Corrección aplicada |
+|---|---|---|
+| `B7-F01` | La casilla de «Trabajo requerido» del contrato —texto vigente, no histórico— seguía declarando `CLS-DAT`/S abierta y pendiente de B6 | Reescrita para reflejar que B6 la cerró con `THR-072`, conservando que es cobertura de modelo y no control probado |
+| `B7-F02` | `TRZ_D2.md` §3 mantenía la fila de amenazas por clase con «66 amenazas `THR-001..066`» y `CLS-DAT`/S abierta, en una tabla de estado vigente | Fila actualizada a las cifras vigentes con remisión a `B7.3` |
+| `B7-F03` | `B2.8` y `B3.15` afirmaban en presente que `CLS-DAT`/S sigue abierta, sin marca de corte | Añadida marca de corte a ambos. **No se reescribió el historial**: el texto original se conserva y se anota qué bloque posterior lo superó |
+| `B7-F04` | La fila de B4 en la tabla de bloques declaraba `SPOF-01..21` sin señalar la cifra vigente | Anotada como cifra de corte de B4, con la vigente `SPOF-01..22` junto a ella |
+| `B7-F05` | La regla de actualización de `RT-11.02` cubría solo «componente o integración»; el requisito exige además contratos, nodos, controles y ADR | Regla ampliada a cinco disparadores (componente A1, integración A2/A3, nodo C1–C4, control `SEC-*` de D1 y estado o alternativa de un ADR), con obligación de registrar el cambio como corte fechado en `TRZ_D2` y prohibición de reescribir bloques cerrados |
+| `B7-F06` | «Siete diferencias de criticidad» en `B6.3` frente a «seis diferencias adicionales» en `B6-F04` podía leerse como contradicción | Precisado: seis adicionales son las siete observadas menos `CTX-VESSEL`, que se trata aparte en `B6-F03` |
+
+#### B7.5 Observaciones que la auditoría agrega
+
+| ID | Observación | Destinatario |
+|---|---|---|
+| `B7-O01` | `SPOF-13` (respaldo, archivo y DR) y `SPOF-22` (proveedor, regiones y plano de control cloud) son adyacentes: el primero es la recuperabilidad del respaldo y la separación de autoridad de borrado; el segundo, el dominio de fallo común del proveedor. **No deben consolidarse ni contarse dos veces** en B8, en el T-11 ni en la integración | D2 B8, C2/C4, integrador |
+| `B7-O02` | Los 21 nodos tienen amenaza aplicable, pero el nivel de detalle físico puede ocultar un subnodo o un dominio de fallo adicional —por ejemplo dentro de `PHY-OPS-04` o `PHY-CLD-10`—. La cobertura es 21/21 **sobre el catálogo declarado**, no sobre la instalación real | C1/C3; verificar en B8 |
+| `B7-O03` | Las cinco observaciones dirigidas a Frentes 1 y 2 siguen abiertas y ninguna depende de D2. Mientras `CTX-VESSEL` no se concilie, `ADR-002` no puede cerrarse y la frontera funcional de `EDGE-RUN` queda condicionada | A1/A3, C1; `ADR-002` |
+
+#### B7.6 Veredicto sobre `RT-11.02`
+
+**Cubierto a nivel de diseño documental.** Existen los cuatro elementos que el requisito exige: metodología declarada (`B2.1`, `B2.2`), amenazas por cada componente e integración externa sobre catálogos reales (`B6.3`–`B6.6`), vínculo amenaza→control `SEC-*` y evidencia prevista, y —desde esta auditoría— una **regla explícita de actualización ante cambios** con sus cinco disparadores.
+
+**Continúa `EN CURSO`, y no puede pasar a cumplido, por tres razones que no dependen de D2:** ninguna prueba está ejecutada; la revisión cruzada con D1, C1–C4 y el integrador no se ha hecho; y no existe aprobación del CLIENTE ni de un revisor independiente. Además, `D2-DEP-004` sigue parcial: sin el catálogo campo→sensibilidad→retención del Subdocumento 5, la cobertura sobre datos es de modelo y no de campo.
+
+#### B7.7 Cierre de B7 y punto de continuación
+
+| Comprobación de cierre | Resultado | Estado |
+|---|---|---|
+| doce comprobaciones exigidas | 9 conformes —2 con observación—, 2 no conformes corregidas dentro de D2 y 1 pendiente de autor (`ADR-011`) | CONFORME PARA v0.5 CON PENDIENTE ADR |
+| documentos de Frente 1 y 2 modificados | ninguno | CONFORME |
+| riesgos aceptados, SPOF cerrados o ADR aprobados en B7 | ninguno | CONFORME |
+| diagramas | no producidos; B8 sigue diferido | CONFORME |
+| D3 | no ejecutado | CONFORME |
+
+**Retomar exactamente aquí: integración de D1 con D2.** El siguiente paso no es B8 ni D3, sino **conciliar D1 y D2 como un solo paquete de seguridad** antes de que el integrador toque `90_Consolidado/`. Concretamente:
+
+1. Verificar que los 31 controles `SEC-*` de D1 tengan al menos una amenaza `THR-*` que los invoque, y al revés, que ningún `SEC-*` citado en D2 quede sin desarrollo en D1. D2 ya no cita ningún control inexistente; falta la dirección contraria.
+2. Cruzar `SEC-PHYS-v0.1` (17 grupos) con `SPOF-01..22` y con `B7-O01`, para que C4 no genere filas T-11 duplicadas.
+3. Sincronizar el estado de `RT-11.02` entre `TRZ_D1` y `TRZ_D2` con el veredicto de `B7.6`.
+4. Resolver o escalar formalmente las cinco observaciones de `B7-O03` con A1, A3 y C1.
+5. Solo después: `B8` —diagrama de fronteras y resumen de riesgo residual— y luego D3.
+
+**Qué debe conservar quien continúe:** `AST-001..016`, `TB-01..14`, `CLS-*`, `THR-001..073`, `SCN-01..12`, `SPOF-01..22`, `ADR-001..011`, las dependencias `D2-DEP-001..005` con su estado vigente, los escalamientos `ESC-01/04/05/06/07/09/10/14` y `F3-ESC-001/002/003`, la escala de `B2.1`, la regla de no aceptación de `B2.6` y la regla de actualización ampliada del método. Ningún bloque cerrado se reescribe: los cambios se emiten como corte fechado en `TRZ_D2`.
+
+#### B7.8 Corte de integración con D1 — controles de gobierno y aseguramiento
+
+**Fecha: 2026-09-06.** Al ejecutar la revisión cruzada pedida por B7.7 se confirmó que D2 ya cita 24 de los 31 controles `SEC-*` de D1 dentro de las filas de tratamiento. Los siete restantes son controles de gobierno o aseguramiento que actúan sobre amenazas ya modeladas; no justifican crear amenazas duplicadas. Se enlazan en este corte, conforme a la regla de actualización de `B7-F05`.
+
+| Control D1 | Amenazas D2 que gobierna o verifica | Relación | Estado |
+|---|---|---|---|
+| `SEC-GOV-01` | `THR-038`, `THR-047`, `THR-071`, `THR-073` | mantiene propietario, excepción, residual y evidencia por control/riesgo | ENLAZADO; responsable nominal pendiente |
+| `SEC-CLOUD-01` | `THR-049`, `THR-060`, `THR-072`, `THR-073` | explicita responsabilidad, residencia, borrado, réplica y salida cloud | ENLAZADO; condicionado por `ADR-011` y Subdocumento 5 |
+| `SEC-IR-01` | `THR-038`, `THR-047`, `THR-062`, `THR-070` | gobierna contención, comunicación, custodia y causa raíz | ENLAZADO; plan/RACI y ejercicio pendientes |
+| `SEC-VULN-01` | `THR-023`, `THR-050`, `THR-053`, `THR-062` | detecta y conduce remediación de firmware, pipeline, IaC y acceso de terceros | ENLAZADO; herramienta y evidencia pendientes |
+| `SEC-PENTEST-01` | `THR-030`, `THR-034`, `THR-043`, `THR-065` | verifica autorización, aislamiento y resistencia de interfaces antes de producción | ENLAZADO; tercero/alcance e informe pendientes |
+| `SEC-SDLC-01` | `THR-023`, `THR-050`, `THR-053` | exige revisión y traza del cambio que podría introducir alteración o configuración insegura | ENLAZADO; ejecución pendiente |
+| `SEC-SAMM-01` | `THR-050`, `THR-053` | mide que las prácticas de prevención no sean controles puntuales sin mejora sistemática | ENLAZADO; evaluación inicial/anual pendiente |
+
+**Resultado del cruce bidireccional:** 31/31 controles D1 tienen al menos una amenaza D2 asociada y ningún `SEC-*` citado por D2 carece de desarrollo en D1. La relación no cambia valoración, residual ni aceptación de ninguna amenaza. `ADR-011` continúa `CANDIDATO` y este corte no sustituye su comparación de alternativas.
+
+#### B7.9 Revisión conjunta D1–D2 y gobierno — bloque 5
+
+La puerta conjunta B7-C verificó el modelo D2 contra D1, `TRZ_D1`, `TRZ_D2`, el registro ADR, la matriz global, las decisiones/escalamientos y la auditoría del frente. Resultado: 31/31 controles D1 enlazados; `THR-001..073` y `SPOF-01..22` definidos sin referencias huérfanas; estados ADR compatibles y ningún riesgo aceptado. No apareció un hallazgo interno nuevo que cambie probabilidad, impacto, residual o tratamiento.
+
+El paquete queda **listo para auditoría independiente/general**, con los hallazgos externos ya conocidos: `ACT-TI`, `CTX-VESSEL`, criticidades A1/C1, `CH-CAB`, solape SIEM, Subdocumento 5, `ADR-011`, site survey, contratos/productos, responsables, pruebas y aprobaciones. Esto cierra la revisión conjunta, no D2: el entregable continúa `EN CURSO`, B8 sigue diferido y D3 no se inicia.
 
 ## Contenido listo para integrar
 

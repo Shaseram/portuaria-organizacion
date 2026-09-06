@@ -16,10 +16,10 @@ Se registran durante la planificación. No bloquean el avance independiente y no
 
 | ID | Entrada / productor | Validación necesaria | Estado |
 |---|---|---|---|
-| `F3-DEP-001` | A1: actores y componentes v0.1 | Confirmar correspondencia ACT-* → roles propuestos → funciones/componentes; sin catálogo paralelo | PENDIENTE |
-| `F3-DEP-002` | A2/A3: contratos y operación local/TOS | Concretar controles de interfaces, autoridad y 72 h; no inventar contratos de terceros | PENDIENTE |
-| `F3-DEP-003` | C1–C4: físico, redes, productos y capacidad | Ubicar controles, comprobar viabilidad/HA y cantidades/licencias para T-11 | PENDIENTE |
-| `F3-DEP-004` | D2 y Subdoc. 5 | Revisar cobertura de amenazas y correspondencia de protección con datos concretos | PENDIENTE |
+| `F3-DEP-001` | A1: actores y componentes v0.1 | Confirmar correspondencia ACT-* → roles propuestos → funciones/componentes; sin catálogo paralelo | CRUZADA CON OBSERVACIÓN — `ACT-TI`/consola y aprobación de roles |
+| `F3-DEP-002` | A2/A3: contratos y operación local/TOS | Concretar controles de interfaces, autoridad y 72 h; no inventar contratos de terceros | RESUELTA PARA DISEÑO DOCUMENTAL — contratos efectivos externos |
+| `F3-DEP-003` | C1–C4: físico, redes, productos y capacidad | Ubicar controles, comprobar viabilidad/HA y cantidades/licencias para T-11 | CRUZADA CON OBSERVACIONES — producto final, site survey y pruebas pendientes |
+| `F3-DEP-004` | D2 y Subdoc. 5 | Revisar cobertura de amenazas y correspondencia de protección con datos concretos | PARCIAL — D2 auditado; catálogo de campos pendiente |
 
 Los bloqueos externos conservan F3-ESC-001 y los ESC del Maestro; no se fusionan con estas dependencias de compañeros. Los diagramas se elaboran tras definir el contenido y son condición para cerrar D1, no para intercambiar su paquete temprano.
 
@@ -98,11 +98,11 @@ Estas dependencias no bloquean el modelado inicial por clases. Sí impiden decla
 
 | ID | Entrada / productor | Validación necesaria | Estado |
 |---|---|---|---|
-| `D2-DEP-001` | A1: componentes, criticidad y responsables `v0.1` | mapear `CLS-*`/`AST-*` a todo componente y propietario real | PENDIENTE |
-| `D2-DEP-002` | A2/A3: interfaces, contratos, autoridad TOS y degradación | refinar `TB-*`, iniciadores, datos, fallos, fallback y conciliación por integración | PENDIENTE |
-| `D2-DEP-003` | C1–C4: nodos, red, sala, productos, HA/DR y capacidad | identificar independencia efectiva, SPOF por nodo/ruta, evidencia y efecto T-11 | PENDIENTE |
-| `D2-DEP-004` | D1/Subdocumento 5: controles y catálogo de datos | validar amenaza→control y campo→sensibilidad→retención→custodia | PENDIENTE |
-| `D2-DEP-005` | CLIENTE/terceros: contratos, SLA, directorio, site survey y aceptadores | validar probabilidad, viabilidad y responsable de cada riesgo residual | PENDIENTE |
+| `D2-DEP-001` | A1: componentes, criticidad y responsables `v0.1` | mapear `CLS-*`/`AST-*` a todo componente y propietario real | RESUELTA PARA DISEÑO DOCUMENTAL EN B6; quedan observaciones de autor |
+| `D2-DEP-002` | A2/A3: interfaces, contratos, autoridad TOS y degradación | refinar `TB-*`, iniciadores, datos, fallos, fallback y conciliación por integración | RESUELTA PARA DISEÑO EN B6; contratos efectivos continúan externos |
+| `D2-DEP-003` | C1–C4: nodos, red, sala, productos, HA/DR y capacidad | identificar independencia efectiva, SPOF por nodo/ruta, evidencia y efecto T-11 | CRUZADA EN B6 CON OBSERVACIONES A1↔C1; corrección/pruebas pendientes |
+| `D2-DEP-004` | D1/Subdocumento 5: controles y catálogo de datos | validar amenaza→control y campo→sensibilidad→retención→custodia | PARCIAL — D1 RECIBIDO; SUBDOCUMENTO 5 PENDIENTE |
+| `D2-DEP-005` | CLIENTE/terceros: contratos, SLA, directorio, site survey y aceptadores | validar probabilidad, viabilidad y responsable de cada riesgo residual | BLOQUEADO EXTERNO |
 
 **Corte B1 (2026-09-05):** D2 no abre aún una decisión de arquitectura nueva. Delimita activos y fronteras para revisar ADR-001..010 en B5. Ningún riesgo ni SPOF queda aceptado; los pendientes externos del Maestro y F3-ESC-001/002 conservan su identidad.
 
@@ -156,17 +156,26 @@ B4 no abre decisiones de arquitectura. Consolida `SPOF-01..21` y deja **11 punto
 
 `B4-F02`: con 11 de 21 puntos escalados, **B5 no puede aprobar ningún ADR cuyo riesgo residual dependa de uno de ellos**. Ninguna aceptación de riesgo se registra en B4.
 
-## Avance D2 — bloque B5 — 2026-09-06
+## Avance D2 — bloque B5 — corte inicial 2026-09-06
 
-D2 revisó los diez ADR y **no promovió ninguno**. Los estados se mantienen: `ADR-001..007` `CANDIDATO`, `ADR-008` `EN ANÁLISIS`, `ADR-009` y `ADR-010` `PROPUESTO`. `F3-DEC-001/002/003` conservan su estado.
+D2 revisó los diez ADR disponibles en aquel corte y no promovió ninguno. Esta lectura queda como antecedente histórico: fue superada por la incorporación posterior de A1–A3/C1–C4, registrada en la reapertura siguiente.
 
-**Recomendación de D2 a los autores de ADR-001..007.** No se evaluaron alternativas que nadie ha escrito. B5.2 deja fijado, por decisión, qué debe compararse como mínimo, qué consecuencia negativa no puede omitirse, con qué SPOF y amenaza queda amarrada, su disparador de revisión y su efecto en T-11. Es trabajo acotado para cada autor, no un reemplazo de su decisión.
+**Regla conservada del corte:** D2 revisa y recomienda; no aprueba decisiones ajenas ni acepta riesgos por la sola existencia de un texto.
 
 **Condición de aprobación que hereda B8 y el integrador.** Ningún ADR puede aprobarse mientras su riesgo residual dependa de un SPOF `ESCALADO`. Hoy eso alcanza a `ADR-004` (`SPOF-17`/`ESC-04`), `ADR-005` (`SPOF-06`/`ESC-07`/`ESC-09`), `ADR-006` (`SPOF-03`/`F3-ESC-003`), `ADR-007` y `ADR-009` (`SPOF-12`), `ADR-008` (`SPOF-10`/`F3-ESC-001`/`F3-ESC-002`) y `ADR-010` (`SPOF-20`/`SPOF-16`).
 
-**`B5-F01` — brecha de entrega, no de D2.** La sección 4.3 del Subdocumento 4 se alimenta del registro de decisiones con alternativas evaluadas y criterio de selección. Hoy solo tres de diez decisiones tienen materia redactada, y las tres son de seguridad. Corresponde a A1, A2, A3 y C1–C4.
+**`B5-F01` — hallazgo histórico, corregido por integración.** La ausencia aparente de contenido se debía a que las ramas no estaban incorporadas, no a que A1–A3/C1–C4 no hubieran trabajado.
 
-**`B5-F03` — brecha recurrente.** La lista de funciones no disponibles durante la desconexión y su reemplazo manual bloquea ya tres cosas distintas: el escenario `SCN-01`, el cierre de `B3` y ahora `ADR-002`. Responsables: A3 y C1–C4. Es el pendiente con mayor efecto acumulado sobre D2.
+**`B5-F03` — parcialmente corregido.** A3 §7 aporta la lista de degradación y respaldo manual. Permanece la contradicción `CTX-VESSEL` entre A1/A3 y C1.
+
+## Reapertura de integración D2 — B0/B1
+
+- `D2-DEP-001` y las entradas documentales de `D2-DEP-002/003` fueron recibidas; B6 queda habilitado.
+- `D2-DEP-004` queda parcial: D1 aporta controles y política de eventos, pero falta el catálogo del Subdocumento 5.
+- `D2-DEP-005` continúa bloqueado externamente.
+- `ADR-001..004` se revisaron sobre el texto real y quedan `PROPUESTO`, sin aprobación; `ADR-005..007` permanecen `CANDIDATO` por condiciones aún abiertas.
+- Se abre `ADR-011` como `CANDIDATO` para proveedor/regiones cloud, sin seleccionar alternativa.
+- La observación principal para B6 es `CTX-VESSEL`: continuidad crítica en A1/A3 frente a ubicación exclusivamente cloud en C1. Frente 2 conserva la responsabilidad de corregir su vista.
 
 ## Ajuste de coordinación D1/D2 — 2026-09-06
 
@@ -174,3 +183,73 @@ D2 revisó los diez ADR y **no promovió ninguno**. Los estados se mantienen: `A
 - El autor D1 promueve `ADR-008` de `EN ANÁLISIS` a **`PROPUESTO`** como línea base condicionada de integración y dimensionamiento. No está aprobado ni selecciona producto. Su aprobación sigue bloqueada por `F3-ESC-001` —directorio/federación— y `F3-ESC-002` —revocación y aviso/bloqueo durante aislamiento—, además de las validaciones A1–A3/C1–C4.
 - La revisión B5 de D2 se conserva como corte histórico: D2 no promovió decisiones. Este ajuste posterior proviene del autor de `ADR-008` y no altera la regla de que ningún ADR con residual atado a un SPOF `ESCALADO` puede aprobarse.
 - Por decisión de secuencia, todos los diagramas y el resumen residual final quedan diferidos hasta integrar los demás frentes y ejecutar la auditoría de cobertura. No se inicia un B8 parcial.
+
+## Avance D2 — bloque B6 — 2026-09-06
+
+B6 cruza los catálogos integrados sin editar los entregables de Frente 1/2 ni convertir una entrada documental en evidencia ejecutada.
+
+| Resultado o asunto | Registro aplicado | Estado / propietario |
+|---|---|---|
+| cobertura de componentes A1 | 24/24 con clase, amenazas y nodo físico | COMPLETA PARA DISEÑO; audita B7 |
+| cobertura externa A2/A3 | 11/11 sistemas canónicos + `EXT-CON`; variantes `CP-NAV-*` y `EXT-AUT-*` reagrupadas | COMPLETA PARA DISEÑO; contratos efectivos siguen en `D2-DEP-005` |
+| cobertura física C1 | 21/21 nodos con amenazas aplicables | COMPLETA CON OBSERVACIONES; corrige Frente 2 |
+| suplantación propia de datos | `THR-072`, endpoint o réplica falsa; cierra `CLS-DAT`/S a nivel de modelo | POR VALIDAR — C1/C3/ADR-011 |
+| fallo común cloud | `THR-073` + `SPOF-22`, asociados a `ADR-011` | POR ACEPTAR — C1–C4 + CLIENTE |
+| `CTX-VESSEL` | A1/A3 lo requieren crítico/local; C1 lo ubica solo cloud y alta | OBSERVACIÓN CRÍTICA — Frente 2 |
+| otras divergencias | criticidad de `CTX-EMIS`, `CTX-INSP`, `DATA-DOC`, `GW-API`, `GW-EDGE`, `SRV-IAM`; ubicación `CH-CAB`; actor `ACT-TI` | OBSERVACIONES — autores A1/C1 |
+| SIEM/capacidad | posible solape `T11-C2-19`/`T11-SEC-04` | ACLARAR — C2/C4 |
+
+La brecha histórica de funciones no disponibles queda **resuelta documentalmente** por A3 §7, que declara degradación y respaldo manual; permanece la contradicción física de `CTX-VESSEL`. El total vigente es `THR-001..073` —6 críticas, 64 altas y 3 medias— y `SPOF-01..22`; ninguno aceptado. `RT-11.02` continúa `EN CURSO` hasta B7. B8 sigue diferido y no se generan diagramas.
+
+## Auditoría D2 — bloque B7 — 2026-09-06
+
+B7 **no abre decisiones de arquitectura ni dependencias nuevas**. El modelo D2 queda `CONFORME PARA v0.5 CON PENDIENTE ADR`: `ADR-011` sigue sin alternativas concretas ni selección. Se corrigieron seis inconsistencias internas (`B7-F01..F06`) y se agregaron tres observaciones (`B7-O01..O03`). Ningún documento de Frente 1 o Frente 2 fue modificado.
+
+### Hallazgos dirigidos a otros autores — abiertos y no resueltos por D2
+
+| ID | Hallazgo | Destinatario | Efecto si no se resuelve |
+|---|---|---|---|
+| `B6-F03` | `CTX-VESSEL` es crítico y con continuidad local en A1/A3, pero C1 lo ubica solo en nube | C1 (Frente 2), con A1/A3 | `ADR-002` no puede cerrarse y la frontera funcional de `EDGE-RUN` queda condicionada |
+| `B6-F04a` | Seis diferencias adicionales de criticidad entre A1 y C1: `CTX-EMIS`, `CTX-INSP`, `DATA-DOC`, `GW-API`, `GW-EDGE` y `SRV-IAM` | A1 y C1 | la criticidad determina HA, capacidad y filas T-11; sin acuerdo, el dimensionamiento queda sin base |
+| `B6-F04b` | Ubicación de `CH-CAB`: C1 lo sitúa en muelle, A1 lo usa como canal de cabina y campo | C1 (Frente 2) | afecta cobertura de radio, `SCN-11` y la exposición de `THR-025`/`THR-067` |
+| `B6-F04c` | Brecha de actor `ACT-TI`: falta la consola administrativa en el catálogo | A1 (Frente 1) | `THR-034`, `THR-062` y `SPOF-13` quedan sin actor responsable declarado |
+| `B6-F05` | Posible doble conteo de observabilidad/SIEM entre `T11-C2-19` y `T11-SEC-04` | C2 y C4 | doble conteo en el Formulario T-11 |
+| `B7-O01` | `SPOF-13` y `SPOF-22` son adyacentes pero distintos; no consolidarlos ni contarlos dos veces | D2 B8, C2/C4 e integrador | riesgo de perder un dominio de fallo o de duplicar una fila T-11 |
+| `B7-O02` | La cobertura 21/21 de nodos es sobre el catálogo declarado; un subnodo o dominio de fallo interno puede quedar oculto, por ejemplo en `PHY-OPS-04` o `PHY-CLD-10` | C1 y C3 | la independencia real seguiría sin demostrarse |
+
+### Dependencias de D2 — estado vigente tras B7
+
+| ID | Estado | Nota |
+|---|---|---|
+| `D2-DEP-001` | RESUELTA PARA DISEÑO DOCUMENTAL | A1 entregó componentes y actores; persiste la brecha `ACT-TI` |
+| `D2-DEP-002` | RESUELTA PARA DISEÑO DOCUMENTAL | A2/A3 entregaron contratos y autoridad; contratos efectivos de terceros siguen externos |
+| `D2-DEP-003` | CRUZADA CON OBSERVACIONES | 21/21 nodos con amenaza; abiertas `B6-F03`, `B6-F04a/b`, `B6-F05`, `B7-O02` |
+| `D2-DEP-004` | PARCIAL | falta el catálogo campo→sensibilidad→retención del Subdocumento 5; la cobertura de datos es de modelo, no de campo |
+| `D2-DEP-005` | BLOQUEADO EXTERNO | contratos, SLA, site survey, aceptadores y pruebas siguen fuera de los frentes |
+
+### Regla incorporada por la auditoría
+
+`B7-F05` amplía la **regla de actualización de `RT-11.02`** a cinco disparadores: componente lógico A1, integración A2/A3, nodo físico C1–C4, control `SEC-*` de D1, y estado o alternativa seleccionada de un ADR. Cualquiera obliga a revisar amenazas, SPOF y trazas afectadas y a emitir un **corte fechado** en `TRZ_D2.md`. No se reescribe el historial de un bloque cerrado.
+
+**Ningún riesgo aceptado, ningún SPOF cerrado y ningún ADR aprobado en B7.** `ADR-011` conserva `CANDIDATO`; la auditoría no cambió ninguna relación del Registro ADR global, por lo que ese registro **no se modifica** en este bloque.
+
+## Integración documental D1–D2 — bloque B7-R — 2026-09-06
+
+| Asunto | Resultado del cruce | Estado / salida |
+|---|---|---|
+| controles D1 ↔ amenazas D2 | 31/31 controles con amenaza asociada; los siete de gobierno/aseguramiento se enlazan en D2 B7.8 sin crear amenazas nuevas | CONFORME DOCUMENTAL |
+| SEC-PHYS ↔ C1/C2/C4 | 17/17 grupos emplazados o justificados como servicio/proceso; 7 candidatos `T11-SEC-*` y 10 incluidos/condicionales | CONFORME DOCUMENTAL; conservar `F3-DEC-005` |
+| identidad local | `SRV-IAM` en `PHY-CLD-03` con capacidad local en `PHY-OPS-01` | COHERENTE CON ADR-008; producto/revocación/prueba pendientes |
+| claves y registro local | material protegido y colector/buffer en `PHY-OPS-01`; SIEM en `PHY-CLD-09` | COHERENTE CON ADR-009/010; capacidad/custodia/prueba pendientes |
+| `RT-11.02` | modelo D2 auditado y regla de actualización cruzados con D1 | CUBIERTO EN DISEÑO; continúa `EN CURSO` |
+| `ADR-011` | `SEC-CLOUD-01` enlazado a `THR-049/060/072/073` y `SPOF-22` | CANDIDATO; faltan alternativas concretas y selección |
+
+Dependencias: `F3-DEP-001` queda cruzada con observación; `F3-DEP-002`, resuelta para diseño documental; `F3-DEP-003`, cruzada con observaciones; `F3-DEP-004`, parcial por Subdocumento 5. Siguen abiertos `ACT-TI`, `CTX-VESSEL`, seis diferencias adicionales de criticidad, `CH-CAB`, el solape `T11-C2-19`/`T11-SEC-04`, site survey, contratos/productos finales, responsables y pruebas. No se modificaron A1–A3/C1–C4, no se aprobaron ADR y no se aceptaron riesgos.
+
+## Revisión conjunta D1–D2 — bloque 5/B7-C — 2026-09-06
+
+- No se abre una decisión, dependencia ni escalamiento nuevo: la revisión confirma que los asuntos abiertos ya tienen propietario y registro.
+- Se corrigen dos rezagos internos de `TRZ_D2`: B7 y la integración ya no se presentan como pasos futuros.
+- El paquete D1–D2 se declara listo para auditoría independiente/general, sin promover ADR, aceptar riesgos, cerrar SPOF ni acreditar implementación.
+- La auditoría recibe como lista única: `ACT-TI`, `CTX-VESSEL`, criticidades, `CH-CAB`, solape SIEM, distinción `SPOF-13`/`SPOF-22`, `ADR-011`, Subdocumento 5, contratos/productos, responsables, site survey, capacidad, pruebas y aprobaciones.
+- B8, diagramas y D3 continúan diferidos hasta que los hallazgos de auditoría sean aplicados o queden formalmente asignados/aceptados.
