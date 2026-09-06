@@ -219,3 +219,11 @@ Dependencias de cierre: F3-DEP-001..004 continúan `PENDIENTE`; F3-ESC-001/002 c
 Dependencias vigentes: `F3-DEP-001` cruzada con observación; `F3-DEP-002` resuelta para diseño documental; `F3-DEP-003` cruzada con observaciones; `F3-DEP-004` parcial porque D2 está disponible y el catálogo de campos no. Permanecen `F3-ESC-001/002`, `CTX-VESSEL`, diferencias de criticidad, `CH-CAB`, el posible solape SIEM, productos/contratos finales, site survey, responsables y pruebas.
 
 **Conclusión:** D1 queda integrado y trazable para la revisión documental conjunta del Frente 3. No está aprobado; no hay pruebas ejecutadas ni riesgos aceptados. Diagramas y narrativa visual permanecen diferidos a B8.
+
+## Corrección de fuente — 2026-09-06 (integrador)
+
+| Control | Qué se corrigió | Verificación |
+|---|---|---|
+| `SEC-IAM-01` | Citaba `FEP02 Cap. 11, RT-11.27` como fuente. Ese código trata **exclusivamente** del acceso de personas desarrolladoras al ambiente de producción y no cubre la identidad de personas externas ni de eventuales, que es el alcance del control. Se sustituye por los códigos del Capítulo 12 que sí corresponden: `RT-12.01` federación y directorio, `RT-12.03` MFA, `RT-12.05` RBAC/ABAC con segregación, `RT-12.10` baja ≤24 h desde la desvinculación y `RT-12.11` credencial temporal de eventuales | Texto del `BTT` verificado: *«Las personas desarrolladoras no tendrán acceso interactivo directo al ambiente de producción…»*. Hallazgo `X-2` de la auditoría cruzada de Frente 1 |
+| `SEC-PROD-01` y `SEC-ADM-01` | `RT-11.27` **se conserva**: ahí sí es la materia correcta | — |
+

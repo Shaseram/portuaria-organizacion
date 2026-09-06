@@ -34,3 +34,11 @@
 | `TRZ-A2-R06` | Radio: adaptador al medio existente, no sistema nuevo sin fundamento | Maestro §19 regla 9 (análoga); A1 §1.3 (`EXT-RAD`) | Heredado de A1; no es contraparte de A2 |
 
 Agregar filas si se identifican nuevas afirmaciones arquitectónicas o nuevas contrapartes. No citar códigos RT sin documento y materia.
+
+## Aclaración de cierre — 2026-09-06
+
+| Asunto | Resolución |
+|---|---|
+| `F3-DEP-002` de Frente 3 y hallazgo `X-3` de la auditoría cruzada de Frente 1: «A2 debe validar `FL-01..11`» | **`FL-01` a `FL-11` sí están definidos**, en D1 §B3: son flujos de **red entre zonas de seguridad**. Los 22 del Anexo A del caso son flujos de **información de negocio entre contrapartes**. Los cortes son distintos y una correspondencia uno a uno sería inventada: un intercambio EDIFACT atraviesa varios `FL-*` y un solo `FL-*` transporta decenas de flujos de negocio. A2 entrega contrato, protocolo, frecuencia y fallback por contraparte; D1 los protege por zona. Declarado en A2 §1 en lugar de fabricar una tabla de equivalencias |
+| Enlace roto de A2 §1.1 hacia el `.md` del Caso 06 | Corregido: el archivo no está en el repositorio y el README establece que las bases **no son una dependencia de enlaces**. Se cita conforme al Maestro §1.1: documento, capítulo y materia |
+
