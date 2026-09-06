@@ -130,7 +130,7 @@ Puede definir patrones y controles mínimos. Debe escalar identidad federada no 
 
 ## Plan de desarrollo acordado
 
-**Estado vigente tras MA-8:** desarrollo técnico `EN CURSO`; B1–B7, B7-R/B7-C y MA-3..8 están completados como diseño/preparación documental. El corte deja 11 ADR `PROPUESTO`, 0 `APROBADO`, 32 filas T-11 y la estructura 4.1/4.2 trazada a fuentes y controles D3. AWS `sa-east-1`/`us-east-1` está incorporado. F5 representará seguridad y límites de confianza. P4 está aprobada; faltan redacción/figuras y luego la ejecución D3.
+**Estado vigente tras MA-8:** desarrollo técnico `EN CURSO`; B1–B7, B7-R/B7-C y MA-3..8 están completados como diseño/preparación documental. El corte deja 11 ADR `PROPUESTO`, 0 `APROBADO`, 32 filas T-11 y la estructura 4.1/4.2 trazada a fuentes y controles D3. AWS `sa-east-1`/`us-east-1` está incorporado. La base está habilitada para redacción conjunta; los diagramas definitivos quedan a decisión del equipo y luego se ejecutará D3.
 
 ### Uso de los archivos
 
@@ -178,7 +178,7 @@ La matriz de identidad se desarrollará con: actor del Maestro, rol propuesto, a
 | B7-C — Revisión conjunta (bloque 5) | Auditar D1, D2, trazas, ADR, matriz global y registro de pendientes como un solo paquete | **CORTE HISTÓRICO COMPLETADO:** dejó el paquete listo para la auditoría independiente ya ejecutada; MA-3 y MA-4 contienen los cortes posteriores |
 | B8 — Integración visual y cierre | Producir diagramas coherentes y preparar narrativa final después de la revisión conjunta | **DIFERIDO.** No iniciar antes del cierre documental conjunto/auditoría; no aprobar con brechas externas o de prueba |
 
-**Retomar exactamente aquí:** MA-8 está completada como preparación y P4 aprobada. Redactar el consolidado y producir F1–F5; F6 solo si continuidad no resulta legible. Cruzar `V-DATA-01` con Subdocumento 5 y ejecutar D3 sobre la versión ensamblada. No reabrir B1–B7 ni los ADR salvo evidencia nueva o disparador. `ADR-001..011` están `PROPUESTO`; ninguno está aprobado.
+**Retomar exactamente aquí:** MA-8 está completada como preparación y la alineación C3–C4 está cerrada como base. Redactar el consolidado en lenguaje natural; los diagramas definitivos quedan a decisión del equipo. Conservar el cruce `V-DATA-01` con Subdocumento 5 y ejecutar D3 sobre la versión ensamblada. No reabrir B1–B7 ni los ADR salvo evidencia nueva o disparador. `ADR-001..011` están `PROPUESTO`; ninguno está aprobado.
 
 **Lectura mínima para continuar:** este D1 (contrato, plan y B1–B7); Maestro vigente (completo si el agente no conoce el proyecto); índice del Frente 3; reglas comunes y Frente 3 del Plan de entregables; TRZ_D1, DECISIONES_Y_ESCALAMIENTOS y auditoría intermedia. Consultar A1/A2/A3 y C1–C4 para identificar aportes nuevos; Célula 2 es la fuente de detalle cuando una decisión lo requiera. La línea base utilizada es Maestro v1.1 / Célula 2 `c4756df`: comprobar si cambió antes de asumirla vigente. Preferir Markdown; usar PDF si falta información o aparece inconsistencia.
 
@@ -503,7 +503,7 @@ Se propone una taxonomía común de cuatro niveles. El nivel de un conjunto es e
 | `PUB` — público controlado | estado mínimo seguro del contenedor; condiciones de acceso y congestión expresamente publicables | Publicación solo mediante CH-PORTAL/GW-EDGE; integridad, disponibilidad y minimización. No incluir dueño, ruta, contenido, valor, documentos ni posición detallada | A1/Subdoc. 5 y CLIENTE confirman campos realmente públicos |
 | `INT` — interno | configuración no secreta, catálogos operativos sin dato sensible, documentación y métricas internas agregadas | Identidad interna o de servicio autorizada; cifrado en tránsito/reposo; no exposición pública ni exportación indiscriminada | Propietario y uso por contexto |
 | `CONF` — confidencial | movimientos y posición operacional, planes, citas, inspecciones, telemetría, indicadores no públicos, hechos/evidencias y documentos comerciales ordinarios | Necesidad de saber, ámbito por organización/expediente, cifrado en tránsito/reposo, acceso y exportación auditados cuando corresponda | Subdoc. 5 separa campos y retención; A1 confirma consumidores |
-| `RES` — restringido | datos personales de trabajadores/eventuales/conductores/visitantes; tarifas y volúmenes negociados; datos que permitan inferir contenido de valor o ruta; credenciales, secretos, claves privadas y material de recuperación | Controles de `CONF` más cifrado de campo para las categorías exigidas, acceso mínimo, consulta/modificación auditadas y revelación en claro solo al servicio/rol autorizado. Claves y secretos nunca se almacenan como campos de negocio | Catálogo de campos de Subdoc. 5; base de licitud/transferencia y tratamiento con cumplimiento |
+| `RES` — restringido | datos personales de trabajadores/eventuales/conductores/visitantes; tarifas y volúmenes negociados; datos que permitan inferir contenido de valor o ruta; credenciales, secretos, claves privadas y material de recuperación | Controles de `CONF` más cifrado de campo para las categorías exigidas, acceso mínimo, consulta/modificación auditadas y revelación en claro solo al servicio/rol autorizado. Claves y secretos nunca se almacenan como campos de negocio | Catálogo C4 de 28 campos recibido; base de licitud/transferencia y tratamiento con cumplimiento permanecen externos |
 
 La evidencia facturable, firmas, actas e imágenes no se declaran automáticamente públicas por estar destinadas a terceros: se clasifican por contenido y expediente. `DATA-AN` no queda exento por usar datos agregados; debe demostrar anonimización suficiente antes de reducir nivel. Los ambientes no productivos no reciben datos productivos reales salvo anonimización o seudonimización verificable conforme RT-11.25; B6 completa el control de provisión y prueba.
 
@@ -526,7 +526,22 @@ La selección de algoritmo, modo y tamaño de clave se fija mediante un estánda
 
 Las búsquedas sobre campos restringidos se resuelven mediante identificadores sustitutos, índices derivados protegidos o servicios de consulta autorizados; no mediante una copia paralela en claro. Cualquier técnica que preserve igualdad u orden debe evaluarse por filtración asociada antes de usarse. Las interfaces, eventos y logs transportan solo los atributos necesarios y aplican enmascaramiento; no se registran secretos, tokens, documentos completos ni valores restringidos como texto libre.
 
-La aplicación descifra únicamente dentro del servicio autorizado y devuelve una vista mínima conforme B1/B2. Las operaciones de descifrado, exportación y cambio de clave quedan auditadas con identidad, finalidad, expediente y resultado, sin incluir el dato sensible en el registro. Subdocumento 5 entrega el catálogo final campo→propietario→sensibilidad→retención; hasta entonces esta matriz no acredita el 100 % de campos.
+La aplicación descifra únicamente dentro del servicio autorizado y devuelve una vista mínima conforme B1/B2. Las operaciones de descifrado, exportación y cambio de clave quedan auditadas con identidad, finalidad, expediente y resultado, sin incluir el dato sensible en el registro. Célula 4 entregó en A-02 §4 el catálogo propuesto de **28 campos** con sensibilidad y retención; D1 lo adopta como universo de contraste para I1, sin convertirlo en configuración probada ni reemplazar su propietario de dominio.
+
+**Cruce de los ocho campos que además requieren búsqueda por igualdad.** La decisión común evita cifrado determinista directo. Cuando el dato de negocio debe ser reversible, se propone cifrado autenticado aleatorio y un token de igualdad derivado con clave separada y contexto de entidad/ambiente; cuando ya existe un identificador sustituto opaco, se usa ese identificador para relacionar y se cifra aparte el dato natural. Todos los mecanismos permanecen condicionados a prueba de fuga, latencia, rotación y operación local de 72 h.
+
+| Campo C4 | ¿Igualdad? | Mecanismo propuesto para I1 | Fuga/riesgo que se acepta solo condicionado | Propietario de clave | Prueba verificable | Estado |
+|---|---|---|---|---|---|---|
+| `POSICION_VIGENTE.id_celda` | sí | valor cifrado + token de igualdad acotado a zona/ambiente | frecuencia y co-ubicación; token nunca se expone a canales | custodia de Seguridad `SEC-KEY-01`; Patio autoriza uso | consulta ≤1 s, acceso directo no revela celda, rotación y corte 72 h | CONDICIONADO |
+| `MOVIMIENTO.celda_origen` | sí | mismo patrón, token con contexto `MOVIMIENTO/origen` | repetición de orígenes | Seguridad; Operaciones autoriza uso | consulta ≤1 s sin reutilizar token de destino | CONDICIONADO |
+| `MOVIMIENTO.celda_destino` | sí | mismo patrón, token con contexto `MOVIMIENTO/destino` | repetición de destinos | Seguridad; Operaciones autoriza uso | consulta ≤1 s y prueba de no correlación origen/destino | CONDICIONADO |
+| `CONTENEDOR.clase_imdg` | sí, para reglas de seguridad | cifrado aleatorio; filtro mediante servicio autorizado y token/contexto segregado | dominio de solo nueve clases y frecuencia inferible | Seguridad; Operaciones/Seguridad de carga autorizan | prueba de enumeración/frecuencia y regla de seguridad ≤1 s | CONDICIONADO — fuga baja cardinalidad |
+| `LECTURA_OPTICA.codigo_leido` | sí | normalización controlada + cifrado aleatorio + token de igualdad | repetición revela pasos del mismo código | Seguridad; Gate/Patio autorizan | conciliación ≤3 s, colisiones, falsos positivos y rotación | CONDICIONADO |
+| `CONDUCTOR.id_persona` | sí | UUID sustituto opaco; documento natural queda cifrado solo en `PERSONA` | correlación interna si se accede a ambas tablas | Seguridad; Identidad autoriza | unión autorizada ≤1 s y consulta directa sin documento | PROPUESTO |
+| `EVENTO_ACCESO.id_persona` | sí | mismo UUID sustituto; acceso a relaciones restringido y auditado | patrón de presencia de una persona | Seguridad; Identidad/ISPS autorizan | conteo operativo sin reidentificación y consulta nominal auditada | CONDICIONADO |
+| `HECHO_FACTURABLE.id_regla_aplicada` | sí | UUID sustituto/versionado; contenido de tarifa cifrado en `REGLA_TARIFARIA` | correlación entre hechos de la misma regla | Seguridad; Facturación autoriza | consulta ≤30 s, segregación por cliente y rotación sin perder historia | PROPUESTO |
+
+La fuga indicada no queda aprobada por esta tabla: es el riesgo que deben medir Seguridad, el dueño del dato y el CLIENTE antes de aceptar el mecanismo. Si una prueba falla, se mantiene la consulta dentro del servicio propietario o se rediseña el índice; no se crea una copia en claro.
 
 #### B4.4 Jerarquía de claves, certificados y secretos
 
@@ -597,7 +612,7 @@ Las 72 h de enlace, RTO/RPO, autonomía eléctrica y DR son escenarios distintos
 | SEC-SECRET-01 | Gestión de secretos e identidades de carga por ambiente | Sin secretos embebidos; inyección/rotación y rechazo de versión retirada; B6 completa pipeline |
 | SEC-BKP-01 | Protección de claves de respaldo y separación frente a borrado | Restauración mensual, copia inmutable resistente y dato descifrable durante retención |
 
-**Pendientes para cerrar B4:** Subdocumento 5 entrega catálogo de campos, sensibilidad, propietario, retención y tratamiento de anonimización; A1/A2 confirman consumidores y formatos/eventos; A3 confirma autoridad local/nube; C1–C4 seleccionan y ubican capacidades, demuestran HA/DR, capacidad y filas T-11; CLIENTE asigna custodios, base de licitud y política/períodos; D2 revisa amenazas. `ADR-009` queda `PROPUESTO`, sin producto ni periodicidad aprobados; solo pasa a `APROBADO` tras las validaciones de integración. `SEC-PHYS-v0.1` incorpora ya requisitos de claves/cifrado, pero sigue parcial hasta B7.
+**Pendientes para cerrar B4:** el catálogo C4 de 28 campos está recibido y los ocho casos indexados quedan dispuestos arriba; faltan contraste del CLIENTE, tratamiento de privacidad/anonimización, responsables nominales y pruebas. A1/A2 confirman consumidores y formatos/eventos; A3 confirma autoridad local/nube; C1–C4 seleccionan y ubican capacidades, demuestran HA/DR, capacidad y filas T-11; CLIENTE asigna custodios, base de licitud y política/períodos; D2 revisa amenazas. `ADR-009` queda `PROPUESTO`, sin producto ni periodicidad aprobados; solo pasa a `APROBADO` tras las validaciones de integración. `SEC-PHYS-v0.1` incorpora ya requisitos de claves/cifrado, pero sigue parcial hasta B7.
 
 ### B5. Detección y respuesta — propuesta
 
@@ -865,7 +880,7 @@ Estados usados:
 | `B7-F03` | Alta | `SEC-PHYS-v0.1` no mostraba todas las capacidades físicas/servicios de B1–B6 y todas sus filas decían simplemente “sí”, con riesgo de doble conteo T-11 | consolidar 17 grupos y clasificar fila propia, agrupada, incluida o condicional | CORREGIDO; LISTO PARA INTERCAMBIO |
 | `B7-F04` | Alta | amenazas/riesgo residual figuran pendientes en todos los controles | conservar RT-11.02 y la validación de amenazas abiertos hasta D2 | ABIERTO — BLOQUEA CIERRE |
 | `B7-F05` | Alta | A1–A3 y C1–C4 visibles siguen en estructura/plantilla, sin catálogos, contratos, nodos, productos ni cantidades utilizables para validar D1 | mantener F3-DEP-001..003; no inventar correspondencias | ABIERTO — BLOQUEA CIERRE, NO v0.1 |
-| `B7-F06` | Alta | faltan catálogo campo→propietario→sensibilidad→retención y responsables/custodios nominales | mantener F3-DEP-004 y pendientes de CLIENTE/Subdocumento 5 | ABIERTO — BLOQUEA CIERRE |
+| `B7-F06` | Alta | faltaban catálogo campo→propietario→sensibilidad→retención y responsables/custodios nominales | incorporar catálogo C4 de 28 campos y disposición de ocho índices; mantener responsables, privacidad y pruebas como condiciones externas | PARCIALMENTE CORREGIDO; NO BLOQUEA I1 |
 | `B7-F07` | Media | ADR-009/010 tenían alternativas y consecuencias, pero su comparación cualitativa estaba dispersa | consolidar criterios/condiciones en B7.5; mantener ambos `PROPUESTO` | CORREGIDO A NIVEL DE PROPUESTA |
 | `B7-F08` | Alta | ADR-008 recomienda C, pero revocación aislada, nombradas y directorio/federación siguen abiertos | promover solo a `PROPUESTO` como línea base condicionada; mantener `F3-ESC-001/002` y prohibir su aprobación hasta resolverlos | ABIERTO — APROBACIÓN PENDIENTE |
 | `B7-F09` | Media | faltan vista/diagramas finales y correspondencia con nodos físicos | reservarlos para B8 después del cruce; no dibujar una topología ficticia | ABIERTO — BLOQUEA CIERRE |
@@ -1006,7 +1021,7 @@ Los 17/17 grupos quedan ubicados o justificados como servicio/proceso. C4 materi
 | `F3-DEP-001` A1 | **RESUELTA PARA DISEÑO** | aprobación final de roles y permisos permanece externa |
 | `F3-DEP-002` A2/A3 | **RESUELTA PARA DISEÑO DOCUMENTAL** | contratos/protocolos efectivos, nombradas y aprobadores externos |
 | `F3-DEP-003` C1–C4 | **RESUELTA PARA DISEÑO CON EXTERNOS** | site survey, producto/cantidad contractual y pruebas; las divergencias internas fueron conciliadas |
-| `F3-DEP-004` D2/Subdocumento 5 | **PARCIAL** | D2 resuelto para modelo; falta catálogo de campos y tratamiento de privacidad |
+| `F3-DEP-004` D2/Subdocumento 5 | **RESUELTA PARA DISEÑO I1** | catálogo C4 de 28 campos incorporado; tratamiento de privacidad, aceptador y pruebas permanecen condicionados |
 
 Quedan resueltas en el corte vigente las diferencias de criticidad, `CTX-VESSEL`, la ubicación de `CH-CAB`, la consola de `ACT-TI`, el doble conteo `T11-C2-19`/`T11-SEC-04` y la suficiencia de la baseline de `ADR-001..010`. MA-5 debe conservar separados `SPOF-13`/`SPOF-22` y expresar como condiciones —no como omisiones— la selección de proveedor/regiones de `ADR-011`, productos, responsables y pruebas.
 

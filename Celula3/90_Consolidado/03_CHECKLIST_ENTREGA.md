@@ -1,35 +1,32 @@
 # Checklist final — Subdocumento 4
 
 **Corte vigente:** MA-8 completada como preparación; estructura, fuentes y controles D3 listos.
-**Pendiente de producción:** redacción total, F1–F5, cruce fino con Subdocumento 5 y maquetación. D3 se ejecuta sobre ese resultado; no constituye contenido faltante.
+**Pendiente de producción:** redacción editorial conjunta, diagramas aprobados por el equipo, ensamblado del T-11, D3 y maquetación. La base técnica y el cruce con Subdocumento 5 están cerrados para diseño I1. D3 se ejecuta sobre el resultado ensamblado.
 
 ## 1. Cobertura contractual y editorial
 
 | Control | Evidencia vigente | Estado |
 |---|---|---|
-| 4.1 a) Esquema de solución | A1 + contrato editorial 4.1.1 | BASELINE LISTA; TEXTO/F1 PENDIENTES |
-| 4.1 b) Arquitectura lógica | A1–A3/D1 + contrato 4.1.2–4.1.5 | BASELINE LISTA; TEXTO/F2/F3/F5 PENDIENTES |
-| 4.2 a) Arquitectura física | C1–C4/D1 + contrato 4.2.1 | BASELINE LISTA; TEXTO/F4 PENDIENTES |
+| 4.1 a) Esquema de solución | A1 + consolidado 4.1.1 | BASE TÉCNICA LISTA; REDACCIÓN/DIAGRAMA PENDIENTES |
+| 4.1 b) Arquitectura lógica | A1–A3/D1 + consolidado 4.1.2–4.1.5 | BASE TÉCNICA LISTA; REDACCIÓN/DIAGRAMAS PENDIENTES |
+| 4.2 a) Arquitectura física | C1–C4/D1 + consolidado 4.2.1 | BASE TÉCNICA LISTA; REDACCIÓN/DIAGRAMA PENDIENTES |
 | 4.2 b) Tecnologías de software | C2 §4 + MA-5 | CUMPLE BASELINE I1 |
 | 4.2 c) Implementos HW/SW | C2/C4/D1 + T-11 | CUMPLE BASELINE I1 |
-| 4.2 d) Data center primario | C2/C4 + ADR-005/007 | BASELINE CONDICIONADA; SÍNTESIS FINAL PENDIENTE |
-| 4.2 e) Data center secundario | C2/C3 + ADR-007/011 | CUMPLE BASELINE I1; SÍNTESIS FINAL PENDIENTE |
+| 4.2 d) Data center primario | C2/C4 + ADR-005/007 | SÍNTESIS LISTA; BASELINE CONDICIONADA |
+| 4.2 e) Data center secundario | C2/C3 + ADR-007/011 | SÍNTESIS LISTA; CUMPLE BASELINE I1 |
 | T-11 | 32 filas y cinco columnas oficiales | CUMPLE MA-5; MAQUETACIÓN PENDIENTE |
 | Artículo 4 | 38 estándares/prácticas + 15 materias normativas | CUMPLE MA-6 PARA I1 |
 | Estructura y extensión | MA-7 + esqueleto consolidado | CUMPLE MA-7; P4 APROBADA |
 | Mapa de llenado y controles D3 | MA-8 + D3/TRZ-D3 | PREPARADO; EJECUCIÓN FINAL PENDIENTE |
 
-## 2. Plan visual mínimo
+## 2. Control visual
 
-- [ ] `F1` — esquema de solución/contexto.
-- [ ] `F2` — arquitectura lógica de ocho capas.
-- [ ] `F3` — integración y proceso crítico, incluido corte/retorno.
-- [ ] `F4` — arquitectura física híbrida y despliegue.
-- [ ] `F5` — seguridad y límites de confianza.
-- [x] `V-DATA-01` — vista de datos definida como tabla compacta; no duplica el Subdocumento 5.
-- [ ] `F6` — solo si durante B8 continuidad no resulta legible en F3/F4.
+- [ ] El equipo define qué diagramas finales necesita el Subdocumento 4.
+- [ ] Cada diagrama aprobado responde una pregunta clara y coincide con el texto definitivo.
+- [ ] Los bocetos archivados no se incorporan automáticamente a la entrega.
+- [x] `V-DATA-01` está definida como tabla compacta y no duplica el Subdocumento 5.
 
-No se crean diagramas separados por microservicio, actor, amenaza, ADR, observabilidad o CI/CD. Cada figura debe responder una pregunta, usar IDs canónicos y distinguir TERABYTE, CLIENTE, terceros y AWS.
+Los antiguos bocetos F1–F5 se conservan únicamente en `diagramas_archivados/`. No acreditan producción visual final.
 
 ## 3. Contenido que debe comprobar D3
 
@@ -79,8 +76,8 @@ No se crean diagramas separados por microservicio, actor, amenaza, ADR, observab
 | Resultado | Valor vigente |
 |---|---|
 | Baselines editoriales listas | 4.1 y 4.2 |
-| Figuras obligatorias pendientes | 5 (`F1..F5`) |
-| Figura condicional | 1 (`F6`) |
+| Diagramas definitivos | pendientes de definición y aprobación por el equipo |
+| Bocetos anteriores | archivados; excluidos de la entrega |
 | Vista de datos | tabla `V-DATA-01` |
 | Controles finales | POR CONTAR EN D3 |
 | Veredicto final | PENDIENTE D3 |

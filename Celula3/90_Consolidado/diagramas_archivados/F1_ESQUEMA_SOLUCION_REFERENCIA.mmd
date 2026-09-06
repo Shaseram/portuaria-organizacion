@@ -1,0 +1,44 @@
+flowchart LR
+    subgraph AI[Actores internos]
+        AIO[Operación · gate · patio · reefers · muelle]
+        AIG[Planificación · inspecciones · facturación · TI]
+    end
+    subgraph AE[Actores externos]
+        AET[Transportistas · agencias · eventuales]
+        AEN[Navieras · autoridades · concedente · ferrocarril]
+    end
+
+    subgraph TB[Límite TERABYTE]
+        CH[CH-PORTAL · CH-APP · CH-CAB]
+        PL[Plataforma modular híbrida\noperación · integración · datos\nidentidad · evidencia · observabilidad]
+        ED[Borde operacional\ngate · patio · reefers · muelle]
+        CH -->|comando/consulta| PL
+        ED -->|telemetría/evento| PL
+    end
+
+    subgraph EC[Sistemas conservados del CLIENTE]
+        TOS[TOS 2012]
+        ERP[ERP + emisión tributaria]
+        PROT[Acceso/barreras + CCTV/VMS]
+        PER[Grúas solo lectura + básculas/OCR]
+    end
+
+    subgraph EX[Contrapartes de terceros]
+        NAV[Navieras]
+        AUT[Autoridades]
+        FER[Ferrocarril]
+        CON[Concedente]
+    end
+
+    AIO --> CH
+    AIG --> CH
+    AET --> CH
+    AEN --> CH
+    PL <-->|contrato gobernado| TOS
+    PL <-->|hecho/estado| ERP
+    PL <-->|evento/evidencia| PROT
+    ED <-->|lectura/integración| PER
+    PL <-->|mensaje/reporte| NAV
+    PL <-->|consulta/resultado| AUT
+    PL <-->|programación/movimiento| FER
+    PL -->|indicador trazable| CON

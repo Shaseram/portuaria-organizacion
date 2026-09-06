@@ -1,0 +1,28 @@
+flowchart TB
+    L1[1 · Presentación\nCH-PORTAL · CH-APP · CH-CAB]
+    L2[2 · Borde público\nGW-EDGE]
+    L3[3 · Gateway\nGW-API central + perfil local]
+    L4[4 · Negocio\nCTX-OPS/GATE/YARD/REEFER/PLAN/VESSEL\nCTX-BILL/INSP/EMIS · SRV-NOTIF]
+    L5[5 · Integración\nINT-HUB · INT-TOS]
+    L6[6 · Datos\nDATA-CORE · DATA-TS · DATA-DOC · DATA-AN]
+    L7[7 · Seguridad transversal\nSRV-IAM · SRV-EVID]
+    L8[8 · Observabilidad transversal\nmétricas · logs · trazas · alertas · SIEM]
+    EXT[Sistemas externos y conservados]
+
+    L1 -->|HTTPS/comando| L2
+    L2 -->|tráfico protegido| L3
+    L3 -->|servicio autorizado| L4
+    L4 -->|contrato/evento| L5
+    L4 -->|lectura/escritura por dominio| L6
+    L5 <-->|integración gobernada| EXT
+    L5 -->|persistencia de mensaje| L6
+    L7 -.->|identidad, autorización, evidencia| L2
+    L7 -.-> L3
+    L7 -.-> L4
+    L7 -.-> L5
+    L7 -.-> L6
+    L8 -.->|telemetría común| L2
+    L8 -.-> L3
+    L8 -.-> L4
+    L8 -.-> L5
+    L8 -.-> L6

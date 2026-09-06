@@ -2,12 +2,12 @@
 
 **Caso:** 06 Portuaria — TERABYTE · **Informe 1** · ponderación 11 %
 **Equipo:** V. Guzmán / M. Reyes
-**Estado:** doce apartados completados de trece · 21 decisiones cerradas · 20 dependencias trazadas
+**Estado:** trece apartados cubiertos para diseño I1 · 21 decisiones editoriales C4 registradas · condiciones externas trazadas
 **Actualizado:** 6 de septiembre de 2026
 
-> Esta carpeta —`Células proyecto/Célula 4/Subdocumento_5/`— contiene **todo** lo
-> que produjo Célula 4: el entregable, los comunicados hacia las demás células y
-> el material de trabajo que lo respalda. No hay material nuestro fuera de aquí.
+> Esta carpeta contiene el **conjunto canónico versionado** del Subdocumento 5:
+> entregable legible, comunicaciones y material de respaldo. Las copias ubicadas
+> fuera de esta carpeta se conservan solo por compatibilidad y no se editan.
 
 ---
 
@@ -17,10 +17,10 @@
 
 | Archivo | Qué es |
 |---|---|
-| `Subdocumento_5.pdf` | El documento compilado: 103 páginas, con los catorce diagramas del modelo conceptual y el diccionario completo |
-| `CONTENIDO_SUBDOCUMENTO_5.md` | El mismo contenido en Markdown, para leer, buscar y citar sin compilar |
+| `Subdocumento_5.pdf` | Entregable compilado del corte anterior: 103 páginas, con los catorce diagramas y el diccionario completo |
+| `CONTENIDO_SUBDOCUMENTO_5.md` | **Fuente canónica versionada para revisión y alineación**; se edita aquí antes de regenerar el PDF |
 
-> **La fuente de verdad es el proyecto LaTeX**, que vive en `Documento terabyte SubDoc 5`, en la raíz del proyecto. Los dos archivos de arriba se generan desde ahí: si hay que corregir algo, se corrige en el LaTeX y se vuelve a compilar, no en el Markdown. Si hay discrepancia, manda el PDF.
+> El proyecto LaTeX `Documento terabyte SubDoc 5` citado en versiones anteriores no está presente en `main`. Mientras no se incorpore o se documente una regeneración reproducible, no se usa como autoridad invisible sobre el contenido versionado. Las correcciones de alineación se realizan en el Markdown canónico; el PDF se regenera después del cierre.
 
 ### `Comunicados/` — lo que sale hacia otras células
 
@@ -46,13 +46,13 @@ Material de respaldo. Todo su contenido está ya volcado en el Subdocumento 5; s
 | `A05_ALTERNATIVAS_PERSISTENCIA.md` | 13 alternativas sobre 7 criterios ponderados | § 5.4 |
 | `A06_MATRIZ_CAP_POR_OPERACION.md` | 6 particiones, 8 unidades transaccionales, 25 operaciones | § 5.5 |
 | `A07_ESTRATEGIA_DESEMPENO.md` | 21 índices, particiones, caché y cuello de botella | § 5.10 |
-| `A08_ALMACENAMIENTO_ACUMULADO.md` | Capacidad acumulada en dos escenarios | § 5.13 |
+| `A08_ALMACENAMIENTO_ACUMULADO.md` | Capacidad acumulada y cuatro escenarios de reposición | § 5.13 |
 
 No hay un `A04`: esa numeración se saltó porque el diccionario absorbió el trabajo que iba a ser un documento aparte.
 
-### `diagramas/` — fuentes editables de la primera versión
+### `diagramas/` — fuentes históricas de la primera versión
 
-Los once diagramas de la versión 1 en formato Mermaid. **La versión vigente es la 2.1**, que vive en `Documento terabyte SubDoc 5/Diagramas_modelo_conceptual_v2/`, con catorce diagramas, hoja de convenciones y sus PDF vectoriales. Los de aquí se conservan solo como historial de A-01.
+Los once diagramas de la versión 1 en formato Mermaid. La versión 2.1 se atribuye históricamente a un proyecto externo no versionado. Los archivos de esta carpeta se conservan como historial de A-01 y no deben usarse para reconstruir diagramas finales de C3.
 
 ---
 
@@ -66,7 +66,7 @@ Los once diagramas de la versión 1 en formato Mermaid. **La versión vigente es
 | 5.5 | Transaccionalidad, consistencia y disponibilidad | completado |
 | 5.6 | Separación transaccional, temporal y analítica | completado |
 | 5.7 | Telemetría y frecuencia de muestreo | completado |
-| 5.8 | Integración e interoperabilidad de datos | **pendiente — Célula 3** |
+| 5.8 | Integración e interoperabilidad de datos | completado para diseño I1; contratos externos condicionados |
 | 5.9 | Migración, saneamiento, validación y conciliación | completado |
 | 5.10 | Estrategia de desempeño de datos | completado |
 | 5.11 | Calidad ISO/IEC 25012, auditoría y trazabilidad | completado |
@@ -79,7 +79,7 @@ Los once diagramas de la versión 1 en formato Mermaid. **La versión vigente es
 ## Lo que falta, en una línea por destinatario
 
 - **Nosotras:** revisión cruzada, compilar en Overleaf, subir el control de versiones a 1.0 e integrar con los demás subdocumentos del Informe 1.
-- **Célula 3:** doce peticiones, de las cuales tres son urgentes — quién publica el modelo conceptual, el cifrado sobre ocho atributos indexados, y las zonas de la matriz de autoridad.
+- **Célula 3:** baseline recibida; quedan condicionadas las pruebas de ocho índices, contratos/CDC reales, site survey, política de imagen y matriz exacta de copias.
 - **Célula 2:** cinco peticiones, incluido el evento del que se deriva el movimiento de grúa de muelle y las bandas de desviación de temperatura.
 - **CLIENTE:** seis consultas, todas con tratamiento provisional declarado.
 
@@ -91,4 +91,4 @@ El detalle está en `Comunicados/00_PENDIENTES_CELULA4.md`.
 
 **Regla de cita.** Ninguna afirmación cita un código `RT` aislado: la referencia mínima es documento + capítulo + código + materia. Los códigos se repiten entre documentos designando materias distintas —`RT-05.10` es *linaje* en las Transversales y *retención* en el Caso—, de modo que citar el código suelto puede invertir el sentido de la obligación.
 
-**Regla de vacíos.** Ante la duda, pendiente. Un dato inventado en un modelo o en un diccionario es invisible: una celda con un valor plausible parece un hecho y nadie la vuelve a revisar. Quedan tres vacíos declarados en 451 atributos, y ninguno es de Célula 4.
+**Regla de vacíos.** Ante la duda, condicionado y con responsable. Un dato inventado en un modelo o en un diccionario es invisible: una celda con un valor plausible parece un hecho y nadie la vuelve a revisar. Los vacíos legítimos permanecen trazados a terceros o al CLIENTE.

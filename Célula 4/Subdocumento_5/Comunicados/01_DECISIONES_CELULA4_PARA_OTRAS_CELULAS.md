@@ -83,7 +83,7 @@ La columna «a quién le importa» dice qué célula debería leer cada una con 
 
 **Qué decidimos.** No es la ingesta de series ni el núcleo transaccional: es **la ventana de sincronización posterior a las 72 horas**, dominada por las imágenes de reconocimiento.
 
-**El cálculo.** Contra el crecimiento de 3× que exige `RT-09.03`: el núcleo pasa de 0,23 a 0,7 transacciones por segundo y la ingesta al núcleo de 7,2 a 21,6 eventos por segundo, ambos absorbibles. La ventana pasa de exigir 19,3 Mbps sostenidos a **≈58 Mbps**, porque el plazo de 90 minutos es fijo por contrato y el volumen crece con la operación.
+**El cálculo.** La baseline I1 a peak estacional requiere 32,5 Mbps y justifica WAN ≥35 Mbps. Contra el crecimiento futuro 3× de `RT-09.03`, el núcleo pasa de 0,23 a 0,7 transacciones por segundo y la ingesta de 7,2 a 21,6 eventos por segundo, ambos absorbibles; la reposición sube a **57,8 Mbps**. La sensibilidad de imagen a 1 MB produce ≈58 Mbps por una causa distinta.
 
 **Qué implica para Célula 3.** El enlace de reposición es el componente a dimensionar con holgura, y la política de captura de imágenes es la palanca de mayor efecto. La detección debe ser anticipada por calendario: toda holgura instalada **antes del 15 de diciembre**, porque en enero ya no se puede intervenir.
 

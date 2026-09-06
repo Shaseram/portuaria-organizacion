@@ -154,7 +154,7 @@ Se estima con método declarado, marcado como **supuesto propio de Célula 4**:
 
 **El orden de magnitud es el hallazgo.** La solución completa, con diez años de retención y crecida al triple, se dimensiona en **decenas de terabytes, no en centenas**. Esto tiene una consecuencia directa sobre la arquitectura física: la capacidad no es el factor que decide el emplazamiento ni el costo dominante de infraestructura. Lo que decide es la latencia de un segundo, la autonomía de 72 horas y la ventana de sincronización — que es exactamente lo que `DEC-C4-20` identificó como cuello de botella.
 
-**El almacenamiento transaccional es despreciable frente al resto.** 60 GB en línea en el escenario actual, 180 GB en el de diseño. El motor que sostiene las 78 entidades del modelo y todas las invariantes cabe holgadamente en el nodo del borde, lo que refuerza la recomendación de A-05 de situar el primario allí.
+**El almacenamiento transaccional es pequeño frente al resto.** 60 GB en línea en el escenario actual y 180 GB en el de diseño no obligan a situar el registro normal en el borde. El emplazamiento sigue la baseline C3: AWS mantiene el registro consolidado normal y el núcleo local conserva el estado crítico necesario para asumir autoridad durante el corte.
 
 **Las imágenes son dos tercios de todo.** 1,4 de 2,1 TB en línea hoy; 4,2 de 6,3 TB en diseño. Son también el componente dominante de la ventana de sincronización. Es el mismo dato visto dos veces, y por eso la política de captura de imágenes —`PEN-18`— es la palanca de mayor efecto de todo el subdocumento.
 
@@ -166,27 +166,28 @@ Sujeto a la decisión de emplazamiento de Célula 3 (`PEN-07b`). Se entrega la d
 
 | Familia | Borde | Nube | Fundamento |
 |---|---|---|---|
-| Transaccional en línea, 3 años | **completo** | réplica | `DEC` de A-05: el primario vive en el borde por la restricción no negociable N.º 4 |
+| Transaccional en línea, 3 años | estado crítico caliente y autoridad durante corte | **registro consolidado normal completo** | baseline MA8: carga principal AWS y ruta local autónoma 72 h |
 | Transaccional en archivo, años 4 a 10 | — | completo | No es función crítica de las 72 h |
-| Series granulares, 2 años | **completo** | réplica | La evaluación de desviación ocurre en el borde `(DES-06)` |
+| Series granulares, 2 años | ventana caliente necesaria para alarma/continuidad | **histórico completo** | La evaluación de desviación ocurre localmente; la retención completa no necesita residir en sala |
 | Series agregadas, años 3 a 5 | — | completo | Consulta de evidencia, no de operación |
 | Imágenes, 12 meses | **buffer de 72 h y ventana operativa** | repositorio completo | El buffer sostiene la desconexión; el repositorio vive donde la capacidad es elástica |
 | Evidencia documental en línea | **buffer de 72 h** | repositorio completo | Igual criterio |
 | Archivo y histórico retenido | — | completo | Por definición |
 
-**Capacidad mínima del borde, escenario de diseño:** 180 GB de transaccional + 408 GB de series granulares + el buffer de 72 horas de objetos ≈ 39 GB, más holgura de operación. **Del orden de 1 TB útil**, no de decenas. Es una cifra que cambia el tipo de nodo que hay que especificar, y por eso se entrega antes de que Célula 3 lo especifique.
+**Capacidad local alineada.** Para la baseline I1, C3 calcula ≈183 GB útiles requeridos y provisiona ≈960 GB útiles mediante 4×480 GB en RAID 10. El orden de 1 TB útil también contiene el escenario futuro de C4 —180 GB transaccionales + 408 GB de series + 39 GB de buffer, antes de holgura— sin convertir el borde en repositorio completo ni en primario permanente.
 
 ---
 
 ## 6. Buffer de la operación desconectada
 
-| Concepto | Actual | Diseño 3× |
-|---|---:|---:|
-| Volumen generado en 72 horas | 13 GB | 39 GB |
-| Del cual, imágenes | 11,2 GB (86 %) | 33,6 GB |
-| Transferencia sostenida para sincronizar en 90 min | 19,3 Mbps | **57,8 Mbps** |
+| Escenario | Volumen generado en 72 h | Transferencia sostenida en 90 min | Uso |
+|---|---:|---:|---|
+| Promedio actual recalculado por C3 | 13,7 GB | 20,3 Mbps | referencia de régimen |
+| **Peak estacional actual** | **21,9 GB** | **32,5 Mbps** | **baseline I1; WAN ≥35 Mbps** |
+| Crecimiento 3× sobre la volumetría promedio heredada | 39 GB | **57,8 Mbps** | escenario futuro y disparador de ampliación |
+| Sensibilidad con imagen de 1 MB | ≈40 GB | ≈58 Mbps | cambio del supuesto de imagen, distinto del crecimiento 3× |
 
-El buffer debe dimensionarse con holgura sobre el escenario de diseño **y** con el factor estacional aplicado al caudal, porque una desconexión de 72 horas en enero genera más volumen que una en agosto: camiones ×1,79 y volumen refrigerado mensual ×2,48. Es la única parte de este documento donde la estacionalidad afecta capacidad y no solo caudal, porque el buffer se dimensiona para el peor caso, no para el promedio.
+La baseline I1 se dimensiona con el peak estacional actual. El crecimiento 3× y la sensibilidad de 1 MB son escenarios diferentes aunque produzcan cifras cercanas; no se suman ni se sustituyen entre sí. Si se exige crecimiento 3× coincidente con peak estacional, debe recalcularse desde los factores originales. Tampoco se interpreta como hecho que las imágenes puedan completar fuera de los 90 minutos: el alcance exacto de esa ventana queda condicionado a la definición contractual conjunta.
 
 ---
 
@@ -206,8 +207,8 @@ El buffer debe dimensionarse con holgura sobre el escenario de diseño **y** con
 
 | ID | Qué falta | Responsable |
 |---|---|---|
-| `PEN-07b` | Emplazamiento de cada almacén: qué queda en el borde, qué en nube y qué en ambos | **Célula 3** (`ADR-005`) |
-| `PEN-08` | Revalidación de la volumetría anual con el factor estacional, que es la base de todo este cálculo | **Célula 3** (`C4`) |
+| `PEN-07b` | **CERRADO I1:** emplazamiento recibido; AWS normal y estado crítico/autoridad local durante corte | **Célula 3**, MA8 |
+| `PEN-08` | **CERRADO I1:** 18 dimensiones revalidadas; 15 confirmadas y 3 corregidas | **Célula 3**, C4 §§2–8 |
 | `PEN-12` | Tamaño real del histórico del sistema de 2012 | **CLIENTE** |
 | `PEN-18` | Política de captura de imágenes: es la palanca de mayor efecto sobre estas cifras | **Célula 3 y Célula 4**, conjunta |
 | `PEN-19` | **Nuevo.** Esquema de copias que satisface el respaldo 3-2-1-1-0 sobre el almacenamiento de objetos: cuántas copias, dónde y con qué inmutabilidad | **Célula 3** (`ADR-007`, `C3`) |

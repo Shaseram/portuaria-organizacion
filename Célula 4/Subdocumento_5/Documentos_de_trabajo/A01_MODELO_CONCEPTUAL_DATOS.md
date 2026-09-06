@@ -55,7 +55,7 @@ El criterio importa porque `CP, Cap. 10, restricción no negociable N.º 14` y `
 
 ### 1.3 Nombres de negocio
 
-Los nombres de las entidades son nombres de negocio del terminal, no términos técnicos, y **deben ser idénticos** a los que use el modelo conceptual del Subdocumento 4. Ese acuerdo está pendiente con Célula 3 (pendiente B-03). Mientras no exista, este documento es la fuente y cualquier discrepancia posterior se resuelve renombrando aquí, no duplicando el modelo.
+Los nombres de las entidades son nombres de negocio del terminal, no términos técnicos, y **deben ser idénticos** a los que use el modelo conceptual del Subdocumento 4. La convención acordada es: `Contenedor` para el maestro del activo físico; `VisitaContenedor` para cada estadía operacional —se conserva `VISITA` como identificador físico estable en diagramas y diccionario—; y `Recalada`/`VisitaNave` para la estadía de una nave. El modelo de alto nivel pertenece al Subdocumento 4 y el modelo detallado con diccionario a este Subdocumento 5.
 
 ### 1.4 Clases de dato usadas
 
@@ -287,7 +287,7 @@ erDiagram
 
 **Decisiones de modelado que conviene defender en la presentación:**
 
-1. **`VISITA` y no `CONTENEDOR` es el objeto operacional central.** El mismo contenedor físico vuelve al terminal muchas veces; los días de almacenaje, los hechos facturables y la estadía se cuentan por visita, no por contenedor. `RN-04` cuenta días desde el día siguiente a la descarga o al ingreso a patio, lo que solo tiene sentido sobre una visita.
+1. **`CONTENEDOR` es el maestro y `VISITA`/`VisitaContenedor` es el agregado operacional.** El mismo contenedor físico vuelve al terminal muchas veces; los días de almacenaje, los hechos facturables y la estadía se cuentan por visita, no por el maestro. `RN-04` cuenta días desde el día siguiente a la descarga o al ingreso a patio, lo que solo tiene sentido sobre una estadía concreta.
 2. **`POSICION_VIGENTE` lleva `estado_confianza` como atributo de primera clase**, no como un flag derivado. `RF-PAT-03` obliga a que el 100 % de los contenedores del inventario tenga uno de los dos estados —«conocida» o «por verificar»— y a que sea consultable.
 3. **`MOVIMIENTO` declara su `fuente_registro`.** `RF-PAT-05` y `RF-PAT-12` exigen registrar el movimiento desde la telemetría del equipo sin acción del operador. Saber si un movimiento entró por telemetría, por lectura óptica o por la vía manual de excepción es lo que permite auditar el cumplimiento de esa exigencia.
 4. **`ASIGNACION_POSICION` conserva el nivel de `RN-01` que la determinó y la restricción que cedió.** Es criterio de aceptación explícito de `RF-PAT-06`: una asignación sin su regla trazada no es defendible ante el CLIENTE.

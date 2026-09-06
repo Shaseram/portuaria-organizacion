@@ -71,7 +71,7 @@ Valida que los controles físicos/licencias tengan respaldo en riesgo real y que
 
 ## Plan de desarrollo acordado
 
-**Estado vigente tras MA-8:** desarrollo técnico `EN CURSO`. B1–B7, integración D1–D2 y MA-3..8 están ejecutados como diseño/preparación. El corte deja 11 ADR `PROPUESTO`, 0 `APROBADO`, ningún riesgo aceptado y 32 filas T-11. D3/TRZ-D3 están alineados con MA-7. **P4 está aprobada; faltan redacción/figuras, cruce de datos y ejecución D3**.
+**Estado vigente tras MA-8:** desarrollo técnico `EN CURSO`. B1–B7, integración D1–D2 y MA-3..8 están ejecutados como diseño/preparación. El corte deja 11 ADR `PROPUESTO`, 0 `APROBADO`, ningún riesgo aceptado y 32 filas T-11. El cruce de datos C3–C4 está cerrado como base y D3/TRZ-D3 están preparados. **Faltan redacción editorial conjunta, diagramas aprobados por el equipo, ensamblado y ejecución D3**.
 
 ### Uso de los archivos
 
@@ -114,7 +114,7 @@ Valida que los controles físicos/licencias tengan respaldo en riesgo real y que
 | B7 — Auditoría v0.5 | Cobertura 100 % inventario/integraciones, trazabilidad, contradicciones, vacíos y salidas accionables | **EJECUTADA: `CONFORME PARA v0.5 CON PENDIENTE ADR`.** B7.1–B7.7. Doce comprobaciones: 9 conformes —2 con observación—, 2 no conformes corregidas dentro de D2 (`B7-F01..F06`) y 1 pendiente de autor (`ADR-011`). `RT-11.02` cubierto a nivel de diseño documental; sigue `EN CURSO` por pruebas, revisión cruzada y aprobación. Cifras vigentes en `B7.3` |
 | B8 — Vista y cierre | Diagrama de fronteras estable, resumen de riesgo residual y contenido aprobado para §4.3 | **DIFERIDO POR SECUENCIA.** Se ejecutará completo después de B6/B7, con catálogos integrados y cobertura auditada; no producir versión parcial |
 
-**Retomar exactamente aquí:** MA-8 está completada como preparación. El modelo D2 conserva 73 amenazas, 26 SPOF y 0 riesgos aceptados; los once ADR siguen `PROPUESTO`. Redactar, producir F1–F5, cruzar `V-DATA-01`, ensamblar T-11 y ejecutar D3. F6 sigue condicional.
+**Retomar exactamente aquí:** MA-8 está completada como preparación. El modelo D2 conserva 73 amenazas, 26 SPOF y 0 riesgos aceptados; los once ADR siguen `PROPUESTO`. Redactar en conjunto, incorporar únicamente los diagramas que apruebe el equipo, conservar el cruce `V-DATA-01`, ensamblar T-11 y ejecutar D3.
 
 ### Dependencias de cierre, no de inicio
 

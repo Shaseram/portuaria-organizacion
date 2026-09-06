@@ -150,7 +150,7 @@ Tres atributos aparecen con la marca **VACIO DECLARADO** en su dominio de valore
 | `dimension_especial` | boolean | — | {verdadero, falso} | Obligatorio | — |
 | `id_naviera` | string | FK | Identificador de la entidad referenciada | Obligatorio | ref. D-05.NAVIERA |
 
-### VISITA
+### VISITA — nombre de negocio: `VisitaContenedor`
 
 | | |
 |---|---|
@@ -1936,7 +1936,7 @@ Este catalogo es esa lista. **Cierra el pendiente A-12 y responde la consulta C-
 
 Ocho de estos atributos son, a la vez, **clave de acceso indexada** en el catalogo de operaciones criticas: `POSICION_VIGENTE.id_celda`, `MOVIMIENTO.celda_origen` y `celda_destino`, `CONTENEDOR.clase_imdg`, `LECTURA_OPTICA.codigo_leido`, `CONDUCTOR.id_persona`, `EVENTO_ACCESO.id_persona` y `HECHO_FACTURABLE.id_regla_aplicada`.
 
-Un cifrado que impida la busqueda por igualdad sobre esos campos hace inalcanzables los umbrales de un segundo de `RT-09.01`. **Es la consulta B-09 dirigida a Celula 3**, y ahora esta acotada a ocho atributos concretos en vez de a una pregunta general.
+Un cifrado que impida la busqueda por igualdad sobre esos campos hace inalcanzables los umbrales de `RT-09.01`. **Célula 3 respondió para I1 en D1 B4.3:** valor cifrado aleatoriamente más token de igualdad con clave y contexto separados para celdas, clase IMDG y lectura óptica; identificador sustituto opaco para persona y regla tarifaria; o consulta confinada al servicio propietario si la prueba de fuga falla. Los ocho casos conservan propietario, prueba y estado condicionado; no se adopta cifrado determinista directo ni una copia en claro.
 
 ---
 
@@ -1997,7 +1997,7 @@ La segunda: la retencion de `CONDUCTOR` y de `PERSONA` es la misma —5 anos des
 | `VACIO DECLARADO` | `ZONA_OPERATIVA.nombre` | los nombres de las zonas que estructuran la autoridad del dato | Celula 3 — consulta B-01 |
 | — *cerrado* | `ATRIBUCION_CONSUMO.criterio` | **Resuelto por `DEC-C4-01`**: se adopta el reparto por movimientos ejecutados. Es el unico criterio con dato duro del CLIENTE detras, no exige instrumentacion adicional y es el unico que un verificador externo puede comprobar contra cifras que el terminal ya reporta al concedente | Celula 4 — cerrado |
 
-Con `DEC-C4-01` cerrado, **quedan dos vacios**, ninguno de los cuales es de Celula 4: los valores de la banda de desviacion (`PEN-09`, Celula 2 y CLIENTE) y los nombres de las zonas operativas (`PEN-01`, Celula 3).
+Con `DEC-C4-01` cerrado y A3 recibido, la estructura de zonas/fases queda definida y la segmentación física exacta permanece parametrizada. El vacío sustantivo del diccionario es el valor de la banda de desviación (`PEN-09`, Célula 2 y CLIENTE); no se inventa.
 
 Dos entidades quedan ademas **sujetas a confirmacion** sin bloquear el diccionario: `CONDICION_DINAMICA`, porque `RF-PAT-07` sigue declarado pendiente de validacion interna en Celula 2, y `MOVIMIENTO` en su atributo `id_recalada`, porque el evento del que se deriva el movimiento de muelle sigue sin declararse — las seis gruas de muelle no estan en el universo instrumentable.
 

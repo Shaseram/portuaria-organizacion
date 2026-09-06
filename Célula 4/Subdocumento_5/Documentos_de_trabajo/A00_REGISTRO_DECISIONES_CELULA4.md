@@ -105,27 +105,27 @@ Los cuatro criterios se derivan de obligaciones existentes, no se inventan: un m
 
 ---
 
-## `DEC-C4-06` — Tres almacenamientos separados, no dos
+## `DEC-C4-06` — Cuatro capacidades lógicas sobre dos familias de motor
 
-**Decisión.** El Subdocumento 5 separa almacenamiento **transaccional**, **temporal** y **analítico**, en vez de los dos que nombra el T-7.
+**Decisión.** El Subdocumento 5 adopta las cuatro capacidades lógicas de Célula 3: `DATA-CORE` (operacional transaccional), `DATA-TS` (series temporales), `DATA-DOC` (documentos, evidencia e histórico) y `DATA-AN` (analítica). Se implementan con dos familias de motor: PostgreSQL —incluida su extensión temporal y réplica/vista analítica— y almacenamiento de objetos. Son separaciones funcionales; no implican cuatro productos independientes.
 
 **Fundamento.** `RT-05.05` y el Formulario T-7 hablan de separar transaccional y analítico. En este caso esa partición oculta la familia que domina el volumen: la telemetría reporta ≈7,2 eventos por segundo al núcleo y ≈36 en el borde, frente a ≈0,23 transacciones de negocio por segundo en el peak de coincidencia. El propio caso advierte que la telemetría puede superar en órdenes de magnitud a las transacciones y que la frecuencia de muestreo es una decisión de diseño con consecuencias de costo, red y almacenamiento `(CP, Cap. 14.2)`. Subsumir las series en el almacén analítico sería describir mal el sistema que se está proponiendo.
 
 **Vinculación.** `RT-05.05` · `CP, Cap. 14.2` · volumetría de Célula 2 · § 5.6 y § 5.13.
 
-**¿Pendiente de validar?** No con las Bases. Sí a coordinar con Célula 3, que debe materializar los tres almacenes (`PEN-01`).
+**¿Pendiente de validar?** No con las Bases ni con Célula 3 para I1. La distribución física y el dimensionamiento final permanecen sujetos a las pruebas y condicionantes declaradas por Célula 3.
 
 ---
 
-## `DEC-C4-07` — La visita, y no el contenedor, es el objeto operacional central
+## `DEC-C4-07` — Contenedor maestro y VisitaContenedor operacional
 
-**Decisión.** El objeto sobre el que se cuelgan movimientos, posición, hechos facturables y emisiones es la **visita** del contenedor al terminal, no el contenedor.
+**Decisión.** `Contenedor` es el maestro del activo físico. `VisitaContenedor` —identificada físicamente como `VISITA` para conservar claves y referencias del diccionario— es cada estadía de ese activo y el agregado sobre el que se asocian movimientos, posición, hechos facturables y emisiones. `Recalada` o `VisitaNave` queda reservada para la estadía de una nave.
 
 **Fundamento.** El mismo contenedor físico vuelve al terminal muchas veces. `RN-04` cuenta los días de almacenaje desde el día siguiente a la descarga o al ingreso a patio, lo que solo tiene sentido sobre una estadía concreta; la estadía del camión y los hechos facturables se cuentan igual. Colgar todo del contenedor obligaría a filtrar por rango de fechas en cada consulta y haría irreproducible el cálculo de almacenaje.
 
 **Vinculación.** `RN-04` · `RF-FAC-03` · `RF-GAT-12` · `D-02.VISITA`.
 
-**¿Pendiente de validar?** No.
+**¿Pendiente de validar?** No; convención alineada con el modelo de alto nivel de Célula 3.
 
 ---
 
@@ -185,7 +185,7 @@ Los cuatro criterios se derivan de obligaciones existentes, no se inventan: un m
 
 **Fundamento.** `RNF-SEG-05` compromete cubrir el 100 % de los campos identificados como sensibles, y `CP, Cap. 15, RT-11.10` nombra las tres familias: datos personales, información comercial sensible y datos que permitan inferir el contenido de valor o la ruta de un contenedor. Nadie había producido la lista. Un compromiso de cobertura sobre un conjunto que no existe no es verificable.
 
-**Consecuencia que hay que declarar.** Ocho de esos atributos son a la vez clave de acceso indexada en el catálogo de operaciones críticas. Un cifrado que impida la búsqueda por igualdad sobre ellos hace inalcanzables los umbrales de un segundo de `RT-09.01`. Eso convierte una pregunta general a Célula 3 en una pregunta acotada: ver `PEN-02`.
+**Consecuencia declarada.** Ocho de esos atributos son a la vez clave de acceso indexada en el catálogo de operaciones críticas. Célula 3 respondió en D1 B4.3 con tres patrones: cifrado aleatorio más token de igualdad protegido, identificador sustituto opaco o consulta dentro del servicio propietario. Ninguno equivale a escoger cifrado determinista por defecto; los ocho quedan sujetos a pruebas de fuga, latencia, rotación y continuidad local.
 
 **Vinculación.** `RT-11.10` · `RNF-SEG-05` · `RT-16.09` · A-02, sección 4 · § 5.10 y § 5.12.
 
@@ -295,7 +295,7 @@ Los cuatro criterios se derivan de obligaciones existentes, no se inventan: un m
 
 **Por qué fue necesario decidirlo.** `BTT, Cap. 9, RT-09.05` obliga a identificar el componente que primero saturará al crecer la carga y a explicar cómo se detecta y cómo se resuelve. Es una declaración obligatoria: hay que escoger uno y sostenerlo.
 
-**Corrige una conclusión anterior.** El esqueleto declaraba que el primer cuello sería la ingesta de series temporales. Rehecho el cálculo contra el crecimiento de 3× que exige `RT-09.03`, esa conclusión no se sostiene: el núcleo transaccional pasa de 0,23 a 0,7 transacciones por segundo y la ingesta al núcleo de 7,2 a 21,6 eventos por segundo, ambos absorbibles. En cambio, la ventana de sincronización pasa de exigir 19,3 Mbps sostenidos a exigir ≈ 58 Mbps, **porque el plazo de 90 minutos es fijo por contrato y el volumen crece con la operación**. Es el único margen que se estrecha con el crecimiento.
+**Corrige una conclusión anterior.** El esqueleto declaraba que el primer cuello sería la ingesta de series temporales. Rehecho el cálculo, esa conclusión no se sostiene: el núcleo transaccional pasa de 0,23 a 0,7 transacciones por segundo y la ingesta al núcleo de 7,2 a 21,6 eventos por segundo, ambos absorbibles. En cambio, la baseline I1 peak exige 32,5 Mbps y el escenario futuro 3× exige 57,8 Mbps para la misma ventana de 90 minutos. Es el margen que se estrecha con el crecimiento.
 
 **Cómo se resuelve, en orden:** reducir lo que cruza el enlace antes que ampliarlo; separar la sincronización que restablece invariantes de la que restablece evidencia; agregación previa en el borde para las series; y ampliar el enlace como última opción, por ser la única con costo recurrente y dependencia de terceros.
 
@@ -331,12 +331,12 @@ Los cuatro criterios se derivan de obligaciones existentes, no se inventan: un m
 
 | ID | Pendiente | Pregunta concreta | Qué bloquea |
 |---|---|---|---|
-| `PEN-01` | Nombres de las zonas operativas que estructuran la autoridad del dato | ¿Cuáles son las zonas y las fases nombradas de la matriz `dominio × zona × fase`, y confirman que reutilizan la fuente de verdad definida por Célula 2 sin redefinirla? | `D-08.ZONA_OPERATIVA.nombre` · § 5.3 · § 5.9 · tabla de equivalencia de `DEC-C4-13` |
-| `PEN-02` | Mecanismo de cifrado a nivel de campo y su efecto sobre la indexación | De estos ocho atributos —`POSICION_VIGENTE.id_celda`, `MOVIMIENTO.celda_origen` y `celda_destino`, `CONTENEDOR.clase_imdg`, `LECTURA_OPTICA.codigo_leido`, `CONDUCTOR.id_persona`, `EVENTO_ACCESO.id_persona`, `HECHO_FACTURABLE.id_regla_aplicada`—, ¿cuáles admiten búsqueda por igualdad una vez cifrados? | § 5.10, umbrales de 1 segundo de `RT-09.01` |
-| `PEN-03` | Propiedad del modelo conceptual | ¿Quién publica el modelo conceptual: la sección 4.1.5 del Subdocumento 4 o el § 5.14 del 5? Propuesta: alto nivel en el 4, modelo con diccionario en el 5, mismos nombres de negocio | § 5.2 y § 5.14; evita dos modelos contradictorios en el mismo informe |
-| `PEN-06` | Mecanismo de integración y eventos | ¿Habrá capa de eventos persistente con cola de mensajes fallidos y reproceso, y captura de cambios contra el sistema de 2012? | § 5.6, § 5.8 y § 5.10 |
-| `PEN-07` | Emplazamiento y motores | ¿Qué almacenes quedan on-premise, cuáles en nube y cuáles en el borde? ¿Se nombran productos en el Informe 1 o solo capacidades? | § 5.4, § 5.5 y § 5.13 |
-| `PEN-08` | Revalidación de la volumetría | ¿Confirman las dieciocho dimensiones con el factor estacional, o las recalculan? | § 5.13, § 5.12 y § 5.10 |
+| `PEN-01` — RECIBIDO | Nombres de las zonas operativas que estructuran la autoridad del dato | A3 §3 define bloque no migrado, validación paralela y bloque con cutover, y reutiliza la Decisión 1 de Célula 2. La segmentación física exacta sigue parametrizada | `D-08.ZONA_OPERATIVA.nombre` · § 5.3 · § 5.9 |
+| `PEN-02` — RESPONDIDO PARA I1 | Mecanismo de cifrado a nivel de campo y su efecto sobre la indexación | Los ocho atributos admiten una ruta de igualdad propuesta en D1 B4.3; no se usa cifrado determinista directo. `clase_imdg`, ubicación y trazas personales permanecen especialmente condicionadas por fuga de frecuencia/correlación | § 5.10, umbrales de `RT-09.01`; pruebas y aceptación pendientes |
+| `PEN-03` — CERRADO I1 | Propiedad del modelo conceptual | Subdocumento 4 publica alto nivel; Subdocumento 5 mantiene modelo detallado/diccionario; nombres compartidos fijados | § 5.2 y § 5.14 |
+| `PEN-06` — RECIBIDO | Mecanismo de integración y eventos | A2 define `INT-HUB` persistente, idempotencia, DLQ/replay y contrato tipo; CDC del TOS queda condicionado externamente | § 5.6, § 5.8 y § 5.10 |
+| `PEN-07` — RECIBIDO | Emplazamiento y motores | AWS normal con PostgreSQL/RDS propuesto; estado crítico y PostgreSQL local durante corte; objetos e histórico en familia de objetos | § 5.4, § 5.5 y § 5.13 |
+| `PEN-08` — CERRADO I1 | Revalidación de la volumetría | 18 dimensiones conservadas; promedio, peak, 3× e imagen 1 MB separados | § 5.13, § 5.12 y § 5.10 |
 | `PEN-17` | Latencia real de la red de patio con pilas cargadas, y ancho de banda del enlace de reposición | ¿Qué latencia sostiene la red inalámbrica en condición de patio cargado, y qué ancho de banda tiene el enlace de reposición? | El umbral de 1 s de la confirmación de movimiento y los 58 Mbps proyectados |
 | `PEN-18` | Política de captura de imágenes: resolución, compresión y si el binario cruza el enlace dentro de la ventana | Conjunta con Célula 4: la resolución la condiciona el equipo de reconocimiento óptico que especifica Célula 3, y el umbral de 3 s depende de ella | La primera palanca de crecimiento de `DEC-C4-20` y la de mayor efecto sobre la capacidad de A-08 |
 | `PEN-19` | Esquema de copias que satisface el respaldo 3-2-1-1-0 sobre el almacenamiento de objetos | ¿Cuántas copias, dónde y con qué mecanismo de inmutabilidad? | `SUP-A08-03`, el supuesto con más efecto sobre la capacidad a aprovisionar |
@@ -386,4 +386,4 @@ Los cuatro criterios se derivan de obligaciones existentes, no se inventan: un m
 | Frontera entre línea y archivo | sin declarar; la capacidad no era calculable | **`DEC-C4-21`**, con el criterio que el caso ya usó dos veces |
 | Entregas cruzadas hacia Célula 3 | `E-01`, `E-02` y `E-03` abiertas | **Las tres cerradas** en A-08, A-05 y A-07 |
 
-**Veintiuna decisiones cerradas y veinte pendientes trazados.** De los tres vacíos que quedaban en el diccionario, el único que era nuestro está cerrado; los otros dos siguen abiertos porque resolverlos por cuenta propia sería inventar un dato del CLIENTE o adelantarse a una decisión de Célula 3.
+**Veintiuna decisiones C4 registradas y dependencias actualizadas.** El cruce C3–C4 cierra para diseño I1 la topología, semántica, motores, capacidad, cifrado e integración. Permanecen condiciones legítimas del CLIENTE o terceros —bandas de temperatura, contratos reales, site survey, política de imagen, copias y pruebas— que no se rellenan por criterio propio.

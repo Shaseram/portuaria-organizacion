@@ -270,7 +270,7 @@ Esto no exige inventar respuestas. Cada externo debe quedar con dueño, fecha/hi
 
 ### `AGC3-022` — D3 y el consolidado todavía son esqueletos
 
-[`D3`](../D3_AUDITORIA_Y_CONSOLIDACION.md) está pendiente; [`00_CONTENIDO_FINAL_SUBDOCUMENTO_4.md`](../../90_Consolidado/00_CONTENIDO_FINAL_SUBDOCUMENTO_4.md) conserva todas las secciones por integrar; [`01_T11_TRABAJO_TRAZABLE.md`](../../90_Consolidado/01_T11_TRABAJO_TRAZABLE.md) tiene una fila ficticia; el formulario final y checklist siguen vacíos.
+[`D3`](../D3_AUDITORIA_Y_CONSOLIDACION.md) está pendiente; [`00_BASE_TECNICA_SUBDOCUMENTO_4.md`](../../90_Consolidado/00_BASE_TECNICA_SUBDOCUMENTO_4.md) conserva todas las secciones por integrar; [`01_T11_TRABAJO_TRAZABLE.md`](../../90_Consolidado/01_T11_TRABAJO_TRAZABLE.md) tiene una fila ficticia; el formulario final y checklist siguen vacíos.
 
 Esto es correcto para el corte pre-D3. Se convierte en incumplimiento si se intenta declarar cierre antes de ejecutar las olas siguientes.
 

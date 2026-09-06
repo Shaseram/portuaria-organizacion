@@ -168,6 +168,19 @@ La plantilla de Célula 2 incorporó el factor estacional y advirtió, con razó
 
 Y esa capacidad se necesita **además** del tráfico de la operación en curso, porque el terminal no se detiene mientras sincroniza. De ahí sale la conclusión de la sección siguiente.
 
+#### 4.1 Escenarios compartidos con el Subdocumento 5
+
+El cruce con Célula 4 separa escenarios que antes aparecían como si fueran cifras rivales. Solo los dos primeros forman la baseline de capacidad del Informe 1:
+
+| Escenario | Volumen en 72 h | Reposición sostenida en 90 min | Tratamiento |
+|---|---:|---:|---|
+| Promedio actual recalculado | 13,7 GB | 20,3 Mbps | referencia de régimen, no gobierna T-11 |
+| **Peak estacional actual** | **21,9 GB** | **32,5 Mbps** | **baseline I1; cada WAN conserva ≥35 Mbps disponibles** |
+| Crecimiento 3× de la volumetría promedio heredada | 39 GB | 57,8 Mbps | escenario futuro de Célula 4; activa ampliación cercana a 58 Mbps |
+| Sensibilidad con imagen de 1 MB | ≈40 GB | ≈58 Mbps | cambio del supuesto de imagen; no es sinónimo ni suma del escenario 3× |
+
+Los dos últimos escenarios llegan a cifras parecidas por causas distintas. No se suman ni sustituyen el peak vigente. Si se exige crecimiento 3× **y** peak estacional simultáneo, se recalcula desde los factores originales antes de comprometer una capacidad. El alcance exacto de los objetos que deben completar la sincronización ≤90 min permanece condicionado; no se presume que las imágenes puedan terminar después del plazo.
+
 ### 5. Ancho de banda por sitio
 
 `RT-03.20` obliga a dimensionar el ancho de banda **por sitio, en régimen normal y en peak, justificado con el cálculo de volumen**.

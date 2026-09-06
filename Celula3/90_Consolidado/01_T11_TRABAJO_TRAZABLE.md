@@ -64,7 +64,7 @@ Esta matriz explica de dónde nace cada fila del formulario. El entregable contr
 | Verificación | Resultado | Evidencia |
 |---|---|---|
 | toda caja física ofertada tiene fila o inclusión justificada | **CUMPLE** | `PHY-CLD-01..10`, `PHY-OPS-01..06` y `PHY-EDG-01..04` cubiertos; `LOC-INSP-01` no es nodo |
-| toda fila aparece en el catálogo y es representable en diagramas cuando corresponde | **CUMPLE EN CATÁLOGO** | 32 filas; `T11-SVC-01` es servicio contractual no nodal; F1–F5 están diseñadas y pendientes de producción final |
+| toda fila aparece en el catálogo y es representable en diagramas cuando corresponde | **CUMPLE EN CATÁLOGO** | 32 filas; `T11-SVC-01` es servicio contractual no nodal; los diagramas definitivos quedan a decisión del equipo |
 | toda cantidad tiene cálculo, unidad de servicio o rango con hito | **CUMPLE** | C4 §9; condiciones AHT, site survey, inventario H2 e ingesta expresas |
 | controles/licencias de seguridad considerados una sola vez | **CUMPLE** | §2; `T11-SEC-04` absorbido por `T11-C2-19` |
 | proveedor y regiones declarados | **CUMPLE COMO BASELINE I1** | AWS `sa-east-1` / `us-east-1`; `ADR-011 PROPUESTO` |

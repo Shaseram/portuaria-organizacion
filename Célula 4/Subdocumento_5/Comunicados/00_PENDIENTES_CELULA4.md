@@ -2,7 +2,7 @@
 
 **Caso:** 06 Portuaria — TERABYTE · **Célula 4** (V. Guzmán / M. Reyes)
 **Versión:** 2.0 · 6 de septiembre de 2026 · reemplaza la lista v1.0
-**Estado del subdocumento:** doce apartados completados de trece; 21 decisiones cerradas; 20 dependencias trazadas
+**Estado del subdocumento:** trece apartados cubiertos para diseño I1; 21 decisiones C4 registradas; contratos y pruebas externos condicionados
 
 ---
 
@@ -10,14 +10,14 @@
 
 | | v1.0 (mañana) | **v2.0 (ahora)** |
 |---|---|---|
-| Apartados completados | 5 de 13 | **12 de 13** |
+| Apartados completados | 5 de 13 | **13 de 13 para diseño I1** |
 | Apartados provisionales por Célula 3 | 4 | **0** |
 | Pendientes propios de Célula 4 | 8 | **0** |
-| Pendientes por otra célula | 1 apartado | 1 apartado (integración) |
+| Pendientes por otra célula | 1 apartado | **0 apartados; condiciones puntuales trazadas** |
 | Decisiones registradas | 0 | **21** |
 | Documento LaTeX | esqueleto, 37 páginas | **integrado, 103 páginas, compila sin errores** |
 
-**Los ocho pendientes propios están cerrados.** Modelo conceptual (14 diagramas), diccionario de datos (80 entidades, 451 atributos), matriz de calidad ISO/IEC 25012 (54 reglas), comparación de alternativas de persistencia (13 alternativas), matriz CAP por operación (25 operaciones), estrategia de desempeño (21 índices), capacidad acumulada (2 escenarios) y el reparto de trabajo con revisión cruzada.
+**Los ocho pendientes propios están cerrados para diseño I1.** Modelo conceptual, diccionario, calidad, persistencia, CAP, desempeño, capacidad con cuatro escenarios diferenciados y reparto de trabajo están documentados. Esto no significa contratos, pruebas o aceptación ejecutados.
 
 ---
 
@@ -35,26 +35,24 @@
 
 ---
 
-## 3. Lo que falta y **no** depende de nosotras
+## 3. Estado de las dependencias que **no** resuelve Célula 4
 
 Resumen. El detalle, con la pregunta concreta y su fundamento, va en los comunicados por célula.
 
 ### 3.1 De **Célula 3** — Subdocumento 4 (arquitectura lógica, física, de integración y de seguridad)
 
-| ID | Materia | Qué apartado nuestro condiciona |
+| ID | Estado del cruce | Condición que permanece |
 |---|---|---|
-| `PEN-01` | Zonas y fases nombradas de la matriz de autoridad del dato | § 5.3, § 5.9 y el nivel 1 de la cascada de resolución de conflictos |
-| `PEN-02` | Mecanismo de cifrado de campo y su efecto sobre la indexación de ocho atributos | § 5.10, umbrales de 1 segundo |
-| `PEN-03` | Quién publica el modelo conceptual: su sección 4.1.5 o nuestro § 5.14 | § 5.2 y § 5.14 |
-| `PEN-06` | Mecanismo de integración: eventos, réplica o captura de cambios | § 5.6, § 5.8 y § 5.10 |
-| `PEN-07` | Producto y versión de motor por familia | § 5.4 |
-| `PEN-07b` | Emplazamiento: qué almacén en borde, cuál en nube | § 5.4, § 5.5 y § 5.13 |
-| `PEN-08` | Revalidación de la volumetría con el factor estacional | § 5.10, § 5.12 y § 5.13 |
-| `PEN-10` | Frontera del runtime local y tamaño de buffer del borde | § 5.5 y § 5.13 |
-| `PEN-17` | Latencia real de la red de patio y ancho de banda del enlace de reposición | § 5.10 |
-| `PEN-18` | Política de captura de imágenes (conjunta con Célula 4) | § 5.10 y § 5.13 |
-| `PEN-19` | Esquema de copias que satisface el respaldo 3-2-1-1-0 sobre objetos | § 5.13 |
-| **`PEN-05`** | **Contratos de integración por contraparte** — es el que mantiene abierto el § 5.8 | **§ 5.8 completo** |
+| `PEN-01` | `RECIBIDO` | segmentación física exacta de bloques queda parametrizada |
+| `PEN-02` | `RECIBIDO` | pruebas de fuga, latencia, rotación y continuidad de los ocho campos |
+| `PEN-03` | `CERRADO I1` | alto nivel en SD4; detalle/diccionario en SD5 |
+| `PEN-06` | `RECIBIDO` | CDC real del TOS sigue `CONDICIONADO EXTERNO` |
+| `PEN-07/07b` | `RECIBIDO` | versión final de productos y pruebas al congelar oferta |
+| `PEN-08/10` | `CERRADO I1` | 21,9 GB peak, 32,5 Mbps y WAN ≥35 Mbps; prueba futura |
+| `PEN-17` | `CONDICIONADO EXTERNO` | site survey y medición E2E de patio/WAN |
+| `PEN-18` | `CONDICIONADO EXTERNO` | política exacta de imagen y alcance del binario en 90 min |
+| `PEN-19` | `CONDICIONADO EXTERNO` | matriz exacta de copias y aceptación del CLIENTE |
+| `PEN-05` | `RECIBIDO` para diseño | contratos reales siguen `POR LEVANTAR`/`BLOQUEADO EXTERNO` por contraparte |
 
 ### 3.2 De **Célula 2** — Subdocumento 3 (esquema de solución, catálogos de requerimientos)
 

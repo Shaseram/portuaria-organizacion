@@ -83,9 +83,9 @@ Los pesos suman 100 %. `C1` y `C2` concentran el 40 % porque son las dos condici
 
 ### 3.1 Alternativas comparadas
 
-| | **A1 · Relacional gestionado en nube, con réplica local de solo lectura** | **A2 · Relacional operado en el borde, con réplica hacia la nube** | **A3 · Documental no relacional** |
+| | **A1 · Relacional gestionado en nube, con réplica operacional local autoritativa durante el corte** | **A2 · Relacional operado permanentemente en el borde, con réplica hacia la nube** | **A3 · Documental no relacional** |
 |---|---|---|---|
-| Descripción | El motor primario vive en la nube; el borde conserva una copia de lectura y una cola de escritura | El motor primario vive en la sala del terminal; la nube recibe la réplica para analítica y respaldo | Agregados por documento, sin integridad referencial declarativa |
+| Descripción | AWS mantiene el registro consolidado en operación normal; el núcleo local conserva estado crítico caliente, ejecuta las cinco funciones críticas y asume temporalmente la autoridad de escritura durante el corte | El motor primario vive siempre en la sala del terminal; la nube recibe la réplica para analítica y respaldo | Agregados por documento, sin integridad referencial declarativa |
 | Referencia que acredita la alternativa | servicio relacional administrado de nube pública | motor relacional de código abierto operado sobre el nodo local | motor documental de código abierto |
 
 ### 3.2 Evaluación ponderada
@@ -93,23 +93,23 @@ Los pesos suman 100 %. `C1` y `C2` concentran el 40 % porque son las dos condici
 | Criterio | Peso | A1 | A2 | A3 | Fundamento de la nota |
 |---|---:|:---:|:---:|:---:|---|
 | `C1` Transaccionalidad e integridad | 20 % | 5 | 5 | **1** | El grafo `VISITA → MOVIMIENTO → POSICION_VIGENTE → HECHO_FACTURABLE → EVIDENCIA` tiene invariantes que cruzan cinco entidades; sin integridad declarativa hay que reimplementarlas en la aplicación y auditarlas una por una |
-| `C2` Autonomía de 72 h | 20 % | **1** | 5 | 3 | A1 falla la condición dura: si el primario está en la nube, la pérdida del enlace detiene la escritura autoritativa del gate y del muelle, que la restricción N.º 4 prohíbe |
+| `C2` Autonomía de 72 h | 20 % | **5** | 5 | 3 | A1 satisface la condición porque la pérdida del enlace transfiere la autoridad de las funciones críticas al núcleo local; un primario cloud **sin** esa capacidad local sí fallaría la restricción |
 | `C3` Operabilidad con cinco personas | 15 % | 5 | 3 | 3 | `RT-03.05` obliga a privilegiar servicios administrados; operar el motor localmente exige respaldo, parcheo y monitoreo propios, que hay que costear como servicio |
 | `C4` Ajuste al perfil de carga | 15 % | 5 | 5 | 3 | 0,23 transacciones por segundo no es una carga exigente para ningún relacional; la ventaja de escritura de A3 no se aprovecha |
 | `C5` Retención a diez años | 10 % | 5 | 3 | 3 | El particionamiento por tiempo y las políticas de ciclo de vida son maduras en relacional gestionado |
 | `C6` Reversibilidad | 10 % | 3 | 5 | 3 | El motor de código abierto operado localmente exporta a formato abierto sin depender del proveedor, que es lo que `RT-05.06` exige |
 | `C7` Cifrado y auditoría | 10 % | 5 | 3 | 3 | El cifrado de campo y el encadenado de auditoría se resuelven en ambos, con más trabajo propio en el operado localmente |
-| **Total ponderado** | | **4,00** | **4,30** | **2,60** | |
+| **Total ponderado** | | **4,80** | **4,30** | **2,60** | |
 
 ### 3.3 Recomendación
 
-**Motor relacional, con el primario del estado operacional en el borde y réplica hacia la nube.** La diferencia entre A1 y A2 es estrecha en el total, pero **no se decide por el total**: `C2` es una condición de admisibilidad, no un criterio ponderable. Una propuesta que sitúe el primario en la nube incumple la restricción no negociable N.º 4 y se evalúa como falta de comprensión del caso, por bien que puntúe en el resto.
+**Motor relacional gestionado en AWS como registro consolidado normal, con instancia operacional local caliente que asume autoridad durante el corte.** La autonomía de 72 horas sigue siendo una condición de admisibilidad: no la satisface la ubicación cloud por sí sola, sino la ruta local completa —servicios, datos críticos, identidad, integración y evidencia— capaz de escribir sin WAN. El Artículo 16.1 de las Bases Administrativas exige precisamente carga principal en nube y componentes on-premise; no exige un primario permanente en el borde.
 
 A3 se descarta con fundamento y no por preferencia: el modelo tiene 78 entidades con integridad referencial declarada y veinte invariantes que cruzan entidades. Un paradigma documental obligaría a implementar en la aplicación lo que el motor resuelve solo, y a demostrar en pruebas lo que en el relacional se demuestra con el esquema.
 
-**Consecuencia que se asume:** A2 puntúa peor en operabilidad. La mitigación es explícita y costeada, como exige la restricción N.º 11: la operación del motor local se ofrece **como servicio gestionado por el adjudicatario**, no como tarea del equipo de cinco personas del CLIENTE.
+**Consecuencia que se asume:** A1 exige gobernar explícitamente la transferencia y devolución de autoridad entre AWS y el núcleo local. No se admiten dos escritores simultáneos: los estados normal, corte, reconciliación y retorno se prueban con bitácora e invariantes. El motor local sigue siendo operado como servicio por el adjudicatario, no como tarea del equipo de cinco personas del CLIENTE.
 
-**Lo que Célula 3 debe cerrar:** producto y versión, topología de réplica, nivel de RAID del almacenamiento local `(RT-03.14)` y dimensionamiento del nodo. Ver `PEN-07`.
+**Estado recibido de Célula 3:** la baseline MA8 selecciona Amazon RDS for PostgreSQL Multi-AZ en AWS, PostgreSQL local, 4×480 GB en RAID 10 y tres nodos de 16 núcleos/128 GB. La versión mayor se congela por soporte al cierre de la oferta; pruebas de transferencia de autoridad y capacidad real siguen condicionadas.
 
 ---
 
@@ -257,13 +257,13 @@ C3 se descarta por una consecuencia concreta y medible: multiplicaría por seten
 
 | Familia | Paradigma recomendado | Capacidades que Célula 3 debe materializar | Total ponderado de la opción elegida |
 |---|---|---|---:|
-| Estado operacional | **Relacional**, primario en el borde con réplica a la nube | ACID; integridad referencial declarativa; particionamiento por tiempo; cifrado de campo; réplica con RPO ≤ 15 min; operación ofrecida como servicio | 4,30 |
+| Estado operacional | **Relacional gestionado en AWS**, con estado crítico local caliente y autoridad local durante el corte | ACID; integridad referencial declarativa; escritor único por estado; particionamiento por tiempo; cifrado de campo; operación local 72 h y reconciliación ≤90 min | 4,80 |
 | Series temporales | **Relacional con extensión temporal** | anexado de alta tasa; compresión; agregación continua; políticas de retención por antigüedad; unión nativa con el estado operacional | 4,70 |
 | Documentos y evidencia | **Almacenamiento de objetos** con índice y sello en el relacional | escritura una vez; inmutabilidad demostrable; ciclo de vida por clase; despliegue en borde y nube; cifrado en reposo | 5,00 |
 | Analítica | **Réplica de solo lectura** con modelo semántico documentado | aislamiento del primario; latencia por indicador; profundización hasta la transacción; autoservicio y exportación abierta | 4,50 |
 | Histórico retenido | **Repositorio abierto** sobre almacenamiento de objetos | formato columnar abierto documentado; catálogo; consulta sin intervención del adjudicatario | 5,00 |
 
-**Dos motores, no cinco.** La recomendación consolida las Familias 1, 2 y 4 sobre un mismo motor relacional —una instancia primaria, una extensión temporal y una réplica de lectura— y las Familias 3 y 5 sobre almacenamiento de objetos. Es la configuración que satisface las obligaciones de `RT-05.02` y `RT-05.05` con la menor superficie operacional posible, que es lo que la restricción no negociable N.º 11 exige tratar como criterio de diseño y no como detalle de implantación.
+**Dos familias de motor, no cinco productos.** La recomendación consolida las Familias 1, 2 y 4 sobre PostgreSQL —instancia gestionada normal en AWS, instancia local para continuidad, extensión temporal y réplica/vista analítica— y las Familias 3 y 5 sobre almacenamiento de objetos. Es la configuración que satisface `RT-05.02` y `RT-05.05` con una superficie operacional acotada.
 
 ---
 
@@ -277,7 +277,7 @@ C3 se descarta por una consecuencia concreta y medible: multiplicaría por seten
 | Extensión de series temporales | Media: las tablas siguen siendo relacionales; se pierde la compresión y la agregación continua | Medio | La serie se exporta como tabla plana; la agregación se recalcula |
 | Almacenamiento de objetos | Alta si se usa la interfaz estándar del sector | Bajo | No usar funciones específicas de un proveedor en la ruta de escritura |
 | Réplica analítica y modelo semántico | Media: el modelo semántico es específico de la herramienta | Medio | El modelo se documenta como especificación, no solo como configuración `(RT-05.27)` |
-| Servicios gestionados de nube | Baja por definición | **Alto** | Es la razón por la que el primario operacional no vive en un servicio gestionado; y por la que `RT-03.07` exige declarar el esfuerzo de migración componente a componente |
+| Servicios gestionados de nube | Baja por definición | **Alto** | El registro consolidado normal puede vivir en el servicio gestionado si conserva exportación abierta, IaC y una ruta local autónoma; `RT-03.07` exige declarar el esfuerzo de migración componente a componente |
 
 **Prueba de reversibilidad que se compromete:** exportación completa de un dominio de datos en formato abierto y documentado, ejecutada **por el CLIENTE** sin asistencia del adjudicatario. Sin esa prueba, `RT-05.06` es una declaración y no un compromiso verificable.
 
@@ -287,11 +287,11 @@ C3 se descarta por una consecuencia concreta y medible: multiplicaría por seten
 
 | ID | Qué falta | Responsable | Qué queda condicionado |
 |---|---|---|---|
-| `PEN-07` | Producto, versión y política de vigencia por familia; y si el Informe 1 nombra productos o solo capacidades | Célula 3 (`ADR-007`) | La columna «referencia» de las secciones 3 a 7 |
-| `PEN-07b` | Emplazamiento de cada almacén: borde, nube o ambos | Célula 3 (`ADR-005`, Decisión N.º 20 abierta) | La recomendación de la Familia 1 **exige** primario en el borde; el resto es ajustable |
-| `PEN-02` | Mecanismo de cifrado de campo y su efecto sobre la indexación de ocho atributos | Célula 3 (`ADR-009`) | La nota de `C7` en la Familia 1 |
-| `PEN-06` | Si el flujo hacia la analítica es réplica nativa, captura de cambios o eventos | Célula 3 (`ADR-003`) | La latencia real de la Familia 4 |
-| `PEN-08` | Revalidación de la volumetría con el factor estacional | Célula 3 (`C4`) | Las proporciones de la sección 1.2 y el disparador de revisión de la Familia 4 |
+| `PEN-07` | **RECIBIDO I1:** PostgreSQL/RDS y objetos como referencias propuestas; versión mayor se congela por soporte al cierre | Célula 3 (`ADR-007`) | prueba/compatibilidad y versión final condicionadas |
+| `PEN-07b` | Emplazamiento de cada almacén: borde, nube o ambos | Célula 3, recibido en MA8 | **CERRADO I1:** AWS es registro consolidado normal; el núcleo local asume autoridad del estado crítico durante el corte |
+| `PEN-02` | **RECIBIDO CONDICIONADO:** disposición de ocho campos en D1 B4.3 | Célula 3 (`ADR-009`) | pruebas de fuga/latencia/rotación |
+| `PEN-06` | **RECIBIDO:** eventos persistentes por defecto; réplica/vista para analítica; CDC TOS condicionado | Célula 3 (`ADR-003`) | contrato/prueba reales |
+| `PEN-08` | **CERRADO I1:** promedio, peak, 3× e imagen 1 MB separados | Célula 3 (`C4`) | recalcular solo si cambia un supuesto fuente |
 | `PEN-12` | Tamaño real del histórico del sistema de 2012 | CLIENTE | El dimensionamiento de la Familia 5 |
 | Propio | La ponderación de la sección 2 es decisión de Terabyte y se declara como tal; no proviene de las Bases | Célula 4, declarado | Toda la evaluación |
 
@@ -305,7 +305,7 @@ C3 se descarta por una consecuencia concreta y medible: multiplicaría por seten
 | Selección del motor con justificación | `BA, Form. T-7`, Subdoc. 5, segunda viñeta | sección 8 |
 | Al menos dos alternativas reales por familia | regla de aprobación de decisiones de arquitectura | tres alternativas en las Familias 1, 3 y 5; dos en las Familias 2 y 4 |
 | Separación del almacenamiento transaccional y analítico | `BTT, Cap. 5, RT-05.05` | Familia 4 |
-| Privilegiar servicios administrados y justificar la excepción | `BTT, Cap. 3, RT-03.05` | `C3` en la Familia 1; la excepción del primario local se justifica y se costea |
+| Privilegiar servicios administrados y justificar la excepción | `BTT, Cap. 3, RT-03.05` | Familia 1: servicio gestionado en AWS y capacidad local acotada justificada por continuidad |
 | Estrategia de reversibilidad y bloqueo por proveedor | `BTT, Cap. 3, RT-03.07` | sección 9 |
 | Exportación total en formatos abiertos sin intervención del adjudicatario | `BTT, Cap. 5, RT-05.06` | sección 9 y Familia 5 |
 | Operación autónoma de 72 horas | `CP, Cap. 15, RT-03.10`; restricción N.º 4 | `C2`, criterio de admisibilidad |

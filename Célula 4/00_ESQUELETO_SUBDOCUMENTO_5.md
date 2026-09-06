@@ -94,7 +94,7 @@ La guía omite `RNF-DES-06` — **publicación del estado del contenedor en el p
 
 **Recuento:** 5 completados · 4 completados provisionales (todos por Célula 3) · 1 pendiente por otra célula (Célula 3) · 2 pendientes propios de Célula 4 · **13 de 13 puntos cubiertos**.
 
-**Lectura de riesgo:** ninguno de los cuatro provisionales depende de contenido *aprobado* de Célula 3 — dependen de su **Maestro de contexto y de sus contratos de trabajo**, porque los nueve entregables del Subdocumento 4 están literalmente marcados `PENDIENTE DE INTEGRAR` en `C3 · 90_Consolidado/00_CONTENIDO_FINAL_SUBDOCUMENTO_4.md`. Ese es el hecho central de coordinación de esta semana.
+**Lectura de riesgo (corte histórico):** ninguno de los cuatro provisionales dependía de contenido *aprobado* de Célula 3 — dependían de su **Maestro de contexto y de sus contratos de trabajo**, porque los nueve entregables del Subdocumento 4 estaban marcados `PENDIENTE DE INTEGRAR` en `C3 · 90_Consolidado/00_BASE_TECNICA_SUBDOCUMENTO_4.md`. El estado vigente se consulta en `Celula3/README.md` y en el plan de alineación C3–C4.
 
 * * *
 
@@ -466,7 +466,7 @@ Ninguno de estos está incrustado en el texto como hecho. Se declaran para poder
 | `R-C3-07` | Las 18 dimensiones de volumetría de Célula 2 sobreviven la revalidación de `C4` | `C3 · C4`, cabecera; `C3 · Maestro §15` («insumos, no dimensionamiento final») | Cambia el dimensionamiento de almacenamiento por familia y la frontera entre retención en línea y archivo | 5\.11, 5.12, 5.9 | Presentar la volumetría como rango con método declarado; no convertir estimaciones propias en cifras del CLIENTE |
 | `R-C3-08` | RTO ≤4 h / RPO ≤15 min y respaldo 3\-2\-1\-1\-0 se mantienen | `C3 · Maestro §9.2`; `C2 · RNF-DIS-13/14/15` | Un endurecimiento cambia replicación y capacidad de respaldo, no la política de retención | 5\.4, 5.11 | Separar en el texto la *política* (nuestra) de la *materialización* (de Célula 3) |
 | `R-C3-09` | El modelo conceptual de 4.1.5 y el del Subdocumento 5 usarán los mismos nombres de negocio | `C3 · A1`, productos obligatorios; `C3 · Maestro §16` | Dos modelos contradictorios en el mismo Informe 1, penalizado como incoherencia | 5\.1, 5.13 | Acordar el corte por escrito antes del 7 de septiembre y fijar un glosario común de una página |
-| `R-C3-10` | Célula 3 alcanzará a integrar contenido aprobado antes de la entrega | `C3 · 90_Consolidado/00_CONTENIDO_FINAL_SUBDOCUMENTO_4.md` (nueve secciones `PENDIENTE DE INTEGRAR`) | Si el Subdocumento 4 llega incompleto, todo lo provisional del 5 queda sin confirmante | 5\.3, 5.5, 5.9, 5.12 | Redactar cada sección provisional de modo que se sostenga por sí sola con fuentes normativas, y marcar la dependencia como supuesto declarado, nunca como hecho |
+| `R-C3-10` | Célula 3 alcanzará a integrar contenido aprobado antes de la entrega | `C3 · 90_Consolidado/00_BASE_TECNICA_SUBDOCUMENTO_4.md` (nueve secciones `PENDIENTE DE INTEGRAR` en ese corte) | Si el Subdocumento 4 llega incompleto, todo lo provisional del 5 queda sin confirmante | 5\.3, 5.5, 5.9, 5.12 | Redactar cada sección provisional de modo que se sostenga por sí sola con fuentes normativas, y marcar la dependencia como supuesto declarado, nunca como hecho |
 
 * * *
 

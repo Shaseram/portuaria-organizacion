@@ -4,7 +4,7 @@
 
 ### Objetivo y destino
 
-Producir el esquema de solución y la arquitectura lógica oficial. Alimenta las secciones 4.1.1–4.1.5 de `90_Consolidado/00_CONTENIDO_FINAL_SUBDOCUMENTO_4.md`.
+Producir el esquema de solución y la arquitectura lógica oficial. Alimenta las secciones 4.1.1–4.1.5 de `90_Consolidado/00_BASE_TECNICA_SUBDOCUMENTO_4.md`.
 
 ### Cumplimientos asignados
 
@@ -605,12 +605,14 @@ Columna `Sensibilidad` según la clasificación exigida por Maestro §11.1 (mín
 
 El modelo conceptual representa las diez abstracciones fundamentales que la plataforma debe gestionar. No es un modelo de datos relacional ni un esquema de base de datos; es la representación del lenguaje de dominio compartido entre negocio y arquitectura.
 
+**Convención compartida con Célula 4.** `Contenedor` es el maestro del activo físico; `VisitaContenedor` es cada estadía operacional de ese activo dentro del terminal —identificada físicamente como `VISITA` en el diccionario detallado—; y `Recalada` o `VisitaNave` es la estadía de una nave en un sitio. Por tanto, que el Contenedor sea la entidad maestra central no contradice que `VisitaContenedor` sea el agregado operacional al que se asocian movimientos, posición, custodia y hechos facturables.
+
 | Entidad | Descripción | Contexto propietario | Datos clave |
 |---|---|---|---|
 | **Contenedor** | Unidad de transporte identificada por código ISO. Es el objeto central del dominio portuario; todos los procesos giran en torno a él. | CTX-OPS | Código ISO, tipo (seco/reefer/peligroso/sobredimensionado), tara, condición reefer (sí/no), estado de inspección, nave de origen/destino |
 | **Posición** | Ubicación física en el patio expresada como bahía-fila-nivel. Una posición puede estar ocupada por un contenedor o vacía. La correspondencia entre posición registrada y posición real es un criterio de aceptación contractual. | CTX-YARD | Bahía, fila, nivel, estado (confirmada/por verificar), timestamp, método de verificación (DGPS/óptico/manual) |
 | **Movimiento** | Acción física de traslado de un contenedor de un origen a un destino, ejecutada por un equipo. Es la unidad atómica de operación y la base de productividad, facturación y emisiones. | CTX-OPS | Origen, destino, equipo asignado, tipo (descarga/embarque/reubicación/entrega/recepción), marca de tiempo, operador |
-| **Visita de Nave** | Período durante el cual una embarcación ocupa un sitio de atraque. Agrupa operaciones de descarga y embarque, y está sujeta a ventanas confirmadas, productividad mínima y mensajería EDIFACT. | CTX-VESSEL | Nave, sitio de atraque (1–3, futuro 4), ETA/ETD, ventana confirmada (≥72 h alianza), BAPLIE recibido, productividad objetivo (≥30 mov/h/grúa) |
+| **Recalada / VisitaNave** | Período durante el cual una embarcación ocupa un sitio de atraque. Agrupa las `VisitaContenedor` de descarga y embarque, y está sujeta a ventanas confirmadas, productividad mínima y mensajería EDIFACT. | CTX-VESSEL | Nave, sitio de atraque (1–3, futuro 4), ETA/ETD, ventana confirmada (≥72 h alianza), BAPLIE recibido, productividad objetivo (≥30 mov/h/grúa) |
 | **Cita y Camión** | Reserva de franja horaria para la entrada de un camión al terminal. Incluye prevalidación documental, cola virtual, tiempos de estadía y manejo de excepciones. | CTX-GATE | Patente, contenedor asociado, conductor, VGM, hora de cita, estado (pendiente/validado/ingresado/egresado/excepción), tiempos reales |
 | **Alarma Reefer** | Evento generado cuando la temperatura reportada por una toma reefer se desvía de la consigna configurada. Requiere acuse de recibo ≤5 min, canal redundante y escalamiento si no se confirma. | CTX-REEFER | Contenedor, toma, tablero, temperatura de consigna, temperatura de retorno, marca de tiempo, confirmada (sí/no), tiempo de respuesta, acción tomada |
 | **Inspección** | Actividad programada por una autoridad (Aduana, SAG, autoridad marítima/sanitaria) que requiere remoción anticipada del contenedor, acta formal firmada y cierre trazable. | CTX-INSP | Contenedor, autoridad solicitante, fecha/hora programada, remoción anticipada requerida (sí/no), estado del acta (pendiente/firmada/cerrada) |
@@ -713,7 +715,7 @@ erDiagram
     }
 ```
 
-**Lectura del diagrama:** el Contenedor es la entidad central del dominio. Se asocia a una Visita de Nave (que lo trae o se lo lleva), ocupa una Posición en el patio, genera Movimientos ejecutados por Identidades (operadores), puede disparar Alarmas Reefer si es refrigerado, ser objeto de Inspecciones de autoridades, y originar Hechos Facturables respaldados por Evidencia digital. Los Movimientos producen datos de Consumo y Emisión. Las Citas de Camión vinculan al transportista con el contenedor y desencadenan movimientos de entrega/recepción en gate.
+**Lectura del diagrama:** el Contenedor es el maestro del activo y se relaciona con una Recalada/VisitaNave que lo trae o se lo lleva. En el modelo detallado de Célula 4, cada ingreso del contenedor crea una `VisitaContenedor`, que agrupa su Posición, Movimientos, Inspecciones y Hechos Facturables durante esa estadía. Los Movimientos producen datos de Consumo y Emisión. Las Citas de Camión vinculan al transportista con el contenedor y desencadenan movimientos de entrega/recepción en gate.
 
 ---
 

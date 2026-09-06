@@ -366,7 +366,7 @@ C1 marca como cumplido que la región primaria/secundaria está declarada, mient
 
 ### `AFI1-002` — Archivos finales vacíos
 
-**Estado posterior:** cerrado como baseline en MA-5/MA-8. `01_T11_TRABAJO_TRAZABLE.md` y `02_FORMULARIO_T11_FINAL.md` contienen 32 filas; `00_CONTENIDO_FINAL_SUBDOCUMENTO_4.md` ya tiene el esqueleto formal 4.1/4.2, fuentes directas y controles D3. La prosa, figuras y maquetación corresponden a la producción final.
+**Estado posterior:** cerrado como baseline en MA-5/MA-8. `01_T11_TRABAJO_TRAZABLE.md` y `02_FORMULARIO_T11_FINAL.md` contienen 32 filas; `00_BASE_TECNICA_SUBDOCUMENTO_4.md` ya tiene el esqueleto formal 4.1/4.2, fuentes directas y controles D3. La prosa, figuras y maquetación corresponden a la producción final.
 
 ### `AFI1-018` — Diagramas y planos
 

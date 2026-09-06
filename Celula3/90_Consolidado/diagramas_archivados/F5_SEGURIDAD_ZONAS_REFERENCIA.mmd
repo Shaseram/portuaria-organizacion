@@ -1,0 +1,33 @@
+flowchart LR
+    EXT[Z-EXT\nInternet y terceros]
+    EDGE[Z-EDGE\nCDN · WAF · anti-DDoS]
+    SVC[Z-SVC\nGW-API · CTX · INT-HUB]
+    DATA[Z-DATA\nCORE · TS · DOC · AN]
+    LOCAL[Z-LOCAL\nEDGE-RUN · INT-TOS · buffer]
+    FIELD[Z-FIELD\ngate · patio · reefers · muelle]
+    ADM[Z-ADM\nusuarios y puestos administrativos]
+    PROT[Z-PROT\nacceso/barreras · VMS]
+    MGMT[Z-MGMT\nPAM · bastión · operación]
+    IAM[SRV-IAM\nMFA · rol · sesión · revocación]
+    KEY[Claves/secretos\nKMS/HSM + material local]
+    SIEM[Registro/SIEM\ncolector y buffer local]
+
+    EXT -->|TLS 1.3| EDGE -->|API autenticada| SVC
+    SVC -->|identidad de servicio + cifrado| DATA
+    FIELD -->|red privada segmentada| LOCAL
+    LOCAL <-->|VPN · mTLS · sincronización| SVC
+    ADM -->|MFA · mínimo privilegio| SVC
+    MGMT -->|PAM · sesión registrada| SVC
+    MGMT -->|PAM · salto controlado| LOCAL
+    PROT -->|eventos/metadatos permitidos| LOCAL
+    IAM -.->|autoriza| EDGE
+    IAM -.-> SVC
+    IAM -.-> LOCAL
+    KEY -.->|protege datos y evidencia| DATA
+    KEY -.-> LOCAL
+    EDGE -.-> SIEM
+    SVC -.-> SIEM
+    DATA -.-> SIEM
+    LOCAL -.-> SIEM
+    FIELD -.-> SIEM
+    MGMT -.-> SIEM

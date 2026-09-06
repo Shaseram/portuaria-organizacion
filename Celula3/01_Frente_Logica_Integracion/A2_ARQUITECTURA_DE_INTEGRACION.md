@@ -74,6 +74,21 @@ Propone, sin cantidades definitivas, gateway/broker/API management/adaptadores/l
 - [x] Diagrama, matriz y nombres coinciden con A1.
 - [x] `TRZ_A2.md` completo.
 
+### Entrega explícita a Célula 4 para el Informe 1
+
+El diseño de integración **no está ausente**. Célula 4 puede cerrar su §5.8 para I1 usando este documento con el siguiente corte, sin inventar contratos de terceros:
+
+| Elemento requerido por C4 | Evidencia A2 | Estado para I1 |
+|---|---|---|
+| inventario | §2: 21 contrapartes lógicas + 7 familias técnicas | `CERRADO I1` |
+| mecanismo | §7: `INT-HUB` persistente y adaptador por contraparte; `INT-TOS` anticorrupción | `RECIBIDO`; `ADR-003` permanece `PROPUESTO` |
+| gobierno de contrato | §1.2: OpenAPI/AsyncAPI, versión, compatibilidad, correlación y autenticación | `CERRADO I1` como patrón; especificaciones ejecutables corresponden al Sobre N.º 2 |
+| entrega y recuperación | §4–5: al menos una vez, orden por agregado, idempotencia, deduplicación, DLQ, replay, timeout, breaker y fallback | `CERRADO I1` como diseño; prueba futura |
+| TOS 2012 | §2.1 y A3: intercambio bidireccional y autoridad `dominio×zona×fase` | `CONDICIONADO EXTERNO`: interfaz real y capacidad CDC por levantar |
+| contratos externos | columna Estado de §2.1/2.2 | `POR LEVANTAR` o `BLOQUEADO EXTERNO` exactamente donde se indica |
+
+Los contratos reales pendientes no vuelven pendiente a toda la arquitectura de integración: condicionan cada interfaz concreta y su prueba. La lista de mayor consecuencia es `EXT-TOS12`, `EXT-FER`, las tres autoridades, `EXT-GRU`, los protocolos de instrumentación reefer/posicionamiento y el contrato particular de cada naviera; ERP, concedente, VMS, VGM, OCR y control de acceso conservan el patrón definido y sus parámetros externos por confirmar.
+
 ## Contenido listo para integrar
 
 ### 1. Panorama de integración: de 22 flujos manuales a contratos gobernados

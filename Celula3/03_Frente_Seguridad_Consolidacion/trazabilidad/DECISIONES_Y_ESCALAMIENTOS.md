@@ -298,5 +298,5 @@ B7 **no abre decisiones de arquitectura ni dependencias nuevas**. El modelo D2 q
 - El usuario aprueba P4 y autoriza preparar el último bloque MA.
 - D3 no redactará: auditará el consolidado real después de la redacción y los diagramas.
 - Trece secciones quedan enlazadas a fuentes y trece controles quedan preparados en TRZ-D3.
-- En contenido solo restan redacción total, F1–F5 y cruce fino `V-DATA-01`; F6 sigue condicional.
+- La alineación y el cruce `V-DATA-01` están cerrados como base; restan redacción editorial, diagramas del equipo, ensamblado y D3.
 - La ejecución D3 y la maquetación son controles finales, no nuevos diseños de arquitectura.

@@ -1,8 +1,8 @@
 # D3 — Puerta final de auditoría y consolidación
 
 **Fecha de preparación:** 2026-09-06
-**Estado:** `CONTRATO Y TRAZABILIDAD PREPARADOS — AUDITORÍA NO EJECUTADA`
-**Momento de ejecución:** después de redactar el consolidado, incorporar T-11, producir F1–F5 y cruzar `V-DATA-01` con el Subdocumento 5.
+**Estado:** `PREPARADO — AUDITORÍA NO EJECUTADA; ESPERA REDACCIÓN Y ENSAMBLADO FINAL`
+**Momento de ejecución:** después de completar la redacción editorial, incorporar el T-11 y los diagramas que apruebe el equipo, y conservar el cruce `V-DATA-01` con el Subdocumento 5.
 
 ## 1. Función de D3
 
@@ -21,10 +21,10 @@ El consolidado debe ser autónomo. Las fuentes A1–D2 conservan el razonamiento
 
 | Elemento | Línea base recibida | Lectura correcta |
 |---|---|---|
-| arquitectura lógica | ocho capas y 24 componentes A1 | diseño listo para sintetizar; F2 pendiente |
-| integración y procesos | 21 contrapartes, siete familias, cinco recorridos críticos y autoridad por fase | diseño listo para sintetizar; F3 pendiente |
-| arquitectura física | 20 nodos físicos + `LOC-INSP-01`, terminal/edge y AWS | diseño listo para sintetizar; F4 pendiente |
-| seguridad | 31 controles, 73 amenazas y 26 SPOF enlazados | se publica la conclusión y F5; matrices completas quedan en expediente |
+| arquitectura lógica | ocho capas y 24 componentes A1 | base técnica y `T-SD4-01`; redacción y representación visual pendientes |
+| integración y procesos | 21 contrapartes, siete familias, cinco recorridos críticos y autoridad por fase | base técnica y `T-SD4-02`; redacción y representación visual pendientes |
+| arquitectura física | 20 nodos físicos + `LOC-INSP-01`, terminal/edge y AWS | base técnica y `T-SD4-03`; redacción y representación visual pendientes |
+| seguridad | 31 controles, 73 amenazas y 26 SPOF enlazados | conclusión técnica preparada; matrices completas quedan en expediente |
 | capacidad | cálculos C4 y línea base física de sala | se publican resultados y supuestos decisivos |
 | ADR | 11 `PROPUESTO`, 0 `APROBADO` | propuesta TERABYTE para I1; no aceptación del CLIENTE |
 | Artículo 4 | 38 estándares/prácticas y 15 materias normativas | se publica trazabilidad ejecutiva, no la matriz completa |
@@ -51,17 +51,17 @@ Esta tabla gobierna la redacción. Si una fuente cambia, se actualiza primero su
 | `4.2.7 Dimensionamiento y capacidad` | demanda normal/punta, almacenamiento, buffer, red, carga/PUE, margen, sensibilidad y disparadores | [C4 §§3–10](../02_Frente_Fisica_Despliegue/C4_DIMENSIONAMIENTO_Y_T11.md) | A2/C2/C3/D1 | `T-SD4-06` | cada resultado conserva unidad, supuesto y fórmula decisiva |
 | `4.2.8 Formulario T-11` | 32 filas con componente, producto/servicio, ubicación, cantidad y justificación | [T-11 final](../90_Consolidado/02_FORMULARIO_T11_FINAL.md) | [T-11 trazable](../90_Consolidado/01_T11_TRABAJO_TRAZABLE.md); C2/C4/D1 | formulario oficial | cinco columnas, sin precio, sin duplicidad y correspondencia 1:1 |
 
-## 4. Recursos visuales que D3 debe auditar
+## 4. Recursos visuales que D3 deberá auditar
 
-| Recurso | Demostración mínima | Fuente de verdad | Estado actual |
+| Recurso previsto | Demostración mínima | Fuente de verdad | Estado actual |
 |---|---|---|---|
-| F1 — esquema de solución | actores, frontera, canales y sistemas conservados | A1 §§1–1.5 | PENDIENTE DE PRODUCCIÓN |
-| F2 — arquitectura lógica | ocho capas, módulos, límites e interfaces principales | A1 §§2–6 | PENDIENTE DE PRODUCCIÓN |
-| F3 — integración/proceso | contratos, TOS, autoridad, corte y retorno | A2/A3 | PENDIENTE DE PRODUCCIÓN |
-| F4 — arquitectura física | sala/edge, AWS primaria/secundaria, redes y dominios de fallo | C1–C4 | PENDIENTE DE PRODUCCIÓN |
-| F5 — seguridad | zonas, conductos, administración, IAM, cifrado y observabilidad | D1/D2/C3 | PENDIENTE DE PRODUCCIÓN |
-| `V-DATA-01` | fuente de verdad, autoridad en corte, almacén, protección y retención | A1/D1/Subdoc. 5 | DISEÑADA; CRUCE SUBDOC. 5 PENDIENTE |
-| F6 — continuidad | normal, corte 72 h, reconciliación ≤90 min y DR | A3/C3 | CONDICIONAL; NO PRODUCIR SI F3/F4 SON SUFICIENTES |
+| esquema de solución | actores, frontera, canales y sistemas conservados | A1 §§1–1.5 | PENDIENTE DEL EQUIPO; boceto anterior archivado |
+| arquitectura lógica | capas, módulos, límites e interfaces principales | A1 §§2–6 | PENDIENTE DEL EQUIPO; boceto anterior archivado |
+| integración/proceso | contratos, TOS, autoridad, corte y retorno | A2/A3 | PENDIENTE DEL EQUIPO; boceto anterior archivado |
+| arquitectura física | sala/edge, AWS primaria/secundaria, redes y dominios de fallo | C1–C4 | PENDIENTE DEL EQUIPO; boceto anterior archivado |
+| seguridad | zonas, conductos, administración, IAM, cifrado y observabilidad | D1/D2/C3 | PENDIENTE DEL EQUIPO; boceto anterior archivado |
+| `V-DATA-01` | fuente de verdad, autoridad en corte, almacén, protección y retención | A1/D1/Subdoc. 5 | PRODUCIDA; CRUCE C3–C4 COMPLETADO |
+| continuidad | normal, corte 72 h, reconciliación ≤90 min y DR | A3/C3 | el equipo decide si requiere una vista separada |
 
 ## 5. Ejecución de la auditoría D3
 
@@ -82,11 +82,11 @@ Esta tabla gobierna la redacción. Si una fuente cambia, se actualiza primero su
 
 ### Puerta C — correspondencia visual
 
-- [ ] F1–F5 son legibles, propios del Caso 06 y usan IDs/nombres canónicos.
+- [ ] Los diagramas aprobados por el equipo son legibles, propios del Caso 06 y usan nombres comprensibles y consistentes.
 - [ ] Toda flecha tiene dirección y semántica.
 - [ ] Ningún producto sustituye un componente en F2.
 - [ ] Las dependencias externas no aparecen como instaladas o probadas.
-- [ ] F6 solo existe si agrega claridad demostrable.
+- [ ] Cada diagrama incluido agrega claridad demostrable y coincide con la redacción.
 
 ### Puerta D — datos, normativa y evidencia
 
@@ -123,7 +123,7 @@ D3 solo puede emitir uno de estos resultados después de ejecutar todas las puer
 - `APTO CON DEPENDENCIAS EXTERNAS TRATADAS`;
 - `NO APTO PARA INFORME 1`.
 
-No emitir veredicto mientras falten la redacción total, F1–F5 o el cruce de datos con Subdocumento 5.
+No emitir veredicto mientras falten la redacción editorial, los diagramas aprobados por el equipo o el ensamblado del T-11. El cruce de datos C3–C4 ya está completo como base de diseño.
 
 ## 8. Salidas de ejecución
 
@@ -138,9 +138,9 @@ No emitir veredicto mientras falten la redacción total, F1–F5 o el cruce de d
 |---|---|
 | contrato D3 | COMPLETO Y ALINEADO CON MA-7 |
 | mapa de llenado | 13/13 secciones con fuente, apoyo, recurso y control |
-| auditoría sobre documento final | NO EJECUTADA |
-| brechas de contenido restantes | redacción total, F1–F5 y cruce fino con Subdocumento 5 |
-| figura condicional | F6, solo por legibilidad |
+| auditoría sobre documento final | NO EJECUTADA; preparación mecánica sin errores |
+| brechas editoriales restantes | redacción natural, diagramas del equipo y ensamblado T-11 |
+| selección visual | pendiente de definición y aprobación por el equipo |
 | veredicto | NO EMITIDO |
 
 ## Trazabilidad

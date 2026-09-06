@@ -100,7 +100,7 @@ Por tanto, el estado correcto es **avance habilitado con dependencias registrada
 ## 5. Respuestas puntuales a las consultas enviadas
 
 - `CTX-REEFER`, `CTX-GATE`, `SRV-EVID`, `SRV-NOTIF`, `CTX-EMIS`, `CTX-YARD`, `DATA-TS` y `DATA-AN` son los IDs vigentes de trabajo del Maestro §6.1. Pueden usarse como provisionales hasta que A1 los congele.
-- `CTX-SIM` puede plantearse provisionalmente como componente analítico en nube, sin autoridad operacional y sin competir con la autonomía local de 72 horas. A1/C1 deben ratificar el componente y su emplazamiento posteriormente.
+- `CTX-SIM` puede plantearse **solo como candidato condicionado** a componente analítico en nube, sin autoridad operacional y sin competir con la autonomía local de 72 horas. No ingresa al catálogo A1, a los diagramas finales ni al T-11 hasta que A1/C1 lo ratifiquen y C4 justifique capacidad/licencia; esa ausencia no impide explicar IN-03 en el Informe 1.
 - El STRIDE de IN-01 o IN-03 corresponde a D2 si la innovación modifica la arquitectura de seguridad. En el Informe 1 basta con declarar esa dependencia; para elaborarlo después, Innovaciones deberá proporcionar activos, datos, interfaces y flujo propuesto.
 - La arquitectura exige que un tercero pueda descender desde un indicador hasta la transacción o evidencia de origen. Datos debe diseñar el linaje; Seguridad protege acceso, integridad y auditoría. La demostración final sigue pendiente.
 - IN-03 no agrega hardware de terreno. Solo deberá reflejarse en T-11 si finalmente se oferta cómputo, licencia o servicio cloud separado; C4 determinará capacidad y cantidad.
@@ -123,7 +123,7 @@ Si el equipo trabaja fuera del repositorio, se recomienda enviarle una **copia f
 
 ### Archivos que no deben usar como fuente vigente por sí solos
 
-- `90_Consolidado/00_CONTENIDO_FINAL_SUBDOCUMENTO_4.md`, porque es una plantilla de integración y no el estado completo del trabajo.
+- `90_Consolidado/00_BASE_TECNICA_SUBDOCUMENTO_4.md`, porque es una base de integración y no el estado completo del trabajo.
 - Entregables A1–A3, C1–C4 o D1–D3 sin revisar su estado, porque son documentos de trabajo y pueden contener propuestas aún no aprobadas.
 - Ramas `frente_1`, `frente_2` o `frente_3` como referencia permanente. Solo deben consultar un archivo de rama cuando su responsable publique explícitamente una versión de intercambio.
 - Conteos históricos de 138 RF o distribución 82/56.
