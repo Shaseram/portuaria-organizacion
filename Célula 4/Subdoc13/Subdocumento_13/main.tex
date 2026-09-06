@@ -1,0 +1,103 @@
+% ============================================================
+%  main.tex — Documento maestro
+%  Plantilla corporativa Terabyte para informes y entregables
+%  escritos (línea gráfica "técnica contemporánea").
+%
+%  Compilador: pdfLaTeX  (Overleaf: Menu > Compiler > pdfLaTeX)
+%  Estructura: este archivo NO contiene contenido; solo ensambla
+%  configuración (config/) + portada (portada/) + secciones
+%  (secciones/). El contenido de cada entrega se edita en
+%  secciones/, nunca aquí.
+% ============================================================
+\documentclass[11pt]{article} % cuerpo mínimo 11pt (Bases Administrativas)
+
+% ---------- Configuración base ----------
+\input{config/00-preambulo}
+\input{config/01-comandos}
+\input{portada/portada}
+
+% ============================================================
+%  METADATOS DE ESTA ENTREGA — editar en cada nuevo documento
+% ============================================================
+\establecerPortada
+  {Subdocumento 13 · Informe 1}                          % kicker superior
+  {Innovaciones}                                         % título principal
+  {Terminal Portuario Aconcagua S.A.}                    % subtítulo / cliente
+  {Versión 1.0}                                          % versión
+  {7 de septiembre de 2026}                              % fecha
+  {Propuesta Técnica --- Caso 06 Portuaria. Documento preparado por Terabyte.} % nota
+
+\establecertitulo{Caso 06 --- Portuaria · Informe 1 · Subdoc. 13} % texto pequeño del encabezado (der.)
+
+\hypersetup{
+  pdftitle={Subdocumento 13 --- Innovaciones --- Terminal Portuario Aconcagua S.A.},
+  pdfauthor={Terabyte},
+  pdfsubject={Caso 06 --- Portuaria, Informe 1, Subdocumento 13}
+}
+
+% ============================================================
+\begin{document}
+
+\portada
+
+% ---------- Páginas preliminares (numeración romana) ----------
+\pagenumbering{roman}
+
+\input{secciones/general/00-control-versiones}
+\clearpage
+
+\tableofcontents
+\clearpage
+% Este subdocumento no contiene figuras; \listoffigures queda desactivado
+% para no imprimir un índice vacío. Reactivar si se agregan diagramas.
+%\listoffigures
+\listoftables
+\clearpage
+
+\input{secciones/general/01-glosario}
+\clearpage
+
+\input{secciones/general/02-resumen-ejecutivo}
+\clearpage
+
+% ---------- Cuerpo del informe (numeración arábiga) ----------
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+% Cada subdocumento se entrega como PDF independiente (comunicado del
+% profesor, punto 6). En este proyecto solo se compila el Subdocumento 13.
+%\input{secciones/01-subdoc}\clearpage
+%\input{secciones/02-subdoc}\clearpage
+%\input{secciones/03-subdoc}\clearpage
+%\input{secciones/04-subdoc}\clearpage
+%\input{secciones/05-subdoc}\clearpage
+
+% El Subdocumento 13 debe numerarse "13" aunque sea la única sección:
+\setcounter{section}{12}
+\input{secciones/13-subdoc}\clearpage
+
+% Para reproducir saltos de numeración oficial (p. ej. el Informe 1
+% exige que la sección de innovaciones se numere "13" aunque sea la
+% sexta sección del documento), forzar el contador antes de \section:
+%
+%   \setcounter{section}{12}
+%   \input{secciones/05-innovaciones}
+
+% Este PDF es el Subdocumento 13 entregado por separado (comunicado del
+% profesor, punto 6). Las "Conclusiones del Informe 1" pertenecen al informe
+% consolidado, no a un subdocumento individual: quedan desactivadas.
+%\input{secciones/general/97-conclusiones}
+\input{secciones/general/98-referencias}
+
+% ---------- Anexos ----------
+% Los anexos A--K pertenecen al informe consolidado, no a este subdocumento.
+% Además, el Formulario T-19 completo se exige en la propuesta final y no en
+% el Informe 1, por lo que aquí no corresponde anexarlo. Bloque desactivado.
+%\clearpage
+%\appendix
+%\enanexotrue
+%\renewcommand{\thesection}{\Alph{section}}
+%\setcounter{section}{0}
+%\input{secciones/general/99-anexos}
+
+\end{document}

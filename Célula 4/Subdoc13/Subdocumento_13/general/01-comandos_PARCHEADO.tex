@@ -1,0 +1,214 @@
+% ============================================================
+%  01-comandos.tex
+%  Comandos y entornos propios de Terabyte para el protocolo
+%  documental del taller (instrucciones_llm.md): citas con fuente
+%  y pagina, etiquetado de contenido, y estructuras recurrentes.
+% ============================================================
+
+% ------------------------------------------------------------
+% 1) CITAS: CP (Bases Tecnicas del Caso), BA (Bases Administrativas),
+%    BTT (Bases Tecnicas Transversales)
+%    Uso:  \citaCP{12}          -> (CP, p. 12)
+%          \citaCP{12-14}       -> (CP, pp. 12-14)
+%          \cita{BTT}{45}       -> (BTT, p. 45)
+% ------------------------------------------------------------
+\newcommand{\cita}[2]{\textcolor{terabyteGris}{(#1, p.\,#2)}}
+\newcommand{\citaCP}[1]{\cita{CP}{#1}}
+\newcommand{\citaBA}[1]{\cita{BA}{#1}}
+\newcommand{\citaBTT}[1]{\cita{BTT}{#1}}
+
+% ------------------------------------------------------------
+% 2) ETIQUETAS DE CONTENIDO: Hecho / Propuesta de Terabyte /
+%    Supuesto / Duda. Se usan en linea, dentro del parrafo,
+%    para marcar la naturaleza de cada afirmacion.
+%    Uso: El sistema opera 24/7 \Hecho. Proponemos... \Propuesta.
+% ------------------------------------------------------------
+\newcommand{\EtiquetaBase}[2]{%
+  \textcolor{white}{\colorbox{#1}{\fuentekicker\scriptsize\bfseries\,#2\,}}%
+}
+\newcommand{\Hecho}{\EtiquetaBase{terabyteTeal}{HECHO}}
+\newcommand{\Propuesta}{\EtiquetaBase{terabyteAcentoOscuro}{PROPUESTA TERABYTE}}
+\newcommand{\Supuesto}{\EtiquetaBase{terabyteGris}{SUPUESTO}}
+\newcommand{\Duda}{\EtiquetaBase{terabyteFondo}{DUDA}}
+
+% Version en bloque (parrafo completo / bloque de analisis), con
+% barra lateral de color y encabezado. Usar cuando la marca aplica
+% a un bloque entero y no a una sola frase.
+\NewDocumentEnvironment{bloque}{m m}{%
+  % #1 = tipo (Hecho, Propuesta, Supuesto, Duda) #2 = color asociado
+  \begin{tcolorbox}[
+    enhanced, breakable,
+    colback=white, colframe=#2,
+    boxrule=0pt, leftrule=3pt,
+    arc=0pt, outer arc=0pt,
+    left=10pt, right=8pt, top=6pt, bottom=6pt,
+    before skip=8pt, after skip=8pt,
+    fonttitle=\fuentekicker\scriptsize\bfseries,
+    coltitle=#2,
+    colbacktitle=white,      % sin esto el titulo queda del color de su fondo
+    titlerule=0pt,
+    toptitle=2pt, bottomtitle=0pt,
+    title={#1}
+  ]
+}{%
+  \end{tcolorbox}
+}
+
+\NewDocumentEnvironment{bloqueHecho}{}{\begin{bloque}{HECHO}{terabyteTeal}}{\end{bloque}}
+\NewDocumentEnvironment{bloquePropuesta}{}{\begin{bloque}{PROPUESTA DE TERABYTE}{terabyteAcentoOscuro}}{\end{bloque}}
+\NewDocumentEnvironment{bloqueSupuesto}{}{\begin{bloque}{SUPUESTO}{terabyteGris}}{\end{bloque}}
+\NewDocumentEnvironment{bloqueDuda}{}{\begin{bloque}{DUDA}{terabyteFondo}}{\end{bloque}}
+% ------------------------------------------------------------
+% 3) ENUNCIADO DE RIESGO
+%    Estructura obligatoria: "Dado que... entonces puede que...
+%    teniendo como consecuencia..."
+%    Uso: \riesgo{<condicion/silencio>}{<evento incierto>}{<consecuencia>}
+% ------------------------------------------------------------
+\NewDocumentEnvironment{riesgo}{o}{%
+  \IfValueTF{#1}{%
+    \begin{tcolorbox}[
+      enhanced, breakable,
+      colback=terabyteCrema, colframe=terabyteAcento,
+      boxrule=0.6pt, arc=2pt,
+      left=10pt, right=10pt, top=7pt, bottom=7pt,
+      before skip=8pt, after skip=8pt,
+      fonttitle=\fuentekicker\scriptsize\bfseries,
+      coltitle=terabyteFondo,
+      colbacktitle=terabyteAcento!25,
+      title={RIESGO #1}
+    ]
+  }{%
+    \begin{tcolorbox}[
+      enhanced, breakable,
+      colback=terabyteCrema, colframe=terabyteAcento,
+      boxrule=0.6pt, arc=2pt,
+      left=10pt, right=10pt, top=7pt, bottom=7pt,
+      before skip=8pt, after skip=8pt
+    ]
+  }
+}{%
+  \end{tcolorbox}
+}
+
+\newcommand{\enuncioriesgo}[3]{%
+  \textbf{Dado que} #1, \textbf{entonces puede que} #2, \textbf{teniendo como consecuencia} #3.%
+}
+
+% ------------------------------------------------------------
+% 4) CONTROL DE VERSIONES
+%    Tabla estandar para la seccion formal "Control de versiones".
+%    Uso:
+%      \begin{controlversiones}
+%        1.0 & 24-08-2026 & F. Solis / F. Nombre & Version inicial \\
+%      \end{controlversiones}
+% ------------------------------------------------------------
+\newenvironment{controlversiones}{%
+  \begin{center}
+  \textotabla
+  \begin{tabular}{@{}p{1.6cm}p{2.2cm}p{4.0cm}p{\dimexpr\textwidth-1.6cm-2.2cm-4.0cm-8\tabcolsep\relax}@{}}
+    \toprule
+    \rowcolor{terabyteFondo}
+    \textcolor{white}{\bfseries Versión} &
+    \textcolor{white}{\bfseries Fecha} &
+    \textcolor{white}{\bfseries Responsable(s)} &
+    \textcolor{white}{\bfseries Cambios principales} \\
+    \midrule
+}{%
+    \bottomrule
+  \end{tabular}
+  \end{center}
+}
+
+% ------------------------------------------------------------
+% 5) TARJETAS NUMERADAS (equivalente a los bloques "01/02/03" de la
+%    linea grafica, utiles para resumenes de tres o cuatro puntos)
+%    Uso:
+%      \begin{tarjetas}{3}
+%        \tarjeta{Capacidad tecnica}{Descripcion breve.}
+%        \tarjeta{Experiencia comparable}{Descripcion breve.}
+%        \tarjeta{Equipo asignado}{Descripcion breve.}
+%      \end{tarjetas}
+% ------------------------------------------------------------
+\newcounter{tarjetaidx}
+\NewDocumentEnvironment{tarjetas}{m}{%
+  \setcounter{tarjetaidx}{0}%
+  \begin{center}
+  \renewcommand{\arraystretch}{1}%
+}{%
+  \end{center}
+}
+\newcommand{\tarjeta}[2]{%
+  \stepcounter{tarjetaidx}%
+  \begin{minipage}[t]{0.31\textwidth}
+    {\color{terabyteAcento}\rule{\linewidth}{2pt}}\\[4pt]
+    {\fuentekicker\scriptsize\color{terabyteAcentoOscuro}\arabic{tarjetaidx}\,/\,03}\\[2pt]
+    {\fuentetitulo\normalsize\color{terabyteFondo}#1}\\[4pt]
+    {\small\color{terabyteTextoCuerpo}#2}
+  \end{minipage}\hfill
+}
+
+% ------------------------------------------------------------
+% 6) TITULOS DE SECCION EN LINEA CON EL ESTILO CORPORATIVO
+% ------------------------------------------------------------
+\titleformat{\section}
+  {\fuentetitulo\Large\color{terabyteFondo}}
+  {\thesection.}{0.5em}{}
+  [\vspace{2pt}{\color{terabyteAcento}\titlerule[1.4pt]}]
+\titlespacing*{\section}{0pt}{22pt}{12pt}
+
+\titleformat{\subsection}
+  {\fuentetitulo\large\color{terabyteFondo}}
+  {\thesubsection}{0.6em}{}
+\titlespacing*{\subsection}{0pt}{16pt}{8pt}
+
+\titleformat{\subsubsection}
+  {\fuentetitulo\normalsize\color{terabyteAcentoOscuro}}
+  {\thesubsubsection}{0.6em}{}
+\titlespacing*{\subsubsection}{0pt}{12pt}{6pt}
+
+% "Kicker" de apertura de seccion (etiqueta pequena tipo
+% "02 · PROBLEMA Y NECESIDAD" vista en la portada/slides)
+\newcommand{\kicker}[1]{{\fuentekicker\small\color{terabyteAcentoOscuro}\MakeUppercase{#1}}\par\vspace{2pt}}
+
+% ------------------------------------------------------------
+% 7) ENCABEZADOS Y PIES DE PAGINA
+% ------------------------------------------------------------
+\newcommand{\nombreempresa}{Terabyte}
+\newcommand{\tituloactual}{}
+\newcommand{\establecertitulo}[1]{\renewcommand{\tituloactual}{#1}}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+\renewcommand{\headrule}{{\color{terabyteLineaClara}\hrule height\headrulewidth}}
+\fancyhead[L]{\fuentekicker\scriptsize\color{terabyteAcentoOscuro}\MakeUppercase{\leftmark}}
+\fancyhead[R]{\fuentekicker\scriptsize\color{terabyteGris}\tituloactual}
+\fancyfoot[C]{%
+  \begin{tikzpicture}[remember picture, overlay]
+    \fill[terabyteAcento] ([yshift=0.55cm]current page.south west) rectangle ([yshift=0.62cm]current page.south east);
+  \end{tikzpicture}%
+  \fuentekicker\scriptsize\color{terabyteGris}\thepage
+}
+
+\fancypagestyle{plain}{%
+  \fancyhf{}
+  \renewcommand{\headrulewidth}{0pt}
+  \fancyfoot[C]{%
+    \begin{tikzpicture}[remember picture, overlay]
+      \fill[terabyteAcento] ([yshift=0.55cm]current page.south west) rectangle ([yshift=0.62cm]current page.south east);
+    \end{tikzpicture}%
+    \fuentekicker\scriptsize\color{terabyteGris}\thepage
+  }
+}
+
+% \leftmark en formato prolijo: "01 · TITULO" en el cuerpo numerado,
+% "ANEXO A · TITULO" en los anexos (letras).
+\newif\ifenanexo
+\renewcommand{\sectionmark}[1]{%
+  \ifenanexo
+    \markboth{ANEXO~\thesection\ \textperiodcentered\ \MakeUppercase{#1}}{}%
+  \else
+    \markboth{\ifnum\value{section}<10 0\fi\thesection\ \textperiodcentered\ \MakeUppercase{#1}}{}%
+  \fi
+}

@@ -1,0 +1,746 @@
+% ============================================================
+%  secciones/13-subdoc.tex
+%  SUBDOCUMENTO 13 — INNOVACIONES
+%  Célula 4 (V. Guzmán / M. Reyes) — Informe 1, 7 de septiembre de 2026
+%
+%  NOTA SOBRE CITAS
+%  La plantilla ofrece \citaCP{p}, \citaBA{p} y \citaBTT{p}, que exigen
+%  el NÚMERO DE PÁGINA del PDF oficial. Este archivo cita por capítulo,
+%  artículo y código RT, que es la referencia estable y verificable que
+%  usa el equipo. Cuando se disponga de los PDF paginados, reemplazar
+%  cada cita textual por el comando correspondiente. NO inventar páginas.
+%
+%  NUMERACIÓN
+%  Esta sección debe numerarse como "13". En main.tex, antes del \input,
+%  debe ir:   \setcounter{section}{12}
+% ============================================================
+
+\section{Innovaciones}
+
+\kicker{Subdocumento 13}
+
+\noindent
+Terabyte presenta la cartera obligatoria de cinco innovaciones, una por cada
+tipo del Artículo 28\textdegree{} de las Bases Administrativas. Conforme al
+Formulario T-22, en este Informe 1 cada innovación se desarrolla en su idea,
+la tecnología que la sustenta, su alcance, su forma de implementación y su
+resultado esperado, y declara expresamente aquello que requiere investigación
+adicional.
+
+\subsection{Criterio de selección y coherencia con el caso}
+
+\subsubsection{Cómo se eligieron estas cinco y no otras}
+
+El Artículo 30.2 advierte que \enquote{una innovación de alta sofisticación
+técnica que no resuelva un problema real del caso obtendrá menor puntaje que
+una innovación sencilla, bien justificada y con impacto verificable}. Terabyte
+tomó esa advertencia como método de trabajo y no como recomendación. La cartera
+se construyó mediante un embudo de cuatro descartes sucesivos, aplicado en este
+orden.
+
+\paragraph*{Primer descarte: lo que las Bases prohíben expresamente.}
+El Artículo 30\textdegree{} y el Capítulo 26 de las Bases Técnicas
+Transversales coinciden en la misma exclusión: no se acepta como innovación una
+tecnología que ya constituye estándar de la industria, una tendencia sin diseño
+de incorporación, ni una funcionalidad exigida por las Bases Técnicas
+presentada como innovación. Este último criterio fue el más restrictivo.
+Terabyte contrastó cada candidata contra los 139 requerimientos funcionales y
+las 21 decisiones del alcance definido en el Subdocumento 3, uno por uno. El
+resultado fue que la mayor parte de las respuestas evidentes —sistema de citas,
+reconocimiento óptico del contenedor en el gate, asignación algorítmica de
+posición, alarmas de frío con escalamiento, mensajería EDIFACT, portal de
+autoservicio, cálculo de emisiones por contenedor, credencial temporal de
+eventuales— \textbf{ya son alcance obligatorio}, y presentarlas como innovación
+habría sido entregar al evaluador la causal de descarte.
+
+\paragraph*{Segundo descarte: las restricciones no negociables.}
+La Restricción N\textdegree{}~1 —ninguna solución puede aumentar la exposición
+de una persona al riesgo del patio— y la Restricción N\textdegree{}~11 —el área
+de tecnologías de información del CLIENTE son cinco personas— eliminan buena
+parte del catálogo tecnológico habitual de la industria: automatización de
+equipos de patio, vehículos guiados, realidad aumentada en cabina, inventario
+por vehículo aéreo. El gerente general dejó consignada en el acta del
+directorio la condición de que \enquote{cualquier solución que aumente la
+exposición al riesgo en el patio será rechazada, por buena que sea en todo lo
+demás} \Hecho.
+
+\paragraph*{Tercer descarte: las exclusiones explícitas del Capítulo 11.}
+Queda fuera toda innovación que suponga reemplazar el sistema de gestión
+empresarial, intervenir el control de las grúas de muelle, sustituir la
+videovigilancia, operar la báscula, electrificar la flota o ejecutar obra
+civil.
+
+\paragraph*{Cuarto filtro: anclaje a un hecho medido de este terminal.}
+Cada innovación que sobrevivió debe apuntar a una cifra del Capítulo 7 o a un
+vacío declarado del numeral 16.1. Una innovación que no pueda hacerlo no es
+pertinente a este caso, por buena que sea en abstracto.
+
+\subsubsection{Qué quedó después del embudo}
+
+Lo que sobrevive no son tecnologías: son cinco huecos entre lo que el caso
+exige como resultado y lo que los requerimientos cubren como conducta. Cada uno
+cae, además, en un tipo distinto del Artículo 28\textdegree{}, lo que permite
+componer la cartera obligatoria sin forzar ninguna pieza.
+
+\begin{table}[htbp]
+\centering
+\caption{Huecos identificados y su correspondencia con los tipos obligatorios}
+\label{tab:huecos}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.9cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{1.3cm}>{\raggedright\arraybackslash}p{2.9cm}@{}}
+\toprule
+\rowcolor{terabyteFondo}
+\textcolor{white}{\bfseries Hueco} &
+\textcolor{white}{\bfseries Enunciado} &
+\textcolor{white}{\bfseries ID} &
+\textcolor{white}{\bfseries Tipo Art. 28\textdegree{}} \\
+\midrule
+De destinatario &
+El sistema avisa hacia adentro y nunca hacia afuera. La alarma de frío llega al
+operador y al supervisor; nadie avisa al dueño de la carga &
+IN-01 & 1 · Producto o servicio \\
+\addlinespace
+De proceso &
+La cita existe, pero el proceso sigue suponiendo que el transportista controla
+cuándo estará lista la carga &
+IN-02 & 2 · Proceso \\
+\addlinespace
+De condición del terreno &
+No existe dónde ensayar un cambio. No es un indicador: es una restricción
+estructural, y ningún requerimiento la atiende &
+IN-03 & 3 · Tecnología o arquitectura \\
+\addlinespace
+Contractual &
+El CLIENTE compra el equipamiento, no tiene quién lo mantenga y su proveedor no
+comparte la consecuencia del indicador comprometido &
+IN-04 & 4 · Modelo de negocio \\
+\addlinespace
+De verbo &
+Los requerimientos dicen \emph{medir}. Ninguno dice \emph{reducir} &
+IN-05 & 5 · Sostenibilidad \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{bloquePropuesta}
+La cartera se construyó desde el problema hacia la tecnología, y no al revés.
+Ninguna de las cinco innovaciones de Terabyte es transferible a otro caso del
+llamado: cada una está anclada a un hecho de este terminal —el evento del 18 de
+febrero, el transportista que no controla cuándo estará lista su carga, el
+congelamiento estacional de cuatro meses y medio, las cinco personas de TI y la
+fecha de 2029 con el 34\,\% de los contenedores.
+\end{bloquePropuesta}
+
+\subsubsection{Diferencia entre innovación y funcionalidad obligatoria}
+
+El Artículo 30\textdegree{} de las Bases Administrativas y el Capítulo 26 de
+las Bases Técnicas Transversales prohíben lo mismo con la misma frase:
+\enquote{No se aceptará como innovación: la sola adopción de una tecnología que
+ya constituye estándar de la industria; la mención de una tendencia sin diseño
+de incorporación; ni una funcionalidad exigida por las Bases Técnicas
+presentada como innovación.}
+
+Terabyte aplicó ese filtro de forma verificable y declara aquí el resultado del
+contraste, requerimiento por requerimiento, para que la Comisión pueda
+comprobarlo.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{1.5cm}>{\raggedright\arraybackslash}p{3.1cm}>{\raggedright\arraybackslash}p{4.6cm}>{\raggedright\arraybackslash}p{6.2cm}@{}}
+\caption{Contraste de cada innovación contra el requerimiento obligatorio más
+próximo}\label{tab:nosolapamiento}\\
+\toprule
+\rowcolor{terabyteFondo}
+\textcolor{white}{\bfseries ID} &
+\textcolor{white}{\bfseries Requerimiento más próximo} &
+\textcolor{white}{\bfseries Qué obliga ese requerimiento} &
+\textcolor{white}{\bfseries Qué agrega la innovación} \\
+\midrule
+\endfirsthead
+\toprule
+\rowcolor{terabyteFondo}
+\textcolor{white}{\bfseries ID} &
+\textcolor{white}{\bfseries Requerimiento más próximo} &
+\textcolor{white}{\bfseries Qué obliga ese requerimiento} &
+\textcolor{white}{\bfseries Qué agrega la innovación} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+IN-01 & \texttt{RF-REF-08}, \texttt{RF-REF-11}, \texttt{RF-REF-12} &
+Notificar la alarma al operador de turno y a un supervisor de guardia; mantener
+la serie continua; permitir descargar la serie por autoservicio &
+El destinatario del aviso pasa a ser el dueño de la carga, que hoy no recibe
+nada; y la serie deja de ser un archivo descargable para convertirse en un
+certificado sellado, verificable por un tercero sin depender del terminal \\
+\addlinespace
+IN-02 & \texttt{RF-GAT-01}, \texttt{RF-GAT-02}, \texttt{RF-GAT-16}, Decisión
+N\textdegree{}~6 &
+Solicitar cita; priorizar a quien la cumple; limitar franjas por capacidad
+declarada; cola virtual que avisa al transportista cuando el terminal se atrasa &
+Incorpora al dueño de la carga como tercera parte de la cita y reprograma la
+franja automáticamente cuando confirma disponibilidad. Resuelve la mitad de la
+decisión pendiente N\textdegree{}~6 del numeral 16.1 que ninguna decisión
+resolvió \\
+\addlinespace
+IN-03 & \texttt{RF-NAV-05}, \texttt{RF-GAT-16} &
+Estimar la duración de la nave a partir de serie histórica; limitar franjas por
+capacidad declarada &
+Ningún requerimiento dice de dónde sale la capacidad declarada ni permite
+ensayar un cambio de política antes de aplicarlo en producción. No existe
+requerimiento de simulación en el catálogo \\
+\addlinespace
+IN-04 & Ninguno & --- &
+El catálogo no contiene ningún requerimiento sobre esquema contractual ni sobre
+modelo de servicio. IN-04 no compite con ningún requerimiento funcional \\
+\addlinespace
+IN-05 & \texttt{RF-EMI-01} a \texttt{RF-EMI-06} &
+Medir el consumo, calcular la emisión por contenedor, trazar el cálculo,
+acumular la serie y obtener el reporte verificado &
+Ningún requerimiento obliga a \emph{reducir}. IN-05 compromete una meta de
+intensidad y actúa sobre remociones evitadas, ralentí y asignación preferente
+de los dos equipos eléctricos existentes \\
+\end{longtable}
+
+\subsubsection{Coherencia conjunta de la cartera}
+
+Las cinco no son iniciativas sueltas: comparten infraestructura y se sostienen
+unas a otras.
+
+\begin{itemize}[leftmargin=*, itemsep=3pt]
+  \item \textbf{IN-03 alimenta a IN-02.} El gemelo produce la capacidad
+    declarada de franjas que exige \texttt{RF-GAT-16} y permite verificar,
+    antes de tocar el gate real, si la reprogramación a tres bandas mejora o
+    empeora la fila.
+  \item \textbf{IN-01 e IN-05 comparten la cadena de evidencia.} Ambas dependen
+    del servicio de evidencia y firma y de la trazabilidad hasta el dato de
+    origen; una la usa para temperatura, la otra para emisiones. El sellado se
+    construye una vez.
+  \item \textbf{IN-04 depende de que IN-02 e IN-05 sean medibles.} Un
+    compromiso de resultado solo es defendible si el indicador que lo verifica
+    lo produce el propio sistema de forma trazable y reproducible por un
+    tercero, que es lo que exige \texttt{RF-CON-11} y la Restricción
+    N\textdegree{}~14.
+  \item \textbf{Ninguna toca lo excluido.} Ninguna de las cinco interviene el
+    control de grúas de muelle, la emisión tributaria del sistema de gestión
+    empresarial, la videovigilancia ni la báscula.
+  \item \textbf{Ninguna añade interacción del operador en el patio.} La
+    Restricción N\textdegree{}~1 se respeta por diseño, no por declaración.
+\end{itemize}
+
+\subsubsection{Relación con las etapas y con el alcance}
+
+El reparto sigue el alcance definido en el Subdocumento 3 y el cronograma
+contractual obligatorio de 56 meses del Artículo 17\textdegree{} \Hecho.
+
+\begin{table}[htbp]
+\centering
+\caption{Materialización de la cartera en el cronograma contractual}
+\label{tab:etapas}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{4.3cm}>{\raggedright\arraybackslash}p{1.6cm}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\rowcolor{terabyteFondo}
+\textcolor{white}{\bfseries Fase contractual} &
+\textcolor{white}{\bfseries Meses} &
+\textcolor{white}{\bfseries Qué de la cartera ocurre allí} \\
+\midrule
+Etapa 1 · Desarrollo & 1 a 12 &
+IN-05 inicia captura de consumo desde el mes 1; el cálculo de intensidad existe
+aquí solo como prototipo y prevalidación. IN-03 v1 se construye entre los meses
+6 y 12. IN-02 se construye sobre el gate de Etapa 1 \\
+\addlinespace
+Etapa 1 · Marcha blanca & 13 a 15 &
+IN-02 se mide aquí, con lo que la propuesta satisface el \texttt{RT-26.08}
+deseable. IN-01 fase A opera con aviso por canal directo \\
+\addlinespace
+Etapa 1 · Producción & 16 &
+IN-04 entra en vigencia con la primera medición oficial \\
+\addlinespace
+Etapa 2 · Desarrollo & 13 a 18 &
+IN-01 fase B, certificado autenticado por portal. IN-03 v2 \\
+\addlinespace
+Etapa 2 · Marcha blanca & 19 a 20 & IN-01 fase B en convivencia \\
+\addlinespace
+Etapa 2 · Producción & 21 &
+IN-05 entra con motor de cálculo productivo y activa el término de reducción.
+IN-04 en régimen pleno \\
+\addlinespace
+Operación & 21 a 56 &
+Las cinco en régimen; IN-05 acumula la trayectoria que se presenta a la alianza
+naviera en 2029 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{bloqueSupuesto}
+La asignación de cada innovación a paquetes de la estructura de descomposición
+del trabajo y las fechas finas del cronograma se establecen en el Subdocumento
+7 y en el Formulario T-14, y se presentan en el Informe 2, conforme a la
+progresión que fija el Formulario T-22. Los meses indicados en el cuadro
+anterior son la hipótesis de trabajo anclada al Artículo 17\textdegree{}.
+\end{bloqueSupuesto}
+
+% ============================================================
+\subsection{Innovación de producto o servicio: cadena de frío certificada
+Aconcagua}
+% ============================================================
+
+\paragraph*{Idea.}
+Hoy, cuando una toma refrigerada falla, el terminal se avisa a sí mismo. El
+exportador cuya fruta está en esa toma no se entera. Y cuando la carga llega a
+destino, el terminal no puede entregar el registro continuo de temperatura que
+los mercados exigen como evidencia de cadena de frío: de las 2.400 tomas de
+conexión del patio refrigerado y de sus 26 tableros, ninguno tiene hoy
+instrumentación remota, y el control se hace mediante una ronda a pie con
+planilla cada cuatro horas \Hecho. La innovación convierte la instrumentación que el proyecto
+instalará de todos modos en un servicio con dos caras nuevas: el aviso llega al
+dueño de la carga en el momento en que ocurre la desviación, y la serie de
+temperatura se entrega como un certificado sellado que un tercero puede
+verificar por su cuenta, sin pedirle nada al terminal \Propuesta.
+
+\paragraph*{Tecnología que la sustenta.}
+Tres piezas, ninguna experimental. La cadena de eventos de temperatura por
+contenedor se sella mediante registro encadenado por función resumen, se firma
+electrónicamente y recibe sello de tiempo conforme a RFC~3161, de modo que la
+fecha y la integridad son demostrables sin acceso a los sistemas del terminal.
+La pertenencia de un registro individual a la serie sellada se demuestra
+mediante estructura de árbol de Merkle, siguiendo el patrón de registro
+auditable de RFC~6962, sin exponer el resto de la serie. El aviso externo viaja
+por los adaptadores de canal por audiencia que la solución ya contempla, con
+confirmación de recepción registrada. La firma reutiliza el servicio
+transversal que la solución ya construye para los cuatro actos obligatorios: no
+se agrega ninguna plataforma criptográfica nueva.
+
+\paragraph*{Alcance.}
+Cubre los contenedores refrigerados conectados a tomas instrumentadas. Se
+despliega en dos fases: primero el aviso proactivo por canal directo, y después
+el certificado descargable con usuario autenticado, porque el registro y la
+verificación de identidad de clientes externos pertenecen a la Etapa 2. No
+cubre la carga seca, ni la temperatura durante el transporte marítimo, ni
+sustituye el registro del propio equipo refrigerado del contenedor.
+
+\paragraph*{Forma de implementación.}
+Se apoya íntegramente en componentes que el alcance obligatorio ya construye:
+el contexto de reefer y telemetría genera el evento; el servicio de evidencia y
+firma lo sella; el servicio de notificaciones lo emite por el adaptador que
+corresponda a cada audiencia; el portal y la puerta de enlace de servicios
+entregan el certificado y exponen el punto público de verificación. Al abrir
+una nueva superficie de exposición externa, requiere modelado de amenazas
+propio conforme al \texttt{RT-26.07}, que se desarrolla en el Subdocumento 4.
+
+\paragraph*{Resultado esperado.}
+Que una desviación de temperatura llegue a alguien que tenga interés propio en
+que se resuelva, en cualquiera de los tres turnos: exactamente lo que faltó la
+madrugada del 18 de febrero de 2026, cuando la pérdida fue de US\$~620.000 en
+38 contenedores durante nueve horas \Hecho. Y que el terminal pueda ofrecer
+evidencia de cadena de frío como atributo de su servicio, en una operación
+donde entre enero y marzo se concentra el 62\,\% del volumen refrigerado del
+año. El Caso registra la consecuencia comercial de no tenerla en cuatro
+palabras: tras aquella pérdida, \enquote{el exportador no volvió}.
+
+\begin{bloqueDuda}
+\textbf{Investigación adicional declarada.} Requiere levantar, con al menos un
+exportador y una autoridad, qué formato de certificado es efectivamente
+aceptado en los mercados de destino de la fruta chilena. Sin esa validación, el
+certificado puede ser técnicamente correcto y comercialmente inútil. La meta
+del indicador se fijará una vez conocido ese formato.
+\end{bloqueDuda}
+
+% ============================================================
+\subsection{Innovación de proceso: cita convenida a tres bandas}
+% ============================================================
+
+\paragraph*{Idea.}
+Un sistema de citas para camiones ordena las llegadas, pero no cambia el hecho
+que las desordena. Lo dijo con todas sus letras el gerente general de una
+empresa de transporte terrestre cuyo 30\,\% de operación pasa por este
+terminal, en la entrevista de levantamiento:
+
+\begin{quote}
+\small
+\enquote{Yo no controlo cuándo está lista la carga. El packing me llama y me
+dice \enquote{ya, ven}. Si me dan una cita a las diez y la fruta está a las
+tres, la cita no sirve y voy a llegar igual a las tres. [\dots] si van a hacer
+citas, tienen que ser citas que se puedan cambiar y que consideren que la mitad
+de mi operación no depende de mí.}
+\end{quote}
+
+Pedirle una hora al transportista es pedirle una promesa que no depende de él,
+y el Caso dejó esa pregunta explícitamente sin resolver en su lista de
+decisiones pendientes. La innovación cambia el proceso de negocio: la cita deja
+de ser una solicitud del transportista y pasa a ser un acuerdo de tres partes
+—dueño de la carga, transportista y terminal— en el que la franja se puede
+cambiar sola, porque se reprograma automáticamente cuando el dueño de la carga
+confirma que la carga está efectivamente disponible \Propuesta. Es, literalmente,
+la cita que el transportista pidió.
+
+\paragraph*{Tecnología que la sustenta.}
+No es una tecnología nueva, y el Artículo 28\textdegree{} admite expresamente
+que una innovación de proceso lo sea. El modelo tiene cuatro movimientos: la
+reserva se asocia a una unidad de carga y no solo a una patente; el dueño de la
+carga confirma disponibilidad por el portal o por integración, y esa
+confirmación libera la franja; si la confirmación no llega dentro del plazo
+declarado, el sistema reprograma automáticamente a la siguiente franja
+compatible y notifica a las tres partes; la franja liberada se reasigna, de
+modo que la capacidad declarada del gate no se pierde.
+
+\paragraph*{Alcance.}
+Aplica a los movimientos de retiro y recepción coordinados con un dueño de
+carga identificable. No aplica a movimientos sin contraparte externa
+identificable, que siguen el flujo de cita simple. No introduce penalización, y
+esa decisión también viene de la entrevista: \enquote{Si me penalizan por no
+cumplir una cita que nunca pude cumplir, en dos semanas nadie va a usar el
+sistema.}
+
+\paragraph*{Forma de implementación.}
+El contexto de gate y citas incorpora el estado \enquote{franja condicionada a
+confirmación} y la regla de reprogramación; el portal expone la confirmación al
+dueño de la carga; el servicio de notificaciones avisa a las tres partes por
+los adaptadores ya previstos. Se suma un rol externo a la matriz de
+autorización del servicio de identidad. No modifica la arquitectura de
+seguridad.
+
+\paragraph*{Resultado esperado.}
+Atacar la estadía del camión —78 minutos contra los 45 comprometidos con el
+concedente, con tres semestres consecutivos sobre el umbral, y una fila que el
+12 de marzo de 2026 alcanzó 3,2 kilómetros y 140 camiones \Hecho— por una vía
+distinta de la que atacan los requerimientos obligatorios: en vez de acelerar
+la atención dentro del terminal, evitar que el camión salga a la ruta antes de
+que su carga esté lista. Es la innovación con la que Terabyte satisface el
+\texttt{RT-26.08}, que valora que al menos una sea verificable durante la
+marcha blanca de la Etapa 1, antes del mes 16.
+
+\begin{bloqueDuda}
+\textbf{Investigación adicional declarada.} La variante de tres partes con
+reprogramación automática no está documentada en la literatura arbitrada
+revisada; lo que sí está documentado es el mecanismo base de los sistemas de
+cita. Se declara como adaptación de una práctica madura a una condición no
+resuelta de este caso, y no como tecnología probada. Requiere además levantar
+con transportistas y exportadores el plazo realista de confirmación.
+\end{bloqueDuda}
+
+% ============================================================
+\subsection{Innovación tecnológica o de arquitectura: gemelo de operación del
+Terminal Aconcagua}
+% ============================================================
+
+\paragraph*{Idea.}
+En este terminal no existe dónde ensayar un cambio. Está prohibido intervenir
+entre el 15 de diciembre y el 30 de abril; está prohibido intervenir durante la
+atención de una nave y en las cuatro horas previas a una ventana confirmada,
+con 620 recaladas al año; el patio opera al 90\,\% en temporada y la operación
+es 24x7x365 sin ventana de detención \Hecho. En consecuencia, toda decisión
+operacional relevante se toma hoy sin poder probarla, y se prueba en producción
+con una nave amarrada. La innovación es un banco de decisiones fuera de línea:
+un modelo del terminal, calibrado con la telemetría que el propio proyecto
+instala, donde el cambio se ensaya antes de tocar la operación \Propuesta.
+
+\paragraph*{Tecnología que la sustenta.}
+Simulación de eventos discretos del ciclo completo —llegada de camión, gate,
+asignación de posición, movimiento de patio, tractocamión, grúa de muelle,
+ventana de nave— calibrada contra la telemetría real de equipos y los eventos
+de gate que la solución produce de todos modos. La calibración es lo que lo
+distingue de un modelo de escritorio: el gemelo se contrasta contra la
+operación observada y declara su error junto a cada resultado. En su versión
+comprometida no incorpora inteligencia artificial; si se incorporara, quedaría
+sujeta íntegramente al Capítulo 18 de las Bases Técnicas Transversales,
+conforme al \texttt{RT-26.06}.
+
+\paragraph*{Alcance.}
+Versión 1: gate y flujo del camión. Versión 2: patio, nave y planificación.
+Una restricción de alcance es parte de la innovación: \textbf{el gemelo no
+tiene autoridad operacional}. No expone ninguna interfaz de escritura hacia los
+contextos operacionales, no emite órdenes y su indisponibilidad no degrada
+ninguna función. Se despliega en nube y nunca en el borde, precisamente para no
+competir por la capacidad local que sostiene las cinco funciones críticas
+durante las 72 horas sin enlace.
+
+\paragraph*{Forma de implementación.}
+Componente nuevo, alimentado exclusivamente desde la capa analítica y desde las
+series temporales de telemetría. Se incorpora al catálogo de componentes del
+Subdocumento 4, con su emplazamiento justificado conforme al Artículo
+16\textdegree{}. La interdicción de escritura se verifica en la matriz de
+segregación de funciones del servicio de identidad, de modo que sea auditable y
+no una declaración.
+
+\paragraph*{Resultado esperado.}
+Tres cosas concretas. Que cada cambio de política de patio o de gate que hoy
+solo puede probarse con una nave amarrada pase a probarse en el modelo. Que la
+capacidad declarada que limita las franjas de cita —un parámetro que los
+requerimientos exigen pero cuyo origen ninguno define— tenga por fin un
+fundamento. Y que la pregunta del Caso sobre qué componente se satura primero
+en el peak y ante la eventual incorporación de un cuarto sitio entre 2030 y
+2032 se responda con un modelo en vez de con una opinión.
+
+\begin{bloqueDuda}
+\textbf{Investigación adicional declarada.} El nivel de madurez se declara como
+rango —TRL 6 a 7 en la escala ISO 16290:2013— y no como valor único, porque
+depende de la calidad de la calibración, que a su vez depende de
+instrumentación que hoy no existe: solo 12 de los 18 equipos de patio tienen
+terminal montada. La meta de error del gemelo no puede fijarse antes de conocer
+la densidad real de la telemetría instalada.
+\end{bloqueDuda}
+
+% ============================================================
+\subsection{Innovación de modelo de negocio o contratación: servicio gestionado
+del equipamiento de terreno}
+% ============================================================
+
+\paragraph*{Idea.}
+El caso plantea una asimetría que ningún requerimiento funcional puede
+resolver, porque no es técnica sino contractual. El CLIENTE compra el hardware
+pero no tiene quién lo mantenga: el proponente especifica qué comprar, el
+CLIENTE lo adquiere, y su área de tecnologías de información son cinco personas
+en un operador de importancia vital \Hecho. Ese equipamiento va además a un
+ambiente que lo destruye —atmósfera salina, corrosión acelerada, a menos de
+trescientos metros de la línea de costa—, y las Bases exigen que su plan de
+reposición esté costeado. La innovación es que Terabyte gestione el ciclo de
+vida completo de ese equipamiento como servicio, y que asuma un compromiso de
+resultado verificable sobre indicadores que hoy nadie garantiza \Propuesta.
+
+\paragraph*{Tecnología que la sustenta.}
+Contratación basada en desempeño, aplicada con dos componentes acoplados.
+Primero, un servicio gestionado de ciclo de vida del equipamiento de terreno:
+monitoreo de estado, mantención preventiva, reposición por corrosión e
+inventario de repuestos, sobre equipamiento que permanece en el patrimonio del
+CLIENTE. Segundo, un compromiso de resultado sobre indicadores que el propio
+sistema produce de forma trazable, con dos salvaguardas de diseño: ningún
+indicador comprometido puede calcularse con un dato que Terabyte produzca sin
+evidencia reproducible por un tercero, y el compromiso recae sobre lo que
+Terabyte controla.
+
+\paragraph*{Alcance, y su límite frente a las Bases.}
+El compromiso se refiere a indicadores que el Artículo 78\textdegree{} no
+cubre: disponibilidad del equipamiento de terreno instrumentado —tomas,
+tableros y equipos móviles— y continuidad de la instrumentación en ambiente
+marino. El Artículo 78\textdegree{} regula disponibilidad del servicio, tiempos
+de respuesta y resolución, tiempo medio de restauración, tasa de cambios
+fallidos, cumplimiento de los objetivos de punto y tiempo de recuperación,
+vulnerabilidades, reincidencia y satisfacción; no regula el equipamiento de
+terreno del CLIENTE.
+
+\begin{bloquePropuesta}
+\textbf{Declaración expresa de Terabyte.} Esta innovación \textbf{se suma} al
+régimen de niveles de servicio del Artículo 78\textdegree{}, a la medición del
+Artículo 79\textdegree{} y al régimen de multas del Artículo 80\textdegree{}, y
+\textbf{en ningún caso los reemplaza, los rebaja ni propone un esquema
+alternativo de pago, de multas o de topes}. Terabyte acepta íntegramente y sin
+reserva alguna el régimen contractual de las Bases.
+\end{bloquePropuesta}
+
+\paragraph*{Forma de implementación.}
+No es un componente de software. Su viabilidad descansa en la cadena de
+evidencia que la solución ya construye: el cálculo trazable de la estadía, la
+evidencia de alarma y confirmación de frío, la emisión trazable hasta el dato
+de origen y la producción trazable de los indicadores del concedente. La
+medición se realiza sobre la plataforma de observabilidad, cuyos datos el
+Artículo 79\textdegree{} ya obliga a poner a disposición del CLIENTE en tiempo
+real y de forma exportable.
+
+\paragraph*{Resultado esperado.}
+Que la Restricción N\textdegree{}~11 —\enquote{toda función que requiera un
+especialista dedicado que la compañía no tiene debe ofrecerse como servicio y
+estar costeada}— se cumpla en su letra y no en abstracto; que el plan de
+reposición del equipamiento en atmósfera marina que la Restricción
+N\textdegree{}~12 exige sea exigible a alguien; y que el proveedor comparta la
+consecuencia de un indicador que el terminal lleva tres semestres consecutivos
+incumpliendo ante su concedente.
+
+\begin{bloqueDuda}
+\textbf{Investigación adicional declarada.} Falta definir el conjunto exacto de
+indicadores comprometidos y el momento de activación, y falta resolver el
+problema de atribución: la estadía del camión depende de factores que Terabyte
+no controla —volumen comercial, ocupación del patio, comportamiento del
+transportista—, de modo que el compromiso debe recaer sobre indicadores de
+disponibilidad y de comportamiento del sistema, con un mecanismo declarado de
+exclusión por causas ajenas documentadas.
+\end{bloqueDuda}
+
+% ============================================================
+\subsection{Innovación de sostenibilidad: intensidad de carbono comprometida}
+% ============================================================
+
+\paragraph*{Idea.}
+La alianza naviera impuso tres condiciones para 2029, y una es el reporte
+verificado de emisiones \Hecho. El alcance obligatorio resuelve la mitad del
+problema: medir, calcular por contenedor, trazar hasta el dato de origen,
+acumular la serie y obtener el reporte verificado. Pero medir no es reducir. Lo
+que la alianza recibiría en 2029, si el proyecto solo cumple lo obligatorio, es
+una cifra sin trayectoria. La innovación es comprometer una meta de intensidad
+de carbono —kilogramos de CO\textsubscript{2} equivalente por contenedor
+movilizado— y reducirla con la misma metodología que el verificador va a
+auditar \Propuesta.
+
+\paragraph*{Tecnología que la sustenta.}
+La misma norma del reporte obligatorio, usada como instrumento de gestión y no
+solo de reporte: ISO 14083:2023 como norma de cuantificación, implementada
+operativamente mediante el GLEC Framework v3.2 y verificada por tercero
+acreditado bajo ISO 14064-3. Sobre esa base, tres palancas concretas:
+\emph{remociones evitadas} —cada remoción es un movimiento que quema
+combustible sin trasladar carga, y hoy son el 18\,\% de los movimientos de
+patio—; \emph{ralentí de tractocamiones}, derivado de la telemetría de consumo
+que la solución instala de todos modos en los 16 equipos diésel, sin sensor
+adicional; y \emph{asignación preferente de los dos equipos eléctricos
+existentes} a los ciclos de mayor intensidad de emisión.
+
+\paragraph*{Alcance.}
+Cubre las emisiones de alcance 1 y 2 atribuibles a los movimientos de
+contenedores dentro del terminal, con el alcance 3 explicitado. No electrifica
+la flota, respetando la exclusión expresa del Caso, y no compromete emisión
+absoluta sino intensidad por contenedor, precisamente para que la meta no
+dependa del volumen comercial, que el terminal no controla.
+
+\paragraph*{Forma de implementación.}
+El contexto de energía y emisiones incorpora el motor de intensidad y la
+trayectoria contra meta; el contexto de patio incorpora un término de
+puntuación de emisiones dentro del algoritmo de asignación que ya existe, con
+peso configurable y tope declarado. Dos restricciones de diseño son parte de la
+innovación: el término de emisiones nunca desplaza una restricción de
+seguridad, una regla de segregación de mercancías peligrosas ni una ventana de
+nave comprometida; y no agrega ninguna interacción del operador, con lo que la
+Restricción N\textdegree{}~1 se respeta por construcción.
+
+\paragraph*{Resultado esperado.}
+Que el terminal llegue a 2029 ante el 34\,\% de sus contenedores no con una
+cifra sino con una trayectoria de reducción verificada bajo la misma norma; que
+cada exportador y cada naviera reciban el dato de emisión atribuido a su
+embarque, utilizable en su propio inventario de alcance 3; y que las remociones
+evitadas y el ralentí eliminado se traduzcan en combustible no comprado.
+Responde además a la objeción que la gerenta comercial dejó registrada:
+\enquote{si empezamos la mensajería y las emisiones el 2028, no llegamos,
+porque un reporte de emisiones verificado necesita serie de datos previa.}
+
+\begin{bloqueDuda}
+\textbf{Investigación adicional declarada.} La captura de consumo comienza en
+el mes 1, pero el motor de cálculo productivo entra con la producción de la
+Etapa 2, en el mes 21; lo que exista antes es prototipo y prevalidación
+metodológica con el verificador, y así se declara. \textbf{La meta de reducción
+no puede fijarse hoy y no se finge que sí:} la línea base del Caso es literal,
+las emisiones por contenedor \enquote{no se miden}, y no existe porcentaje de
+reducción comprometible contra una línea base inexistente. Terabyte compromete,
+en su lugar, declarar la línea base como entregable verificable y fijar la meta
+en ese momento, con acuerdo del verificador acreditado. Falta además someter
+tempranamente al verificador el método de atribución del consumo al contenedor
+individual, que es el punto donde un verificador puede objetar.
+\end{bloqueDuda}
+
+% ============================================================
+\subsection{Trazabilidad conjunta de las innovaciones}
+% ============================================================
+
+\subsubsection{Resultados verificables esperados}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{1.3cm}>{\raggedright\arraybackslash}p{4.4cm}>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}p{6.1cm}@{}}
+\caption{Indicador de verificación y línea base por
+innovación}\label{tab:indicadores}\\
+\toprule
+\rowcolor{terabyteFondo}
+\textcolor{white}{\bfseries ID} &
+\textcolor{white}{\bfseries Indicador de verificación} &
+\textcolor{white}{\bfseries Línea base} &
+\textcolor{white}{\bfseries Momento de medición} \\
+\midrule
+\endfirsthead
+\toprule
+\rowcolor{terabyteFondo}
+\textcolor{white}{\bfseries ID} &
+\textcolor{white}{\bfseries Indicador de verificación} &
+\textcolor{white}{\bfseries Línea base} &
+\textcolor{white}{\bfseries Momento de medición} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+IN-01 &
+Embarques refrigerados con certificado emitido y verificable; tiempo entre la
+desviación y el aviso recibido por el dueño de la carga &
+Cero: hoy el dueño de la carga no recibe aviso alguno y no existe registro
+continuo entregable &
+Marcha blanca de Etapa 1 (fase A) y de Etapa 2 (fase B) \\
+\addlinespace
+IN-02 &
+Citas cumplidas dentro de ventana sobre citas otorgadas; reprogramaciones
+originadas por confirmación del dueño de la carga; estadía con cita convenida &
+Cero: no existe sistema de citas. Estadía general: 78 minutos &
+Semanal durante la marcha blanca de Etapa 1, meses 13 a 15 \\
+\addlinespace
+IN-03 &
+Error del gemelo contra la operación real en estadía y movimientos por hora;
+cambios de política ensayados antes de aplicarse &
+Cero: no existe capacidad de ensayo ni modelo de comparación &
+Calibración al cierre de desarrollo de Etapa 1; error medido en cada marcha
+blanca \\
+\addlinespace
+IN-04 &
+Indicadores comprometidos alcanzados en el período; disponibilidad del
+equipamiento de terreno gestionado &
+71\,\% de cumplimiento de ventana de atraque; tres semestres de estadía sobre
+umbral &
+Semestral, alineado al informe de indicadores al concedente \\
+\addlinespace
+IN-05 &
+Intensidad de carbono en kg CO\textsubscript{2}e por contenedor movilizado,
+conforme a ISO 14083:2023 &
+\textbf{No se mide} &
+Prototipo hacia el mes 12; motor productivo en el mes 21; verificación bajo
+ISO 14064-3 antes de 2029 \\
+\end{longtable}
+
+\begin{bloqueSupuesto}
+\textbf{Por qué cuatro metas quedan declaradas y no fijadas.} El Capítulo 18
+del Caso obliga al proponente a \enquote{proponer la meta cuando este documento
+no la fije}. Terabyte aplicó ese criterio con rigor en el Subdocumento 3,
+documentando meta por meta la evidencia que la sostiene e incluso la que le es
+adversa. Comprometer aquí cuatro metas sin ese mismo trabajo produciría números
+que no resistirían la defensa técnica. Conforme al Formulario T-22, esta
+propuesta declara la investigación pendiente antes que ofrecer una cifra que no
+puede sostener.
+\end{bloqueSupuesto}
+
+\subsubsection{Riesgos de adopción de la cartera}
+
+Además del riesgo propio de cada innovación, la cartera tiene tres riesgos
+comunes que conviene declarar juntos.
+
+\begin{riesgo}[R-INN-01]
+\enuncioriesgo{IN-01 e IN-02 requieren que un actor externo —el dueño de la
+carga— haga algo que hoy no hace, y su adopción no depende del
+ADJUDICATARIO}{la adopción se estanque en niveles bajos}{el beneficio
+diferenciador no se materialice, aunque el alcance obligatorio se cumpla
+igualmente}
+\end{riesgo}
+
+\begin{riesgo}[R-INN-02]
+\enuncioriesgo{cuatro de las cinco innovaciones se materializan en meses que el
+congelamiento estacional puede desplazar, y está prohibido intervenir entre el
+15 de diciembre y el 30 de abril, durante la atención de una nave y en las
+cuatro horas previas a una ventana confirmada}{una ventana de despliegue se
+pierda}{la verificación del beneficio se desplace a la temporada siguiente}
+\end{riesgo}
+
+\begin{riesgo}[R-INN-03]
+\enuncioriesgo{el Artículo 30.3 establece que las innovaciones comprometidas
+forman parte del alcance contractual y son exigibles como cualquier otro
+requerimiento}{una innovación no rinda lo esperado}{su omisión sea tratada como
+incumplimiento del alcance}
+\end{riesgo}
+
+\begin{bloquePropuesta}
+\textbf{Mitigación transversal.} Cada innovación de esta cartera declara un
+plan de contingencia que degrada a la funcionalidad obligatoria sin dejar un
+compromiso incumplido. \textbf{Ningún requerimiento obligatorio depende de
+ninguna de las cinco innovaciones}: si una no rinde, el alcance comprometido se
+cumple igualmente y solo se pierde el valor adicional.
+\end{bloquePropuesta}
+
+\subsubsection{Alcance de esta entrega}
+
+Conforme al Formulario T-22, en este Informe 1 las cinco innovaciones se
+presentan nombradas y desarrolladas en su idea, la tecnología que las sustenta,
+su alcance, su forma de implementación y su resultado esperado, y cada una
+declara expresamente aquello que requiere investigación adicional.
+
+El Formulario T-19 con los siete elementos del Artículo 29\textdegree{} se
+presenta con la propuesta final. El refinamiento del alcance trazable con la
+arquitectura y con la estructura de descomposición del trabajo corresponde al
+Informe 2, y la valorización de cada innovación en el flujo de caja
+—inversión, costo operacional y beneficio esperado— corresponde al Informe 3.
+Por esa razón, y conforme al Artículo 53\textdegree{} de las Bases
+Administrativas, \textbf{este subdocumento no contiene información económica}.

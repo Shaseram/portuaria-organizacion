@@ -1,0 +1,22 @@
+# B07 · IN-05 · Innovación de sostenibilidad
+
+> **Caso:** 06 Portuaria — TERABYTE · **Célula 4** · **Subdocumento 13 — Innovaciones**
+> **Responsable:** Matías Reyes · **Corte:** 2026-09-06 · **Estado:** APROBADO — texto de entrega
+> **Origen:** Numeral correspondiente del Subdocumento 13. Cubre los cinco ejes del Formulario T-22: idea, tecnología, alcance, forma de implementación y resultado esperado, más la declaración de investigación adicional.
+
+---
+
+#### 13.6 Innovación de sostenibilidad — Intensidad de carbono comprometida
+
+**Idea.** La alianza naviera impuso tres condiciones para 2029, y una es el reporte verificado de emisiones. El alcance obligatorio resuelve la mitad del problema: medir, calcular por contenedor, trazar hasta el dato de origen, acumular la serie y obtener el reporte verificado. **Pero medir no es reducir.** Lo que la alianza recibiría en 2029, si el proyecto solo cumple lo obligatorio, es una cifra sin trayectoria. La innovación es comprometer una **meta de intensidad de carbono** —kilogramos de CO₂ equivalente por contenedor movilizado— y reducirla con la misma metodología que el verificador va a auditar.
+
+**Tecnología que la sustenta.** La misma norma del reporte obligatorio, usada como instrumento de gestión y no solo de reporte: **ISO 14083:2023** como norma de cuantificación, implementada operativamente mediante el **GLEC Framework v3.2** y verificada por tercero acreditado bajo **ISO 14064-3**, que es la jerarquía normativa que el equipo ya adoptó. Sobre esa base, tres palancas concretas: **remociones evitadas** —cada remoción es un movimiento que quema combustible sin trasladar carga, y hoy son el 18 % de los movimientos de patio—; **ralentí de tractocamiones**, derivado de la telemetría de consumo que la solución instala de todos modos en los 16 equipos diésel, sin sensor adicional; y **asignación preferente de los dos equipos eléctricos existentes** a los ciclos de mayor intensidad de emisión.
+
+**Alcance.** Cubre las emisiones de alcance 1 y 2 atribuibles a los movimientos de contenedores dentro del terminal, con el alcance 3 explicitado. **No electrifica la flota**, respetando la exclusión expresa del Caso, y **no compromete emisión absoluta sino intensidad por contenedor**, precisamente para que la meta no dependa del volumen comercial, que el terminal no controla.
+
+**Forma de implementación.** El contexto de energía y emisiones incorpora el motor de intensidad y la trayectoria contra meta; el contexto de patio incorpora un **término de puntuación de emisiones dentro del algoritmo de asignación que ya existe**, con peso configurable y tope declarado. Dos restricciones de diseño son parte de la innovación: el término de emisiones **nunca desplaza** una restricción de seguridad, una regla de segregación de mercancías peligrosas ni una ventana de nave comprometida; y **no agrega ninguna interacción del operador**, con lo que la Restricción no negociable N° 1 se respeta por construcción y no por declaración.
+
+**Resultado esperado.** Que el terminal llegue a 2029 ante el 34 % de sus contenedores no con una cifra sino con una trayectoria de reducción verificada bajo la misma norma; que cada exportador y cada naviera reciban el dato de emisión atribuido a su embarque, utilizable en su propio inventario de alcance 3; y que las remociones evitadas y el ralentí eliminado se traduzcan en combustible no comprado. Responde además a la objeción que la gerenta comercial dejó registrada: *«si empezamos la mensajería y las emisiones el 2028, no llegamos, porque un reporte de emisiones verificado necesita serie de datos previa»*.
+
+**Investigación adicional declarada.** La captura de consumo comienza en el mes 1, pero **el motor de cálculo productivo entra con la producción de la Etapa 2, en el mes 21**; lo que exista antes es prototipo y prevalidación metodológica con el verificador, y así se declara. **La meta de reducción no puede fijarse hoy y no se finge que sí.** La línea base del Caso es literal: las emisiones por contenedor «no se miden». No existe porcentaje de reducción comprometible contra una línea base inexistente. Terabyte compromete, en su lugar, **declarar la línea base como entregable verificable y fijar la meta en ese momento, con acuerdo del verificador acreditado**. Falta además someter tempranamente al verificador el método de atribución del consumo al contenedor individual, que es el punto donde un verificador puede objetar.
+
