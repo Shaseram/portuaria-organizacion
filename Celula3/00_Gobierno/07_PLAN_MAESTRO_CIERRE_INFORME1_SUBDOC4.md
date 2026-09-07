@@ -6,7 +6,7 @@
 
 **Commit de referencia:** `4bd141b`
 
-**Estado:** MA-0..MA-8 completadas como análisis/preparación. P4 aprobada. Pendientes de producción: redacción total, F1–F5, cruce fino con Subdocumento 5 y ejecución del veredicto D3.
+**Estado:** MA-0..MA-8 completadas como análisis/preparación. Alineación C3–C4 y estructura de trece subsecciones aprobadas como base. Redacción editorial conjunta, diagramas del equipo, ensamblado T-11, D3 y maquetación pendientes.
 
 **Objetivo:** obtener un Subdocumento 4 coherente, trazable y proporcionado al Informe 1, con su T-11 completo, sin exigir evidencias de implantación ni decisiones que corresponden a entregas posteriores.
 
@@ -21,7 +21,7 @@
 | MA-6 — Artículo 4 | COMPLETADO | `11_MATRIZ_ARTICULO4_MA6.md` |
 | MA-7 — proyección editorial y figuras | COMPLETADO | `12_PROYECCION_EDITORIAL_Y_PLAN_DIAGRAMAS_MA7.md` |
 | MA-8 — preparación D3 y mapa de ensamblado | COMPLETADO COMO PREPARACIÓN | `13_PREPARACION_D3_Y_MAPA_ENSAMBLADO_MA8.md`; D3 no ejecutada |
-| producción final | PENDIENTE | redacción, F1–F5, `V-DATA-01`, ensamblado y maquetación |
+| producción final | EN CURSO | base técnica y `V-DATA-01` completadas; redacción editorial, diagramas del equipo, ensamblado T-11 y maquetación pendientes |
 | ejecución D3 | PENDIENTE DEL ARTEFACTO FINAL | trece controles, correcciones y veredicto |
 
 ## 0. Instrucción de uso para cualquier agente
@@ -175,7 +175,7 @@ Mantener los estados del Registro Global:
 | `Celula3/90_Consolidado/02_FORMULARIO_T11_FINAL.md` | completar exactamente las cinco columnas oficiales |
 | `Celula3/03_Frente_Seguridad_Consolidacion/D3_AUDITORIA_Y_CONSOLIDACION.md` | ejecutar como puerta final |
 | `Celula3/03_Frente_Seguridad_Consolidacion/trazabilidad/TRZ_D3.md` | completar evidencia de la puerta |
-| `Celula3/90_Consolidado/00_CONTENIDO_FINAL_SUBDOCUMENTO_4.md` | redactar la síntesis entregable al final |
+| `Celula3/90_Consolidado/00_BASE_TECNICA_SUBDOCUMENTO_4.md` | base técnica y destino de la síntesis entregable |
 
 No crear matrices paralelas si una existente puede convertirse en la fuente canónica.
 
@@ -501,7 +501,7 @@ No hacer diagramas repetidos por actor, catálogos de logos, 73 amenazas dibujad
 
 ### Puerta `P4 — PAUSA`
 
-**Estado:** APROBADA POR EL USUARIO. El índice, las cinco figuras obligatorias, la tabla de datos, las tablas publicables y la extensión quedan como baseline de producción. El detalle está en `12_PROYECCION_EDITORIAL_Y_PLAN_DIAGRAMAS_MA7.md`.
+**Estado corregido:** la estructura, la tabla de datos y las tablas publicables quedan como base de producción. El conjunto F1–F5 fue una recomendación de trabajo de MA-7, no una solicitud ni aprobación del usuario; sus bocetos están archivados y los diagramas definitivos quedan a decisión del equipo.
 
 ## `MA-8` — Preparación D3 y mapa de ensamblado
 
@@ -521,7 +521,7 @@ No hacer diagramas repetidos por actor, catálogos de logos, 73 amenazas dibujad
 
 ## Producción final y ejecución D3
 
-La producción final no es otro bloque de investigación. Consume las baselines cerradas y ejecuta, en este orden: redacción por secciones, F1–F5, cruce `V-DATA-01`, ensamblado T-11, auditoría D3, corrección y maquetación.
+La producción final no es otro bloque de investigación. Consume las baselines cerradas y ejecuta, en este orden: redacción conjunta por secciones, preparación de los diagramas que decida el equipo, conservación del cruce `V-DATA-01`, ensamblado T-11, auditoría D3, corrección y maquetación.
 
 ### Verificaciones
 
@@ -549,8 +549,8 @@ La producción final no es otro bloque de investigación. Consume las baselines 
 
 ### Trabajo de producción
 
-1. Redactar `00_CONTENIDO_FINAL_SUBDOCUMENTO_4.md` desde el mapa D3.
-2. Producir e incorporar F1–F5; activar F6 solo por legibilidad.
+1. Redactar `00_BASE_TECNICA_SUBDOCUMENTO_4.md` desde el mapa D3.
+2. Incorporar únicamente los diagramas definitivos que el equipo prepare y apruebe; los bocetos archivados no forman parte del entregable.
 3. Cruzar `V-DATA-01` con Subdocumento 5.
 4. Incorporar el T-11 final.
 5. Ejecutar D3 y aplicar sus correcciones.
@@ -583,7 +583,7 @@ Revisar manualmente cada coincidencia; una palabra como “pendiente” puede se
 | `P1` | después de MA-2 | audit final y hallazgos priorizados | corregir o decidir ADR |
 | `P2` | después de MA-4 | tabla ADR y baseline propuesta | completar T-11 definitivo |
 | `P3` | después de MA-5 | T-11 de trabajo y formulario final | diagramar |
-| `P4` | después de MA-7 | índice, tablas y figuras | APROBADA; habilita producción |
+| `P4` | después de MA-7 | índice y tablas; figuras como recomendación no vinculante | HABILITA REDACCIÓN; diagramas quedan a decisión del equipo |
 | `P5` | después de ejecutar D3 | veredicto sobre consolidado real | declarar entrega cerrada si no es apta |
 
 ## 8. Política de brechas y dependencias
@@ -646,11 +646,11 @@ MA-0–MA-8 y P1–P4 están cerrados. La continuación ya no consiste en abrir 
 
 | Paso | Acción | Salida verificable | Condición de cierre |
 |---|---|---|---|
-| `R1` | redactar las trece subsecciones desde el mapa D3 | `90_Consolidado/00_CONTENIDO_FINAL_SUBDOCUMENTO_4.md` autónomo | responde T-7/T-21/T-22 sin obligar a abrir A1–D2 |
-| `R2` | cruzar `V-DATA-01` con Subdocumento 5 | tabla de cuatro dominios coherente en autoridad, almacén, protección y retención | diferencias resueltas o condicionadas con dueño y efecto |
-| `R3` | producir F1–F5 con los contratos MA-7 | cinco figuras legibles y propias del Caso 06 | texto, IDs, AWS, 72 h, 8 h, ≤90 min y RTO/RPO coinciden; F6 solo si agrega claridad |
-| `R4` | ensamblar texto, tablas, figuras y T-11 | versión completa del Subdocumento 4 | T-11 conserva 32 filas, cinco columnas y cero precios |
+| `R1` | redactar conjuntamente las trece subsecciones desde el mapa D3 | `90_Consolidado/00_BASE_TECNICA_SUBDOCUMENTO_4.md` autónomo y en lenguaje natural | **HABILITADO**; base técnica preparada, redacción final pendiente |
+| `R2` | cruzar `V-DATA-01` con Subdocumento 5 | tabla de diez dominios coherente en autoridad, almacén, protección y retención | **COMPLETADO** |
+| `R3` | preparar los diagramas que el equipo defina | figuras legibles, propias del Caso 06 y aprobadas por el equipo | **PENDIENTE**; bocetos previos archivados y excluidos |
+| `R4` | ensamblar texto, tablas, diagramas aprobados y T-11 | versión completa del Subdocumento 4 | T-11 conserva 32 filas, cinco columnas y cero precios |
 | `R5` | ejecutar D3 y completar `TRZ_D3.md` | trece controles con evidencia, hallazgos y veredicto P5 | ninguna contradicción crítica/alta abierta; dependencias externas tratadas |
 | `R6` | corregir, congelar y verificar visualmente | versión final maquetada | referencias, numeración y páginas revisadas; veredicto apto |
 
-`R1` y la preparación visual de `R3` pueden avanzar en paralelo si trabajan agentes distintos, pero `R5` solo se ejecuta sobre una versión ensamblada exacta. El punto único de entrada y las reglas para continuar están en [`Celula3/README.md`](../README.md).
+`R1` y la preparación visual de `R3` pueden avanzar en paralelo dentro del equipo, pero `R5` solo se ejecuta sobre una versión ensamblada exacta. El punto único de entrada y las reglas para continuar están en [`Celula3/README.md`](../README.md).

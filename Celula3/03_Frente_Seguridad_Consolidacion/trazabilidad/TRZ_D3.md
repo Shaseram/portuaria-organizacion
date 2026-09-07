@@ -1,6 +1,6 @@
 # TRZ-D3 — Puerta final de auditoría y consolidación
 
-**Estado:** `TRAZA PREPARADA — CONTROLES NO EJECUTADOS`
+**Estado:** `TRAZA PREPARADA — BASE TÉCNICA LISTA; REDACCIÓN, DIAGRAMAS Y CONTROLES FINALES PENDIENTES`
 
 Esta traza separa la preparación del control de su resultado. `PREPARADO` significa que existe fuente, prueba y criterio; no significa que el Subdocumento 4 final ya haya sido auditado.
 
@@ -26,19 +26,19 @@ Esta traza separa la preparación del control de su resultado. `PREPARADO` signi
 
 | Destino | Fuente canónica | Traza fuente | Recurso | Estado de producción |
 |---|---|---|---|---|
-| 4.1.1 | A1 §§1–1.5 | `TRZ_A1.md` | F1 | TEXTO/FIGURA PENDIENTES |
-| 4.1.2 | A1 §§2–6 | `TRZ_A1.md` | F2 + `T-SD4-01` | TEXTO/FIGURA PENDIENTES |
-| 4.1.3 | A2 §§1–7 + A3 §§2–10 | `TRZ_A2.md`/`TRZ_A3.md` | F3 + `T-SD4-02` | TEXTO/FIGURA PENDIENTES |
-| 4.1.4 | D1 B1–B7 + D2 + A1/Subdoc. 5 | `TRZ_D1.md`/`TRZ_D2.md` | F5 + `V-DATA-01` | TEXTO/FIGURA/CRUCE PENDIENTES |
-| 4.1.5 | Registro ADR + MA-4/MA-6 | matriz global | `T-SD4-07/08` | TEXTO PENDIENTE |
-| 4.2.1 | C1 §§1–9 | `TRZ_C1.md` | F4 + `T-SD4-03` | TEXTO/FIGURA PENDIENTES |
-| 4.2.2 | C2 §§3–4 | `TRZ_C2.md` | `T-SD4-04` | TEXTO PENDIENTE |
-| 4.2.3 | C2 §§7–9 + C4 §§6/9/10 + D1 | `TRZ_C2.md`/`TRZ_C4.md`/`TRZ_D1.md` | resumen + T-11 | TEXTO PENDIENTE |
-| 4.2.4 | C2 §5 + C4 §6.2.bis | `TRZ_C2.md`/`TRZ_C4.md` | F4 + `T-SD4-05` | TEXTO/FIGURA PENDIENTES |
-| 4.2.5 | C2 §6 + C3 §9 | `TRZ_C2.md`/`TRZ_C3.md` | F4 | TEXTO/FIGURA PENDIENTES |
-| 4.2.6 | C3 §§2–12 + A3/D1 | `TRZ_C3.md`/`TRZ_A3.md`/`TRZ_D1.md` | F3/F5; F6 condicional | TEXTO/FIGURA PENDIENTES |
-| 4.2.7 | C4 §§3–10 | `TRZ_C4.md` | `T-SD4-06` | TEXTO PENDIENTE |
-| 4.2.8 | T-11 trazable/final | matriz global | formulario | CONTENIDO LISTO; MAQUETACIÓN PENDIENTE |
+| 4.1.1 | A1 §§1–1.5 | `TRZ_A1.md` | esquema por definir | BASE TÉCNICA LISTA; REDACCIÓN/DIAGRAMA PENDIENTES |
+| 4.1.2 | A1 §§2–6 | `TRZ_A1.md` | diagrama por definir + `T-SD4-01` | BASE TÉCNICA LISTA; REDACCIÓN/DIAGRAMA PENDIENTES |
+| 4.1.3 | A2 §§1–7 + A3 §§2–10 | `TRZ_A2.md`/`TRZ_A3.md` | diagrama por definir + `T-SD4-02` | BASE TÉCNICA LISTA; REDACCIÓN/DIAGRAMA PENDIENTES |
+| 4.1.4 | D1 B1–B7 + D2 + A1/Subdoc. 5 | `TRZ_D1.md`/`TRZ_D2.md` | diagrama por definir + `V-DATA-01` | BASE TÉCNICA/CRUCE LISTOS; REDACCIÓN/DIAGRAMA PENDIENTES |
+| 4.1.5 | Registro ADR + MA-4/MA-6 | matriz global | `T-SD4-07/08` | BASE TÉCNICA LISTA; REDACCIÓN PENDIENTE |
+| 4.2.1 | C1 §§1–9 | `TRZ_C1.md` | diagrama por definir + `T-SD4-03` | BASE TÉCNICA LISTA; REDACCIÓN/DIAGRAMA PENDIENTES |
+| 4.2.2 | C2 §§3–4 | `TRZ_C2.md` | `T-SD4-04` | BASE TÉCNICA LISTA; REDACCIÓN PENDIENTE |
+| 4.2.3 | C2 §§7–9 + C4 §§6/9/10 + D1 | `TRZ_C2.md`/`TRZ_C4.md`/`TRZ_D1.md` | resumen + T-11 | BASE TÉCNICA LISTA; REDACCIÓN/T-11 PENDIENTES |
+| 4.2.4 | C2 §5 + C4 §6.2.bis | `TRZ_C2.md`/`TRZ_C4.md` | diagrama por definir + `T-SD4-05` | BASE TÉCNICA LISTA; REDACCIÓN/DIAGRAMA PENDIENTES |
+| 4.2.5 | C2 §6 + C3 §9 | `TRZ_C2.md`/`TRZ_C3.md` | diagrama por definir | BASE TÉCNICA LISTA; REDACCIÓN/DIAGRAMA PENDIENTES |
+| 4.2.6 | C3 §§2–12 + A3/D1 | `TRZ_C3.md`/`TRZ_A3.md`/`TRZ_D1.md` | diagramas por definir | BASE TÉCNICA LISTA; REDACCIÓN/DIAGRAMAS PENDIENTES |
+| 4.2.7 | C4 §§3–10 | `TRZ_C4.md` | `T-SD4-06` | BASE TÉCNICA LISTA; REDACCIÓN PENDIENTE |
+| 4.2.8 | T-11 trazable/final | matriz global | formulario | CONTENIDO LISTO; ENSAMBLADO/MAQUETACIÓN PENDIENTES |
 
 ## 3. Registro de ejecución
 
@@ -51,7 +51,7 @@ Completar una fila por control cuando exista versión auditable del consolidado.
 ## 4. Regla de cierre
 
 - No convertir `PREPARADO` en `CUMPLE` por existencia del expediente.
-- No emitir veredicto sin consolidado redactado, F1–F5 y cruce `V-DATA-01`.
+- No emitir veredicto sin consolidado redactado, diagramas aprobados por el equipo, T-11 ensamblado y cruce `V-DATA-01` conservado.
 - Un hallazgo que cambie arquitectura se corrige en la fuente canónica y se propaga.
 - Un hallazgo solo editorial se corrige directamente en el consolidado.
 - El veredicto y el commit revisado deben quedar registrados en esta traza.

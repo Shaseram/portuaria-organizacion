@@ -80,4 +80,4 @@ Ningún documento de Frente 1 o Frente 2 fue modificado en ese bloque. Las cinco
 
 **Corte MA-7 (2026-09-06, histórico):** la publicación de D2 queda acotada: los 73 riesgos/amenazas y 26 SPOF permanecen como expediente, mientras el Subdocumento 4 publica la conclusión, los ADR ejecutivos y los límites de confianza en F5. F1–F5 son obligatorias, `V-DATA-01` cubre la vista de datos y F6 es condicional. Ningún riesgo se acepta, ningún SPOF se cierra y ningún ADR se aprueba. En ese corte P4 quedó activa.
 
-**Corte MA-8 (2026-09-06, vigente):** D3 y TRZ-D3 asignan D2 a 4.1.4/4.1.5 y a los controles de seguridad, ADR, dependencias y especificidad. Las matrices completas permanecen como evidencia, no como contenido a copiar. Estado: control preparado, no auditado; quedan redacción, F1–F5 y ejecución D3.
+**Corte MA-8 (2026-09-06, vigente):** D3 y TRZ-D3 asignan D2 a 4.1.4/4.1.5 y a los controles de seguridad, ADR, dependencias y especificidad. Las matrices completas permanecen como evidencia, no como contenido a copiar. Estado: control preparado, no auditado; quedan redacción editorial, diagramas del equipo, ensamblado y ejecución D3.

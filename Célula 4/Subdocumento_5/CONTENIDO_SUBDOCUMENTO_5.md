@@ -3,12 +3,7 @@
 **Caso:** 06 Portuaria — TERABYTE · **Célula 4** (V. Guzmán / M. Reyes)
 **Informe 1** · ponderación 11 % · versión 1.0 · 6 de septiembre de 2026
 
-> **Este archivo es una conversión de lectura del documento LaTeX, no la fuente.**
-> La fuente de verdad es el proyecto `Documento terabyte SubDoc 5`, que compila
-> con pdfLaTeX en 103 páginas. Esta versión en Markdown existe para leer, buscar
-> y citar el contenido sin compilar, y para que el resto del equipo pueda
-> revisarlo con las mismas herramientas que usa el material de las otras células.
-> Si hay discrepancia entre este archivo y el PDF, manda el PDF.
+> **Fuente canónica versionada para revisión y alineación.** El proyecto LaTeX citado por cortes anteriores no está presente en `main`; por eso este Markdown gobierna las correcciones hasta que exista una regeneración reproducible. El PDF de 103 páginas es un compilado del corte anterior y no prevalece sobre correcciones posteriores aquí registradas.
 
 ---
 
@@ -39,7 +34,7 @@ Cada apartado declara la estabilidad del respaldo documental disponible, no si e
 
 > **HECHO.** La línea base de Célula 2 utilizada es la posterior a las rondas de corrección del 5 de septiembre de 2026: **139 requerimientos funcionales, 91 requerimientos no funcionales, 11 reglas de negocio, 21 decisiones y 25 supuestos**, con reparto de 82 requerimientos en Etapa 1 y 57 en Etapa 2 (Célula 2 · cierre y anexos de segunda y tercera ronda). No se usa la línea base del 4 de septiembre (138 requerimientos funcionales y 84 no funcionales), que quedó superada.
 
-> **DUDA.** La entrega de Célula 3 (Subdocumento 4) **no está cerrada**: sus nueve secciones de contenido figuran como “pendiente de integrar” y sus decisiones de arquitectura están en estado candidato. Todo lo que este subdocumento apoya en Célula 3 queda marcado como provisional, con su riesgo de cambio declarado en el Anexo F. Ninguna de esas afirmaciones se presenta como hecho confirmado.
+> **ESTADO DEL CRUCE C3–C4.** La baseline de Célula 3 fue recibida para diseño I1: arquitectura híbrida, AWS normal, autoridad local durante corte, cuatro capacidades de datos, productos de referencia, capacidad e integración. Sus ADR siguen `PROPUESTO` y las pruebas, contratos reales, site survey y aceptaciones continúan condicionados; esa condición no convierte en ausente el diseño recibido.
 
 ### Resumen de estados por apartado
 
@@ -51,7 +46,7 @@ Cada apartado declara la estabilidad del respaldo documental disponible, no si e
 | 5.5     | Transaccionalidad, consistencia y disponibilidad  | completado     |
 | 5.6     | Separación transaccional, temporal y analítica    | completado     |
 | 5.7     | Telemetría y frecuencia de muestreo               | completado     |
-| 5.8     | Integración e interoperabilidad de datos          | pendiente — C3 |
+| 5.8     | Integración e interoperabilidad de datos          | completado para diseño I1; contratos externos condicionados |
 | 5.9     | Migración, saneamiento, validación y conciliación | completado     |
 | 5.10    | Estrategia de desempeño de datos                  | completado     |
 | 5.11    | Calidad ISO/IEC 25012, auditoría y trazabilidad   | completado     |
@@ -61,7 +56,7 @@ Cada apartado declara la estabilidad del respaldo documental disponible, no si e
 
 *Tabla. Estado del respaldo documental por apartado del Subdocumento 5.*
 
-**Doce apartados completados y uno pendiente** por información de Célula 3 — los contratos de integración, que no se completan por cuenta propia. Los ocho pendientes propios de Célula 4 declarados en la versión 0.9 quedan cerrados en esta versión, con **veintiuna decisiones** registradas y **veinte dependencias** trazadas a su célula responsable. Las trece materias del checklist oficial quedan cubiertas.
+**Trece apartados cubiertos para diseño I1.** Los contratos reales de integración no se completan por cuenta propia: permanecen `POR LEVANTAR` o `BLOQUEADO EXTERNO` por contraparte, con fallback declarado. Los ocho pendientes propios de Célula 4 quedan cerrados en esta versión, con **veintiuna decisiones** registradas y dependencias trazadas a su responsable.
 
 ## Dominios de información y entidades principales
 
@@ -148,7 +143,7 @@ Se compararon **trece alternativas** sobre siete criterios ponderados, cuya pond
 
 | **Familia**        | **Paradigma recomendado**                                 | **Ponderado** |
 |:-----------------------|:--------------------------------------------------------------|:------------------|
-| Estado operacional     | relacional, primario en el borde con réplica a la nube        | 4,30              |
+| Estado operacional     | relacional gestionado en AWS, con autoridad local durante el corte | 4,80           |
 | Series temporales      | relacional con extensión temporal, sobre el mismo motor       | 4,70              |
 | Documentos y evidencia | almacenamiento de objetos con índice y sello en el relacional | 5,00              |
 | Analítica              | réplica de solo lectura con modelo semántico documentado      | 4,50              |
@@ -156,17 +151,19 @@ Se compararon **trece alternativas** sobre siete criterios ponderados, cuya pond
 
 *Tabla. Recomendación de paradigma por familia de persistencia.*
 
-> **PROPUESTA DE TERABYTE.** **Dos motores, no cinco.** Las familias de estado operacional, series temporales y analítica se consolidan sobre un mismo motor relacional — una instancia primaria, una extensión temporal y una réplica de lectura —, y las de documentos e histórico sobre almacenamiento de objetos. Es la configuración que satisface (BTT, Cap. 5, RT-05.02 — paradigma y motor) y (BTT, Cap. 5, RT-05.05 — separación transaccional y analítica) con la menor superficie operacional posible, que es lo que la restricción no negociable N..º 11 — cinco personas en tecnologías de información — obliga a tratar como criterio de diseño.
+> **PROPUESTA DE TERABYTE.** **Dos familias de motor, no cinco productos.** Estado operacional, series temporales y explotación relacional se apoyan en PostgreSQL —instancia gestionada normal en AWS, instancia local para continuidad, extensión temporal y réplica/vista analítica—; documentos e histórico se apoyan en almacenamiento de objetos. La separación funcional no multiplica productos y satisface (BTT, Cap. 5, RT-05.02 — paradigma y motor) y (BTT, Cap. 5, RT-05.05 — separación transaccional y analítica).
 
-> **HECHO.** La autonomía de 72 horas **no es un criterio ponderable sino de admisibilidad**. La alternativa con el primario en nube gestionada puntúa 4,00 frente a 4,30 de la elegida, una diferencia estrecha; pero situar el primario fuera del recinto incumple la restricción no negociable N..º 4 y se evalúa como falta de comprensión del caso, cualquiera sea su mérito en el resto de los criterios.
+> **PROPUESTA ALINEADA CON CÉLULA 3.** La autonomía de 72 horas **es una condición de admisibilidad**, pero no obliga a mantener el primario permanentemente en el borde. La satisface la arquitectura híbrida MA8: AWS conserva la carga principal y el registro consolidado en operación normal, mientras el núcleo local mantiene el estado crítico caliente y asume temporalmente la autoridad de escritura durante el corte. Una solución cloud sin esa ruta local completa sí incumpliría.
 
 ### Restricción que condiciona toda la sección
 
-Ninguna familia crítica puede depender de la nube para registrar. El caso exige un mínimo de **72 horas continuas** de operación completa del terminal sin enlace hacia el exterior — atención de nave, registro de movimientos, entrada y salida por gate, control del patio refrigerado y registro de hechos facturables — y que las terminales de los equipos de patio sostengan **8 horas continuas** fuera de cobertura inalámbrica sin pérdida de registro (CP, Cap. 15, RT-03.10 — operación desconectada del componente on-premise). Esa exigencia es anterior a cualquier elección de motor y la condiciona.
+Ninguna familia crítica puede depender **exclusivamente** de la nube para registrar. El caso exige un mínimo de **72 horas continuas** de operación completa del terminal sin enlace hacia el exterior — atención de nave, registro de movimientos, entrada y salida por gate, control del patio refrigerado y registro de hechos facturables — y que las terminales de los equipos de patio sostengan **8 horas continuas** fuera de cobertura inalámbrica sin pérdida de registro (CP, Cap. 15, RT-03.10 — operación desconectada del componente on-premise). Esa exigencia condiciona la réplica operacional y la transferencia de autoridad, no la ubicación del registro consolidado durante operación normal.
 
-> **SUPUESTO.** Se asume que la capa de datos se descompone en almacenamiento operacional, de series temporales, documental y analítico, según el catálogo lógico inicial de Célula 3 (Célula 3 · maestro de contexto de arquitectura, §6 y §6.1 · PROVISIONAL). Ese catálogo se declara a sí mismo “inicial” y refinable. Si Célula 3 fusiona o renombra esos componentes, debe rehacerse la matriz de familias de este apartado, la separación de almacenamientos del §5.6 y el mapeo de cada entidad a su almacén en el diccionario del §5.14.
+> **BASELINE RECIBIDA DE CÉLULA 3.** La capa de datos mantiene cuatro capacidades lógicas: `DATA-CORE`, `DATA-TS`, `DATA-DOC` y `DATA-AN`. Este subdocumento conserva el detalle por familia y no redefine esos límites.
 
-> **DUDA.** La recomendación de motor por familia y la comparación de alternativas **no están cerradas** en esta versión, y no deben cerrarse antes de conocer el emplazamiento. Este subdocumento entrega la necesidad y la preferencia técnica; la elección de producto, versión y emplazamiento corresponde a la arquitectura física de Célula 3, hoy en estado candidato. No se nombra ningún producto comercial en esta versión: hacerlo antes de la comparación sería una decisión tomada por omisión, que es exactamente lo que el caso sanciona.
+> **CONVENCIÓN DE IMPLEMENTACIÓN.** Son cuatro capacidades lógicas, no cuatro productos: `DATA-CORE`, `DATA-TS` y la explotación de `DATA-AN` se apoyan en la familia PostgreSQL; `DATA-DOC` y el histórico retenido, en almacenamiento de objetos. Así se mantienen dos familias de motor y se evita confundir separación funcional con proliferación tecnológica.
+
+> **ESTADO.** Célula 3 cerró para I1 el proveedor, las regiones, los productos de referencia y el emplazamiento en estado `PROPUESTO`: RDS for PostgreSQL Multi-AZ en AWS y PostgreSQL local. La versión mayor se congela por soporte al cierre de la oferta; las pruebas de latencia, transferencia de autoridad y reconciliación siguen condicionadas.
 
 ## Transaccionalidad, consistencia y disponibilidad
 
@@ -310,7 +307,7 @@ Se adopta el modelo de dos capas ya decidido por Célula 2 (Célula 2 · Decisi
 
 ## Integración e interoperabilidad de datos
 
-**Estado: PendienteTres**
+**Estado: Completado para diseño I1; contratos externos condicionados**
 
 ### Lo que ya está cerrado
 
@@ -334,7 +331,7 @@ Documentación de servicios síncronos en OpenAPI 3.1 y de flujos dirigidos por 
 
 En cuanto a estándares sectoriales, el caso exige mensajería marítima estándar con, al menos, plano de estiba, orden de embarque, confirmación de descarga y de carga y notificación de movimiento de contenedor; norma internacional de codificación e identificación de contenedores; y estándares aplicables al intercambio con las autoridades aduanera y fitosanitaria, **identificando cada estándar por su denominación y acreditando la factibilidad de su adopción con las 14 navieras** (CP, Cap. 15, RT-05.23 — estándares sectoriales de intercambio). La correspondencia entre mensaje y evento ya está corregida: la confirmación de carga y descarga corresponde a los movimientos de nave y la notificación de movimiento al gate y la custodia; y no se presume un sobre de red por cada movimiento, porque el agrupamiento depende del contrato de cada naviera (Célula 2 · corrección de mensajería).
 
-> **DUDA.** **Lo que falta y por qué no se completa aquí.** Los contratos, eventos, versiones, claves de idempotencia y el mecanismo de captura de cambios contra el sistema de 2012 figuran como “por detallar” y “por levantar” en el entregable de arquitectura de integración de Célula 3, y la decisión de arquitectura sobre el mecanismo de integración y eventos está en estado candidato (Célula 3 · arquitectura de integración y registro de decisiones · PROVISIONAL). Además, los contratos del sistema de 2012, la videovigilancia, las autoridades, el ferrocarril, la radio, las grúas y los periféricos permanecen como escalamiento abierto. No se inventa ninguna interfaz de programación, protocolo, versión ni disponibilidad de terceros: el vacío se declara y se acompaña de la consulta correspondiente en el Anexo G.
+> **BASELINE RECIBIDA DE A2.** El patrón está definido: `INT-HUB` persistente, `INT-TOS` como capa anticorrupción, OpenAPI/AsyncAPI contract-first, correlación, entrega al menos una vez, orden por agregado, idempotencia, deduplicación, DLQ/replay, timeout, breaker y fallback. El catálogo A2 identifica 21 contrapartes y 7 familias. Lo que permanece `POR LEVANTAR` o `BLOQUEADO EXTERNO` es cada contrato real —en especial TOS/CDC, ferrocarril, autoridades, grúas, instrumentación y versiones por naviera—; no se inventa interfaz, versión ni disponibilidad de terceros.
 
 ## Migración, saneamiento, validación y conciliación
 
@@ -413,7 +410,7 @@ La estrategia se deriva del catálogo de operaciones críticas y sus claves de a
 
 ### Primer cuello de botella
 
-(BTT, Cap. 9, RT-09.05 — identificación del cuello de botella) obliga a declarar cuál componente saturará primero al crecer la carga. Contrastado contra el crecimiento de tres veces la volumetría que exige (BTT, Cap. 9, RT-09.03 — crecimiento sin rediseño), el núcleo transaccional pasa de 0,23 a 0,7 transacciones por segundo y la ingesta al núcleo de 7,2 a 21,6 eventos por segundo: ambos absorbibles. **El que se estrecha es la ventana de sincronización posterior a la operación desconectada**, que pasa de exigir 19,3 Mbps sostenidos a exigir $\approx$ 58 Mbps, porque el plazo de 90 minutos es fijo por contrato y el volumen crece con la operación. Su componente dominante son las imágenes de reconocimiento: 11,2 de los 13 GB actuales.
+(BTT, Cap. 9, RT-09.05 — identificación del cuello de botella) obliga a declarar cuál componente saturará primero al crecer la carga. El núcleo transaccional y la ingesta siguen siendo absorbibles; **el que se estrecha es el enlace durante la sincronización posterior a la operación desconectada**. La baseline I1 a peak estacional exige 32,5 Mbps sostenidos y justifica dos caminos de al menos 35 Mbps disponibles. El escenario futuro 3× de Célula 4 exige 57,8 Mbps y activa una ampliación cercana a 58 Mbps. La sensibilidad de imágenes de 1 MB llega a una cifra parecida por otra causa y no debe confundirse con crecimiento 3×.
 
 > **DUDA.** La detección debe ser anticipada por una razón de calendario y no de ingeniería: la restricción no negociable N..º 9 prohíbe intervenir entre el 15 de diciembre y el 30 de abril, y el peak estacional cae precisamente ahí. Toda holgura debe estar instalada y verificada **antes del 15 de diciembre**; una alerta que se dispara en enero no se puede atender hasta mayo.
 
@@ -421,9 +418,9 @@ La estrategia se deriva del catálogo de operaciones críticas y sus claves de a
 
 ### Primer cuello de botella
 
-Las bases exigen identificar el componente que primero se convertirá en cuello de botella al crecer la carga, y explicar cómo se detectará y cómo se resolverá (BTT, Cap. 9, RT-09.05 — identificación del cuello de botella). Para la capa de datos de este caso, el candidato **no es la carga transaccional**: el régimen normal se estima en $\approx$ 0,11 transacciones de negocio por segundo y el peak de coincidencia en $\approx$ 0,23, frente a $\approx$ 37 eventos por segundo de posicionamiento de equipos y $\approx$ 36 eventos por segundo de telemetría reefer en el borde. El primer cuello de botella es la **ingesta de series temporales y su ventana de escritura**, y el mecanismo de crecimiento pasa por la agregación en el borde antes que por ampliar el núcleo \[PROPUESTA TERABYTE\].
+Las bases exigen identificar el componente que primero se convertirá en cuello de botella al crecer la carga, y explicar cómo se detectará y cómo se resolverá (BTT, Cap. 9, RT-09.05). La ingesta de series sigue siendo un **riesgo secundario que se controla con agregación local y medición**, pero el cálculo corregido muestra que el primer margen que se agota es el enlace durante la reposición: el transaccional y la ingesta al núcleo permanecen absorbibles incluso a 3×, mientras el envío de 39 GB en 90 minutos exige 57,8 Mbps. El cuello vigente es por tanto la **ventana de sincronización**, no la ingesta.
 
-> **DUDA.** Tres dependencias impiden cerrar la configuración final: las métricas reales del motor y su topología; la capacidad por nodo, réplicas y holgura; y la latencia de red y de borde. Todas corresponden a la arquitectura física de Célula 3. Existe además una dependencia cruzada con seguridad: el cifrado a nivel de campo exigido para datos personales, información comercial sensible y datos que permitan inferir el contenido de valor o la ruta de un contenedor (CP, Cap. 15, RT-11.10 — cifrado a nivel de campo) **restringe qué atributos pueden usarse como clave de búsqueda indexada**. Se requiere respuesta escrita de Célula 3 antes de comprometer índices sobre esos campos.
+> **CONDICIONES DE CIERRE.** Las métricas reales del motor, la capacidad por nodo y la latencia de red/borde permanecen sujetas a prueba. Para los ocho campos sensibles que además son claves de búsqueda, Célula 3 respondió en D1 B4.3 con cifrado aleatorio más token de igualdad protegido, identificador sustituto opaco o consulta dentro del servicio propietario. No se adopta cifrado determinista directo; los índices se comprometen solo tras medir fuga, latencia, rotación y continuidad local.
 
 ## Calidad de datos, auditoría y trazabilidad
 
@@ -530,8 +527,8 @@ Las dieciocho dimensiones del numeral 14.2 del caso deben completarse con valor,
 | Series temporales de carga refrigerada                            | $\approx$ 68 GB/año ($\approx$ 340 GB a 5 años) | $\approx$ 82 GB/año       |
 | Imágenes de reconocimiento de contenedor y patente                | $\approx$ 1,4 TB/año                            | $\approx$ 1,6 TB/año      |
 | Histórico a migrar desde el sistema de 2012                       | $\approx$ 480 GB (orden de magnitud)            | por confirmar             |
-| Datos generados en 72 horas sin enlace                            | $\approx$ 13 GB                                 | $+$<!-- -->15 a 20 %      |
-| Transferencia sostenida implicada por la sincronización           | $\approx$ 19,3 Mbps para cumplir los 90 min     | igual                     |
+| Datos generados en 72 horas sin enlace                            | 13,7 GB promedio; **21,9 GB peak estacional**   | baseline I1; 39 GB es escenario futuro 3× |
+| Transferencia sostenida implicada por la sincronización           | 20,3 Mbps promedio; **32,5 Mbps peak**           | WAN I1 ≥35 Mbps; crecimiento 3× activa ≈58 Mbps |
 
 *Tabla. Volumetría de sistema relevante para el modelo y la gestión de datos.*
 
@@ -551,7 +548,7 @@ El volumen anual no basta para dimensionar: (CP, Cap. 15, RT-05.10 — retenció
 
 *Tabla. Capacidad acumulada por escenario y modo de acceso.*
 
-> **HECHO.** El orden de magnitud es el hallazgo: la solución completa, a diez años y crecida al triple, se dimensiona en **decenas de terabytes, no en centenas**. La capacidad no es el factor que decide el emplazamiento ni el costo dominante de infraestructura. Lo que decide es la latencia de un segundo, la autonomía de 72 horas y la ventana de sincronización. El motor que sostiene las 78 entidades relacionales y las veinte invariantes son **180 GB en línea** en el escenario de diseño, y cabe holgadamente en el nodo del borde.
+> **HECHO.** El orden de magnitud es el hallazgo: la solución completa, a diez años y crecida al triple, se dimensiona en **decenas de terabytes, no en centenas**. La capacidad no decide el emplazamiento. El grafo de 78 entidades relacionales requiere **180 GB en línea** en el escenario futuro C4; la capacidad local C3 del orden de 1 TB lo contiene como estado crítico/hot durante continuidad, sin convertir al borde en repositorio histórico ni primario permanente.
 
 ### Frontera entre almacenamiento en línea y archivo
 
@@ -603,11 +600,11 @@ El modelo conceptual se presenta en **catorce diagramas**, en el Anexo (ver sec
 
 \> **Figura — Núcleo de registro: contenedor, visita, movimiento y posición** · diagrama ‘D02_nucleo_contenedor‘
 
-*Nota. Este diagrama define las entidades de referencia del resto del modelo. La visita, y no el contenedor, es el objeto operacional central: el mismo contenedor físico vuelve al terminal muchas veces, y los días de almacenaje, la estadía y los hechos facturables se cuentan por estadía concreta.*
+*Nota. Este diagrama define las entidades de referencia del resto del modelo. `Contenedor` es el maestro del activo físico; `VisitaContenedor` —identificada como `VISITA` en el modelo físico— es cada estadía y el agregado operacional sobre el que se calculan almacenaje y hechos facturables. `Recalada`/`VisitaNave` identifica la estadía de la nave.*
 
 > **PROPUESTA DE TERABYTE.** El diccionario deriva además dos productos que no existían en ningún catálogo: el **catálogo de campos sujetos a cifrado a nivel de campo** —28 atributos en las tres familias que identifica (CP, Cap. 15, RT-11.10 — cifrado de campo), con lo que el compromiso de cobertura del 100 % de `RNF-SEG-05` pasa a ser verificable— y la lista de los **diez atributos derivados**, que no se capturan sino que se calculan y se auditan.
 
-> **DUDA.** **Punto de coordinación que debe resolverse antes de la entrega.** El entregable de arquitectura lógica de Célula 3 incluye entre sus productos obligatorios un modelo conceptual de dominio y eventos, y el consolidado del Subdocumento 4 reserva una sección para el modelo conceptual del dominio. A la vez, el maestro de contexto de Célula 3 declara que **el Subdocumento 5 es propietario del modelo de datos detallado** y que el Subdocumento 4 debe proveer almacenamiento, flujo, seguridad, despliegue, capacidad y continuidad coherentes (Célula 3 · maestro de contexto, §16 · PROVISIONAL). Debe acordarse por escrito el corte propuesto: modelo conceptual de alto nivel en el Subdocumento 4 y modelo de datos con diccionario en el Subdocumento 5, **usando los mismos nombres de negocio en ambos**. Sin ese acuerdo habrá dos modelos contradictorios dentro del mismo Informe 1.
+> **ACUERDO DE CORTE C3–C4.** El Subdocumento 4 publica el modelo conceptual de alto nivel y el Subdocumento 5 conserva el modelo detallado con diccionario. Ambos usan `Contenedor`, `VisitaContenedor` y `Recalada`/`VisitaNave` con el significado declarado arriba; no se duplican atributos ni cardinalidades en el Subdocumento 4.
 
 ## Supuestos, dependencias y asuntos abiertos
 
@@ -615,7 +612,7 @@ Los siete supuestos de Célula 4 están en el Anexo E, los diez riesgos por de
 
 > **RIESGO R-DAT-01.** la entrega de Célula 3 no está cerrada y su catálogo lógico de componentes de datos se declara a sí mismo inicial y refinable los componentes de la capa de datos se fusionen o se renombren antes del cierre del Informe 1 la matriz de familias de persistencia, la separación de almacenamientos y el mapeo de entidades a almacenes deban rehacerse en los apartados 5.4, 5.6 y 5.14
 
-> **RIESGO R-DAT-02.** el cifrado a nivel de campo exigido por el caso alcanza a datos que este subdocumento propone usar como clave de búsqueda indexada Célula 3 defina un mecanismo de cifrado que impida indexar esos atributos los umbrales de consulta de posición y de confirmación de movimiento de un segundo dejen de ser alcanzables con la estrategia de índices del apartado 5.10
+> **RIESGO R-DAT-02 — CONTROLADO PARA DISEÑO, PRUEBA PENDIENTE.** Ocho campos cifrados también son claves de búsqueda. D1 B4.3 define una ruta por campo sin cifrado determinista directo; si una prueba de fuga o latencia falla, la consulta se confina al servicio propietario o se rediseña el índice. No se declara el umbral como demostrado.
 
 > **RIESGO R-DAT-03.** tanto la arquitectura lógica del Subdocumento 4 como este subdocumento deben presentar un modelo conceptual del dominio, y el corte entre ambos no está acordado por escrito ambos equipos publiquen modelos con nombres de negocio distintos el Informe 1 presente dos modelos contradictorios y la incoherencia se evalúe como falta de integración entre subdocumentos
 
@@ -632,17 +629,16 @@ La fuente de verdad se declara en tres momentos, porque la coexistencia con el s
 
 | **ID**                      | **Decisión asumida**                                                                                                                                              | **Documento de origen**                                                     | **Qué pasa si cambia**                                                             | **Apartados**    | **Mitigación de Célula 4**                                                                        |
 |:--------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------|:---------------------------------------------------------------------------------------|:---------------------|:------------------------------------------------------------------------------------------------------|
-| **ID**                      | **Decisión asumida**                                                                                                                                              | **Documento de origen**                                                     | **Qué pasa si cambia**                                                             | **Apartados**    | **Mitigación de Célula 4**                                                                        |
-| R-C3-01                         | La capa de datos se descompone en operacional, series, documental y analítica                                                                                         | Maestro de contexto de arquitectura, catálogo lógico inicial                    | Se rehacen la matriz de familias y el mapeo de cada entidad a su almacén               | 5.4, 5.6, 5.14       | Usar identificadores propios de dominio y mantener una tabla de equivalencia de una sola columna      |
+| R-C3-01                         | La capa de datos se descompone en operacional, series, documental y analítica                                                                                         | Baseline C3 recibida: `DATA-CORE/TS/DOC/AN`                                    | Se rehacen la matriz de familias y el mapeo de cada entidad a su almacén               | 5.4, 5.6, 5.14       | Identificadores propios de dominio y equivalencia con C3                                               |
 | R-C3-02                         | La matriz de autoridad se publicará tal como la definió Célula 2                                                                                                      | Entregable de procesos críticos (matriz por completar)                          | Cambian la fuente de verdad en coexistencia y la conciliación de la migración          | 5.3, 5.4, 5.9        | Citar a Célula 2 como origen y a Célula 3 como confirmante; dejar zonas y fases parametrizadas        |
-| R-C3-03                         | Habrá capa de eventos persistente como mecanismo de integración                                                                                                       | Maestro (capa de integración) y decisión de arquitectura en estado candidato    | Cambian el flujo hacia la analítica y la latencia declarada por indicador              | 5.6, 5.8, 5.10       | Comprometer la latencia por indicador como requisito, no el mecanismo; presentar ambas rutas          |
-| R-C3-04                         | El emplazamiento será híbrido, con núcleo local para las cinco funciones críticas                                                                                     | Maestro y decisiones de arquitectura candidatas; destino de la sala aún abierto | Cambian consistencia, residencia, replicación y el análisis CAP por operación          | 5.4, 5.5, 5.10, 5.13 | Escribir el análisis CAP por operación y no por producto; tratar las 72 h como restricción de entrada |
+| R-C3-03                         | Habrá capa de eventos persistente como mecanismo de integración                                                                                                       | A2 §§4–7; `ADR-003` `PROPUESTO`                                                 | Cambian el flujo hacia la analítica y la latencia declarada por indicador              | 5.6, 5.8, 5.10       | Patrón recibido; contratos y pruebas quedan condicionados                                             |
+| R-C3-04                         | El emplazamiento será híbrido, con núcleo local para las cinco funciones críticas                                                                                     | C1/C2/C4 baseline MA8                                                           | Cambian consistencia, residencia, replicación y el análisis CAP por operación          | 5.4, 5.5, 5.10, 5.13 | Baseline recibida; site survey y pruebas quedan condicionados                                          |
 | R-C3-05                         | El repositorio del histórico es independiente y consultable en formato abierto                                                                                        | Decisión de Célula 2 y maestro de Célula 3                                      | Si se conserva dentro del núcleo, cambian la política de archivo y el dimensionamiento | 5.9, 5.12, 5.13      | Anclar la exigencia a los requisitos del documento transversal, que no dependen de Célula 3           |
-| R-C3-06                         | El cifrado de campo no restringirá la indexación de los atributos operacionales de búsqueda                                                                           | Paquete temprano de seguridad y decisión de llaves en estado candidato          | Si se cifran claves de búsqueda, caen los umbrales de un segundo                       | 5.10, 5.11, 5.12     | Declarar qué atributos son clave de acceso y exigir respuesta escrita antes de comprometer índices    |
-| R-C3-07                         | Las dimensiones de volumetría de Célula 2 sobreviven la revalidación                                                                                                  | Frente de dimensionamiento (insumos, no dimensionamiento final)                 | Cambian el dimensionamiento por familia y la frontera entre línea y archivo            | 5.10, 5.12, 5.13     | Presentar la volumetría como rango con método; no convertir estimaciones en cifras del CLIENTE        |
+| R-C3-06                         | Los ocho campos de búsqueda sensibles usarán un patrón que no exponga el valor en claro                                                                                | D1 B4.3: disposición por campo; `ADR-009` sigue propuesto                       | La fuga o latencia medida puede obligar a confinar la consulta al servicio propietario | 5.10, 5.11, 5.12     | Ejecutar pruebas de fuga, latencia, rotación y corte 72 h antes de comprometer índices                |
+| R-C3-07                         | Las dimensiones de volumetría de Célula 2 sobreviven la revalidación                                                                                                  | C4 C3: escenarios promedio/peak/3×/imagen separados                             | Cambian el dimensionamiento por familia y la frontera entre línea y archivo            | 5.10, 5.12, 5.13     | Mantener escenario y fórmula; no convertir estimaciones en cifras del CLIENTE                         |
 | R-C3-08                         | Los objetivos de recuperación y la política de respaldo se mantienen                                                                                                  | Maestro (umbrales transversales) y catálogo de Célula 2                         | Un endurecimiento cambia replicación y capacidad, no la política de retención          | 5.5, 5.12            | Separar en el texto la política, que es propia, de su materialización, que es de Célula 3             |
-| R-C3-09                         | El modelo conceptual del Subdocumento 4 y el de este subdocumento usarán los mismos nombres de negocio                                                                | Contrato del entregable de arquitectura lógica y maestro, §16                   | Dos modelos contradictorios dentro del mismo Informe 1                                 | 5.2, 5.14            | Acordar el corte por escrito antes de la entrega y fijar un glosario común de una página              |
-| R-C3-10                         | Célula 3 alcanzará a integrar contenido aprobado antes de la entrega                                                                                                  | Consolidado del Subdocumento 4: nueve secciones pendientes de integrar          | Todo lo provisional de este subdocumento queda sin confirmante                         | 5.4, 5.6, 5.10, 5.13 | Redactar cada apartado provisional de modo que se sostenga con fuentes normativas propias             |
+| R-C3-09                         | Ambos subdocumentos usan `Contenedor`, `VisitaContenedor` y `Recalada/VisitaNave`                                                                                     | Acuerdo C3–C4 registrado en A1/Datos                                            | Dos modelos contradictorios dentro del mismo Informe 1                                 | 5.2, 5.14            | Corte cerrado: alto nivel en SD4, detalle/diccionario en SD5                                          |
+| R-C3-10                         | Célula 3 redactará el consolidado desde la baseline alineada                                                                                                          | Plan maestro C3–C4; ADR siguen propuestos                                      | Cambios editoriales pueden perder calificadores                                        | 5.4, 5.6, 5.10, 5.13 | Validar estados y referencias en el gate editorial                                                     |
 |                                 | **Pregunta concreta**                                                                                                                                             |                                                                                 |                                                                                        |                      |                                                                                                       |
 | Matriz de autoridad             | ¿Cuáles son las zonas y fases nombradas de la matriz, y confirman que la fuente de verdad de la posición del contenedor es la definida por Célula 2, sin redefinirla? |                                                                                 |                                                                                        |                      |                                                                                                       |
 | Identificadores lógicos         | ¿Los identificadores de contextos y de componentes de datos del maestro son definitivos o serán refinados? Se requiere congelar nombres de negocio comunes.           |                                                                                 |                                                                                        |                      |                                                                                                       |
@@ -661,15 +657,14 @@ La fuente de verdad se declara en tres momentos, porque la coexistencia con el s
 
 | **ID**  | **Exigencia T-7**                         | **Fuente normativa**                                                                        | **Evidencia de Célula 2**                              | **Decisión de datos**                                                 | **Estado**    |
 |:------------|:----------------------------------------------|:------------------------------------------------------------------------------------------------|:-----------------------------------------------------------|:--------------------------------------------------------------------------|:------------------|
-| **ID**  | **Exigencia T-7**                         | **Fuente normativa**                                                                        | **Evidencia de Célula 2**                              | **Decisión de datos**                                                 | **Estado**    |
 | TRZ-DAT-001 | Dominio de información                        | CP Caps. 4 a 10 y 16; BTT Cap. 5 RT-05.01 y RT-05.09; BA Art. 23                                | Catálogos de requerimientos funcionales; reglas de negocio | Diez dominios con propietario y autoridad declarada                       | En curso          |
 | TRZ-DAT-002 | Dominio de información                        | BA Art. 17.2 (única fuente de verdad)                                                           | Decisión N..º 1 §5.2; RF-CON-13 y RF-CON-14                | Autoridad por dominio, zona y fase, reutilizada sin redefinir             | En curso          |
-| TRZ-DAT-003 | Motor y paradigma; CAP                        | BTT Cap. 5 RT-05.02; CP Cap. 15 RT-03.10 y RT-03.13                                             | RNF-DIS-02, 03, 04, 13, 14 y 15                            | Cinco familias con alternativas a comparar; CAP por operación             | Provisional       |
-| TRZ-DAT-004 | Separación y explotación                      | BTT Cap. 5 RT-05.05 y RT-05.25 a RT-05.29; CP Cap. 15 RT-05.29                                  | RNF-DES-04 a 07; RNF-OPE-02                                | Tres almacenamientos separados; latencia comprometida por indicador       | Provisional       |
+| TRZ-DAT-003 | Motor y paradigma; CAP                        | BTT Cap. 5 RT-05.02; CP Cap. 15 RT-03.10 y RT-03.13                                             | RNF-DIS-02, 03, 04, 13, 14 y 15                            | 78 entidades relacionales + 2 temporales; CAP por operación; dos motores | Cubierto I1; prueba futura |
+| TRZ-DAT-004 | Separación y explotación                      | BTT Cap. 5 RT-05.05 y RT-05.25 a RT-05.29; CP Cap. 15 RT-05.29                                  | RNF-DES-04 a 07; RNF-OPE-02                                | Cuatro capacidades `DATA-*`; dos familias de motor                        | Cubierto I1; prueba futura |
 | TRZ-DAT-005 | Dominio de información (telemetría)           | CP Cap. 14.2 y Cap. 16.1; CP Cap. 15 RT-17.06 y RT-05.29                                        | Decisión N..º 8; RF-REF-07; RN-11                          | Muestreo de dos capas; parámetros de desviación versionados               | En curso          |
-| TRZ-DAT-006 | Integración e interoperabilidad               | BTT Cap. 5 RT-05.16 a RT-05.23; CP Cap. 15 RT-05.23                                             | Volumetría: 21 contrapartes y 7 familias                   | Inventario cerrado; contratos declarados por levantar                     | Bloqueado externo |
+| TRZ-DAT-006 | Integración e interoperabilidad               | BTT Cap. 5 RT-05.16 a RT-05.23; CP Cap. 15 RT-05.23                                             | A2: 21 contrapartes, 7 familias, contrato tipo y resiliencia | Diseño cerrado; contratos reales por levantar                            | Cubierto I1; condicionado externo |
 | TRZ-DAT-007 | Migración y conciliación                      | BTT Cap. 5 RT-05.11 a RT-05.15; CP Cap. 15 RT-05.15                                             | Decisión N..º 1 §15.1 a §15.3                              | Seis universos; dos ensayos; repositorio del remanente                    | En curso          |
-| TRZ-DAT-008 | Desempeño de datos                            | CP Cap. 15 RT-09.01 y RT-05.29; BTT Cap. 9 num. 9.1, RT-09.03, RT-09.05 y RT-09.06              | RNF-DES-01 a RNF-DES-12                                    | Índices por clave de acceso; cuello de botella en la ingesta de series    | Provisional       |
+| TRZ-DAT-008 | Desempeño de datos                            | CP Cap. 15 RT-09.01 y RT-05.29; BTT Cap. 9 num. 9.1, RT-09.03, RT-09.05 y RT-09.06              | RNF-DES-01 a RNF-DES-12                                    | Índices por acceso; cuello vigente en ventana de sincronización           | Cubierto I1; prueba futura |
 | TRZ-DAT-009 | Calidad, retención y eliminación              | BTT Cap. 5 RT-05.03, RT-05.04 y RT-05.10; BTT Cap. 16 RT-16.07; BA Art. 23; CP Cap. 15 RT-16.09 | Sin requerimiento de calidad en el catálogo vigente        | Seis dimensiones con control y evidencia; asumido por Célula 4            | Pendiente propio  |
 | TRZ-DAT-010 | Calidad, retención y eliminación              | CP Cap. 15 RT-05.10 y RT-11.10; BTT Cap. 5 RT-05.06, RT-05.07 y RT-05.08; BTT Cap. 11 RT-11.14  | RNF-CUM-14; RNF-CUM-08; RNF-POR-01                         | Ocho clases con plazo, tratamiento y prueba                               | En curso          |
 | TRZ-DAT-011 | Dominio de información (modelo y diccionario) | BTT Cap. 5 RT-05.01; BA Art. 23                                                                 | —                                                          | Diccionario con dos campos propios: clase de retención y fuente de verdad | Pendiente propio  |
@@ -686,7 +681,7 @@ La fuente de verdad se declara en tres momentos, porque la coexistencia con el s
 
 | **Familia**        | **Alternativas evaluadas y resultado**                                                                                    | **Elegida** |
 |:-----------------------|:------------------------------------------------------------------------------------------------------------------------------|:----------------|
-| Estado operacional     | relacional gestionado en nube (4,00); **relacional en el borde con réplica (4,30)**; documental no relacional (2,60)          | 4,30            |
+| Estado operacional     | **relacional gestionado en AWS con autoridad local durante corte (4,80)**; relacional permanentemente en borde (4,30); documental no relacional (2,60) | 4,80 |
 | Series temporales      | **extensión temporal sobre el mismo relacional (4,70)**; motor de series dedicado (3,60)                                      | 4,70            |
 | Documentos y evidencia | **almacenamiento de objetos con índice (5,00)**; gestor documental (2,50); binario dentro de la base (3,20)                   | 5,00            |
 | Analítica              | **réplica de solo lectura (4,50)**; almacén analítico separado (3,50)                                                         | 4,50            |
@@ -772,7 +767,7 @@ Se indexa una clave de acceso declarada de una operación crítica, y nada más.
 
 *Tabla. Índices comprometidos y la operación que los exige.*
 
-> **DUDA.** Ocho de estas claves de acceso son atributos del catálogo de cifrado a nivel de campo. Un cifrado que impida la búsqueda por igualdad sobre ellos hace inalcanzables los umbrales de un segundo. No se resuelve aquí porque el mecanismo de cifrado es arquitectura de seguridad: queda dirigido a Célula 3, acotado a ocho atributos nombrados en vez de a una pregunta general.
+> **RESPUESTA C3 CONDICIONADA.** Los ocho campos tienen disposición en D1 B4.3 mediante token de igualdad protegido, identificador sustituto opaco o consulta dentro del servicio propietario. La selección evita cifrado determinista directo y requiere probar fuga, latencia, rotación y funcionamiento durante 72 h antes de comprometer el índice.
 
 ## Entidades particionadas
 
@@ -793,7 +788,7 @@ Se indexa una clave de acceso declarada de una operación crítica, y nada más.
 | Escritura transaccional   | Encolamiento con acuse al equipo y reintento idempotente                                | No se pierde un movimiento ni se confirma sin persistir    |
 | Consulta analítica        | Limitación de tasa sobre la réplica, con mensaje explícito                              | La analítica nunca se desvía al primario                   |
 | Almacenamiento de objetos | Buffer local en el borde con alerta de ocupación                                        | No se descarta una imagen que respalda un hecho facturable |
-| Enlace de reposición      | La reconciliación sigue su orden declarado                                              | Las invariantes no esperan a las imágenes                  |
+| Enlace de reposición      | La reconciliación sigue su orden declarado y preserva las invariantes                    | El alcance de objetos que completa en ≤90 min se mantiene condicionado; no se descarta evidencia |
 
 *Tabla. Degradación controlada de la capa de datos.*
 
@@ -858,13 +853,14 @@ Cincuenta y cuatro reglas con umbral, responsable y evidencia; doce indicadores 
 
 **Reglas de cálculo declaradas.** Unidades decimales. Las cifras anuales de la volumetría ya incluyen su factor de sobrecarga —$\times$<!-- -->3 en transaccional y series, $\times$<!-- -->1,2 en imágenes— y **no se vuelve a aplicar**: el doble conteo es el error más común de este cálculo. El factor de las imágenes cubre metadatos y no copias, de modo que la copia adicional se calcula aparte. El factor estacional afecta el caudal y no el acumulado anual, salvo en el buffer de 72 horas, que se dimensiona para el peor caso.
 
-| **Buffer de la operación desconectada**            | **Actual** | **Diseño 3$\times$** |
-|:-------------------------------------------------------|:---------------|:-------------------------|
-| Volumen generado en 72 horas                           | 13 GB          | 39 GB                    |
-| Del cual, imágenes                                     | 11,2 GB        | 33,6 GB                  |
-| Transferencia sostenida para sincronizar en 90 minutos | 19,3 Mbps      | 57,8 Mbps                |
+| **Escenario de operación desconectada** | **Volumen 72 h** | **Reposición en 90 min** | **Tratamiento** |
+|:---|---:|---:|:---|
+| Promedio actual recalculado | 13,7 GB | 20,3 Mbps | referencia de régimen |
+| **Peak estacional actual** | **21,9 GB** | **32,5 Mbps** | **baseline I1; WAN ≥35 Mbps** |
+| Crecimiento 3$\times$ sobre promedio heredado | 39 GB | 57,8 Mbps | futuro; activa ampliación ≈58 Mbps |
+| Sensibilidad con imagen de 1 MB | ≈40 GB | ≈58 Mbps | supuesto distinto del crecimiento 3$\times$ |
 
-*Tabla. Buffer de 72 horas y transferencia de reposición implicada.*
+*Tabla. Escenarios diferenciados de buffer de 72 horas y transferencia de reposición.*
 
 
 
@@ -882,7 +878,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**     | **Tipo** | **Clave** | **Dominio de valores**                                                       | **Obligat.** | **Origen y nota**                |
 |:---------------------|:-------------|:--------------|:---------------------------------------------------------------------------------|:-----------------|:-------------------------------------|
-| **Atributo**     | **Tipo** | **Clave** | **Dominio de valores**                                                       | **Obligat.** | **Origen y nota**                |
 | `codigo_iso6346`     | string       | PK            | Codigo ISO 6346: cuatro letras de propietario, seis digitos y digito verificador | Obligatorio      | identificador normalizado, RF-INT-08 |
 | `tipo`               | enum         | —             | {dry, reefer, tanque, open top}                                                  | Obligatorio      | dry, reefer, tanque, open top        |
 | `tamano`             | enum         | —             | {20 pies, 40 pies}                                                               | Obligatorio      | 20 pies, 40 pies                     |
@@ -892,11 +887,10 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 | `dimension_especial` | boolean      | —             | {verdadero, falso}                                                               | Obligatorio      | —                                    |
 | `id_naviera`         | string       | FK            | Identificador de la entidad referenciada                                         | Obligatorio      | ref. D-05.NAVIERA                    |
 
-### `VISITA`
+### `VISITA` — nombre de negocio: `VisitaContenedor`
 
 | **Atributo**   | **Tipo** | **Clave** | **Dominio de valores**                                                                                                  | **Obligat.** | **Origen y nota**                        |
 |:-------------------|:-------------|:--------------|:----------------------------------------------------------------------------------------------------------------------------|:-----------------|:---------------------------------------------|
-| **Atributo**   | **Tipo** | **Clave** | **Dominio de valores**                                                                                                  | **Obligat.** | **Origen y nota**                        |
 | `id_visita`        | string       | PK            | Identificador unico                                                                                                         | Obligatorio      | —                                            |
 | `codigo_iso6346`   | string       | FK            | Identificador de la entidad referenciada                                                                                    | Obligatorio      | —                                            |
 | `flujo`            | enum         | —             | {importacion, exportacion, transbordo}                                                                                      | Obligatorio      | importacion, exportacion, transbordo         |
@@ -910,7 +904,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**  | **Tipo** | **Clave** | **Dominio de valores**                                | **Obligat.** | **Origen y nota**                                   |
 |:------------------|:-------------|:--------------|:----------------------------------------------------------|:-----------------|:--------------------------------------------------------|
-| **Atributo**  | **Tipo** | **Clave** | **Dominio de valores**                                | **Obligat.** | **Origen y nota**                                   |
 | `id_movimiento`   | string       | PK            | Identificador unico                                       | Obligatorio      | —                                                       |
 | `id_visita`       | string       | FK            | Identificador de la entidad referenciada                  | Obligatorio      | —                                                       |
 | `tipo`            | enum         | —             | {descarga, carga, remocion, reubicacion, ingreso, salida} | Obligatorio      | descarga, carga, remocion, reubicacion, ingreso, salida |
@@ -926,7 +919,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**               | **Tipo** | **Clave** | **Dominio de valores**                  | **Obligat.** | **Origen y nota**                     |
 |:-------------------------------|:-------------|:--------------|:--------------------------------------------|:-----------------|:------------------------------------------|
-| **Atributo**               | **Tipo** | **Clave** | **Dominio de valores**                  | **Obligat.** | **Origen y nota**                     |
 | `id_visita`                    | string       | PK,FK         | Identificador de la entidad referenciada    | Obligatorio      | —                                         |
 | `id_celda`                     | string       | FK            | Identificador de la entidad referenciada    | Obligatorio      | —                                         |
 | `vigente_desde`                | timestamptz  | —             | Instante con zona horaria                   | Obligatorio      | —                                         |
@@ -937,7 +929,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**          | **Tipo** | **Clave** | **Dominio de valores**                                      | **Obligat.** | **Origen y nota**                   |
 |:--------------------------|:-------------|:--------------|:----------------------------------------------------------------|:-----------------|:----------------------------------------|
-| **Atributo**          | **Tipo** | **Clave** | **Dominio de valores**                                      | **Obligat.** | **Origen y nota**                   |
 | `id_asignacion`           | string       | PK            | Identificador unico                                             | Obligatorio      | —                                       |
 | `id_visita`               | string       | FK            | Identificador de la entidad referenciada                        | Obligatorio      | —                                       |
 | `celda_propuesta`         | string       | FK            | Identificador de la entidad referenciada                        | Obligatorio      | —                                       |
@@ -951,7 +942,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo** | **Tipo** | **Clave** | **Dominio de valores**                           | **Obligat.** | **Origen y nota**                             |
 |:-----------------|:-------------|:--------------|:-----------------------------------------------------|:-----------------|:--------------------------------------------------|
-| **Atributo** | **Tipo** | **Clave** | **Dominio de valores**                           | **Obligat.** | **Origen y nota**                             |
 | `id_condicion`   | string       | PK            | Identificador unico                                  | Obligatorio      | —                                                 |
 | `tipo`           | enum         | —             | {equipo no disponible, bloque restringido, cliente}  | Obligatorio      | equipo no disponible, bloque restringido, cliente |
 | `alcance`        | string       | —             | Bloque, zona o equipo sobre el que rige la condicion | Obligatorio      | —                                                 |
@@ -964,7 +954,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**     | **Tipo** | **Clave** | **Dominio de valores**                            | **Obligat.** | **Origen y nota**      |
 |:---------------------|:-------------|:--------------|:------------------------------------------------------|:-----------------|:---------------------------|
-| **Atributo**     | **Tipo** | **Clave** | **Dominio de valores**                            | **Obligat.** | **Origen y nota**      |
 | `id_tarea`           | string       | PK            | Identificador unico                                   | Obligatorio      | —                          |
 | `id_visita`          | string       | FK            | Identificador de la entidad referenciada              | Obligatorio      | —                          |
 | `posicion_candidata` | string       | —             | Identificador de celda donde se presume el contenedor | Obligatorio      | —                          |
@@ -977,7 +966,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo** | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota**                        |
 |:-----------------|:-------------|:--------------|:-----------------------------------------|:-----------------|:---------------------------------------------|
-| **Atributo** | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota**                        |
 | `id_custodia`    | string       | PK            | Identificador unico                      | Obligatorio      | —                                            |
 | `id_visita`      | string       | FK            | Identificador de la entidad referenciada | Obligatorio      | —                                            |
 | `responsable`    | enum         | —             | {terminal, transportista, naviera}       | Obligatorio      | terminal, transportista, naviera             |
@@ -989,7 +977,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**              | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota**                    |
 |:------------------------------|:-------------|:--------------|:-----------------------------------------|:-----------------|:-----------------------------------------|
-| **Atributo**              | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota**                    |
 | `id_visita`                   | string       | PK,FK         | Identificador de la entidad referenciada | Obligatorio      | —                                        |
 | `documentacion_validada`      | boolean      | —             | {verdadero, falso}                       | Obligatorio      | —                                        |
 | `autorizacion_aduanera`       | boolean      | —             | {verdadero, falso}                       | Obligatorio      | —                                        |
@@ -1003,7 +990,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**    | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota**    |
 |:--------------------|:-------------|:--------------|:-----------------------------------------|:-----------------|:-------------------------|
-| **Atributo**    | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota**    |
 | `id_bloque`         | string       | PK            | Identificador unico                      | Obligatorio      | —                        |
 | `id_zona_operativa` | string       | FK            | Identificador de la entidad referenciada | Obligatorio      | ref. D-08.ZONA_OPERATIVA |
 | `habilitado_imdg`   | boolean      | —             | {verdadero, falso}                       | Obligatorio      | —                        |
@@ -1012,7 +998,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**    | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota** |
 |:--------------------|:-------------|:--------------|:-----------------------------------------|:-----------------|:----------------------|
-| **Atributo**    | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota** |
 | `id_celda`          | string       | PK            | Identificador unico                      | Obligatorio      | —                     |
 | `id_bloque`         | string       | FK            | Identificador de la entidad referenciada | Obligatorio      | —                     |
 | `bahia`             | int          | —             | Numerico no negativo                     | Obligatorio      | —                     |
@@ -1024,7 +1009,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo** | **Tipo** | **Clave** | **Dominio de valores**                   | **Obligat.** | **Origen y nota**                      |
 |:-----------------|:-------------|:--------------|:---------------------------------------------|:-----------------|:-------------------------------------------|
-| **Atributo** | **Tipo** | **Clave** | **Dominio de valores**                   | **Obligat.** | **Origen y nota**                      |
 | `id_equipo`      | string       | PK            | Identificador unico                          | Obligatorio      | —                                          |
 | `tipo`           | enum         | —             | {grua de patio, tractocamion, equipo pesado} | Obligatorio      | grua de patio, tractocamion, equipo pesado |
 | `fuente_energia` | enum         | —             | {diesel, electrico}                          | Obligatorio      | diesel, electrico                          |
@@ -1034,7 +1018,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo** | **Tipo** | **Clave** | **Dominio de valores**                          | **Obligat.** | **Origen y nota** |
 |:-----------------|:-------------|:--------------|:----------------------------------------------------|:-----------------|:----------------------|
-| **Atributo** | **Tipo** | **Clave** | **Dominio de valores**                          | **Obligat.** | **Origen y nota** |
 | `id_punto`       | string       | PK            | Identificador unico                                 | Obligatorio      | —                     |
 | `ubicacion`      | string       | —             | Ubicacion fisica del portico o lector en el recinto | Obligatorio      | —                     |
 
@@ -1042,7 +1025,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**    | **Tipo** | **Clave** | **Dominio de valores**                        | **Obligat.** | **Origen y nota**                         |
 |:--------------------|:-------------|:--------------|:--------------------------------------------------|:-----------------|:----------------------------------------------|
-| **Atributo**    | **Tipo** | **Clave** | **Dominio de valores**                        | **Obligat.** | **Origen y nota**                         |
 | `id_lectura`        | string       | PK            | Identificador unico                               | Obligatorio      | —                                             |
 | `id_punto`          | string       | FK            | Identificador de la entidad referenciada          | Obligatorio      | —                                             |
 | `instante`          | timestamptz  | —             | Instante con zona horaria                         | Obligatorio      | —                                             |
@@ -1056,7 +1038,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**       | **Tipo** | **Clave** | **Dominio de valores**        | **Obligat.** | **Origen y nota** |
 |:-----------------------|:-------------|:--------------|:----------------------------------|:-----------------|:----------------------|
-| **Atributo**       | **Tipo** | **Clave** | **Dominio de valores**        | **Obligat.** | **Origen y nota** |
 | `id_transportista`     | string       | PK            | Identificador unico               | Obligatorio      | —                     |
 | `razon_social`         | string       | —             | Razon social registrada           | Obligatorio      | —                     |
 | `rol_unico_tributario` | string       | UK            | Identificador tributario nacional | Obligatorio      | —                     |
@@ -1065,7 +1046,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**   | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota** |
 |:-------------------|:-------------|:--------------|:-----------------------------------------|:-----------------|:----------------------|
-| **Atributo**   | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota** |
 | `patente`          | string       | PK            | Identificador unico                      | Obligatorio      | —                     |
 | `id_transportista` | string       | FK            | Identificador de la entidad referenciada | Obligatorio      | —                     |
 
@@ -1073,7 +1053,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**       | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota**                                   |
 |:-----------------------|:-------------|:--------------|:-----------------------------------------|:-----------------|:--------------------------------------------------------|
-| **Atributo**       | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota**                                   |
 | `id_conductor`         | string       | PK            | Identificador unico                      | Obligatorio      | —                                                       |
 | `id_persona`           | string       | FK,UK         | Identificador de la entidad referenciada | Obligatorio      | ref. D-07.PERSONA, el dato personal vive alli, RT-05.09 |
 | `id_transportista`     | string       | FK            | Identificador de la entidad referenciada | Obligatorio      | —                                                       |
@@ -1083,7 +1062,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**     | **Tipo** | **Clave** | **Dominio de valores**                        | **Obligat.** | **Origen y nota**                           |
 |:---------------------|:-------------|:--------------|:--------------------------------------------------|:-----------------|:------------------------------------------------|
-| **Atributo**     | **Tipo** | **Clave** | **Dominio de valores**                        | **Obligat.** | **Origen y nota**                           |
 | `id_cita`            | string       | PK            | Identificador unico                               | Obligatorio      | —                                               |
 | `id_transportista`   | string       | FK            | Identificador de la entidad referenciada          | Obligatorio      | —                                               |
 | `id_visita`          | string       | FK            | Identificador de la entidad referenciada          | Obligatorio      | ref. D-02.VISITA                                |
@@ -1096,7 +1074,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**               | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota**              |
 |:-------------------------------|:-------------|:--------------|:-----------------------------------------|:-----------------|:-----------------------------------|
-| **Atributo**               | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota**              |
 | `id_turno_camion`              | string       | PK            | Identificador unico                      | Obligatorio      | —                                  |
 | `patente`                      | string       | FK            | Identificador de la entidad referenciada | Obligatorio      | —                                  |
 | `id_conductor`                 | string       | FK            | Identificador de la entidad referenciada | Obligatorio      | —                                  |
@@ -1110,7 +1087,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**  | **Tipo** | **Clave** | **Dominio de valores**                                   | **Obligat.** | **Origen y nota** |
 |:------------------|:-------------|:--------------|:-------------------------------------------------------------|:-----------------|:----------------------|
-| **Atributo**  | **Tipo** | **Clave** | **Dominio de valores**                                   | **Obligat.** | **Origen y nota** |
 | `id_evento`       | string       | PK            | Identificador unico                                          | Obligatorio      | —                     |
 | `id_turno_camion` | string       | FK            | Identificador de la entidad referenciada                     | Obligatorio      | —                     |
 | `tipo`            | enum         | —             | {entrada, salida}                                            | Obligatorio      | entrada, salida       |
@@ -1122,7 +1098,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**  | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota** |
 |:------------------|:-------------|:--------------|:-----------------------------------------|:-----------------|:----------------------|
-| **Atributo**  | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota** |
 | `id_turno_camion` | string       | PK,FK         | Identificador de la entidad referenciada | Obligatorio      | —                     |
 | `id_visita`       | string       | PK,FK         | Identificador de la entidad referenciada | Obligatorio      | —                     |
 | `sentido`         | enum         | —             | {entrega, retiro}                        | Obligatorio      | entrega, retiro       |
@@ -1132,7 +1107,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**      | **Tipo** | **Clave** | **Dominio de valores**                                      | **Obligat.** | **Origen y nota**                 |
 |:----------------------|:-------------|:--------------|:----------------------------------------------------------------|:-----------------|:--------------------------------------|
-| **Atributo**      | **Tipo** | **Clave** | **Dominio de valores**                                      | **Obligat.** | **Origen y nota**                 |
 | `id_documento`        | string       | PK            | Identificador unico                                             | Obligatorio      | —                                     |
 | `id_visita`           | string       | FK            | Identificador de la entidad referenciada                        | Obligatorio      | ref. D-02.VISITA                      |
 | `tipo`                | string       | —             | {catalogo de documentos de transporte, a cerrar con el CLIENTE} | Obligatorio      | —                                     |
@@ -1143,7 +1117,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**       | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota**                                             |
 |:-----------------------|:-------------|:--------------|:-----------------------------------------|:-----------------|:------------------------------------------------------------------|
-| **Atributo**       | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota**                                             |
 | `id_pesaje`            | string       | PK            | Identificador unico                      | Obligatorio      | —                                                                 |
 | `id_visita`            | string       | FK            | Identificador de la entidad referenciada | Obligatorio      | ref. D-02.VISITA                                                  |
 | `secuencia_pesaje`     | int          | —             | Numerico no negativo                     | Obligatorio      | 1 pesaje inicial, mayor a 1 repesaje tras discrepancia, RF-GAT-09 |
@@ -1158,7 +1131,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**   | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota** |
 |:-------------------|:-------------|:--------------|:-----------------------------------------|:-----------------|:----------------------|
-| **Atributo**   | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota** |
 | `id_instruccion`   | string       | PK            | Identificador unico                      | Obligatorio      | —                     |
 | `id_turno_camion`  | string       | FK            | Identificador de la entidad referenciada | Obligatorio      | —                     |
 | `celda_destino`    | string       | FK            | Identificador de la entidad referenciada | Obligatorio      | ref. D-02.CELDA       |
@@ -1168,7 +1140,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**  | **Tipo** | **Clave** | **Dominio de valores**                      | **Obligat.** | **Origen y nota**                         |
 |:------------------|:-------------|:--------------|:------------------------------------------------|:-----------------|:----------------------------------------------|
-| **Atributo**  | **Tipo** | **Clave** | **Dominio de valores**                      | **Obligat.** | **Origen y nota**                         |
 | `id_excepcion`    | string       | PK            | Identificador unico                             | Obligatorio      | —                                             |
 | `id_turno_camion` | string       | FK            | Identificador de la entidad referenciada        | Obligatorio      | —                                             |
 | `motivo`          | enum         | —             | {documental, VGM, habilitacion, sin cita, otro} | Obligatorio      | documental, VGM, habilitacion, sin cita, otro |
@@ -1181,7 +1152,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**  | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota**                 |
 |:------------------|:-------------|:--------------|:-----------------------------------------|:-----------------|:--------------------------------------|
-| **Atributo**  | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota**                 |
 | `id_tablero`      | string       | PK            | Identificador unico                      | Obligatorio      | —                                     |
 | `id_bloque`       | string       | FK            | Identificador de la entidad referenciada | Obligatorio      | ref. D-02.BLOQUE                      |
 | `estado`          | enum         | —             | {operativo, en falla, sin comunicacion}  | Obligatorio      | operativo, en falla, sin comunicacion |
@@ -1191,7 +1161,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo** | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota**                                |
 |:-----------------|:-------------|:--------------|:-----------------------------------------|:-----------------|:-----------------------------------------------------|
-| **Atributo** | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota**                                |
 | `id_toma`        | string       | PK            | Identificador unico                      | Obligatorio      | —                                                    |
 | `id_tablero`     | string       | FK            | Identificador de la entidad referenciada | Obligatorio      | —                                                    |
 | `id_celda`       | string       | FK            | Identificador de la entidad referenciada | Obligatorio      | ref. D-02.CELDA                                      |
@@ -1202,7 +1171,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**                  | **Tipo** | **Clave** | **Dominio de valores**                                        | **Obligat.** | **Origen y nota**                  |
 |:----------------------------------|:-------------|:--------------|:------------------------------------------------------------------|:-----------------|:---------------------------------------|
-| **Atributo**                  | **Tipo** | **Clave** | **Dominio de valores**                                        | **Obligat.** | **Origen y nota**                  |
 | `id_conexion`                     | string       | PK            | Identificador unico                                               | Obligatorio      | —                                      |
 | `id_visita`                       | string       | FK            | Identificador de la entidad referenciada                          | Obligatorio      | ref. D-02.VISITA                       |
 | `id_toma`                         | string       | FK            | Identificador de la entidad referenciada                          | Obligatorio      | —                                      |
@@ -1215,7 +1183,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**  | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota**           |
 |:------------------|:-------------|:--------------|:-----------------------------------------|:-----------------|:--------------------------------|
-| **Atributo**  | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota**           |
 | `id_conexion`     | string       | PK,FK         | Identificador de la entidad referenciada | Obligatorio      | —                               |
 | `instante`        | timestamptz  | PK            | Instante con zona horaria                | Obligatorio      | —                               |
 | `temperatura`     | decimal      | —             | grados Celsius                           | Obligatorio      | grados Celsius                  |
@@ -1228,7 +1195,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**          | **Tipo** | **Clave** | **Dominio de valores**                                            | **Obligat.** | **Origen y nota**                          |
 |:--------------------------|:-------------|:--------------|:----------------------------------------------------------------------|:-----------------|:-----------------------------------------------|
-| **Atributo**          | **Tipo** | **Clave** | **Dominio de valores**                                            | **Obligat.** | **Origen y nota**                          |
 | `id_parametro`            | string       | PK            | Identificador unico                                                   | Obligatorio      | —                                              |
 | `version`                 | int          | PK            | Entero correlativo                                                    | Obligatorio      | el parametro se versiona, nunca se sobrescribe |
 | `banda_superior`          | decimal      | —             | VACIO DECLARADO: grados Celsius, sin valor fijado por el caso (RN-11) | Obligatorio      | sin valor fijado por el caso, RN-11            |
@@ -1242,7 +1208,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**             | **Tipo** | **Clave** | **Dominio de valores**                                    | **Obligat.** | **Origen y nota**                                       |
 |:-----------------------------|:-------------|:--------------|:--------------------------------------------------------------|:-----------------|:------------------------------------------------------------|
-| **Atributo**             | **Tipo** | **Clave** | **Dominio de valores**                                    | **Obligat.** | **Origen y nota**                                       |
 | `id_alarma`                  | string       | PK            | Identificador unico                                           | Obligatorio      | —                                                           |
 | `tipo`                       | enum         | —             | {desviacion, desconexion, falla de tablero, ausencia de dato} | Obligatorio      | desviacion, desconexion, falla de tablero, ausencia de dato |
 | `severidad`                  | enum         | —             | {baja, media, alta, critica}                                  | Obligatorio      | baja, media, alta, critica                                  |
@@ -1258,7 +1223,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**     | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota**      |
 |:---------------------|:-------------|:--------------|:-----------------------------------------|:-----------------|:---------------------------|
-| **Atributo**     | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota**      |
 | `id_alarma`          | string       | PK,FK         | Identificador de la entidad referenciada | Obligatorio      | —                          |
 | `nivel_escalamiento` | int          | PK            | Numerico no negativo                     | Obligatorio      | RN-08                      |
 | `id_persona`         | string       | FK            | Identificador de la entidad referenciada | Obligatorio      | ref. D-07.PERSONA          |
@@ -1271,7 +1235,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo** | **Tipo** | **Clave** | **Dominio de valores**                   | **Obligat.** | **Origen y nota**        |
 |:-----------------|:-------------|:--------------|:---------------------------------------------|:-----------------|:-----------------------------|
-| **Atributo** | **Tipo** | **Clave** | **Dominio de valores**                   | **Obligat.** | **Origen y nota**        |
 | `id_naviera`     | string       | PK            | Identificador unico                          | Obligatorio      | —                            |
 | `nombre`         | string       | —             | Nombre comercial de la linea naviera         | Obligatorio      | —                            |
 | `codigo_scac`    | string       | UK            | Codigo de transportista de cuatro caracteres | Obligatorio      | identificador de intercambio |
@@ -1280,7 +1243,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo** | **Tipo** | **Clave** | **Dominio de valores**                                      | **Obligat.** | **Origen y nota** |
 |:-----------------|:-------------|:--------------|:----------------------------------------------------------------|:-----------------|:----------------------|
-| **Atributo** | **Tipo** | **Clave** | **Dominio de valores**                                      | **Obligat.** | **Origen y nota** |
 | `id_nave`        | string       | PK            | Identificador unico                                             | Obligatorio      | —                     |
 | `nombre`         | string       | —             | Nombre de la nave                                               | Obligatorio      | —                     |
 | `numero_imo`     | string       | UK            | Numero de la Organizacion Maritima Internacional, siete digitos | Obligatorio      | —                     |
@@ -1290,7 +1252,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**         | **Tipo** | **Clave** | **Dominio de valores**                                                   | **Obligat.** | **Origen y nota**                          |
 |:-------------------------|:-------------|:--------------|:-----------------------------------------------------------------------------|:-----------------|:-----------------------------------------------|
-| **Atributo**         | **Tipo** | **Clave** | **Dominio de valores**                                                   | **Obligat.** | **Origen y nota**                          |
 | `id_recalada`            | string       | PK            | Identificador unico                                                          | Obligatorio      | —                                              |
 | `id_nave`                | string       | FK            | Identificador de la entidad referenciada                                     | Obligatorio      | —                                              |
 | `ventana_confirmada`     | timestamptz  | —             | Instante con zona horaria                                                    | Obligatorio      | confirmacion con 72 h de antelacion, RF-NAV-03 |
@@ -1303,7 +1264,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo** | **Tipo** | **Clave** | **Dominio de valores**                | **Obligat.** | **Origen y nota**                     |
 |:-----------------|:-------------|:--------------|:------------------------------------------|:-----------------|:------------------------------------------|
-| **Atributo** | **Tipo** | **Clave** | **Dominio de valores**                | **Obligat.** | **Origen y nota**                     |
 | `id_plan`        | string       | PK            | Identificador unico                       | Obligatorio      | —                                         |
 | `version`        | int          | PK            | Entero correlativo                        | Obligatorio      | el plan se versiona, nunca se sobrescribe |
 | `id_recalada`    | string       | FK            | Identificador de la entidad referenciada  | Obligatorio      | —                                         |
@@ -1315,7 +1275,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**      | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota**                       |
 |:----------------------|:-------------|:--------------|:-----------------------------------------|:-----------------|:--------------------------------------------|
-| **Atributo**      | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota**                       |
 | `id_correccion`       | string       | PK            | Identificador unico                      | Obligatorio      | —                                           |
 | `id_plan`             | string       | FK            | Identificador de la entidad referenciada | Obligatorio      | —                                           |
 | `version_plan`        | int          | FK            | Entero correlativo                       | Obligatorio      | —                                           |
@@ -1327,7 +1286,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**       | **Tipo** | **Clave** | **Dominio de valores**                   | **Obligat.** | **Origen y nota**        |
 |:-----------------------|:-------------|:--------------|:---------------------------------------------|:-----------------|:-----------------------------|
-| **Atributo**       | **Tipo** | **Clave** | **Dominio de valores**                   | **Obligat.** | **Origen y nota**        |
 | `id_regla`             | string       | PK            | Identificador unico                          | Obligatorio      | —                            |
 | `enunciado`            | string       | —             | Enunciado de la regla en lenguaje de negocio | Obligatorio      | —                            |
 | `id_correccion_origen` | string       | FK            | Identificador de la entidad referenciada     | Obligatorio      | —                            |
@@ -1338,7 +1296,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**       | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota**       |
 |:-----------------------|:-------------|:--------------|:-----------------------------------------|:-----------------|:----------------------------|
-| **Atributo**       | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota**       |
 | `id_asignacion`        | string       | PK            | Identificador unico                      | Obligatorio      | —                           |
 | `id_recalada`          | string       | FK            | Identificador de la entidad referenciada | Obligatorio      | —                           |
 | `id_equipo`            | string       | FK            | Identificador de la entidad referenciada | Obligatorio      | ref. D-02.EQUIPO_PATIO      |
@@ -1350,7 +1307,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**     | **Tipo** | **Clave** | **Dominio de valores**                              | **Obligat.** | **Origen y nota**        |
 |:---------------------|:-------------|:--------------|:--------------------------------------------------------|:-----------------|:-----------------------------|
-| **Atributo**     | **Tipo** | **Clave** | **Dominio de valores**                              | **Obligat.** | **Origen y nota**        |
 | `id_orden`           | string       | PK            | Identificador unico                                     | Obligatorio      | —                            |
 | `id_recalada`        | string       | FK            | Identificador de la entidad referenciada                | Obligatorio      | —                            |
 | `id_naviera`         | string       | FK            | Identificador de la entidad referenciada                | Obligatorio      | —                            |
@@ -1363,7 +1319,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo** | **Tipo** | **Clave** | **Dominio de valores** | **Obligat.** | **Origen y nota** |
 |:-----------------|:-------------|:--------------|:---------------------------|:-----------------|:----------------------|
-| **Atributo** | **Tipo** | **Clave** | **Dominio de valores** | **Obligat.** | **Origen y nota** |
 | `id_embarcador`  | string       | PK            | Identificador unico        | Obligatorio      | —                     |
 | `razon_social`   | string       | —             | Razon social registrada    | Obligatorio      | —                     |
 
@@ -1371,7 +1326,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**        | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota**                 |
 |:------------------------|:-------------|:--------------|:-----------------------------------------|:-----------------|:--------------------------------------|
-| **Atributo**        | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota**                 |
 | `id_instruccion`        | string       | PK            | Identificador unico                      | Obligatorio      | —                                     |
 | `id_recalada`           | string       | FK            | Identificador de la entidad referenciada | Obligatorio      | —                                     |
 | `id_embarcador`         | string       | FK            | Identificador de la entidad referenciada | Obligatorio      | —                                     |
@@ -1385,7 +1339,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo** | **Tipo** | **Clave** | **Dominio de valores**                                | **Obligat.** | **Origen y nota**                                   |
 |:-----------------|:-------------|:--------------|:----------------------------------------------------------|:-----------------|:--------------------------------------------------------|
-| **Atributo** | **Tipo** | **Clave** | **Dominio de valores**                                | **Obligat.** | **Origen y nota**                                   |
 | `id_cliente`     | string       | PK            | Identificador unico                                       | Obligatorio      | —                                                       |
 | `razon_social`   | string       | —             | Razon social registrada                                   | Obligatorio      | —                                                       |
 | `tipo`           | enum         | —             | {exportador, importador, agencia, transportista, naviera} | Obligatorio      | exportador, importador, agencia, transportista, naviera |
@@ -1394,7 +1347,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**         | **Tipo** | **Clave** | **Dominio de valores**                                                                                         | **Obligat.** | **Origen y nota**                                                                                            |
 |:-------------------------|:-------------|:--------------|:-------------------------------------------------------------------------------------------------------------------|:-----------------|:-----------------------------------------------------------------------------------------------------------------|
-| **Atributo**         | **Tipo** | **Clave** | **Dominio de valores**                                                                                         | **Obligat.** | **Origen y nota**                                                                                            |
 | `id_hecho`               | string       | PK            | Identificador unico                                                                                                | Obligatorio      | —                                                                                                                |
 | `id_visita`              | string       | FK            | Identificador de la entidad referenciada                                                                           | Obligatorio      | ref. D-02.VISITA                                                                                                 |
 | `tipo`                   | enum         | —             | {transferencia, almacenaje, conexion, movimiento adicional, pesaje, inspeccion, zona peligrosa, servicio especial} | Obligatorio      | transferencia, almacenaje, conexion, movimiento adicional, pesaje, inspeccion, zona peligrosa, servicio especial |
@@ -1408,7 +1360,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**  | **Tipo** | **Clave** | **Dominio de valores**                                                                                         | **Obligat.** | **Origen y nota**                      |
 |:------------------|:-------------|:--------------|:-------------------------------------------------------------------------------------------------------------------|:-----------------|:-------------------------------------------|
-| **Atributo**  | **Tipo** | **Clave** | **Dominio de valores**                                                                                         | **Obligat.** | **Origen y nota**                      |
 | `id_regla`        | string       | PK            | Identificador unico                                                                                                | Obligatorio      | —                                          |
 | `version`         | int          | PK            | Entero correlativo                                                                                                 | Obligatorio      | la regla se versiona, nunca se sobrescribe |
 | `tipo_hecho`      | enum         | —             | {transferencia, almacenaje, conexion, movimiento adicional, pesaje, inspeccion, zona peligrosa, servicio especial} | Obligatorio      | —                                          |
@@ -1420,7 +1371,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**           | **Tipo** | **Clave** | **Dominio de valores**                       | **Obligat.** | **Origen y nota**                          |
 |:---------------------------|:-------------|:--------------|:-------------------------------------------------|:-----------------|:-----------------------------------------------|
-| **Atributo**           | **Tipo** | **Clave** | **Dominio de valores**                       | **Obligat.** | **Origen y nota**                          |
 | `id_evidencia`             | string       | PK            | Identificador unico                              | Obligatorio      | —                                              |
 | `id_hecho`                 | string       | FK            | Identificador de la entidad referenciada         | Obligatorio      | —                                              |
 | `tipo`                     | enum         | —             | {evento, medicion, serie, lectura optica, firma} | Obligatorio      | evento, medicion, serie, lectura optica, firma |
@@ -1432,7 +1382,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**        | **Tipo** | **Clave** | **Dominio de valores**                  | **Obligat.** | **Origen y nota**                     |
 |:------------------------|:-------------|:--------------|:--------------------------------------------|:-----------------|:------------------------------------------|
-| **Atributo**        | **Tipo** | **Clave** | **Dominio de valores**                  | **Obligat.** | **Origen y nota**                     |
 | `id_objecion`           | string       | PK            | Identificador unico                         | Obligatorio      | —                                         |
 | `id_hecho`              | string       | FK            | Identificador de la entidad referenciada    | Obligatorio      | —                                         |
 | `id_cliente`            | string       | FK            | Identificador de la entidad referenciada    | Obligatorio      | —                                         |
@@ -1444,7 +1393,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**        | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota**               |
 |:------------------------|:-------------|:--------------|:-----------------------------------------|:-----------------|:------------------------------------|
-| **Atributo**        | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota**               |
 | `id_objecion`           | string       | PK,FK         | Identificador de la entidad referenciada | Obligatorio      | —                                   |
 | `resultado`             | enum         | —             | {acogida, acogida parcial, rechazada}    | Obligatorio      | acogida, acogida parcial, rechazada |
 | `id_evidencia_invocada` | string       | FK            | Identificador de la entidad referenciada | Obligatorio      | —                                   |
@@ -1455,7 +1403,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**          | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota**                     |
 |:--------------------------|:-------------|:--------------|:-----------------------------------------|:-----------------|:------------------------------------------|
-| **Atributo**          | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota**                     |
 | `id_hecho`                | string       | PK,FK         | Identificador de la entidad referenciada | Obligatorio      | —                                         |
 | `id_documento_tributario` | string       | —             | Folio del documento emitido por el ERP   | Condicional      | emitido por el ERP, nunca por la solucion |
 | `instante_entrega`        | timestamptz  | —             | Instante con zona horaria                | Obligatorio      | —                                         |
@@ -1467,7 +1414,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo** | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota**            |
 |:-----------------|:-------------|:--------------|:-----------------------------------------|:-----------------|:---------------------------------|
-| **Atributo** | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota**            |
 | `id_autoridad`   | string       | PK            | Identificador unico                      | Obligatorio      | —                                |
 | `tipo`           | enum         | —             | {aduana, SAG, sanitaria, maritima}       | Obligatorio      | aduana, SAG, sanitaria, maritima |
 | `nombre`         | string       | —             | Denominacion oficial del organismo       | Obligatorio      | —                                |
@@ -1477,7 +1423,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**     | **Tipo** | **Clave** | **Dominio de valores**                              | **Obligat.** | **Origen y nota**             |
 |:---------------------|:-------------|:--------------|:--------------------------------------------------------|:-----------------|:----------------------------------|
-| **Atributo**     | **Tipo** | **Clave** | **Dominio de valores**                              | **Obligat.** | **Origen y nota**             |
 | `id_solicitud`       | string       | PK            | Identificador unico                                     | Obligatorio      | —                                 |
 | `id_visita`          | string       | FK            | Identificador de la entidad referenciada                | Obligatorio      | ref. D-02.VISITA                  |
 | `id_autoridad`       | string       | FK            | Identificador de la entidad referenciada                | Obligatorio      | —                                 |
@@ -1489,7 +1434,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**     | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota**                     |
 |:---------------------|:-------------|:--------------|:-----------------------------------------|:-----------------|:------------------------------------------|
-| **Atributo**     | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota**                     |
 | `id_cita`            | string       | PK            | Identificador unico                      | Obligatorio      | —                                         |
 | `id_solicitud`       | string       | FK            | Identificador de la entidad referenciada | Obligatorio      | —                                         |
 | `hora_acordada`      | timestamptz  | —             | Instante con zona horaria                | Obligatorio      | —                                         |
@@ -1500,7 +1444,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**      | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota**               |
 |:----------------------|:-------------|:--------------|:-----------------------------------------|:-----------------|:------------------------------------|
-| **Atributo**      | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota**               |
 | `id_remocion`         | string       | PK            | Identificador unico                      | Obligatorio      | —                                   |
 | `id_cita`             | string       | FK            | Identificador de la entidad referenciada | Obligatorio      | —                                   |
 | `instante_programado` | timestamptz  | —             | Instante con zona horaria                | Obligatorio      | —                                   |
@@ -1511,7 +1454,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo** | **Tipo** | **Clave** | **Dominio de valores**                   | **Obligat.** | **Origen y nota**                      |
 |:-----------------|:-------------|:--------------|:---------------------------------------------|:-----------------|:-------------------------------------------|
-| **Atributo** | **Tipo** | **Clave** | **Dominio de valores**                   | **Obligat.** | **Origen y nota**                      |
 | `id_acta`        | string       | PK            | Identificador unico                          | Obligatorio      | —                                          |
 | `id_cita`        | string       | FK            | Identificador de la entidad referenciada     | Obligatorio      | —                                          |
 | `resultado`      | enum         | —             | {conforme, con observaciones, con retencion} | Obligatorio      | conforme, con observaciones, con retencion |
@@ -1522,7 +1464,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo** | **Tipo** | **Clave** | **Dominio de valores**                | **Obligat.** | **Origen y nota**                       |
 |:-----------------|:-------------|:--------------|:------------------------------------------|:-----------------|:--------------------------------------------|
-| **Atributo** | **Tipo** | **Clave** | **Dominio de valores**                | **Obligat.** | **Origen y nota**                       |
 | `id_retencion`   | string       | PK            | Identificador unico                       | Obligatorio      | —                                           |
 | `id_acta`        | string       | FK            | Identificador de la entidad referenciada  | Condicional      | nulo si la retencion no proviene de un acta |
 | `id_visita`      | string       | FK            | Identificador de la entidad referenciada  | Obligatorio      | ref. D-02.VISITA                            |
@@ -1537,7 +1478,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**  | **Tipo** | **Clave** | **Dominio de valores**                         | **Obligat.** | **Origen y nota**                            |
 |:------------------|:-------------|:--------------|:---------------------------------------------------|:-----------------|:-------------------------------------------------|
-| **Atributo**  | **Tipo** | **Clave** | **Dominio de valores**                         | **Obligat.** | **Origen y nota**                            |
 | `id_consumo`      | string       | PK            | Identificador unico                                | Obligatorio      | —                                                |
 | `id_equipo`       | string       | FK            | Identificador de la entidad referenciada           | Obligatorio      | ref. D-02.EQUIPO_PATIO                           |
 | `unidad`          | enum         | —             | {litros de diesel, kWh}                            | Obligatorio      | litros de diesel, kWh                            |
@@ -1550,7 +1490,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**     | **Tipo** | **Clave** | **Dominio de valores**                                                                                 | **Obligat.** | **Origen y nota**                                |
 |:---------------------|:-------------|:--------------|:-----------------------------------------------------------------------------------------------------------|:-----------------|:-----------------------------------------------------|
-| **Atributo**     | **Tipo** | **Clave** | **Dominio de valores**                                                                                 | **Obligat.** | **Origen y nota**                                |
 | `id_consumo`         | string       | PK,FK         | Identificador de la entidad referenciada                                                                   | Obligatorio      | —                                                    |
 | `id_emision`         | string       | PK,FK         | Identificador de la entidad referenciada                                                                   | Obligatorio      | —                                                    |
 | `fraccion_atribuida` | decimal      | —             | 0 a 1                                                                                                      | Obligatorio      | 0 a 1, suma 1 por consumo                            |
@@ -1561,7 +1500,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo** | **Tipo** | **Clave** | **Dominio de valores**                       | **Obligat.** | **Origen y nota**         |
 |:-----------------|:-------------|:--------------|:-------------------------------------------------|:-----------------|:------------------------------|
-| **Atributo** | **Tipo** | **Clave** | **Dominio de valores**                       | **Obligat.** | **Origen y nota**         |
 | `id_factor`      | string       | PK            | Identificador unico                              | Obligatorio      | —                             |
 | `version`        | int          | PK            | Entero correlativo                               | Obligatorio      | —                             |
 | `fuente`         | string       | —             | Denominacion y version de la fuente metodologica | Obligatorio      | GLEC v3.2                     |
@@ -1574,7 +1512,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**    | **Tipo** | **Clave** | **Dominio de valores**                      | **Obligat.** | **Origen y nota**          |
 |:--------------------|:-------------|:--------------|:------------------------------------------------|:-----------------|:-------------------------------|
-| **Atributo**    | **Tipo** | **Clave** | **Dominio de valores**                      | **Obligat.** | **Origen y nota**          |
 | `id_emision`        | string       | PK            | Identificador unico                             | Obligatorio      | —                              |
 | `id_visita`         | string       | FK            | Identificador de la entidad referenciada        | Obligatorio      | ref. D-02.VISITA               |
 | `consumo_atribuido` | decimal      | —             | Numerico no negativo                            | Derivado         | derivado de ATRIBUCION_CONSUMO |
@@ -1590,7 +1527,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**      | **Tipo** | **Clave** | **Dominio de valores**                                            | **Obligat.** | **Origen y nota**                                                         |
 |:----------------------|:-------------|:--------------|:----------------------------------------------------------------------|:-----------------|:------------------------------------------------------------------------------|
-| **Atributo**      | **Tipo** | **Clave** | **Dominio de valores**                                            | **Obligat.** | **Origen y nota**                                                         |
 | `id_persona`          | string       | PK            | Identificador unico                                                   | Obligatorio      | —                                                                             |
 | `tipo`                | enum         | —             | {propio, eventual, conductor, visita, inspector}                      | Obligatorio      | propio, eventual, conductor, visita, inspector                                |
 | `documento_identidad` | string       | UK            | Documento nacional de identidad o pasaporte; cifrado a nivel de campo | Obligatorio      | dato personal, cifrado de campo, unico registro del dato, RT-11.10 y RT-05.09 |
@@ -1600,7 +1536,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**  | **Tipo** | **Clave** | **Dominio de valores**                                    | **Obligat.** | **Origen y nota**                      |
 |:------------------|:-------------|:--------------|:--------------------------------------------------------------|:-----------------|:-------------------------------------------|
-| **Atributo**  | **Tipo** | **Clave** | **Dominio de valores**                                    | **Obligat.** | **Origen y nota**                      |
 | `id_habilitacion` | string       | PK            | Identificador unico                                           | Obligatorio      | —                                          |
 | `id_persona`      | string       | FK            | Identificador de la entidad referenciada                      | Obligatorio      | —                                          |
 | `tipo`            | string       | —             | {catalogo de habilitaciones del plan de proteccion portuaria} | Obligatorio      | —                                          |
@@ -1612,7 +1547,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**       | **Tipo** | **Clave** | **Dominio de valores**    | **Obligat.** | **Origen y nota**              |
 |:-----------------------|:-------------|:--------------|:------------------------------|:-----------------|:-----------------------------------|
-| **Atributo**       | **Tipo** | **Clave** | **Dominio de valores**    | **Obligat.** | **Origen y nota**              |
 | `id_turno_operacional` | string       | PK            | Identificador unico           | Obligatorio      | —                                  |
 | `fecha`                | date         | —             | Fecha calendario              | Obligatorio      | —                                  |
 | `jornada`              | enum         | —             | {tres turnos, operacion 24x7} | Obligatorio      | tres turnos, operacion 24x7        |
@@ -1622,7 +1556,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**       | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota**                    |
 |:-----------------------|:-------------|:--------------|:-----------------------------------------|:-----------------|:-----------------------------------------|
-| **Atributo**       | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota**                    |
 | `id_nombrada`          | string       | PK            | Identificador unico                      | Obligatorio      | —                                        |
 | `id_turno_operacional` | string       | FK            | Identificador de la entidad referenciada | Obligatorio      | —                                        |
 | `instante_publicacion` | timestamptz  | —             | Instante con zona horaria                | Obligatorio      | —                                        |
@@ -1632,7 +1565,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo** | **Tipo** | **Clave** | **Dominio de valores**                      | **Obligat.** | **Origen y nota** |
 |:-----------------|:-------------|:--------------|:------------------------------------------------|:-----------------|:----------------------|
-| **Atributo** | **Tipo** | **Clave** | **Dominio de valores**                      | **Obligat.** | **Origen y nota** |
 | `id_nombrada`    | string       | PK,FK         | Identificador de la entidad referenciada        | Obligatorio      | —                     |
 | `id_persona`     | string       | PK,FK         | Identificador de la entidad referenciada        | Obligatorio      | —                     |
 | `funcion`        | string       | —             | {catalogo de funciones operacionales del turno} | Obligatorio      | —                     |
@@ -1641,7 +1573,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo** | **Tipo** | **Clave** | **Dominio de valores**                                 | **Obligat.** | **Origen y nota**                  |
 |:-----------------|:-------------|:--------------|:-----------------------------------------------------------|:-----------------|:---------------------------------------|
-| **Atributo** | **Tipo** | **Clave** | **Dominio de valores**                                 | **Obligat.** | **Origen y nota**                  |
 | `id_credencial`  | string       | PK            | Identificador unico                                        | Obligatorio      | —                                      |
 | `id_nombrada`    | string       | FK            | Identificador de la entidad referenciada                   | Obligatorio      | FK compuesta hacia ASIGNACION_NOMBRADA |
 | `id_persona`     | string       | FK            | Identificador de la entidad referenciada                   | Obligatorio      | —                                      |
@@ -1653,7 +1584,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**   | **Tipo** | **Clave** | **Dominio de valores**                                            | **Obligat.** | **Origen y nota**                         |
 |:-------------------|:-------------|:--------------|:----------------------------------------------------------------------|:-----------------|:----------------------------------------------|
-| **Atributo**   | **Tipo** | **Clave** | **Dominio de valores**                                            | **Obligat.** | **Origen y nota**                         |
 | `id_zona`          | string       | PK            | Identificador unico                                                   | Obligatorio      | —                                             |
 | `nombre`           | string       | —             | Denominacion de la zona en el plan de proteccion                      | Obligatorio      | —                                             |
 | `nivel_proteccion` | enum         | —             | {niveles 1, 2 y 3 del plan de proteccion de la instalacion portuaria} | Obligatorio      | segun el plan de proteccion de la instalacion |
@@ -1662,7 +1592,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo** | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota** |
 |:-----------------|:-------------|:--------------|:-----------------------------------------|:-----------------|:----------------------|
-| **Atributo** | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota** |
 | `id_credencial`  | string       | PK,FK         | Identificador de la entidad referenciada | Obligatorio      | —                     |
 | `id_zona`        | string       | PK,FK         | Identificador de la entidad referenciada | Obligatorio      | —                     |
 
@@ -1670,7 +1599,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**              | **Tipo** | **Clave** | **Dominio de valores**                                                       | **Obligat.** | **Origen y nota**                     |
 |:------------------------------|:-------------|:--------------|:---------------------------------------------------------------------------------|:-----------------|:------------------------------------------|
-| **Atributo**              | **Tipo** | **Clave** | **Dominio de valores**                                                       | **Obligat.** | **Origen y nota**                     |
 | `id_evento`                   | string       | PK            | Identificador unico                                                              | Obligatorio      | —                                         |
 | `id_persona`                  | string       | FK            | Identificador de la entidad referenciada                                         | Obligatorio      | —                                         |
 | `id_zona`                     | string       | FK            | Identificador de la entidad referenciada                                         | Obligatorio      | —                                         |
@@ -1684,7 +1612,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**    | **Tipo** | **Clave** | **Dominio de valores**                                      | **Obligat.** | **Origen y nota**                                         |
 |:--------------------|:-------------|:--------------|:----------------------------------------------------------------|:-----------------|:--------------------------------------------------------------|
-| **Atributo**    | **Tipo** | **Clave** | **Dominio de valores**                                      | **Obligat.** | **Origen y nota**                                         |
 | `id_consulta`       | string       | PK            | Identificador unico                                             | Obligatorio      | —                                                             |
 | `id_persona`        | string       | FK            | Identificador de la entidad referenciada                        | Obligatorio      | —                                                             |
 | `tipo_dato`         | enum         | —             | {ubicacion de contenedor, informacion comercial, dato personal} | Obligatorio      | ubicacion de contenedor, informacion comercial, dato personal |
@@ -1698,7 +1625,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**  | **Tipo** | **Clave** | **Dominio de valores**                                         | **Obligat.** | **Origen y nota**                                            |
 |:------------------|:-------------|:--------------|:-------------------------------------------------------------------|:-----------------|:-----------------------------------------------------------------|
-| **Atributo**  | **Tipo** | **Clave** | **Dominio de valores**                                         | **Obligat.** | **Origen y nota**                                            |
 | `id_contraparte`  | string       | PK            | Identificador unico                                                | Obligatorio      | —                                                                |
 | `tipo`            | enum         | —             | {naviera, autoridad, ferroviario, concedente, TOS, ERP, periferia} | Obligatorio      | naviera, autoridad, ferroviario, concedente, TOS, ERP, periferia |
 | `nombre`          | string       | —             | Denominacion de la contraparte                                     | Obligatorio      | —                                                                |
@@ -1708,7 +1634,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**          | **Tipo** | **Clave** | **Dominio de valores**                            | **Obligat.** | **Origen y nota**             |
 |:--------------------------|:-------------|:--------------|:------------------------------------------------------|:-----------------|:----------------------------------|
-| **Atributo**          | **Tipo** | **Clave** | **Dominio de valores**                            | **Obligat.** | **Origen y nota**             |
 | `id_contrato`             | string       | PK            | Identificador unico                                   | Obligatorio      | —                                 |
 | `version_semantica`       | string       | PK            | Identificador unico                                   | Obligatorio      | RT-05.17, el contrato se versiona |
 | `id_contraparte`          | string       | FK            | Identificador de la entidad referenciada              | Obligatorio      | —                                 |
@@ -1721,7 +1646,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**     | **Tipo** | **Clave** | **Dominio de valores**                                | **Obligat.** | **Origen y nota**                     |
 |:---------------------|:-------------|:--------------|:----------------------------------------------------------|:-----------------|:------------------------------------------|
-| **Atributo**     | **Tipo** | **Clave** | **Dominio de valores**                                | **Obligat.** | **Origen y nota**                     |
 | `id_mensaje`         | string       | PK            | Identificador unico                                       | Obligatorio      | —                                         |
 | `id_contrato`        | string       | FK            | Identificador de la entidad referenciada                  | Obligatorio      | —                                         |
 | `version_contrato`   | string       | FK            | Identificador de la entidad referenciada                  | Obligatorio      | FK compuesta                              |
@@ -1736,7 +1660,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo** | **Tipo** | **Clave** | **Dominio de valores**                                                                 | **Obligat.** | **Origen y nota**     |
 |:-----------------|:-------------|:--------------|:-------------------------------------------------------------------------------------------|:-----------------|:--------------------------|
-| **Atributo** | **Tipo** | **Clave** | **Dominio de valores**                                                                 | **Obligat.** | **Origen y nota**     |
 | `id_dominio`     | string       | PK            | Identificador unico                                                                        | Obligatorio      | —                         |
 | `nombre`         | string       | —             | {DOM-OPS, DOM-PAT, DOM-GAT, DOM-REF, DOM-NAV, DOM-INS, DOM-FAC, DOM-ACC, DOM-EMI, DOM-INT} | Obligatorio      | los diez dominios de D-01 |
 
@@ -1744,7 +1667,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo** | **Tipo** | **Clave** | **Dominio de valores**                               | **Obligat.** | **Origen y nota**                   |
 |:-----------------|:-------------|:--------------|:---------------------------------------------------------|:-----------------|:----------------------------------------|
-| **Atributo** | **Tipo** | **Clave** | **Dominio de valores**                               | **Obligat.** | **Origen y nota**                   |
 | `id_zona`        | string       | PK            | Identificador unico                                      | Obligatorio      | —                                       |
 | `nombre`         | string       | —             | VACIO DECLARADO: por nombrar en conjunto con la Celula 3 | Obligatorio      | POR NOMBRAR en conjunto con la Celula 3 |
 
@@ -1752,7 +1674,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo** | **Tipo** | **Clave** | **Dominio de valores**                                 | **Obligat.** | **Origen y nota**                                    |
 |:-----------------|:-------------|:--------------|:-----------------------------------------------------------|:-----------------|:---------------------------------------------------------|
-| **Atributo** | **Tipo** | **Clave** | **Dominio de valores**                                 | **Obligat.** | **Origen y nota**                                    |
 | `id_fase`        | string       | PK            | Identificador unico                                        | Obligatorio      | —                                                        |
 | `nombre`         | enum         | —             | {previo al corte, validacion paralela, posterior al corte} | Obligatorio      | previo al corte, validacion paralela, posterior al corte |
 
@@ -1760,7 +1681,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**       | **Tipo** | **Clave** | **Dominio de valores**                                  | **Obligat.** | **Origen y nota**              |
 |:-----------------------|:-------------|:--------------|:------------------------------------------------------------|:-----------------|:-----------------------------------|
-| **Atributo**       | **Tipo** | **Clave** | **Dominio de valores**                                  | **Obligat.** | **Origen y nota**              |
 | `id_asignacion`        | string       | PK            | Identificador unico                                         | Obligatorio      | —                                  |
 | `id_dominio`           | string       | FK,UK         | Identificador de la entidad referenciada                    | Obligatorio      | —                                  |
 | `id_zona`              | string       | FK,UK         | Identificador de la entidad referenciada                    | Obligatorio      | —                                  |
@@ -1773,7 +1693,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**     | **Tipo** | **Clave** | **Dominio de valores**                                      | **Obligat.** | **Origen y nota**                         |
 |:---------------------|:-------------|:--------------|:----------------------------------------------------------------|:-----------------|:----------------------------------------------|
-| **Atributo**     | **Tipo** | **Clave** | **Dominio de valores**                                      | **Obligat.** | **Origen y nota**                         |
 | `id_transferencia`   | string       | PK            | Identificador unico                                             | Obligatorio      | —                                             |
 | `id_visita`          | string       | FK            | Identificador de la entidad referenciada                        | Obligatorio      | ref. D-02.VISITA                              |
 | `id_asignacion`      | string       | FK            | Identificador de la entidad referenciada                        | Obligatorio      | —                                             |
@@ -1788,7 +1707,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**       | **Tipo** | **Clave** | **Dominio de valores**                                | **Obligat.** | **Origen y nota**                                   |
 |:-----------------------|:-------------|:--------------|:----------------------------------------------------------|:-----------------|:--------------------------------------------------------|
-| **Atributo**       | **Tipo** | **Clave** | **Dominio de valores**                                | **Obligat.** | **Origen y nota**                                   |
 | `id_divergencia`       | string       | PK            | Identificador unico                                       | Obligatorio      | —                                                       |
 | `universo`             | enum         | —             | {inventario, movimientos, gate, hechos}                   | Obligatorio      | inventario, movimientos, gate, hechos                   |
 | `id_turno_operacional` | string       | FK            | Identificador de la entidad referenciada                  | Obligatorio      | ref. D-07.TURNO_OPERACIONAL                             |
@@ -1801,7 +1719,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**       | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota**             |
 |:-----------------------|:-------------|:--------------|:-----------------------------------------|:-----------------|:----------------------------------|
-| **Atributo**       | **Tipo** | **Clave** | **Dominio de valores**               | **Obligat.** | **Origen y nota**             |
 | `id_verificacion`      | string       | PK            | Identificador unico                      | Obligatorio      | —                                 |
 | `id_divergencia`       | string       | FK            | Identificador de la entidad referenciada | Obligatorio      | —                                 |
 | `id_bloque`            | string       | FK            | Identificador de la entidad referenciada | Obligatorio      | ref. D-02.BLOQUE                  |
@@ -1813,7 +1730,6 @@ Las ochenta entidades del modelo conceptual con sus 451 atributos. Cada atributo
 
 | **Atributo**        | **Tipo** | **Clave** | **Dominio de valores**                              | **Obligat.** | **Origen y nota**                   |
 |:------------------------|:-------------|:--------------|:--------------------------------------------------------|:-----------------|:----------------------------------------|
-| **Atributo**        | **Tipo** | **Clave** | **Dominio de valores**                              | **Obligat.** | **Origen y nota**                   |
 | `id_registro`           | string       | PK            | Identificador unico                                     | Obligatorio      | —                                       |
 | `entidad_afectada`      | string       | —             | Nombre de la entidad del modelo conceptual              | Obligatorio      | —                                       |
 | `id_objeto_afectado`    | string       | —             | Identificador del objeto alterado                       | Obligatorio      | —                                       |

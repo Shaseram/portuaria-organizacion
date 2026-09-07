@@ -101,7 +101,7 @@ Se indexa **una clave de acceso declarada de una operación crítica**, y nada m
 
 Ocho de las claves de acceso anteriores son atributos del catálogo de cifrado a nivel de campo de `DEC-C4-12`: `POSICION_VIGENTE.id_celda`, `MOVIMIENTO.celda_origen` y `celda_destino`, `CONTENEDOR.clase_imdg`, `LECTURA_OPTICA.codigo_leido`, `CONDUCTOR.id_persona`, `EVENTO_ACCESO.id_persona` y `HECHO_FACTURABLE.id_regla_aplicada`.
 
-Un cifrado que impida la búsqueda por igualdad sobre ellos hace inalcanzables los umbrales de un segundo. **No lo resolvemos aquí porque no nos corresponde**: el mecanismo de cifrado y la gestión de llaves son arquitectura de seguridad. Queda en `PEN-02`, ahora acotado a ocho atributos nombrados en vez de a una pregunta general.
+Un cifrado que impida la búsqueda por igualdad sobre ellos hace inalcanzables los umbrales. **Respuesta C3 para I1:** D1 B4.3 propone cifrado aleatorio más token de igualdad protegido o identificador sustituto opaco, siempre dentro del servicio autorizado. Los índices permanecen condicionados a pruebas de fuga, latencia, rotación y continuidad local; no se adopta cifrado determinista directo.
 
 ---
 
@@ -264,9 +264,9 @@ Es el único punto donde el crecimiento no encuentra holgura: los demás candida
 
 | ID | Qué falta | Responsable | Qué condiciona |
 |---|---|---|---|
-| `PEN-02` | Mecanismo de cifrado de campo y si admite búsqueda por igualdad sobre los ocho atributos de la sección 3.3 | **Célula 3** (`ADR-009`) | Los índices 1, 3, 5, 17 y 18; sin respuesta, los umbrales de 1 s no son comprometibles sobre esos campos |
-| `PEN-07` | Motor y versión: la disponibilidad de índices parciales, compresión y agregación continua depende del producto | **Célula 3** (`ADR-007`) | Los índices parciales 4, 13 y 15 y la partición de `MUESTRA_TEMPERATURA` |
-| `PEN-08` | Revalidación de la volumetría con el factor estacional | **Célula 3** (`C4`) | Toda la columna de volumen de la sección 6 y el cálculo de 7.1 |
+| `PEN-02` — respondido para I1 | Los ocho atributos de §3.3 tienen patrón propuesto en D1 B4.3 | **Célula 3 + Seguridad/CLIENTE** (`ADR-009`) | falta validar fuga, latencia, rotación y corte 72 h antes de comprometer los umbrales |
+| `PEN-07` — recibido I1 | PostgreSQL/RDS con capacidad temporal propuesto; versión final por soporte | **Célula 3** (`ADR-007`) | pruebas de índices/compresión/agregación pendientes |
+| `PEN-08` — cerrado I1 | promedio, peak, 3× e imagen 1 MB separados | **Célula 3** (`C4`) | se reabre solo si cambia un supuesto fuente |
 | `PEN-10` | Frontera del runtime local y tamaño de buffer del borde | **Célula 3** (`A3`/`C3`) | La agregación previa de `DES-05` y el buffer de imágenes de 8.1 |
 | `PEN-17` | Latencia real de la red de patio con pilas cargadas y ancho de banda del enlace de reposición | **Célula 3** (`C3`), con site survey | El umbral de 1 s de `DES-01` y los 58 Mbps de 7.1 |
 | `PEN-16` | **Nuevo.** Confirmar el alcance del plazo de 90 minutos: ¿protege la integridad de movimientos y hechos facturables, o la transferencia completa del volumen de 72 h? | **CLIENTE**, vía consulta formal | El punto 2 de 7.4 y el costo del enlace de reposición |
@@ -294,4 +294,4 @@ Es el único punto donde el crecimiento no encuentra holgura: los demás candida
 
 ---
 
-**Cierre.** Veintiún índices, cada uno atado a una operación con umbral; cuatro entidades particionadas y setenta y seis que no; una política de caché que es sobre todo una lista de lo que no se cachea; veintiuna operaciones con volumen, latencia, técnica y evidencia; y un cuello de botella declarado que corrige el que habíamos supuesto. Cuatro decisiones de Célula 4, cada una tomada porque una obligación concreta no podía cerrarse sin ella. Siete pendientes, seis de Célula 3 y uno del CLIENTE, todos con la pregunta ya formulada.
+**Cierre.** Veintiún índices, cada uno atado a una operación con umbral; cuatro entidades particionadas y setenta y seis que no; una política de caché que explicita qué no se cachea; veintiuna operaciones con volumen, latencia, técnica y evidencia; y la ventana de sincronización como cuello de botella vigente. La disposición C3 de los ocho índices sensibles está recibida; fuga, latencia, rotación, contratos y mediciones reales permanecen condicionados.

@@ -294,7 +294,7 @@ Si Célula 2 lo incorpora, `PEN-05` se cierra. Si no lo incorpora, la materia ig
 |---|---|---|
 | `PEN-05` | Si el requerimiento propuesto en la sección 9 entra al catálogo de Célula 2 o la materia queda solo en el Subdocumento 5 | Célula 2 |
 | `PEN-09` | Los umbrales de `CAL-19` y `CAL-20` dependen del plazo de alarma, que sí está fijado; la **banda** de desviación que dispara la alarma sigue sin valores | Célula 2 y CLIENTE |
-| `PEN-02` | `CAL-43` compromete el cifrado de los 28 atributos del catálogo; el mecanismo y su efecto sobre la indexación es de arquitectura de seguridad | Célula 3 |
+| `PEN-02` — respondido para I1 | `CAL-43` conserva los 28 atributos; D1 B4.3 dispone los ocho indexados sin cifrado determinista directo. Falta ejecutar pruebas de fuga, latencia, rotación y continuidad | Célula 3 + Seguridad/CLIENTE |
 | Propio | Los umbrales de `CAL-03` (≤ 2 % de registro manual), `CAL-13` (≥ 90 % de anticipación documental) y `CAL-18` (≤ 2 % de interpolados) son **metas propias de Terabyte**, no cifras del caso. Se declaran como tales y se validan con el CLIENTE en la marcha blanca | Célula 4, declarado |
 
 ---

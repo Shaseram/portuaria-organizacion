@@ -7,11 +7,11 @@
 
 ---
 
-## Contexto en dos párrafos
+## Respuesta incorporada al cruce C3–C4
 
-El Subdocumento 5 está **completo en doce de sus trece apartados**. Los ocho pendientes que eran propios de Célula 4 quedaron cerrados, con veintiuna decisiones registradas y argumentadas. El único apartado que sigue abierto es el de **integración e interoperabilidad de datos**, y no está abierto por falta de trabajo nuestro: los contratos por contraparte son de ustedes.
+El Subdocumento 5 queda **cubierto en sus trece apartados para diseño I1**. Célula 3 entregó la baseline arquitectónica y A2 contiene el catálogo de 21 contrapartes + 7 familias, patrón de eventos persistente, contrato tipo, idempotencia, DLQ/replay y fallback. Los contratos reales por contraparte continúan condicionados externamente y no se inventan.
 
-Lo que sigue son **doce peticiones**. Ninguna nos impide entregar, porque cada apartado que se apoya en ustedes está redactado de modo que se sostiene con fuentes normativas propias. Pero cada una de las doce, sin respuesta, obliga a mantener una marca de provisionalidad en el Informe 1 que un evaluador va a leer.
+Las peticiones originales se conservan debajo como trazabilidad. Su estado vigente es: `PEN-03`, `PEN-08` y la frontera local quedan `CERRADO I1`; `PEN-01`, `PEN-02`, `PEN-05`, `PEN-06` y `PEN-07/07b` quedan `RECIBIDO` con condiciones explícitas; `PEN-17/18/19` permanecen `CONDICIONADO EXTERNO` por mediciones, política de imagen y matriz de copias.
 
 Van ordenadas por urgencia real, no por número.
 
@@ -19,7 +19,7 @@ Van ordenadas por urgencia real, no por número.
 
 ## Bloque A — Las tres urgentes
 
-### `PEN-03` · ¿Quién publica el modelo conceptual del dominio?
+### `PEN-03` · CERRADO I1 — propiedad del modelo conceptual
 
 **Qué pedimos.** Un acuerdo por escrito sobre el corte entre su sección 4.1.5 y nuestro § 5.14.
 
@@ -31,7 +31,7 @@ Van ordenadas por urgencia real, no por número.
 
 ---
 
-### `PEN-02` · ¿El cifrado de campo permite buscar por igualdad sobre estos ocho atributos?
+### `PEN-02` · RECIBIDO CON CONDICIONES — ocho búsquedas cifradas
 
 **Qué pedimos.** Respuesta atributo por atributo sobre esta lista, no una política general.
 
@@ -52,7 +52,7 @@ Van ordenadas por urgencia real, no por número.
 
 ---
 
-### `PEN-01` · ¿Cuáles son las zonas y las fases nombradas de la matriz de autoridad?
+### `PEN-01` · RECIBIDO — zonas y fases de la matriz de autoridad
 
 **Qué pedimos.** La matriz `dominio × zona × fase` con sus valores, y la confirmación de que reutilizan la fuente de verdad definida por Célula 2 en la Decisión N.º 1 **sin redefinirla**.
 
@@ -66,17 +66,17 @@ Van ordenadas por urgencia real, no por número.
 
 ## Bloque B — Las que condicionan el § 5.4 y el § 5.13
 
-### `PEN-05` · Contratos de integración por contraparte
+### `PEN-05` · RECIBIDO PARA DISEÑO — contratos reales condicionados
 
 **Qué pedimos.** Qué integraciones tendrán contrato confirmado antes de la entrega y cuáles quedan declaradas «por levantar» en el Informe 1.
 
-**Por qué.** Es **el único apartado del Subdocumento 5 que sigue marcado como pendiente**. Nuestro inventario está cerrado —21 contrapartes lógicas y 7 familias de periferia, con sus volúmenes base— pero los contratos, versiones, claves de idempotencia y el mecanismo de captura de cambios contra el sistema de 2012 figuran como «por detallar» en su entregable de integración.
+**Respuesta vigente.** A2 cierra el diseño del apartado con 21 contrapartes, 7 familias, contratos tipo, versiones, idempotencia, DLQ/replay y fallback. El contrato técnico y CDC del TOS, junto con interfaces de terceros, permanecen `POR LEVANTAR` o `BLOQUEADO EXTERNO` por fila.
 
 **Lo que no haremos:** inventar una interfaz, un protocolo, una versión o una disponibilidad de terceros. Su propia regla negativa N.º 9 lo prohíbe y la respetamos.
 
 ---
 
-### `PEN-06` · ¿Capa de eventos, réplica o captura de cambios?
+### `PEN-06` · RECIBIDO — eventos persistentes; CDC condicionado
 
 **Qué pedimos.** La decisión de mecanismo de integración, aunque sea preliminar.
 
@@ -86,17 +86,17 @@ Van ordenadas por urgencia real, no por número.
 
 ---
 
-### `PEN-07` y `PEN-07b` · Producto, versión y emplazamiento
+### `PEN-07` y `PEN-07b` · RECIBIDO — producto de referencia y emplazamiento
 
 **Qué pedimos.** Dos respuestas: si el Informe 1 nombra productos de base de datos o solo capacidades; y qué almacenes quedan on-premise, cuáles en nube y cuáles en el borde.
 
 **Qué les entregamos para que decidan.** La comparación completa de **trece alternativas** sobre siete criterios ponderados, con recomendación por capacidad y sin producto seleccionado. Está en el Anexo de persistencia del Subdocumento 5. Es exactamente el insumo que su propia regla de aprobación de decisiones de arquitectura exige: *nombrar un producto sin comparar el problema que resuelve no es una decisión arquitectónica suficiente*.
 
-**Una condición que no es negociable desde datos.** La recomendación sitúa el **primario del estado operacional en el borde**. No es preferencia: situarlo en la nube incumple la restricción no negociable N.º 4, porque la pérdida del enlace detendría la escritura autoritativa del gate y del muelle.
+**Alineación vigente.** AWS mantiene el registro consolidado y la carga principal en operación normal; el núcleo local conserva estado crítico caliente y asume autoridad durante el corte. La exigencia es la ruta local completa, no un primario permanente en el borde.
 
 ---
 
-### `PEN-08` · ¿Revalidan la volumetría o la recalculan?
+### `PEN-08` · CERRADO I1 — volumetría por escenarios
 
 **Qué pedimos.** Confirmación de las dieciocho dimensiones con el factor estacional incorporado, o aviso de que las recalcularán.
 
@@ -106,21 +106,21 @@ Van ordenadas por urgencia real, no por número.
 
 ---
 
-### `PEN-10` · Frontera del runtime local y tamaño de buffer
+### `PEN-10` · CERRADO I1 — frontera local y buffer
 
 **Qué pedimos.** Qué datos persisten localmente durante las 72 horas y con qué tamaño de buffer comprometido.
 
-**Por qué.** Determina cuáles de nuestras dieciséis operaciones que priorizan disponibilidad son realmente sostenibles durante 72 horas. Les entregamos la demanda calculada: **13 GB de volumen generado en 72 horas hoy, 39 GB en el escenario de diseño**, de los cuales el 86 % son imágenes.
+**Respuesta vigente.** La baseline I1 usa 21,9 GB a peak estacional, 32,5 Mbps de reposición y dos caminos WAN de al menos 35 Mbps disponibles. 39 GB/57,8 Mbps es crecimiento futuro 3×; ≈40 GB/≈58 Mbps es una sensibilidad separada de imagen a 1 MB.
 
 ---
 
 ## Bloque C — Las que afectan el dimensionamiento fino
 
-### `PEN-17` · Latencia real de la red de patio y ancho de banda del enlace de reposición
+### `PEN-17` · CONDICIONADO EXTERNO — latencia y ancho de banda medidos
 
 **Qué pedimos.** La latencia que sostiene la red inalámbrica en condición de patio cargado con pilas de cinco alturas, y el ancho de banda del enlace de reposición.
 
-**Por qué.** El umbral de un segundo para confirmar un movimiento desde un equipo de patio se mide de extremo a extremo, e incluye la red. Y la sincronización posterior a las 72 horas exige **19,3 Mbps sostenidos hoy y ≈58 Mbps en el escenario de diseño**.
+**Por qué.** El umbral de un segundo se mide de extremo a extremo. La baseline I1 exige 32,5 Mbps útiles y WAN ≥35 Mbps; ≈58 Mbps pertenece al escenario futuro 3× o a la sensibilidad separada de imagen.
 
 ---
 

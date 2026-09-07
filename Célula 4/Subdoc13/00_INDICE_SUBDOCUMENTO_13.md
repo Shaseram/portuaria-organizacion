@@ -18,7 +18,7 @@ Conforme al comunicado del profesor y al Formulario T-22, en el Informe 1 cada u
 | [`B02_NO_SOLAPAMIENTO_Y_COHERENCIA.md`](B02_NO_SOLAPAMIENTO_Y_COHERENCIA.md) | Contraste contra los 139 RF, coherencia conjunta y relación con las etapas | 13.1.4 – 13.1.6 | `APROBADO` |
 | [`B03_IN01_CADENA_FRIO_CERTIFICADA.md`](B03_IN01_CADENA_FRIO_CERTIFICADA.md) | IN-01 · Producto o servicio | 13.2 | `APROBADO` |
 | [`B04_IN02_CITA_TRES_BANDAS.md`](B04_IN02_CITA_TRES_BANDAS.md) | IN-02 · Proceso | 13.3 | `APROBADO` |
-| [`B05_IN03_GEMELO_DE_OPERACION.md`](B05_IN03_GEMELO_DE_OPERACION.md) | IN-03 · Tecnología o arquitectura | 13.4 | `APROBADO` |
+| [`B05_IN03_GEMELO_DE_OPERACION.md`](B05_IN03_GEMELO_DE_OPERACION.md) | IN-03 · Tecnología o arquitectura | 13.4 | `APROBADO PARA INTEGRACIÓN EDITORIAL C4`; inserción arquitectónica condicionada |
 | [`B06_IN04_SERVICIO_GESTIONADO.md`](B06_IN04_SERVICIO_GESTIONADO.md) | IN-04 · Modelo de negocio o contratación | 13.5 | `APROBADO` |
 | [`B07_IN05_INTENSIDAD_CARBONO.md`](B07_IN05_INTENSIDAD_CARBONO.md) | IN-05 · Sostenibilidad | 13.6 | `APROBADO` |
 | [`B08_TRAZABILIDAD_RESULTADOS_Y_RIESGOS.md`](B08_TRAZABILIDAD_RESULTADOS_Y_RIESGOS.md) | Indicadores, líneas base, riesgos de cartera y alcance de la entrega | 13.7 – 13.8 | `APROBADO` |
@@ -64,7 +64,7 @@ Conforme al comunicado del profesor y al Formulario T-22, en el Informe 1 cada u
 
 | Estado | Significado |
 |---|---|
-| `APROBADO` | Integrable al PDF. Tiene respaldo en las Bases, en el Caso o en el trabajo de otra célula, con la fuente citada |
+| `APROBADO` / `APROBADO PARA INTEGRACIÓN EDITORIAL C4` | Significa únicamente que Célula 4 considera el texto integrable a su PDF. **No** significa ADR aprobado, componente ratificado por Célula 3, contratación, implementación ni prueba ejecutada |
 | `EN CURSO` | Desarrollo activo |
 | `TRABAJO ANTICIPADO` | Correcto y verificado, pero no exigible en esta entrega |
 | `BLOQUEADO EXTERNO` | Requiere un dato de otra célula; conserva tratamiento provisional declarado |

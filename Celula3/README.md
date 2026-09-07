@@ -3,7 +3,7 @@
 **Fecha de corte:** 2026-09-06
 
 **Rama de integración:** `main`
-**Estado:** MA-0–MA-8 completadas; P4 aprobada; producción final y ejecución D3 pendientes.
+**Estado:** MA-0–MA-8 completadas; alineación C3–C4 ejecutada y gates superados; base obligatoria y fuentes de escritura ordenadas. Redacción editorial conjunta, diagramas del equipo, ensamblado y D3 pendientes.
 
 Este archivo es el punto de entrada para personas y agentes. Resume el estado actual; los documentos MA conservan la historia y los frentes A/C/D conservan el expediente técnico.
 
@@ -17,28 +17,29 @@ Este archivo es el punto de entrada para personas y agentes. Resume el estado ac
 - Artículo 4 trazado como estándar/norma → control → componente → evidencia de I1 → evidencia futura.
 - Estructura final fijada en trece subsecciones: `4.1.1..4.1.5` y `4.2.1..4.2.8`.
 - D3 y sus trece controles están preparados, pero no ejecutados.
+- Cruce C3–C4 cerrado para diseño I1: diez dominios mapeados a cuatro capacidades lógicas, semántica `Contenedor`/`VisitaContenedor`/`Recalada`, catálogo de 28 campos y ocho búsquedas sensibles, capacidad e integración conciliadas.
+- Guía de contenido obligatorio preparada con la estructura contractual 4.1/4.2, fuentes por apartado y bosquejos no vinculantes.
 
 ## 2. Qué falta realmente
 
-1. Redactar por completo el Subdocumento 4 en [`90_Consolidado/00_CONTENIDO_FINAL_SUBDOCUMENTO_4.md`](90_Consolidado/00_CONTENIDO_FINAL_SUBDOCUMENTO_4.md).
-2. Contrastar `V-DATA-01` con el Subdocumento 5 sin duplicar su modelo detallado.
-3. Producir F1–F5: esquema, lógica, integración/proceso, física híbrida y seguridad.
-4. Ensamblar texto, tablas, figuras y el T-11 final.
-5. Ejecutar D3 sobre esa versión exacta, corregir sus hallazgos y emitir P5.
-6. Maquetar y revisar visualmente la exportación final.
-
-F6 de continuidad es condicional: solo se crea si F3/F4 no explican claramente operación normal, corte de 72 h, reconciliación ≤90 min y DR.
+1. Reescribir en conjunto las trece subsecciones con lenguaje natural, usando el consolidado actual como base técnica y no como texto final.
+2. Preparar y aprobar los diagramas definitivos que el equipo estime necesarios. Los bocetos previos están archivados y excluidos del entregable.
+3. Ensamblar el T-11 final, ejecutar D3 sobre esa versión exacta, corregir hallazgos y emitir P5.
+4. Maquetar y revisar visualmente la exportación final.
 
 ## 3. Orden de lectura obligatorio
 
 | Orden | Archivo | Para qué se usa |
 |---:|---|---|
-| 1 | [`07_PLAN_MAESTRO_CIERRE_INFORME1_SUBDOC4.md`](00_Gobierno/07_PLAN_MAESTRO_CIERRE_INFORME1_SUBDOC4.md) | alcance de Informe 1, reglas y plan `R1..R6` |
-| 2 | [`13_PREPARACION_D3_Y_MAPA_ENSAMBLADO_MA8.md`](00_Gobierno/13_PREPARACION_D3_Y_MAPA_ENSAMBLADO_MA8.md) | estado exacto, fuentes canónicas y secuencia final |
-| 3 | [`12_PROYECCION_EDITORIAL_Y_PLAN_DIAGRAMAS_MA7.md`](00_Gobierno/12_PROYECCION_EDITORIAL_Y_PLAN_DIAGRAMAS_MA7.md) | índice, extensión, tablas publicables y contratos F1–F6 |
-| 4 | [`D3_AUDITORIA_Y_CONSOLIDACION.md`](03_Frente_Seguridad_Consolidacion/D3_AUDITORIA_Y_CONSOLIDACION.md) | mapa de llenado de las trece secciones y criterio de auditoría |
-| 5 | [`00_CONTENIDO_FINAL_SUBDOCUMENTO_4.md`](90_Consolidado/00_CONTENIDO_FINAL_SUBDOCUMENTO_4.md) | único destino de la redacción entregable |
-| 6 | [`02_FORMULARIO_T11_FINAL.md`](90_Consolidado/02_FORMULARIO_T11_FINAL.md) | tabla contractual que se incorpora sin reescribir |
+| 1 | [`PLAN_MAESTRO_ALINEACION_CELULA3_CELULA4.md`](../PLAN_MAESTRO_ALINEACION_CELULA3_CELULA4.md) | decisiones compartidas, estado del cruce y orden de trabajo vigente |
+| 2 | [`04_BASE_OBLIGATORIA_SUBDOCUMENTO_4.md`](90_Consolidado/04_BASE_OBLIGATORIA_SUBDOCUMENTO_4.md) | estructura contractual, mínimos, fuentes y bosquejos abiertos para escribir |
+| 3 | [`07_PLAN_MAESTRO_CIERRE_INFORME1_SUBDOC4.md`](00_Gobierno/07_PLAN_MAESTRO_CIERRE_INFORME1_SUBDOC4.md) | alcance de Informe 1, reglas y plan `R1..R6` |
+| 4 | [`13_PREPARACION_D3_Y_MAPA_ENSAMBLADO_MA8.md`](00_Gobierno/13_PREPARACION_D3_Y_MAPA_ENSAMBLADO_MA8.md) | fuentes canónicas y preparación del control final |
+| 5 | [`12_PROYECCION_EDITORIAL_Y_PLAN_DIAGRAMAS_MA7.md`](00_Gobierno/12_PROYECCION_EDITORIAL_Y_PLAN_DIAGRAMAS_MA7.md) | corte histórico de estructura, tablas y contratos visuales; no obliga a usar los bocetos archivados |
+| 6 | [`D3_AUDITORIA_Y_CONSOLIDACION.md`](03_Frente_Seguridad_Consolidacion/D3_AUDITORIA_Y_CONSOLIDACION.md) | mapa de llenado interno y criterio de auditoría |
+| 7 | [`00_BASE_TECNICA_SUBDOCUMENTO_4.md`](90_Consolidado/00_BASE_TECNICA_SUBDOCUMENTO_4.md) | inventario técnico y destino de la redacción conjunta; no es prosa final |
+| 8 | [`diagramas_archivados/README.md`](90_Consolidado/diagramas_archivados/README.md) | bocetos excluidos de la entrega; consulta opcional |
+| 9 | [`02_FORMULARIO_T11_FINAL.md`](90_Consolidado/02_FORMULARIO_T11_FINAL.md) | tabla contractual que se incorpora sin reescribir |
 
 Si hace falta justificar una afirmación, recién entonces se baja al Maestro, Matriz Global, Registro ADR, A1–A3, C1–C4, D1–D2 y sus trazas.
 
@@ -60,20 +61,18 @@ Si hace falta justificar una afirmación, recién entonces se baja al Maestro, M
 | 4.2.7 Dimensionamiento y capacidad | C4 |
 | 4.2.8 Formulario T-11 | T-11 final + matriz trazable |
 
-El mapa detallado y los controles por sección viven en D3. Esta tabla solo sirve para orientación rápida.
+La guía obligatoria agrupa este desglose interno dentro de los apartados oficiales `4.1 a/b` y `4.2 a–e + T-11`. El mapa detallado y los controles viven en D3.
 
 ## 5. Plan para quien continúe
 
 Trabajar en este orden:
 
-1. `R1 — Redacción`: llenar las trece subsecciones con conclusiones, cifras decisivas y referencias; no copiar matrices completas.
-2. `R2 — Datos`: validar `V-DATA-01` con el Subdocumento 5 y propagar solo cambios reales.
-3. `R3 — Figuras`: dibujar F1–F5 usando los mismos IDs, ubicaciones y cifras del texto.
-4. `R4 — Ensamblado`: incorporar figuras, tablas publicables y las 32 filas del T-11.
-5. `R5 — D3`: completar `TRZ-D3-001..013` con evidencia real y corregir primero la fuente canónica si cambia la solución.
-6. `R6 — Cierre`: maquetar, exportar, revisar página por página y emitir el veredicto P5.
+1. `R2 — Redacción conjunta`: transformar la base técnica en una explicación natural y autónoma, conservando las trece subsecciones.
+2. `R3 — Diagramas y ensamblado`: incorporar solo los diagramas aprobados por el equipo e insertar las 32 filas del T-11.
+3. `R4 — D3`: completar `TRZ-D3-001..013` con evidencia real y corregir primero la fuente canónica si cambia la solución.
+4. `R5 — Cierre`: maquetar, exportar, revisar página por página y emitir el veredicto P5.
 
-Un agente puede preparar las figuras mientras otro redacta, pero nadie debe marcar D3 como ejecutado antes del ensamblado.
+Los diagramas definitivos quedan a cargo del equipo. Nadie debe marcar D3 como ejecutado antes del ensamblado.
 
 ## 6. Reglas que no se deben romper
 
@@ -106,4 +105,4 @@ Un agente puede preparar las figuras mientras otro redacta, pero nadie debe marc
 
 ## 8. Condición de entrega
 
-La Célula 3 está lista para **producir** el Subdocumento 4, no para declararlo terminado. Solo queda cerrada cuando el consolidado sea autónomo, F1–F5 estén incorporadas, `V-DATA-01` coincida con el Subdocumento 5, T-11 esté ensamblado y D3 emita `APTO PARA INFORME 1` o `APTO CON DEPENDENCIAS EXTERNAS TRATADAS`.
+La alineación técnica C3–C4 está completa para comenzar a escribir. El entregable solo queda cerrado después de la redacción conjunta, la incorporación de los diagramas que apruebe el equipo, el ensamblado del T-11 y un veredicto D3 de `APTO PARA INFORME 1` o `APTO CON DEPENDENCIAS EXTERNAS TRATADAS`.

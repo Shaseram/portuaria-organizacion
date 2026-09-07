@@ -7,12 +7,12 @@
 
 | ID | Obligación | Paquete primario | Paquetes de apoyo | Evidencia esperada | Estado |
 |---|---|---|---|---|---|
-| `SD4-01` | capas, módulos, contextos, responsabilidades e interfaces | A1 | A2, A3, D1 | esquemas + catálogo | BASELINE LISTA; TEXTO/F2 PENDIENTES |
-| `SD4-02` | físico híbrido y Art. 16 por componente | C1 | C2, C4, D1 | físico + tabla emplazamiento | BASELINE LISTA; TEXTO/F4 PENDIENTES |
-| `SD4-03` | servicios, contratos, mensajería, versionado y gobierno | A2 | A3, D1 | matriz/diagrama integración | BASELINE LISTA; TEXTO/F3 PENDIENTES |
-| `SD4-04` | Zero Trust, exposición, identidad, cifrado y controles | D1 | D2, A1, C3 | 31/31 controles asociados a amenazas y 17/17 grupos físicos tratados; vista F5 diseñada | BASELINE LISTA; TEXTO/F5 Y EVIDENCIA FUTURA PENDIENTES |
-| `SD4-05` | ambientes, redes, HA, DR y respaldos | C3 | A3, C1, D1 | despliegue/continuidad | BASELINE LISTA; TEXTO/F3/F4 PENDIENTES |
-| `SD4-06` | volumen, concurrencia, crecimiento y capacidad | C4 | A2, C2 | cálculos reproducibles | CUBIERTO EN C4; SÍNTESIS FINAL PENDIENTE |
+| `SD4-01` | capas, módulos, contextos, responsabilidades e interfaces | A1 | A2, A3, D1 | esquemas + catálogo | TEXTO, F2 Y TABLA LISTOS |
+| `SD4-02` | físico híbrido y Art. 16 por componente | C1 | C2, C4, D1 | físico + tabla emplazamiento | TEXTO, F4 Y TABLA LISTOS |
+| `SD4-03` | servicios, contratos, mensajería, versionado y gobierno | A2 | A3, D1 | matriz/diagrama integración | TEXTO, F3 Y TABLA LISTOS |
+| `SD4-04` | Zero Trust, exposición, identidad, cifrado y controles | D1 | D2, A1, C3 | 31/31 controles asociados a amenazas y 17/17 grupos físicos tratados; vista F5 diseñada | TEXTO Y F5 LISTOS; EVIDENCIA DE EJECUCIÓN FUTURA |
+| `SD4-05` | ambientes, redes, HA, DR y respaldos | C3 | A3, C1, D1 | despliegue/continuidad | TEXTO Y F3/F4 LISTOS |
+| `SD4-06` | volumen, concurrencia, crecimiento y capacidad | C4 | A2, C2 | cálculos reproducibles | SÍNTESIS FINAL LISTA |
 | `SD4-07` | ADR con alternativas y selección | D2 | todos | 11 ADR con alternativas, consecuencias, condición de revisión, efecto T-11 y vínculo amenaza/SPOF | CUBIERTO BASELINE I1; 11 PROPUESTO, 0 APROBADO |
 | `SD4-08` | arquitectura específica del Caso 06 | D3 | todos | expediente específico + MA-7/MA-8; verificación D3 | BASELINE Y CONTROL PREPARADOS; EJECUCIÓN D3 PENDIENTE |
 
@@ -20,13 +20,13 @@
 
 | ID | Elemento formal | Archivo destino | Paquete | Estado |
 |---|---|---|---|---|
-| `T21-4.1-A` | Esquema de solución | Consolidado 4.1.1 | A1 | BASELINE LISTA; TEXTO/F1 PENDIENTES |
-| `T21-4.1-B` | Arquitectura lógica | Consolidado 4.1.2–4.1.5 | A1/A2/A3/D1 | BASELINE LISTA; TEXTO/F2/F3/F5 PENDIENTES |
-| `T21-4.2-A` | Arquitectura física | Consolidado 4.2.1 | C1 | BASELINE LISTA; TEXTO/F4 PENDIENTES |
+| `T21-4.1-A` | Esquema de solución | Consolidado 4.1.1 | A1 | TEXTO Y F1 LISTOS |
+| `T21-4.1-B` | Arquitectura lógica | Consolidado 4.1.2–4.1.5 | A1/A2/A3/D1 | TEXTO, F2/F3/F5 Y TABLAS LISTOS |
+| `T21-4.2-A` | Arquitectura física | Consolidado 4.2.1 | C1 | TEXTO Y F4 LISTOS |
 | `T21-4.2-B` | Tecnologías de software | Consolidado 4.2.2 | C2 | CUMPLE BASELINE I1 |
 | `T21-4.2-C` | Implementos hardware/software | Consolidado 4.2.3 | C2/C4/D1 | CUMPLE BASELINE I1 |
-| `T21-4.2-D` | Data center primario | Consolidado 4.2.4 | C2/C4 | BASELINE CONDICIONADA; SÍNTESIS FINAL PENDIENTE |
-| `T21-4.2-E` | Data center secundario | Consolidado 4.2.5 | C2/C3 | CUMPLE BASELINE I1; SÍNTESIS FINAL PENDIENTE |
+| `T21-4.2-D` | Data center primario | Consolidado 4.2.4 | C2/C4 | SÍNTESIS LISTA; BASELINE CONDICIONADA |
+| `T21-4.2-E` | Data center secundario | Consolidado 4.2.5 | C2/C3 | SÍNTESIS LISTA; CUMPLE BASELINE I1 |
 | `T11` | Formulario cinco columnas | `90_Consolidado/02_FORMULARIO_T11_FINAL.md` | C4 + todos | CUMPLE MA-5; MAQUETACIÓN PENDIENTE |
 
 ## 3. Matriz de trazabilidad integradora
@@ -57,9 +57,9 @@ Agregar una fila por afirmación verificable o agrupación homogénea. No usar u
 | `GTR-016` | Caso 06 Cap. 18 criterios 8/10; trazabilidad C2 parte 2 | C2 B10 | RF-PAT-10 | SD4-08 | A3/C4/D3 | CTX-YARD | POR DEFINIR | remociones anticipadas y relación con inspecciones | POR DEFINIR | POR DEFINIR | PENDIENTE |
 | `GTR-017` | FEP02 Cap. 11 RT-11.02/05; RNF-SEG-02 | MC-02/04/07/08/09/10/11/12/30 | modelado STRIDE por componente e integración | SD4-04/07/08 | D2 B1–B7 + corte MA-3; TRZ-D2 | 24/24 componentes A1; 11/11 sistemas canónicos | 20/20 nodos C1 + `LOC-INSP-01` | `THR-001..073`, `SPOF-01..26`, ADR-001..011; controles D1 enlazados | DIFERIDO B8 | impacto identificado; cantidades/precios no alterados | EN CURSO — cobertura documental; ruta local y SPOF conciliados; pruebas y aceptación pendientes |
 | `GTR-018` | Contrato D1; FEP02 Cap. 11/12; D2 B7 | F3-DEP-001..004; F3-DEC-005 | integración control→amenaza→nodo→T-11 | SD4-02/04/05/06 | D1 B7-R/MA-3; C1 §6.bis; C4 §9.bis/ter | 31 controles sobre 24 componentes | 17/17 grupos emplazados o justificados | 31/31 con amenaza D2; gateway/IAM/claves/logs/evidencia con capacidad local | DIFERIDO B8 | 7 anclas T11-SEC, una absorbida por C2-19; sin doble conteo | EN CURSO — integración de diseño completa; Subdoc. 5, productos, responsables, pruebas y aprobación pendientes |
-| `GTR-019` | D1/D2 B7-C; auditoría semántica MA-0..6 | corrección quirúrgica, baseline ADR, T-11 y Art. 4 | coherencia e integridad del paquete completo | SD4-04/07/08 | D1 B7-C; D2 B7.11; registros MA-3/MA-4/MA-5/MA-6 | 31 controles D1 / 24 componentes A1 | 20 nodos C1 / 17 grupos SEC-PHYS | 73 amenazas, 26 SPOF y 11 ADR propuestos, 0 aprobados | DIFERIDO B8 | 32 filas T-11; 38 estándares y 15 materias normativas trazadas; diagramas diferidos | EN CURSO — MA-6 completa; siguiente MA-7 |
-| `GTR-020` | FEP01 T-7/T-21/T-22; FEP02 RT-02.01/03 | MA-7: estructura y plan visual | cinco vistas 42010 + esquema formal | SD4-01..08 | `12_PROYECCION_EDITORIAL_Y_PLAN_DIAGRAMAS_MA7.md`; consolidado 4.1/4.2 | ocho capas y 24 componentes en F2; integración en F3 | híbrido/Art. 16 en F4 | límites de confianza en F5; datos en `V-DATA-01` | F1–F5 obligatorias; F6 condicional | T-11 se incorpora en 4.2.8 | MA-7 COMPLETADA; P4 APROBADA; PRODUCCIÓN PENDIENTE |
-| `GTR-021` | FEP01 T-7/T-21/T-22; Art. 16/50.2; FEP02 RT-02.01/03/04 | MA-8: contrato D3 y mapa de ensamblado | fuente→sección→recurso→control→evidencia | SD4-01..08 | `13_PREPARACION_D3_Y_MAPA_ENSAMBLADO_MA8.md`; D3/TRZ-D3 | 4.1.1–4.1.5 enlazadas a A1–A3/D1/D2 | 4.2.1–4.2.8 enlazadas a C1–C4/T-11 | trece controles D3 con criterio de aceptación | F1–F5 pendientes; `V-DATA-01` por cruzar; F6 condicional | 32 filas listas para maquetar | MA-8 PREPARADA; REDACCIÓN/FIGURAS Y EJECUCIÓN D3 PENDIENTES |
+| `GTR-019` | D1/D2 B7-C; auditoría semántica MA-0..6 | corrección quirúrgica, baseline ADR, T-11 y Art. 4 | coherencia e integridad del paquete completo | SD4-04/07/08 | D1 B7-C; D2 B7.11; registros MA-3/MA-4/MA-5/MA-6 | 31 controles D1 / 24 componentes A1 | 20 nodos C1 / 17 grupos SEC-PHYS | 73 amenazas, 26 SPOF y 11 ADR propuestos, 0 aprobados | bocetos visuales archivados; finales pendientes del equipo | 32 filas T-11; 38 estándares y 15 materias normativas trazadas | BASE TÉCNICA LISTA; REDACCIÓN/D3 PENDIENTES |
+| `GTR-020` | FEP01 T-7/T-21/T-22; FEP02 RT-02.01/03 | MA-7: estructura y plan visual | cinco vistas 42010 + esquema formal | SD4-01..08 | `12_PROYECCION_EDITORIAL_Y_PLAN_DIAGRAMAS_MA7.md`; consolidado 4.1/4.2 | ocho capas y 24 componentes en base técnica | integración descrita en base técnica | híbrido/Art. 16 descrito en base técnica | seguridad y `V-DATA-01` preparadas | diagramas definitivos pendientes del equipo | T-11 se incorpora en 4.2.8 | BASE VISUAL ARCHIVADA; PRODUCCIÓN FINAL PENDIENTE |
+| `GTR-021` | FEP01 T-7/T-21/T-22; Art. 16/50.2; FEP02 RT-02.01/03/04 | MA-8: contrato D3 y mapa de ensamblado | fuente→sección→recurso→control→evidencia | SD4-01..08 | `13_PREPARACION_D3_Y_MAPA_ENSAMBLADO_MA8.md`; D3/TRZ-D3 | 4.1.1–4.1.5 estructuradas y enlazadas | 4.2.1–4.2.8 estructuradas y enlazadas a C1–C4/T-11 | trece controles D3 con criterio de aceptación | `V-DATA-01` cruzada; diagramas finales pendientes | 32 filas listas para ensamblar | ALINEACIÓN LISTA; REDACCIÓN, DIAGRAMAS, T-11 Y D3 PENDIENTES |
 
 ## 4. Estándares, marcos y certificaciones exigidos
 
@@ -141,7 +141,7 @@ Incorporado el 2026-09-06, cerrando `F2-ESC-005`. Es la lista de verificación d
 
 | N° | Entregable | Se exige en | Sobre / instancia | Dueño en Célula 3 | Estado |
 |---|---|---|---|---|---|
-| 1 | Documento de arquitectura ISO/IEC/IEEE 42010 con **las cinco vistas** | `RT-02.03` | Sobre N° 2 | **Subdocumento 4 completo** | **EN CURSO — MA-7 asignó F2/F3/F4/F5 y `V-DATA-01`; B8 debe producir las figuras** |
+| 1 | Documento de arquitectura ISO/IEC/IEEE 42010 con **las cinco vistas** | `RT-02.03` | Sobre N° 2 | **Subdocumento 4 completo** | **EN CURSO — base técnica y `V-DATA-01` listas; restan redacción editorial, diagramas del equipo, T-11, D3 y maquetación** |
 | 2 | Registro de decisiones de arquitectura (ADR) | `RT-02.04` | Sobre N° 2 | `03_REGISTRO_ADR_GLOBAL` y revisión MA-4/MA-5 | EN CURSO: 11 registrados; 11 `PROPUESTO`, 0 aprobados |
 | 3 | Tabla de emplazamiento nube/on-premise justificada | Cap. 3 | Sobre N° 2 | C1 §4 | **CUBIERTO EN DISEÑO**: 20 nodos físicos ×6 criterios y `LOC-INSP-01` explícitamente no físico |
 | 4 | Declaración de funciones **no** disponibles en modo desconectado | `RT-03.13` | Sobre N° 2 | A3 §7 y C3 §7.1 | **CUBIERTO** v0.5; su ausencia es «observación grave» |
@@ -170,7 +170,7 @@ Incorporado el 2026-09-06, cerrando `F2-ESC-005`. Es la lista de verificación d
 | 27 | Prototipo interactivo y arquitectura de información | Cap. 25 | con el Informe 3 | fuera | no iniciado |
 | 28 | Fichas de las cinco innovaciones (T-19) | Cap. 26 | Sobre N° 2 | fuera de Célula 3 | Informe 1 exige idea, tecnología y resultado esperado |
 
-**Lectura del checklist.** Seis entregables son del Frente 2 —N° 3, 8, 9, 10, 11 y 12— y **cinco de los seis están cubiertos en `v0.5`**; el N° 8 espera los planos. El N° 1 es el Subdocumento 4 entero y su única brecha son los diagramas. El N° 24, el Formulario T-12, es la brecha más seria fuera de Célula 3: es una matriz sobre los 374 códigos `RT` y nadie la ha empezado.
+**Lectura del checklist.** Seis entregables son del Frente 2 —N° 3, 8, 9, 10, 11 y 12— y **cinco de los seis están cubiertos en `v0.5`**; el N° 8 espera los planos de detalle. El N° 1 ya tiene narrativa y cinco vistas; resta ensamblar T-11 y ejecutar D3. El N° 24, el Formulario T-12, es la brecha más seria fuera de Célula 3: es una matriz sobre los 374 códigos `RT` y nadie la ha empezado.
 
 ## 7. Control de pendientes externos
 

@@ -1,0 +1,41 @@
+flowchart TB
+    subgraph N[1 · Operación normal]
+        direction LR
+        CHN[CH-APP / CH-CAB]
+        GWN[GW-API activo]
+        CTXN[CTX con autoridad]
+        DATN[DATA-CORE]
+        INTN[INT-HUB]
+        TOSN[INT-TOS ↔ TOS 2012]
+        EXT[Nube y contrapartes]
+        CHN -->|comando| GWN -->|autoriza| CTXN -->|escribe| DATN
+        CTXN -.->|evento| INTN -.-> EXT
+        CTXN <-->|según zona/fase| TOSN
+    end
+
+    subgraph C[2 · WAN caída · hasta 72 h]
+        direction LR
+        CHC[Canal interno]
+        GWC[GW-API local restringido]
+        CTXC[Cinco funciones críticas]
+        DATC[Estado + evidencia local]
+        QUE[Cola persistente + DLQ]
+        TOSC[INT-TOS local ↔ TOS]
+        CHC -->|comando| GWC -->|autoriza| CTXC -->|escribe| DATC
+        CTXC -.->|evento pendiente| QUE
+        CTXC <-->|conciliación local| TOSC
+    end
+
+    subgraph R[3 · Reconexión · ≤90 min]
+        direction LR
+        ORD[Ordenar + deduplicar]
+        SYNC[Sincronizar]
+        REC[Conciliar autoridad/evidencia]
+        AUD[Bitácora auditable]
+        ORD --> SYNC --> REC --> AUD
+    end
+
+    N -->|pérdida de WAN| C
+    QUE -.->|enlace estable| ORD
+    C -->|retorno| R
+    R -->|estado consolidado| N

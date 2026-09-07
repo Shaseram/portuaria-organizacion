@@ -49,6 +49,8 @@ De ahí se siguen tres reglas de método que este documento respeta:
 
 Las seis son **verificables**: cinco están declaradas en las Bases o en el cierre de Célula 2, y la sexta se deriva de la arquitectura de datos propuesta. Ninguna es hipotética.
 
+**Topología recibida de Célula 3.** `PAR-1` no convierte al nodo local en primario permanente: en régimen normal AWS conserva el registro consolidado y el núcleo local mantiene el estado crítico caliente. Al perderse el enlace, la autoridad de las cinco funciones críticas pasa al núcleo local; al reconectar, se ejecuta la conciliación determinista y la autoridad vuelve a AWS. La matriz siguiente evalúa el comportamiento de cada operación dentro de esos estados y nunca supone dos escritores simultáneos.
+
 ---
 
 ## 3. Unidades transaccionales
@@ -214,10 +216,10 @@ Ninguna función crítica de registro aparece en 7.2, y ninguna de las funciones
 
 | ID | Qué falta | Responsable | Qué condiciona |
 |---|---|---|---|
-| `PEN-01` | Zonas y fases nombradas de la matriz de autoridad | Célula 3 | El nivel 1 de la cascada de `DEC-C4-15` y toda la columna de `PAR-2` |
+| `PEN-01` | **RECIBIDO:** A3 §3 define zonas lógicas y fases; bloques físicos exactos parametrizados | Célula 3 | nivel 1 aplicable; segmentación exacta condicionada |
 | `PEN-10` | Frontera del runtime local: qué datos persisten en el borde y con qué tamaño de buffer | Célula 3 | Qué operaciones `A` son realmente sostenibles 72 horas |
-| `PEN-06` | Si el flujo hacia la analítica es réplica, captura de cambios o eventos | Célula 3 | El comportamiento de `PAR-6` y el desfase declarado en el tablero |
-| `PEN-08` | Revalidación del volumen de 72 horas y del ancho de banda de reposición | Célula 3 | El plazo de 90 minutos de la sección 8 |
+| `PEN-06` | **RECIBIDO:** eventos persistentes y réplica/vista analítica; CDC TOS condicionado | Célula 3 | contrato y prueba reales |
+| `PEN-08` | **CERRADO I1:** 21,9 GB peak, 32,5 Mbps y WAN ≥35 Mbps | Célula 3 | 90 min; prueba E2E futura |
 | Propio | Los canales de contingencia con cada naviera de la sección 7.2 son **acuerdos por levantar**, no interfaces existentes | Célula 4 y levantamiento | La columna de procedimiento manual |
 
 ---

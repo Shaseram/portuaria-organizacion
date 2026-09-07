@@ -1,0 +1,49 @@
+flowchart LR
+    subgraph TER[Terminal portuario]
+        subgraph SALA[Sala técnica principal · condicionada]
+            OPS[PHY-OPS-01\n3 nodos EDGE-RUN]
+            STO[PHY-OPS-02\n≈960 GB útiles de referencia]
+            TOS[PHY-OPS-03\nINT-TOS]
+            NET[PHY-OPS-04\nred HA segmentada]
+            OPS --> STO
+            OPS <--> TOS
+            OPS --> NET
+        end
+        GATE[PHY-EDG-01\ngate 8+6]
+        YARD[PHY-EDG-02\npatio LTE/5G · 6–8]
+        REEF[PHY-EDG-03\n26→32 tableros]
+        QUAY[PHY-EDG-04\nmuelle · 3 sitios]
+        GATE --> NET
+        YARD --> NET
+        REEF --> NET
+        QUAY --> NET
+    end
+
+    subgraph PRI[AWS primaria · sa-east-1 · ≥2 AZ]
+        AZA[AZ-A\nservicios y datos]
+        AZB[AZ-B\nservicios y datos]
+        HUB[INT-HUB · objetos · analítica\nobservabilidad/SIEM]
+        AZA <--> AZB
+        AZA --> HUB
+        AZB --> HUB
+    end
+
+    subgraph DR[AWS secundaria · us-east-1]
+        PAS[Activo-pasivo\nréplica caliente + IaC]
+        OBJ[Copia inmutable\nautoridad separada]
+        PAS --> OBJ
+    end
+
+    subgraph CLI[Sistemas conservados del CLIENTE]
+        TOS12[TOS 2012]
+        SYSC[ERP · acceso/barreras · VMS]
+        SYSP[Grúas solo lectura · básculas/OCR]
+    end
+
+    NET ==>|WAN 1 · proveedor/ruta A · VPN| AZA
+    NET ==>|WAN 2 · proveedor/ruta B · VPN| AZB
+    PRI <-.->|réplica RPO ≤15 min · conmutación RTO ≤4 h| PAS
+    OPS -.->|autoridad local hasta 72 h\nreconciliación ≤90 min| PRI
+    TOS <--> TOS12
+    OPS <-->|contratos gobernados| SYSC
+    GATE <-->|lectura/evento| SYSP
