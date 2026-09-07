@@ -14,10 +14,10 @@
 |---:|---|---|---|
 | 1 | ~~Arquitectura lógica y física redactada~~ **— reclasificada.** Arquitectura confirmó que el Maestro es el contrato común vigente y que sus IDs sirven como provisionales. El `RT-26.01` se satisface en el Informe 1 con la inserción provisional declarada; la trazabilidad definitiva bloquea recién en el Informe 2 | Las cinco | Baja para el Informe 1 |
 | 2 | ~~Confirmación del catálogo de componentes~~ **— RESUELTO 2026-09-05.** Los IDs del Maestro §6.1 son vigentes y pueden usarse como provisionales hasta que A1 los congele | Las cinco | Cerrado |
-| 3 | **Alta de `CTX-SIM` — CANDIDATO CONDICIONADO.** Puede explicarse en I1 como componente analítico sin autoridad operacional, pero no entra al catálogo, diagramas ni T-11 hasta ratificación A1/C1, dimensionamiento/licencia y modelado de amenazas | IN-03 | No bloquea la narrativa I1; bloquea su incorporación arquitectónica |
+| 3 | ~~Alta de `CTX-SIM`~~ **— RESUELTO 2026-09-05.** Aceptado provisionalmente como componente analítico en nube, sin autoridad operacional y sin competir con la autonomía de 72 h, tal como lo propusimos. A1/C1 ratifican después | IN-03 | Cerrado |
 | 4 | **STRIDE — responsabilidad aclarada y tarea nueva para nosotros.** Lo elabora D2, pero **Innovaciones debe entregarle activos, datos, interfaces y flujo propuesto** de IN-01 e IN-03. En el Informe 1 basta declarar la dependencia | IN-01 y IN-03 | Media — insumo nuestro |
 | 5 | **Reproducción por un tercero — reasignada a nosotros.** Arquitectura confirmó que la exige y que **el linaje lo diseña Datos, es decir Célula 4 en el Subdocumento 5**; Seguridad protege acceso, integridad y auditoría. La demostración final sigue pendiente | IN-04 | **Alta — es nuestra** |
-| 6 | **Filas del T-11 — NO APLICA EN LA BASELINE I1.** IN-03 no agrega hardware de terreno; solo se añade una fila si se ratifica y oferta cómputo, licencia o servicio cloud separado con capacidad y cantidad justificadas | IN-03 | Condicionado a alta de `CTX-SIM` |
+| 6 | ~~Filas del T-11~~ **— RESUELTO 2026-09-05.** IN-03 no agrega hardware de terreno; solo iría al T-11 si finalmente se oferta cómputo, licencia o servicio cloud separado, y C4 determina capacidad y cantidad | IN-03 | Cerrado |
 | 7 | **Confirmación de la inserción del término de emisiones** dentro del algoritmo de asignación de `CTX-YARD` sin degradar las metas de remociones ni de productividad | IN-05 | Media |
 
 ### 4.2 Depende de Célula 2 — solución, alcance y requisitos
@@ -62,3 +62,4 @@
 | 26quater | **Pedir los dos archivos que la respuesta de coordinación cita y no tenemos:** `04_GUIA_ARRANQUE_SUBDOCUMENTO_5.md` y `05_REGISTRO_ALINEACION_CELULA2.md`. El primero define qué puede desarrollar Datos antes del cierre de Arquitectura | Subdoc 5 | **Alta** |
 | 26 | **Plantilla de portada y layout de Terabyte** para los dos PDF separados que exige el comunicado, y reparto de la exposición en la presentación preparatoria, donde el CLIENTE puede designar quién expone cada sección | Entrega | **Alta** |
 | 27 | **Revisión de la redacción de IN-04 con el delegado**, para asegurar que no se lea como contrapropuesta del régimen de los Artículos 78° a 80°. Es el único punto de la cartera cuyo error no cuesta puntaje sino admisibilidad | IN-04 | **Alta** |
+

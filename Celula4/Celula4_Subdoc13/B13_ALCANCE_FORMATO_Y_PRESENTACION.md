@@ -57,7 +57,7 @@ El comunicado enuncia tres de esos cinco ejes —idea, tecnología y resultado e
 
 ### 0.4 Estado del insumo de Célula 3
 
-En el corte histórico del 2026-09-05, la base de Célula 3 (`90_Consolidado/00_BASE_TECNICA_SUBDOCUMENTO_4.md`) estaba íntegramente en `PENDIENTE DE INTEGRAR`. **Arquitectura aclaró que ese archivo era la plantilla de integración y no el estado completo del trabajo**, de modo que no debía leerse como ausencia de insumos ni citarse por sí solo como fuente vigente. El estado actual se consulta desde `Celula3/README.md` y el plan de alineación C3–C4.
+El consolidado de Célula 3 (`90_Consolidado/00_CONTENIDO_FINAL_SUBDOCUMENTO_4.md`) está íntegramente en `PENDIENTE DE INTEGRAR`. **Arquitectura aclaró el 2026-09-05 que ese archivo es la plantilla de integración de contenido aprobado y no el estado del trabajo**, de modo que no debe leerse como ausencia de insumos ni citarse por sí solo como fuente vigente. Sí existe, aprobado y estable, el **Maestro de Contexto de Arquitectura v1.0 (2026-09-04)**, que fija las ocho capas obligatorias y un **catálogo lógico inicial de 24 componentes** con identificadores estables (`CH-*`, `GW-*`, `CTX-*`, `SRV-*`, `INT-*`, `EDGE-*`, `DATA-*`).
 
 **Decisión de Célula 4:** cada innovación se inserta contra esos identificadores del Maestro §6.1, que es el artefacto de arquitectura más firme que existe hoy. Cada inserción queda marcada como sujeta a confirmación de Célula 3 cuando el Frente 1 refine el catálogo. Esto satisface el RT-26.01 en el nivel de madurez posible en el Informe 1 y deja la dependencia trazada, en vez de inventar una arquitectura paralela.
 
@@ -113,3 +113,4 @@ El comunicado aclara que los Artículos 67° a 82° no son entregable, pero **de
 - Completar los cinco T-19 para el 7 de septiembre. Quedan como trabajo anticipado.
 - Formular la consulta sobre los campos económicos: el comunicado la respondió.
 - Derivar las cuatro metas pendientes **para esta entrega**. Siguen siendo necesarias, pero para el Informe 2, cuando el alcance sea trazable con la arquitectura y la EDT. Lo que sí hay que hacer ahora es **declarar la investigación adicional**, que es lo que el T-22 exige y lo que la sección 2 ya hace en cada innovación.
+
